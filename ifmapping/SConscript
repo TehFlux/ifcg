@@ -1,0 +1,570 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ==========================================================================
+# IFMapping - Ionflux Mapping Library
+# Copyright © 2010 Joern P. Meier
+# mail@ionflux.org
+# --------------------------------------------------------------------------
+# SConscript                  SCons build script
+# ==========================================================================
+# 
+# This file is part of IFMapping - Ionflux Mapping Library.
+# 
+# IFMapping - Ionflux Mapping Library is free software; you can 
+# redistribute it and/or modify it under the terms of the GNU General 
+# Public  License as published by the Free Software Foundation; either 
+# version 2 of the License, or (at your option) any later version.
+# 
+# IFMapping - Ionflux Mapping Library is distributed in the hope 
+# that it will be useful, but WITHOUT ANY WARRANTY; without even the 
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Altjira - Ionflux' Image Processing Library; if not, write 
+# to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
+# Boston, MA 02111-1307 USA
+# 
+# ==========================================================================
+import os, subprocess, shutil, shlex, string, copy, re
+
+# Create a default local configuration file if it does not exist.
+if (not os.path.isfile('site_scons/local_config.py')):
+    shutil.copy('site_scons/local_config.py.default', 
+        'site_scons/local_config.py')
+
+import local_config as lc
+
+Help("""
+Type 'scons' to build the default targets.
+Type 'scons install' to install to default location.
+Type 'scons <target>' to build a specific target.
+
+You can add local configuration to site_scons/local_config.py.
+
+Targets:
+  (default)                    Everything.
+  all                          Everything
+  libs                         Shared libraries.
+  programs                     Programs.
+  tests                        Test programs.
+  sources                      Source files (requires ifclassgen).
+  interfaces                   SWIG interface declarations (requires iftpl).
+  pymodule                     Python module.
+  install                      Install headers, libraries and programs.
+
+Options:
+  prefix=<target directory>    Installation prefix
+                               (default: /usr/local)
+  debug=<yes|no>               Whether to use debug compiler flags 
+                               (default: yes)
+""")
+
+env0 = os.environ
+env0['PATH'] += (':' + lc.PATH)
+
+env = Environment(ENV = env0, 
+    CPPPATH = ['include', 'deps/MersenneTwister/include'] + lc.CPPPATH, 
+    LIBPATH = ['lib'] + lc.LIBPATH)
+env.MergeFlags(['-Wall', '-Wno-deprecated', '-O2'])
+
+if (hasattr(lc, 'debug') and lc.debug):
+    debugDefault = 'yes'
+else:
+    debugDefault = 'no'
+if (ARGUMENTS.get('debug', debugDefault) == 'yes'):
+    env.Append(CCFLAGS = '-g')
+
+if (hasattr(lc, 'prefix')):
+    defaultPrefix = lc.prefix
+else:
+    defaultPrefix = '/usr/local'
+prefix = ARGUMENTS.get('prefix', defaultPrefix)
+
+ifmappingEnv = env.Clone()
+
+ifmappingEnv.VariantDir('build', 'src')
+ifmappingEnv.VariantDir('test/build', 'test')
+
+def checkProgram(ctx, cmd):
+    """Check for installed program."""
+    ctx.Message('Checking for ' + cmd + '... ')
+    try:
+        subprocess.call(cmd, stdout=subprocess.PIPE, 
+            stderr=subprocess.STDOUT)
+        result = 1
+    except Exception:
+        result = 0
+    ctx.Result(result)
+    return result
+
+def checkPkgConfig(ctx, pkg):
+    """Check for package using pkg-config."""
+    ctx.Message('Checking for ' + pkg + '... ')
+    cmd = "pkg-config --cflags " + pkg
+    try:
+        p0 = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, 
+            stderr=subprocess.STDOUT)
+        d = p0.stdout.read()
+        if (d.find('was not found') != -1):
+            result = 0
+        else:
+            ctx.sconf.env.MergeFlags('!' + cmd)
+            result = 1
+    except Exception:
+        result = 0
+    ctx.Result(result)
+    return result
+
+config = ifmappingEnv.Configure(custom_tests = { 
+    "CheckProgram" : checkProgram, 
+    "CheckPkgConfig" : checkPkgConfig })
+
+missingDeps = []
+if (not config.CheckPkgConfig("sigc++-2.0")):
+    missingDeps += ['sigc++']
+else:
+    ifmappingEnv.MergeFlags(['!pkg-config --cflags --libs sigc++-2.0'])
+if (not config.CheckLibWithHeader("tinyxml", "tinyxml/tinyxml.h", 
+    'C++', autoadd = 0)):
+    missingDeps += ['tinyxml']
+if (not config.CheckLibWithHeader("ifobject", "ifobject/IFObject.hpp", 
+    'C++', autoadd = 0)):
+    missingDeps += ['ifobject']
+
+if (len(missingDeps) > 0):
+    print "************************************************************"
+    print "IFMapping cannot be built because the following dependencies"
+    print "were not found:"
+    print " "
+    for it in missingDeps:
+        print "  " + it
+    print " "
+    print "************************************************************"
+    Exit(1)
+
+buildPyModule = True
+if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
+    "Python.h", 'C', autoadd = 0)):
+    print "***************************************************"
+    print "Python not found - Python module will NOT be built!"
+    print "***************************************************"
+    buildPyModule = False
+
+haveIFClassgen = True
+if (not config.CheckProgram("ifclassgen")):
+    haveIFClassgen = False
+haveIFTpl = True
+if (not config.CheckProgram("iftpl")):
+    haveIFTpl = False
+haveSWIG = True
+if (not config.CheckProgram("swig")):
+    print "*************************************************"
+    print "SWIG not found - Python module will NOT be built!"
+    print "*************************************************"
+    haveSWIG = False
+    buildPyModule = False
+
+buildNoiseLib = True
+if (not config.CheckLibWithHeader("noise", "noise.h", 'C++', 
+    autoadd = 0)):
+    print "*******************************************************"
+    print "libnoise not found - Noise utilities will NOT be built!"
+    print "*******************************************************"
+    buildNoiseLib = False
+
+ifmappingEnv = config.Finish()
+
+def buildSource(source, target, env):
+    """Builder function to build source files from class configuration."""
+    classNames = []
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.conf'):
+            classNames += [cn]
+    for cn in classNames:
+        c0 = ("ifclassgen -t " + lc.ifobjectTemplatePath 
+            + "/class -c conf/class -m conf/main.conf -i include/" 
+            + lc.baseName + " -s src " + cn)
+        print c0
+        sp0 = subprocess.call(shlex.split(c0))
+
+def buildClassInterface(source, target, env):
+    """Builder function to build SWIG interface files from class 
+       configuration."""
+    classNames = []
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.conf'):
+            classNames += [cn]
+    for cn in classNames:
+        c0 = ("iftpl " + lc.ifobjectTemplatePath 
+            + "/interface.i.tpl conf/class/" + cn + ".conf conf/main.conf")
+        print c0
+        f0 = open("swig/classes/" + cn + ".i", 'w')
+        sp0 = subprocess.call(shlex.split(c0), stdout = f0)
+        f0.close()
+
+def buildInterface(source, target, env):
+    """Builder function to build a SWIG interface declaration."""
+    classNames = []
+    if (isinstance(lc.swigInterfaceTemplateFile, str)):
+        templateFile = lc.swigInterfaceTemplateFile
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.i'):
+            classNames += [cn]
+        elif (ext == '.tpl'):
+            templateFile = it.path
+    tplData = {}
+    p0 = re.compile("/\*.*?\*/", re.DOTALL)
+    for cn in classNames:
+        tplData[cn] = p0.sub('', open('swig/classes/' + cn + '.i').read())
+    tplStr = open(templateFile).read()
+    tpl = string.Template(tplStr)
+    for it in target:
+        f0 = open(it.path, 'w')
+        f0.write(tpl.substitute(tplData))
+        f0.close()
+
+sourceBuilder = Builder(action = buildSource)
+classInterfaceBuilder = Builder(action = buildClassInterface)
+interfaceBuilder = Builder(action = buildInterface)
+swigIncludes = ''
+for it in ifmappingEnv['CPPPATH']:
+    swigIncludes += ('-I' + it + ' ')
+swigPythonBuilder = Builder(action = "swig -c++ -python "
+    + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
+
+ifmappingEnv.Append(BUILDERS = { 'Source' : sourceBuilder, 
+    'ClassInterface' : classInterfaceBuilder, 
+    'Interface' : interfaceBuilder, 
+    'SWIGPython' : swigPythonBuilder})
+
+ifmappingLibHeaders = ['include/ifmapping/constants.hpp',
+	'include/ifmapping/types.hpp', 
+	'include/ifmapping/utils.hpp', 
+	'include/ifmapping/xmlutils.hpp', 
+	'include/ifmapping/mappings.hpp', 
+	'include/ifmapping/rootfinders.hpp', 
+    'include/ifmapping/ifmapping.hpp', 
+	'include/ifmapping/Accept.hpp', 
+	'include/ifmapping/AnimatedSpline.hpp', 
+	'include/ifmapping/ArcCos.hpp', 
+	'include/ifmapping/ArcSin.hpp', 
+	'include/ifmapping/ArcTan.hpp', 
+	'include/ifmapping/BezierCurve.hpp', 
+	'include/ifmapping/BezierSpline.hpp', 
+	'include/ifmapping/BezierSplineKey.hpp', 
+	'include/ifmapping/BisectionRootFinder.hpp', 
+	'include/ifmapping/BrentLinearRootFinder.hpp', 
+	'include/ifmapping/Chain.hpp', 
+	'include/ifmapping/ChainableMapping.hpp', 
+	'include/ifmapping/Constant.hpp', 
+	'include/ifmapping/Cos.hpp', 
+	'include/ifmapping/Count.hpp', 
+	'include/ifmapping/Cubic.hpp', 
+	'include/ifmapping/DekkerRootFinder.hpp', 
+	'include/ifmapping/Exp.hpp', 
+	'include/ifmapping/InverseFalloff.hpp', 
+	'include/ifmapping/Linear.hpp', 
+	'include/ifmapping/LinearCombination.hpp', 
+	'include/ifmapping/Lookup.hpp', 
+	'include/ifmapping/Mapping.hpp', 
+	'include/ifmapping/MappingError.hpp', 
+	'include/ifmapping/MappingSet.hpp', 
+	'include/ifmapping/Multiply.hpp', 
+	'include/ifmapping/Piece.hpp', 
+	'include/ifmapping/Piecewise.hpp', 
+	'include/ifmapping/Point.hpp', 
+	'include/ifmapping/PointCoord.hpp', 
+	'include/ifmapping/PointMapping.hpp', 
+	'include/ifmapping/EvalCoord.hpp', 
+	'include/ifmapping/PointMappingSet.hpp', 
+	'include/ifmapping/PointSet.hpp', 
+	'include/ifmapping/Polynomial.hpp', 
+	'include/ifmapping/Power.hpp', 
+	'include/ifmapping/Random.hpp', 
+	'include/ifmapping/RandomDensity.hpp', 
+	'include/ifmapping/RandomNorm.hpp', 
+	'include/ifmapping/Rescale.hpp', 
+	'include/ifmapping/RootFinder.hpp', 
+	'include/ifmapping/SecantRootFinder.hpp', 
+	'include/ifmapping/Sin.hpp', 
+	'include/ifmapping/Tan.hpp'
+]
+
+ifmappingLibSources = ['build/utils.cpp',
+	'build/xmlutils.cpp',
+	'build/Accept.cpp', 
+	'build/AnimatedSpline.cpp', 
+	'build/ArcCos.cpp', 
+	'build/ArcSin.cpp', 
+	'build/ArcTan.cpp', 
+	'build/BezierCurve.cpp', 
+	'build/BezierSpline.cpp', 
+	'build/BezierSplineKey.cpp', 
+	'build/BisectionRootFinder.cpp', 
+	'build/BrentLinearRootFinder.cpp', 
+	'build/Chain.cpp', 
+	'build/ChainableMapping.cpp', 
+	'build/Constant.cpp', 
+	'build/Cos.cpp', 
+	'build/Count.cpp', 
+	'build/Cubic.cpp', 
+	'build/DekkerRootFinder.cpp', 
+	'build/Exp.cpp', 
+	'build/InverseFalloff.cpp', 
+	'build/Linear.cpp', 
+	'build/LinearCombination.cpp', 
+	'build/Lookup.cpp', 
+	'build/Mapping.cpp', 
+	'build/MappingError.cpp', 
+	'build/MappingSet.cpp', 
+	'build/Multiply.cpp', 
+	'build/Piece.cpp', 
+	'build/Piecewise.cpp', 
+	'build/Point.cpp', 
+	'build/PointCoord.cpp', 
+	'build/PointMapping.cpp', 
+	'build/EvalCoord.cpp', 
+	'build/PointMappingSet.cpp', 
+	'build/PointSet.cpp', 
+	'build/Polynomial.cpp', 
+	'build/Power.cpp', 
+	'build/Random.cpp', 
+	'build/RandomDensity.cpp', 
+	'build/RandomNorm.cpp', 
+	'build/Rescale.cpp', 
+	'build/RootFinder.cpp', 
+	'build/SecantRootFinder.cpp', 
+	'build/Sin.cpp', 
+	'build/Tan.cpp'
+]
+
+ifmappingLibClasses = [
+	'Accept', 
+	'AnimatedSpline', 
+	'ArcCos', 
+	'ArcSin', 
+	'ArcTan', 
+	'BezierCurve', 
+	'BezierSpline', 
+	'BezierSplineKey', 
+	'BisectionRootFinder', 
+	'BrentLinearRootFinder', 
+	'Chain', 
+	'ChainableMapping', 
+	'Constant', 
+	'Cos', 
+	'Count', 
+	'Cubic', 
+	'DekkerRootFinder', 
+	'Exp', 
+	'InverseFalloff', 
+	'Linear', 
+	'LinearCombination', 
+	'Lookup', 
+	'Mapping', 
+	'MappingError', 
+	'MappingSet', 
+	'Multiply', 
+	'Piece', 
+	'Piecewise', 
+	'Point', 
+	'PointCoord', 
+	'PointMapping', 
+	'EvalCoord', 
+	'PointMappingSet', 
+	'PointSet', 
+	'Polynomial', 
+	'Power', 
+	'Random', 
+	'RandomDensity', 
+	'RandomNorm', 
+	'Rescale', 
+	'RootFinder', 
+	'SecantRootFinder', 
+	'Sin', 
+	'Tan'
+]
+
+ifmappingNoiseLibClasses = [ 
+    'NoiseMapping', 
+    'NoiseMapTransform'
+]
+
+allTargets = []
+
+# Source files.
+if (haveIFClassgen):
+    sources = []
+    for it in ifmappingLibClasses:
+        sources += [ 
+            ifmappingEnv.Source(target = [
+                    'include/ifmapping/' + it + '.hpp', 
+                    'src/' + it + '.cpp'], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/class/Class.hpp.tpl', 
+                    'template/class/Class.cpp.tpl'])
+        ]
+    if (buildNoiseLib):
+        for it in ifmappingNoiseLibClasses:
+            sources += [ 
+                ifmappingEnv.Source(target = [
+                        'include/ifmapping/' + it + '.hpp', 
+                        'src/' + it + '.cpp'], 
+                    source = ['conf/class/' + it + '.conf',
+                        'template/class/Class.hpp.tpl', 
+                        'template/class/Class.cpp.tpl'])
+            ]
+    allTargets += sources
+else:
+    print "**********************************************************"
+    print "ifclassgen not found - source files will NOT be generated!"
+    print "**********************************************************"
+
+# Interface declarations.
+if (haveIFTpl):
+    interfaces = []
+    classInterfaces = []
+    # ifmapping library
+    interfaceTargets = []
+    for it in ifmappingLibClasses:
+        t0 = 'swig/classes/' + it + '.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            ifmappingEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/interface.i.tpl'])
+        ]
+    interfaces += [ ifmappingEnv.Interface(target = lc.swigInterfaceFile[0], 
+        source = interfaceTargets + [lc.swigInterfaceTemplateFile[0]])]
+    # ifmapping/noise library
+    interfaceTargets = []
+    for it in ifmappingNoiseLibClasses:
+        t0 = 'swig/classes/' + it + '.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            ifmappingEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/interface.i.tpl'])
+        ]
+    interfaces += [ ifmappingEnv.Interface(target = lc.swigInterfaceFile[1], 
+        source = interfaceTargets + [lc.swigInterfaceTemplateFile[1]])]
+    allTargets += (classInterfaces + [interfaces])
+else:
+    print "****************************************************************"
+    print "iftpl not found -  Interface declarations will NOT be generated!"
+    print "****************************************************************"
+
+## tinyxml
+#tinyxmlLib = env.SharedLibrary(target = 'deps/tinyxml/lib/tinyxml', 
+#    source = ['deps/tinyxml/src/tinystr.cpp', 
+#        'deps/tinyxml/src/tinyxml.cpp', 
+#        'deps/tinyxml/src/tinyxmlerror.cpp', 
+#        'deps/tinyxml/src/tinyxmlparser.cpp'])
+
+# ifmapping shared library
+ifmappingLibEnv = ifmappingEnv.Clone()
+ifmappingLibEnv.Append(LIBS = ['ifobject', 'tinyxml'])
+ifmappingLib = ifmappingLibEnv.SharedLibrary(target = "lib/ifmapping", 
+    source = ifmappingLibSources)
+
+# ifmapping/noise shared library
+ifmappingNoiseLibHeaders = [
+    'include/ifmapping/ifmappingnoise.hpp', 
+    'include/ifmapping/NoiseMapping.hpp', 
+    'include/ifmapping/NoiseMapTransform.hpp'
+]
+ifmappingNoiseLibSources = [
+    'build/NoiseMapping.cpp', 
+    'build/NoiseMapTransform.cpp'
+]
+
+if (buildNoiseLib):
+    ifmappingNoiseLibEnv = ifmappingEnv.Clone()
+    ifmappingNoiseLibEnv.Append(LIBS = ['ifmapping', 'noise', 'ifobject'])
+    ifmappingNoiseLib = ifmappingNoiseLibEnv.SharedLibrary(
+        target = "lib/ifmappingnoise", source = ifmappingNoiseLibSources)
+
+targetLibs = [ifmappingLib]
+if (buildNoiseLib):
+    targetLibs += [ifmappingNoiseLib]
+
+# programs.
+targetBins = []
+
+# tests
+
+targetTests = []
+
+# IFMapping python module.
+ifmappingWrapper = ifmappingEnv.SWIGPython(target = [ 
+        'swig/ifmapping_wrap.cxx', 'swig/python/IFMapping.py'], 
+    source = 'swig/ifmapping.i')
+
+ifmappingPyModuleEnv = ifmappingEnv.Clone()
+ifmappingPyModuleEnv.Append(LIBS = ['ifmapping', 'python' + lc.pythonVersion])
+
+ifmappingPyModule = ifmappingPyModuleEnv.SharedLibrary(
+    target = 'swig/python/_IFMapping', 
+    source = 'swig/ifmapping_wrap.cxx', SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
+
+# IFMapping/noise python module.
+ifmappingNoiseWrapper = ifmappingEnv.SWIGPython(target = [ 
+        'swig/ifmappingnoise_wrap.cxx', 'swig/python/IFMappingNoise.py'], 
+    source = 'swig/ifmappingnoise.i')
+
+ifmappingNoisePyModuleEnv = ifmappingEnv.Clone()
+ifmappingNoisePyModuleEnv.Append(LIBS = ['ifmapping', 'ifmappingnoise', 
+    'noise', 'python' + lc.pythonVersion])
+
+ifmappingNoisePyModule = ifmappingNoisePyModuleEnv.SharedLibrary(
+    target = 'swig/python/_IFMappingNoise', 
+    source = 'swig/ifmappingnoise_wrap.cxx', SHLIBPREFIX = '', 
+        SHLIBSUFFIX = '.so')
+
+pyModules = [ifmappingPyModule]
+if (buildNoiseLib):
+    pyModules += [ifmappingNoisePyModule]
+
+allHeaders = ifmappingLibHeaders + [lc.swigInterfaceFile]
+if (buildNoiseLib):
+    allHeaders += ifmappingNoiseLibHeaders
+
+installBinTargets = [targetBins]
+
+installHeaders = ifmappingEnv.Install(prefix + '/include/' + lc.baseName, 
+    allHeaders)
+installLibs = ifmappingEnv.Install(prefix + '/lib', targetLibs)
+installBins = ifmappingEnv.Install(prefix + '/bin', installBinTargets)
+if (buildPyModule):
+    pyModuleTargets = ['swig/python/IFMapping.py', ifmappingPyModule]
+    if (buildNoiseLib):
+        pyModuleTargets += ['swig/python/IFMappingNoise.py', 
+            ifmappingNoisePyModule]
+    installPyModules = ifmappingEnv.Install(prefix + lc.pythonSitePackagesPath, 
+        pyModuleTargets)
+
+allTargets += (targetLibs + targetBins + targetTests)
+if (buildPyModule):
+    allTargets += pyModules
+
+installTargets = [installHeaders, installLibs, installBins]
+if (buildPyModule):
+    installTargets += [installPyModules]
+
+aliasLibs = Alias('libs', targetLibs)
+aliasBins = Alias('programs', targetBins)
+aliasTests = Alias('tests', targetTests)
+aliasAll = Alias('all', allTargets)
+aliasInstall = Alias('install', installTargets)
+if (haveIFClassgen):
+    aliasSources = Alias('sources', sources)
+if (haveIFTpl):
+    aliasInterfaces = Alias('interfaces', classInterfaces + [interfaces])
+if (buildPyModule):
+    aliasPyModule = Alias('pymodule', pyModules)
+
+Default('all')

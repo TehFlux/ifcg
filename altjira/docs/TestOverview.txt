@@ -1,0 +1,25 @@
+================================================================================
+Altjira - Ionflux' Image Processing Library
+Copyright © 2009-2011 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Overview of Test Scripts
+================================================================================
+
+altjiratest01.py  Color space conversion, copy, region fill
+altjiratest02.py  GIMP brush creation
+altjiratest03.py  Color blending
+altjiratest04.py  Compositing
+altjiratest05.py  Array transform node
+altjiratest06.py  Blur
+altjiratest07.py  Copy channel
+altjiratest08.py  Channel compositing
+altjiratest09.py  Color band
+
+altjiranoisetest01.py  libnoise interoperability
+altjiranoisetest02.py  Color band/Image::valuesToColor()
+
+altjiradrawtest01.py  Drawable
+altjiradrawtest02.py  SVG rendering
+altjiradrawtest03.py  Gradients
+

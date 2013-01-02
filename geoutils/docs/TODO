@@ -1,0 +1,227 @@
+================================================================================
+GeoUtils - Ionflux' Geometry Library
+Copyright © 2009-2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+TODO
+================================================================================
+
+Up next
+--------------------------------------------------------------------------------
+
++ Blender
+  > add operator for Mesh::makePlanar()
+    . work on selected faces
+
+--------------------------------------------------------------------------------
+New
+--------------------------------------------------------------------------------
+
++ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
+
+--------------------------------------------------------------------------------
+Critical stuff
+--------------------------------------------------------------------------------
+
++ BoundingBox lookups use too much RAM.
+
++ Line3
+  > intersectPlane(), intersectionInPoly()
+    The line may lie within the plane. How is this handled?
+
++ Vector and Matrix types
+  > the elements array should not be re-allocated in the copy function if 
+    it is already defined
+
++ Vertex3::distanceToPlane()
+  > The plane location should be subtracted from the vertex location for 
+    calculating the distance. Make sure this works in all cases where the 
+    function is used (Polygon3, Face).
+
++ Plane3
+  > The binormal vector may not be orthogonal to tangent vector, although 
+    the docs for getTangentBase() claim this.
+    . test the fix
+
++ Transform nodes
+  > Scale
+    . Add a centering mode that scales only the distance to the origin 
+      of individual objects in the group (i.e. objects are actually translated 
+      along the location vector. none of the current modes achieves this).
+
++ Implement proper SVG path parsing in extractSVGVertices.
+  > Handle cubic splines in a sensible way (discretize them).
+
++ BoundingBox
+  > Synchronize the JavaScript implementation to the C++ implementation 
+    (getItemsIn<primitive>(), getItemsIn<primitive>Inner() instead of surely 
+    and maybe sets).
+  > Extend getContainingLeaf() so that it returns a set of all leaves that 
+    contain the target object.
+
++ Upgrade the class templates.
+  > Merge local changes back to the other projects (if applicable).
+    . handling of null proxy object in clear...()
+  > Merge changes from Dievas (persistence).
+
++ Make sure all pointers to managed objects are initialized to 0 before 
+  set...() is called in a constructor.
+
++ Port test scripts to Python 3.
+
++ Enable 'create' functions on all classes.
+
++ All uses of 'new' within the library should be checked for 0 return values 
+  (or use create()).
+
++ Make sure all assignment operators support self-assignment.
+
++ In all cases where a reference is removed and then re-added, make sure it 
+  is added before it is removed as the former might actually destroy the 
+  object if that was the only reference.
+
++ Do some memory leak checking with valgrind.
+
++ Minimize copying of data across the library.
+
+--------------------------------------------------------------------------------
+Important stuff
+--------------------------------------------------------------------------------
+
++ Write more tests.
+  > BoundingBox:
+    . update(). Fixed some phoniness in the implementation across all 
+      versions. The initial value of bounds should be the actual bounds of 
+      the first element, not just its center or the range from the origin to 
+      the center. Review this again.
+
++ BoundingBox
+  > initFromSource(): The geoutils.py version does not seem to update the 
+    bounds. While this is probably not necessary in most practical cases, it 
+    still should be considered.
+  > Use check<...>Inner() for intersection tests in the JavaScript and Python 
+    versions instead of surely and maybe sets.
+
++ BGeoUtils:
+  > Test the UV texture layer generation in Mesh.createBMesh().
+
++ Look for possible conflicts (especially regarding bounds calculation and 
+  updating) in the classes derived from both BoxBoundsItem and 
+  TransformableObject (Mesh, Face; update(), updateBounds(), getBounds(), 
+  updateRadiusAndCenter()). 
+
++ Face:
+  > This is a TransformableObject but cannot be transformed without side 
+    effects (vertices may belong to multiple faces). Therefore right now, it 
+    is not possible to apply transformations to faces. Find a better solution 
+    for this.
+  > Validate the tangent and binormal vector calculations.
+  > Add Face::clear() in all versions.
+  > Move uv parameter to the back in Face constructor (Python version).
+
++ API changes.
+  > Polygon3::transform(Matrix3) is expected to translate the polygon to the 
+    origin before the transformation is applied (required by 
+    Line3::intersectionInPoly). This seems counterintuitive and should be fixed. 
+    Polygons can now be translated using Polygon3::transform(Matrix4).
+    [fixed in the c++ implementation]
+  > BoxBoundsItem: Rename Vertex -> BoxVertex, Face -> BoxFace, to prevent 
+    conflicts with derived classes that have their own vertices and faces 
+    (like Face, Mesh etc.).
+  > Polygon3, Polygon3Set: getBounds(), center()
+  > Range3: setBounds(), extend() with other Range3.
+  > Range: clamp(). Maybe add this to Range3 as well.
+  > TransformableObject class hierarchy.
+
++ See which of the objects in the library are transformable and make them 
+  transformable objects (Camera).
+
++ TransformableObject: Do some benchmarking on the transform matrix checks.
+
++ Create a nice glue layer for Blender (see BlenderGeoUtils.py).
+
++ Make sure objects correctly implement copy assignment and the 
+  IFObject::copy() function.
+
++ Generate the documentation using Doxygen.
+  > Add a main page.
+
+--------------------------------------------------------------------------------
+Nice to have
+--------------------------------------------------------------------------------
+
++ Class templates.
+  > Add the proxyTarget feature to other property styles (done for vector).
+
++ Transform nodes:
+  > Each update call updates all outputs, not just the ones the caller was 
+    interested in (also, clearInputGroups() removes all outputs, nut just 
+    the ones the caller was interested in). Find a more efficient solution 
+    for this.
+  > Create the Distribute node.
+  > Make sure each input node is updated only once per call to update().
+
++ Add Bezier curve based objects:
+  > 3D splines [already supported by IFMapping]
+  > Paths
+  > Patches
+  > Surfaces
+  > There should be an option to convert Bezier objects into discrete 
+    representations (i.e. Polygon3, Mesh).
+
++ Vector3Mapping:
+  > Lookup3: Create static generator functions that create various types of 
+    lookup tables for convenience.
+  > Should be chainable with Mappings so the parameter can be 
+    transformed before the Vector3 is generated.
+  > Add Vector3Mappings that transform the output of one or more source 
+    Vector3Mappings in some way (for example, MatrixTransform, Translate, 
+    Rotate, Scale, LinearCombination etc.). This can then be used to replace 
+    the oddly behaving limit ranges in Translate and Scale transform nodes.
+
++ Add some random shape manipulation/transformation functions for fun.
+  > Scatter shapes (random, normal, fractal...).
+
++ Transform nodes:
+  > Create transform node types:
+    . Nodes that manipulate the number of groups:
+    . Nodes that create groups:
+      LoadMeshes: Load meshes from Blender or other input formats.
+    . Nodes that manipulate the number of items in a group:
+    . Nodes that transform items in a group:
+      Interpolate: Interpolate polygons from the input group.
+      ForceField: Translate objects by applying a force field originating 
+        from a point or each of the elements. Parameters of the force field 
+        could be controlled by ParamControl objects.
+      Insert: Insert elements from an input group into member groups from 
+        a second input group.
+      Fractal: Apply a node to an input pattern. Apply the node again to the 
+        resulting patterns. Repeat this a number of times.
+      Place: Place elements from the first input group at the vertices of 
+        polygons from the second input group.
+      Distribute: Distribute elements from the input group along a path.
+    . Nodes that create other representations of items:
+      WriteMeshes: Write meshes to Blender or other output formats.
+
++ Transformable objects and groups:
+  > Implement object transformations:
+    . Distribute along path: Distribute object along a spline path (with 
+      optional rotation according to tangent space).
+
++ Add more features that use Altjira.
+  > Support for Altjira::Color (for example, in shape styles).
+
+--------------------------------------------------------------------------------
+Side-tracks
+--------------------------------------------------------------------------------
+
++ Polygons:
+  > Allow simple lighting using a number of point light sources and select 
+    a style according to the resulting intensity.
+
++ Brush creation:
+  > Make sure the correct style is used for sub-plygons inside a brush sheet 
+    cell. This currently onls works if the number of styles divides the number 
+    of sub-polygons evenly.
+  > Transform brushes to an arbitrary 3D plane.
+

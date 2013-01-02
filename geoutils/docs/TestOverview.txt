@@ -1,0 +1,65 @@
+================================================================================
+GeoUtils - Ionflux' Geometry Library
+Copyright © 2009-2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Overview of Test Scripts
+================================================================================
+
+cgeoutilstest01.py  Polygon SVG rendering using different shape types.
+cgeoutilstest02.py  Polygon transformations.
+cgeoutilstest03.py  Vector operations and transformations.
+cgeoutilstest04.py  View and image transformations.
+cgeoutilstest05.py  View and image transformations.
+cgeoutilstest06.py  Polygon transformations.
+cgeoutilstest07.py  GIH angular brush creation.
+cgeoutilstest08.py  GIH angular brush creation with alternating frames.
+cgeoutilstest09.py  GIH angular brush creation with scattered polygons.
+cgeoutilstest10.py  GIH angular brush creation with scattered polygons.
+cgeoutilstest11.py  GIH random brush creation with scattered polygons.
+cgeoutilstest12.py  GIH angular brush creation.
+cgeoutilstest13.py  Transform nodes and connection objects.
+cgeoutilstest14.py  Transform graph.
+cgeoutilstest15.py  Transform graph.
+cgeoutilstest16.py  Transform graph.
+cgeoutilstest17.py  Transform graph.
+cgeoutilstest18.py  Vector3 mappings.
+cgeoutilstest19.py  Transform graph.
+cgeoutilstest20.py  GIH angular brush creation using transform graphs.
+cgeoutilstest21.py  GIH angular brush creation using transform graphs.
+cgeoutilstest22.py  Complex GIH brush creation using transform graphs.
+cgeoutilstest23.py  Scatter LUT using AcceptVolume3
+cgeoutilstest24.py  Deterministic scattering.
+cgeoutilstest25.py  Mesh transformations.
+cgeoutilstest26.py  Camera transformations and image properties.
+cgeoutilstest27.py  Mesh XML IO.
+cgeoutilstest28.py  Mesh transformation with backface culling.
+cgeoutilstest29.py  Mesh transformation with mesh loaded from a file.
+cgeoutilstest30.py  Camera.
+cgeoutilstest31.py  Camera.
+cgeoutilstest32.py  BoundingBox.
+cgeoutilstest33.py  Coordinates <-> sequence index transformation.
+
+ageoutilstest01.py  Rendering polygons using Image.
+ageoutilstest02.py  Rendering polygons using WritePNG.
+ageoutilstest03.py  Rendering polygons using Render.
+ageoutilstest04.py  Complex GIH brush creation using transform graphs.
+ageoutilstest05.py  Scatter transform node.
+ageoutilstest06.py  Scatter transform node and parameter control.
+ageoutilstest07.py  GIH random scatter brush creation using parameter control.
+ageoutilstest08.py  GIH pattern brush creation using parameter control.
+ageoutilstest09.py  GIH pattern brush creation using parameter control.
+ageoutilstest10.py  GIH angular brush creation using parameter control.
+ageoutilstest11.py  Rendering SVG using Image.
+ageoutilstest12.py  SVG object.
+ageoutilstest13.py  SVG object transformations and drawing using Image.
+ageoutilstest14.py  SVG object transformations and drawing using Render.
+ageoutilstest15.py  Image transformations and drawing using Image.
+ageoutilstest16.py  ImageLoader
+ageoutilstest17.py  Image::valueToNormal()
+
+cubetest01.py       Blender cube rendering test (see also cgeoutilstest31.py).
+
+bgeoutilstest01.py  PCA, transform visualization
+bgeoutilstest01.py  Make faces planar
+

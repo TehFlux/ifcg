@@ -1,0 +1,79 @@
+/* ==========================================================================
+ * GeoUtils - Ionflux' Geometry Library
+ * Copyright © 2009-2010 Jörn P. Meier
+ * mail@ionflux.org
+ * --------------------------------------------------------------------------
+ * AcceptLength3.i                 Vector mapping: Accept length 
+ * (interface).
+ * =========================================================================
+
+ * This file is part of GeoUtils - Ionflux' Geometry Library.
+ * 
+ * GeoUtils - Ionflux' Geometry Library is free software; you can 
+ * redistribute it and/or modify it under the terms of the GNU General 
+ * Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * GeoUtils - Ionflux' Geometry Library is distributed in the hope that it 
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with GeoUtils - Ionflux' Geometry Library; if not, write to the Free 
+ * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
+ * 02111-1307 USA
+ * 
+ * ========================================================================== */
+%{
+#include "geoutils/AcceptLength3.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace Mapping
+{
+
+class AcceptLength3ClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        AcceptLength3ClassInfo();
+        virtual ~AcceptLength3ClassInfo();
+};
+
+class AcceptLength3
+: public Ionflux::GeoUtils::Mapping::Accept3
+{
+    public:
+		static const Ionflux::GeoUtils::Range DEFAULT_LENGTH_RANGE;
+        
+        AcceptLength3();
+		AcceptLength3(const Ionflux::GeoUtils::Mapping::AcceptLength3& other);
+        AcceptLength3(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
+        initSource, const Ionflux::GeoUtils::Range& initLengthRange = 
+        DEFAULT_LENGTH_RANGE, Ionflux::Mapping::MappingValue initMaxIters =
+        Ionflux::Mapping::MAX_ITERATIONS);
+        virtual ~AcceptLength3();
+        virtual std::string getString() const;
+        virtual bool checkCondition(const Ionflux::GeoUtils::Vector3& v) 
+        const;
+		virtual Ionflux::GeoUtils::Mapping::AcceptLength3* copy() const;
+		static Ionflux::GeoUtils::Mapping::AcceptLength3* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::Mapping::AcceptLength3* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setLengthRange(const Ionflux::GeoUtils::Range& 
+        newLengthRange);
+        virtual Ionflux::GeoUtils::Range getLengthRange() const;
+};
+
+}
+
+}
+
+}

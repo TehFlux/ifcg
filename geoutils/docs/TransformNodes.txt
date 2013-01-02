@@ -1,0 +1,73 @@
+================================================================================
+GeoUtils - Ionflux' Geometry Library
+Copyright © 2009-2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Transform Nodes
+================================================================================
+
++ Transform nodes can be used to construct graphs that transform a 
+  transformable group.
+
++ The transformation process works as follows:
+
+  1) A caller queries the node.
+  2) The node queries all of its inputs and reads the resulting data.
+  3) The node processes the inputs.
+  4) The node returns the output.
+  
+  A node can be queried via its update() method or the call operator. Each 
+  time a call is made, all of the outputs are updated. The current state of the 
+  outputs can be obtained using the getOutput() method.
+
++ Loops:
+  * Loops are possible.
+  * In order to avoid infine loops, each node keeps a loop counter. The loop 
+    counter is checked upon entry of the update() function. If the loop 
+    counter is less than the maximum allowed depth, it is incremented and 
+    the inputs are updated. If all input updates are completed, the loop 
+    counter is reset. Thus, if an input queries the node itself via some 
+    path, the loop counter will prevent an infinite loop.
+
++ Identification of inputs and outputs:
+  * Each input and output has a numerical ID.
+  * Constants are provided as a shorthand.
+
++ Format of input and output:
+  * A node takes transformable groups as inputs and also provides 
+    transformable groups as output.
+  * Outputs are considered a cache. They are not available unless update() 
+    has been called at least once. They are not copied by the assignment 
+    operator or the copy constructor.
+
++ Memory Management:
+  * Since loops are allowed, a node keeps no local references on its inputs.
+  * A TransformGraph class is provided to make sure all nodes are managed and 
+    to make the root node available to the caller.
+  * Transform groups provided as output will be managed by the node.
+
++ Parameter control:
+  * Transform nodes can expose properties of type MappingValue (or 
+    compatible) as a parameter.
+  * Parameters can be set by calling a function using a string ID and a 
+    value.
+  * A ParamControl object is provided that can be called with an input 
+    value. The ParamControl object has at least three properties: A 
+    mapping (managed), a node (not managed, since nodes are specifically 
+    managed by a transform graph), and a parameter ID. Each time the 
+    ParamControl object is called, it sets a parameter of the node to the 
+    mapped value.
+  * The Batch node maintains a collection of ParamControl objects, which it 
+    calls in its process() method with the iteration counter, remapped to 
+    the interval [0...1].
+
++ Memory usage considerations:
+  * Output groups are provided on an update request for use by the the 
+    caller. This means the caller can determine the lifetime of the output 
+    groups.
+  * Output groups do not need to be copied in most cases since they are 
+    provided for the caller after an update() call. Some nodes are 'sources' 
+    of groups. In this case, they need to retain a copy of the output group 
+    so they can provide it whenever an update call is made (for example 
+    Cache and Source).
+

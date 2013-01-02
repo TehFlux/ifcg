@@ -1,0 +1,50 @@
+================================================================================
+GeoUtils - Ionflux' Geometry Library
+Copyright © 2009-2011 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Transform Nodes: Scatter
+================================================================================
+
+The scatter node is used to distribute a number of copies of the source items 
+in interesting ways.
+
+The node can be configured using a number of mappings and parameters.
+
+Scalar parameters can be adjusted using a ParamControl object.
+
+--------------------------------------------------------------------------------
+Mappings
+--------------------------------------------------------------------------------
+
+offsetFunc                  Determines the offset for the item (3D vector). 
+                            The input is the result of offsetIndexFunc or the 
+                            adjusted item index.
+offsetIndexFunc             Determines the index that is used as the input 
+                            for the offset function. The input is the item 
+                            index, modified by offsetIndexScale and 
+                            offsetIndexOffset.
+elementScaleIndexFunc       Determines a cumulative item scale based on the 
+                            item index.
+elementScaleDistanceFunc    Determines a cumulative item scale based on the 
+                            distance of the item from the coordinate origin.
+
+--------------------------------------------------------------------------------
+Parameters
+--------------------------------------------------------------------------------
+
+offsetScale                 (3D vector) Constant scale factor for the item 
+                            offset.
+elementScale                (3D vector) Constant scale factor for the item 
+                            size.
+offsetScaleFactor           Constant scale factor for the item offset.
+elementScaleFactor          Constant scale factor for the item size.
+offsetDeltaScaleFactor      Cumulative increment for the item offset scale 
+                            factor that is multiplied by the item index.
+elementDeltaScaleFactor     Cumulative increment for the item scale factor 
+                            that is multiplied by the item index.
+offsetIndexOffset           Constant offset for the index that is passed to 
+                            the offsetIndexFunc.
+offsetIndexScale            Constant scale factor for the index that is passed 
+                            to the offsetIndexFunc.
+

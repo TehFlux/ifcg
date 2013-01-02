@@ -1,0 +1,96 @@
+==========================================================================
+GeoUtils - Ionflux' Geometry Library
+Copyright © 2009-2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------
+README
+==========================================================================
+
+What is it?
+--------------------------------------------------------------------------
+
+GeoUtils (Ionflux' Geometry Library) is a library that provides various 
+classes and functions to support geometric computations and for managing 
+geometric objects.
+
+Features include:
+
++ Basic vector math.
++ Matrix transformations.
++ Primitive 3D objects (Vertex, Line, Plane, Box, Sphere).
++ 3D Meshes.
++ Tangent space (UV) calculations.
++ Intersection checking.
++ Axis-aligned bounding box (AABB) tree data structure.
++ Transform graphs.
++ Procedural brush creation for GIMP (http://www.gimp.org/).
++ Integration with Blender (http://www.blender.org/) via Python.
+
+Implementations (in various states of completeness) are provided for 
+C++, Python and JavaScript.
+
+Using SWIG, bindings for a large variety of programming languages can 
+be created for the C++ library. The package currently supports Python, 
+but it should not be too hard to generate bindings for other languages 
+as well.
+
+Dependencies
+--------------------------------------------------------------------------
+
+GeoUtils depends on the following packages:
+
++ Ionflux Object Base System (http://sf.net/projects/iftools)
++ Ionflux Tools (http://sf.net/projects/iftools, optional, required for 
+  generating the source files from the class configuration files)
++ IFMapping - Ionflux Mapping Library 
+  (http://xi.ionflux.org/projects/stuff)
++ Altjira - Ionflux' Image Processing Library (optional, required for 
+  pixel based image output, http://xi.ionflux.org/projects/stuff)
+
+Make sure you get a recent SVN version of Ionflux Object Base System and 
+Ionflux Tools. Older packages will most likely not work.
+
+You can checkout the recent source code from SVN like this:
+
+svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/ifobject ifobject-svn
+
+svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/iftools iftools-svn
+
+Building
+--------------------------------------------------------------------------
+
+Build all of the dependencies before you try to build GeoUtils. There 
+are build instructions included with the individual projects.
+
+Note that all of the code is created using the Ionflux Tools template 
+system and Ionflux Object Base System ifclassgen.
+
+However, the completed build of GeoUtils will not depend on Ionflux 
+Tools.
+
+GeoUtils uses SCons as the build system (http://www.scons.org/).
+
+If you want to use custom configuration for the build process (for 
+example, Python and library paths), copy 
+site_scons/local_config.py.default to site_scons/local_config.py and 
+adjust the settings as required.
+
+If everything is set up correctly, you can build the project with 
+'scons' in the main directory.
+
+Using
+--------------------------------------------------------------------------
+
+This library is intended for developers, so you should be able to derive 
+how it is meant to be used from the source code documentation and the 
+scripts in the 'test' directory. If you have any questions, you can 
+still contact me by mail (mail@ionflux.org).
+
+Enjoy!
+
+Licensing
+--------------------------------------------------------------------------
+
+This software is released under the terms of the GNU General Public 
+License version 2.
+

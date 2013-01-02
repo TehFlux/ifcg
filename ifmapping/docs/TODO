@@ -1,0 +1,63 @@
+================================================================================
+IFMapping - Ionflux Mapping Library
+Copyright © 2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+TODO
+================================================================================
+
+Up next
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+New
+--------------------------------------------------------------------------------
+
++ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
+
+--------------------------------------------------------------------------------
+Critical stuff
+--------------------------------------------------------------------------------
+
++ All uses of 'new' within the library should be checked for 0 return values.
+
++ Make sure all assignment operators support self-assignment.
+
++ In all cases where a reference is removed and then re-added, make sure it 
+  is added before it is removed as the former might actually destroy the 
+  object if that was the only reference.
+
++ Do some memory leak checking with valgrind.
+
+--------------------------------------------------------------------------------
+Important stuff
+--------------------------------------------------------------------------------
+
++ Add mappings:
+  > Spherical
+
++ Create classes for Range and Sample and get rid of the functions that 
+  operate mainly on the structs.
+
++ Create a common base class for mappings with several source mappings 
+  (Multiply, Chain, Logic mappings...)
+
++ Testing:
+  > Mappings: Count, Accept
+
+--------------------------------------------------------------------------------
+Nice to have
+--------------------------------------------------------------------------------
+
++ Add mappings:
+  > Select (select a result mapping based on comparison of two mapping 
+    values)
+  > FiFo (return parameter values from previous calls)
+  > Logic (NOT, AND, OR, NAND, XOR)
+
+--------------------------------------------------------------------------------
+Side-tracks
+--------------------------------------------------------------------------------
+
+

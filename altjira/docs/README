@@ -1,0 +1,85 @@
+==========================================================================
+Altjira - Ionflux' Image Processing Library
+Copyright © 2009 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------
+README
+==========================================================================
+
+What is it?
+--------------------------------------------------------------------------
+
+Altjira (Ionflux' Image Processing Library) is an image processing 
+library written in C++. It is designed to be used with Python and uses 
+the well known GDK-PixBuf library for the low-level image handling.
+
+I decided to write this to have native implementations for some image 
+processing tasks I use in my Python applications, which were too slow 
+when implemented in Python. Therefore, there is no immediate goal for 
+Altjira to be "complete" or generic. However, it does provide a nice 
+way of adding native image processing features to Python.
+
+Using SWIG, bindings for a large variety of programming languages can 
+be created. The package currently supports Python, but it should not be 
+too hard to generate bindings for other languages as well.
+
+Dependencies
+--------------------------------------------------------------------------
+
+Altjira depends on the following packages:
+
++ Ionflux Object Base System (http://sf.net/projects/iftools)
++ Ionflux Tools (http://sf.net/projects/iftools, optional, required for 
+  generating the source files from the class configuration files)
++ IFMapping - Ionflux Mapping Library 
+  (http://xi.ionflux.org/projects/stuff)
++ GDK-PixBuf (http://library.gnome.org/devel/gdk-pixbuf/, available 
+  on most Linux distributions)
+
+Make sure you get a recent SVN version of Ionflux Object Base System and 
+Ionflux Tools. Older packages will most likely not work.
+
+You can checkout the recent source code from SVN like this:
+
+svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/ifobject ifobject-svn
+
+svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/iftools iftools-svn
+
+Building
+--------------------------------------------------------------------------
+
+Build all of the dependencies before you try to build Altjira. There 
+are build instructions included with the individual projects.
+
+Note that all of the code is created using the Ionflux Tools template 
+system and Ionflux Object Base System ifclassgen.
+
+However, the completed build of Altjira will not depend on Ionflux 
+Tools.
+
+Altjira uses SCons as the build system (http://www.scons.org/).
+
+If you want to use custom configuration for the build process (for 
+example, Python and library paths), copy 
+site_scons/local_config.py.default to site_scons/local_config.py and 
+adjust the settings as required.
+
+If everything is set up correctly, you can build the project with 
+'scons' in the main directory.
+
+Using
+--------------------------------------------------------------------------
+
+This library is intended for developers, so you should be able to derive 
+how it is meant to be used from the source code documentation and the 
+scripts in the 'test' directory. If you have any questions, you can 
+still contact me by mail (mail@ionflux.org).
+
+Enjoy!
+
+Licensing
+--------------------------------------------------------------------------
+
+This software is released under the terms of the GNU General Public 
+License version 2.
+

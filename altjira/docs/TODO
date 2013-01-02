@@ -1,0 +1,79 @@
+================================================================================
+Altjira - Ionflux' Image Processing Library
+Copyright © 2009-2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+TODO
+================================================================================
+
+Up next
+--------------------------------------------------------------------------------
+
++ test gradients
+
+--------------------------------------------------------------------------------
+New
+--------------------------------------------------------------------------------
+
++ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
+
+--------------------------------------------------------------------------------
+Critical stuff
+--------------------------------------------------------------------------------
+
++ All uses of 'new' within the library should be checked for 0 return values.
+
++ Make sure all assignment operators support self-assignment.
+
++ In all cases where a reference is removed and then re-added, make sure it 
+  is added before it is removed as the former might actually destroy the 
+  object if that was the only reference.
+
++ Do some memory leak checking with valgrind.
+
+--------------------------------------------------------------------------------
+Important stuff
+--------------------------------------------------------------------------------
+
++ Unsharp mask filter
+
++ Seamless filter
+  > Make an image seamless using a specified interpolation mapping.
+
++ AltjiraDraw
+  > Add a base class for objects that can render themselves to a Drawable.
+  > gradients
+    . testing
+
++ Implement features from ifcolor.py and imageutils.py
+  > invert
+  > shift hues
+    . use a mapping and a channel as the control input.
+  > perturb
+  > value to normal (create normal map from a height map)
+  > Can be implemented using BlendChannel (test it!):
+    . adjust channel (multiply)
+
++ Blending modes.
+  (see for example: http://www.nathanm.com/photoshop-blending-math/, 
+   http://docs.gimp.org/en/gimp-concepts-layer-modes.html, 
+   http://www.w3.org/TR/2004/WD-SVG12-20041027/rendering.html)
+  . minus (may be required for unsharp mask)
+  . linear combination
+
+--------------------------------------------------------------------------------
+Nice to have
+--------------------------------------------------------------------------------
+
++ Features from ifcolor, imageutils and ifgradient.
+
++ Implement setChannel() as a ColorBlender.
+
++ Channels (see docs/channels.txt).
+
+--------------------------------------------------------------------------------
+Side-tracks
+--------------------------------------------------------------------------------
+
++ Apply lighting models and light sources to normal maps (use GeoUtils).
+

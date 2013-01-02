@@ -1,0 +1,599 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ==========================================================================
+# Altjira - Ionflux' Image Processing Library
+# Copyright © 2008-2010 Jörn P. Meier
+# mail@ionflux.org
+# --------------------------------------------------------------------------
+# SConscript                  SCons build script
+# ==========================================================================
+# 
+# This file is part of Altjira - Ionflux' Image Processing Library.
+# 
+# Altjira - Ionflux' Image Processing Library is free software; you can 
+# redistribute it and/or modify it under the terms of the GNU General 
+# Public  License as published by the Free Software Foundation; either 
+# version 2 of the License, or (at your option) any later version.
+# 
+# Altjira - Ionflux' Image Processing Library is distributed in the hope 
+# that it will be useful, but WITHOUT ANY WARRANTY; without even the 
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Altjira - Ionflux' Image Processing Library; if not, write 
+# to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
+# Boston, MA 02111-1307 USA
+# 
+# ==========================================================================
+import os, subprocess, shutil, shlex, string, copy, re
+
+# Create a default local configuration file if it does not exist.
+if (not os.path.isfile('site_scons/local_config.py')):
+    shutil.copy('site_scons/local_config.py.default', 
+        'site_scons/local_config.py')
+
+import local_config as lc
+
+Help("""
+Type 'scons' to build the default targets.
+Type 'scons install' to install to default location.
+Type 'scons <target>' to build a specific target.
+
+You can add local configuration to site_scons/local_config.py.
+
+Targets:
+  (default)                    Everything.
+  all                          Everything
+  libs                         Shared libraries.
+  programs                     Programs.
+  tests                        Test programs.
+  sources                      Source files (requires ifclassgen).
+  interfaces                   SWIG interface declarations (requires iftpl).
+  pymodule                     Python module.
+  install                      Install headers, libraries and programs.
+
+Options:
+  prefix=<target directory>    Installation prefix
+                               (default: /usr/local)
+  debug=<yes|no>               Whether to use debug compiler flags 
+                               (default: yes)
+""")
+
+env0 = os.environ
+env0['PATH'] += (':' + lc.PATH)
+
+env = Environment(ENV = env0, 
+    CPPPATH = ['include', 'deps/MersenneTwister/include'] + lc.CPPPATH, 
+    LIBPATH = ['lib'] + lc.LIBPATH)
+env.MergeFlags(['-Wall', '-Wno-deprecated', '-O2'])
+
+if (hasattr(lc, 'debug') and lc.debug):
+    debugDefault = 'yes'
+else:
+    debugDefault = 'no'
+if (ARGUMENTS.get('debug', debugDefault) == 'yes'):
+    env.Append(CCFLAGS = '-g')
+
+env.VariantDir('deps/tinyxml/build', 'deps/tinyxml/src')
+
+altjiraEnv = env.Clone()
+
+if (hasattr(lc, 'prefix')):
+    defaultPrefix = lc.prefix
+else:
+    defaultPrefix = '/usr/local'
+prefix = ARGUMENTS.get('prefix', defaultPrefix)
+
+altjiraEnv.VariantDir('build', 'src')
+altjiraEnv.VariantDir('test/build', 'test')
+
+def checkProgram(ctx, cmd):
+    """Check for installed program."""
+    ctx.Message('Checking for ' + cmd + '... ')
+    try:
+        subprocess.call(cmd, stdout=subprocess.PIPE, 
+            stderr=subprocess.STDOUT)
+        result = 1
+    except Exception:
+        result = 0
+    ctx.Result(result)
+    return result
+
+def checkPkgConfig(ctx, pkg):
+    """Check for package using pkg-config."""
+    ctx.Message('Checking for ' + pkg + '... ')
+    cmd = "pkg-config --cflags " + pkg
+    try:
+        p0 = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, 
+            stderr=subprocess.STDOUT)
+        d = p0.stdout.read()
+        if (d.find('was not found') != -1):
+            result = 0
+        else:
+            ctx.sconf.env.MergeFlags('!' + cmd)
+            result = 1
+    except Exception:
+        result = 0
+    ctx.Result(result)
+    return result
+
+config = altjiraEnv.Configure(custom_tests = { 
+    "CheckProgram" : checkProgram, 
+    "CheckPkgConfig" : checkPkgConfig })
+
+missingDeps = []
+if (not config.CheckPkgConfig("sigc++-2.0")):
+    missingDeps += ['sigc++']
+else:
+    altjiraEnv.MergeFlags(['!pkg-config --cflags --libs sigc++-2.0'])
+if (not config.CheckPkgConfig("gdk-pixbuf-2.0")):
+    missingDeps += ['gdk-pixbuf']
+else:
+    altjiraEnv.MergeFlags(['!pkg-config --cflags --libs gdk-pixbuf-2.0'])
+if (not config.CheckLibWithHeader("tinyxml", "tinyxml/tinyxml.h", 
+    'C++', autoadd = 0)):
+    missingDeps += ['tinyxml']
+if (not config.CheckLibWithHeader("ifobject", "ifobject/IFObject.hpp", 
+    'C++', autoadd = 0)):
+    missingDeps += ['ifobject']
+if (not config.CheckLibWithHeader("ifmapping", "ifmapping/ifmapping.hpp", 
+    'C++', autoadd = 0)):
+    missingDeps += ['ifmapping']
+
+if (len(missingDeps) > 0):
+    print "**********************************************************"
+    print "Altjira cannot be built because the following dependencies"
+    print "were not found:"
+    print " "
+    for it in missingDeps:
+        print "  " + it
+    print " "
+    print "**********************************************************"
+    Exit(1)
+
+buildPyModule = True
+if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
+    "Python.h", 'C', autoadd = 0)):
+    print "***************************************************"
+    print "Python not found - Python module will NOT be built!"
+    print "***************************************************"
+    buildPyModule = False
+
+haveIFClassgen = True
+if (not config.CheckProgram("ifclassgen")):
+    haveIFClassgen = False
+haveIFTpl = True
+if (not config.CheckProgram("iftpl")):
+    haveIFTpl = False
+haveSWIG = True
+if (not config.CheckProgram("swig")):
+    print "*************************************************"
+    print "SWIG not found - Python module will NOT be built!"
+    print "*************************************************"
+    haveSWIG = False
+    buildPyModule = False
+
+buildNoiseLib = True
+missingDeps = []
+if (not config.CheckLibWithHeader("noise", "noise.h", 'C++', 
+    autoadd = 0)):
+    missingDeps += ['libnoise']
+if (not config.CheckLibWithHeader("ifmappingnoise",
+    "ifmapping/ifmappingnoise.hpp", 'C++', autoadd = 0)):
+    missingDeps += ['ifmappingnoise']
+
+if (len(missingDeps) > 0):
+    print "*****************************************************"
+    print "AltjiraNoise will NOT be built because the following "
+    print "dependencies were not found:"
+    print " "
+    for it in missingDeps:
+        print "  " + it
+    print " "
+    print "*****************************************************"
+    buildAltjiraDraw = False
+
+buildAltjiraDraw = True
+missingDeps = []
+if (not config.CheckPkgConfig("pangocairo")):
+    missingDeps += ['pangocairo']
+if (not config.CheckPkgConfig("librsvg-2.0")):
+    missingDeps += ['rsvg']
+
+if (len(missingDeps) > 0):
+    print "****************************************************"
+    print "AltjiraDraw will NOT be built because the following "
+    print "dependencies were not found:"
+    print " "
+    for it in missingDeps:
+        print "  " + it
+    print " "
+    print "****************************************************"
+    buildAltjiraDraw = False
+
+altjiraEnv = config.Finish()
+
+def buildSource(source, target, env):
+    """Builder function to build source files from class configuration."""
+    classNames = []
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.conf'):
+            classNames += [cn]
+    for cn in classNames:
+        c0 = ("ifclassgen -t " + lc.ifobjectTemplatePath 
+            + "/class -c conf/class -m conf/main.conf -i include/" 
+            + lc.baseName + " -s src " + cn)
+        print c0
+        sp0 = subprocess.call(shlex.split(c0))
+
+def buildClassInterface(source, target, env):
+    """Builder function to build SWIG interface files from class 
+       configuration."""
+    classNames = []
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.conf'):
+            classNames += [cn]
+    for cn in classNames:
+        c0 = ("iftpl " + lc.ifobjectTemplatePath 
+            + "/interface.i.tpl conf/class/" + cn + ".conf conf/main.conf")
+        print c0
+        f0 = open("swig/classes/" + cn + ".i", 'w')
+        sp0 = subprocess.call(shlex.split(c0), stdout = f0)
+        f0.close()
+
+def buildInterface(source, target, env):
+    """Builder function to build a SWIG interface declaration."""
+    classNames = []
+    if (isinstance(lc.swigInterfaceTemplateFile, str)):
+        templateFile = lc.swigInterfaceTemplateFile
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.i'):
+            classNames += [cn]
+        elif (ext == '.tpl'):
+            templateFile = it.path
+    tplData = {}
+    p0 = re.compile("/\*.*?\*/", re.DOTALL)
+    for cn in classNames:
+        tplData[cn] = p0.sub('', open('swig/classes/' + cn + '.i').read())
+    tplStr = open(templateFile).read()
+    tpl = string.Template(tplStr)
+    for it in target:
+        f0 = open(it.path, 'w')
+        f0.write(tpl.substitute(tplData))
+        f0.close()
+
+
+sourceBuilder = Builder(action = buildSource)
+classInterfaceBuilder = Builder(action = buildClassInterface)
+interfaceBuilder = Builder(action = buildInterface)
+swigIncludes = ''
+for it in altjiraEnv['CPPPATH']:
+    swigIncludes += ('-I' + it + ' ')
+swigPythonBuilder = Builder(action = "swig -c++ -python "
+    + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
+lutBuilder = Builder(action = "scripts/createLUTs.py", suffix = None)
+
+altjiraEnv.Append(BUILDERS = { 'Source' : sourceBuilder, 
+    'ClassInterface' : classInterfaceBuilder, 
+    'Interface' : interfaceBuilder, 
+    'SWIGPython' : swigPythonBuilder, 
+    'LookupTable' : lutBuilder })
+
+altjiraNoiseEnv = altjiraEnv.Clone()
+altjiraDrawEnv = altjiraEnv.Clone()
+if (buildAltjiraDraw):
+    altjiraDrawEnv.MergeFlags([
+        '!pkg-config --cflags --libs pangocairo' ])
+    altjiraDrawEnv.MergeFlags([
+        '!pkg-config --cflags --libs librsvg-2.0' ])
+
+altjiraLibHeaders = [
+    'include/altjira/constants.hpp',
+	'include/altjira/types.hpp', 
+	'include/altjira/utils.hpp', 
+	'include/altjira/imageutils.hpp', 
+	'include/altjira/altjira.hpp', 
+	'include/altjira/AltjiraError.hpp', 
+	'include/altjira/Color.hpp', 
+	'include/altjira/ColorBand.hpp', 
+	'include/altjira/ColorBlender.hpp', 
+	'include/altjira/BlendSrcOver.hpp', 
+	'include/altjira/BlendMultiply.hpp', 
+	'include/altjira/BlendLighten.hpp', 
+	'include/altjira/BlendDarken.hpp', 
+	'include/altjira/BlendPlus.hpp', 
+	'include/altjira/BlendChannel.hpp', 
+	'include/altjira/Image.hpp', 
+	'include/altjira/ImageSet.hpp', 
+	'include/altjira/Matrix.hpp'
+]
+
+altjiraLibSources = [
+    'build/utils.cpp',
+	'build/imageutils.cpp',
+	'build/AltjiraError.cpp', 
+	'build/Color.cpp', 
+	'build/ColorBand.cpp', 
+	'build/ColorBlender.cpp', 
+	'build/BlendSrcOver.cpp', 
+	'build/BlendMultiply.cpp', 
+	'build/BlendLighten.cpp', 
+	'build/BlendDarken.cpp', 
+	'build/BlendPlus.cpp', 
+	'build/BlendChannel.cpp', 
+	'build/Image.cpp', 
+	'build/ImageSet.cpp', 
+	'build/Matrix.cpp'
+]
+
+altjiraLibClasses = [
+	'AltjiraError', 
+	'Color', 
+	'ColorBand', 
+	'ColorBlender', 
+	'BlendSrcOver', 
+	'BlendMultiply', 
+	'BlendLighten', 
+	'BlendDarken', 
+	'BlendPlus', 
+	'BlendChannel', 
+	'Image', 
+	'ImageSet', 
+	'Matrix'
+]
+
+altjiraNoiseLibHeaders = [
+    'include/altjira/altjiranoise.hpp', 
+    'include/altjira/NoiseMap.hpp'
+]
+
+altjiraNoiseLibSources = [
+    'build/altjiranoise.cpp', 
+    'build/NoiseMap.cpp'
+]
+
+altjiraNoiseLibClasses = [
+    'NoiseMap'
+]
+
+altjiraDrawLibHeaders = [
+    'include/altjira/altjiradraw.hpp', 
+    'include/altjira/Pattern.hpp', 
+    'include/altjira/ImagePattern.hpp', 
+    'include/altjira/Gradient.hpp', 
+    'include/altjira/RadialGradient.hpp', 
+    'include/altjira/LinearGradient.hpp', 
+	'include/altjira/Drawable.hpp'
+]
+
+altjiraDrawLibSources = [
+    'build/Pattern.cpp', 
+    'build/ImagePattern.cpp', 
+    'build/Gradient.cpp', 
+    'build/RadialGradient.cpp', 
+    'build/LinearGradient.cpp', 
+    'build/Drawable.cpp'
+]
+
+altjiraDrawLibClasses = [
+    'Pattern', 
+    'ImagePattern', 
+    'Gradient', 
+    'RadialGradient', 
+    'LinearGradient', 
+    'Drawable'
+]
+
+allClasses = (altjiraLibClasses + altjiraNoiseLibClasses 
+    + altjiraDrawLibClasses)
+allTargets = []
+
+# Source files.
+if (haveIFClassgen):
+    sources = []
+    for it in allClasses:
+        sources += [ 
+            altjiraEnv.Source(target = [
+                    'include/altjira/' + it + '.hpp', 
+                    'src/' + it + '.cpp'], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/class/Class.hpp.tpl', 
+                    'template/class/Class.cpp.tpl'])
+        ]
+    allTargets += sources
+else:
+    print "**********************************************************"
+    print "ifclassgen not found - source files will NOT be generated!"
+    print "**********************************************************"
+
+# Interface declarations.
+if (haveIFTpl):
+    interfaces = []
+    classInterfaces = []
+    # Altjira library
+    interfaceTargets = []
+    for it in altjiraLibClasses:
+        t0 = 'swig/classes/' + it + '.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            altjiraEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/interface.i.tpl'])
+        ]
+    interfaces += [ altjiraEnv.Interface(target = lc.swigInterfaceFile[0], 
+        source = interfaceTargets + [lc.swigInterfaceTemplateFile[0]]) ]
+    # Altjira/Noise library
+    interfaceTargets = []
+    for it in altjiraNoiseLibClasses:
+        t0 = 'swig/classes/' + it + '.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            altjiraNoiseEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/interface.i.tpl'])
+        ]
+    interfaces += [ altjiraNoiseEnv.Interface(target = lc.swigInterfaceFile[1], 
+        source = interfaceTargets + [lc.swigInterfaceTemplateFile[1]]) ]
+    # AltjiraDraw library
+    interfaceTargets = []
+    for it in altjiraDrawLibClasses:
+        t0 = 'swig/classes/' + it + '.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            altjiraDrawEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/' + it + '.conf',
+                    'template/interface.i.tpl'])
+        ]
+    interfaces += [ altjiraDrawEnv.Interface(target = lc.swigInterfaceFile[2], 
+        source = interfaceTargets + [lc.swigInterfaceTemplateFile[2]]) ]
+    allTargets += (classInterfaces + interfaces)
+else:
+    print "****************************************************************"
+    print "iftpl not found -  Interface declarations will NOT be generated!"
+    print "****************************************************************"
+
+## tinyxml
+#tinyxmlLib = env.SharedLibrary(target = 'deps/tinyxml/lib/tinyxml', 
+#    source = ['deps/tinyxml/src/tinystr.cpp', 
+#        'deps/tinyxml/src/tinyxml.cpp', 
+#        'deps/tinyxml/src/tinyxmlerror.cpp', 
+#        'deps/tinyxml/src/tinyxmlparser.cpp'])
+
+# lookup tables
+lutHeaders = [
+    'include/altjira/lut_add.hpp', 
+    'include/altjira/lut_sub.hpp', 
+    'include/altjira/lut_mult.hpp', 
+    'include/altjira/lut_div.hpp'
+]
+
+lookupTables = altjiraEnv.LookupTable(target = lutHeaders, source = [])
+
+# altjira shared library
+altjiraLibEnv = altjiraEnv.Clone()
+altjiraLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 'ifmapping'])
+altjiraLib = altjiraLibEnv.SharedLibrary(target = "lib/altjira", 
+    source = altjiraLibSources)
+
+# altjira/noise shared library
+if (buildNoiseLib):
+    altjiraNoiseLibEnv = altjiraNoiseEnv.Clone()
+    altjiraNoiseLibEnv.Append(LIBS = ['altjira', 'ifmappingnoise', 'noise'])
+    altjiraNoiseLib = altjiraNoiseLibEnv.SharedLibrary(
+        target = "lib/altjiranoise", source = altjiraNoiseLibSources)
+
+# AltjiraDraw shared library
+if (buildAltjiraDraw):
+    altjiraDrawLibEnv = altjiraDrawEnv.Clone()
+    altjiraDrawLibEnv.Append(LIBS = ['altjira', 'ifobject'])
+    altjiraDrawLib = altjiraDrawLibEnv.SharedLibrary(
+        target = "lib/altjiradraw", 
+        source = altjiraDrawLibSources)
+
+targetLibs = [altjiraLib]
+if (buildNoiseLib):
+    targetLibs += [altjiraNoiseLib]
+if (buildAltjiraDraw):
+    targetLibs += [altjiraDrawLib]
+
+# programs.
+targetBins = []
+
+# tests
+
+targetTests = []
+
+# Altjira Python module.
+altjiraWrapper = altjiraEnv.SWIGPython(target = [ 
+        'swig/altjira_wrap.cxx', 'swig/python/Altjira.py'], 
+    source = 'swig/altjira.i')
+
+altjiraPyModuleEnv = altjiraEnv.Clone()
+altjiraPyModuleEnv.Append(LIBS = ['altjira', 'python' + lc.pythonVersion])
+
+altjiraPyModule = altjiraPyModuleEnv.SharedLibrary(
+    target = 'swig/python/_Altjira', 
+    source = 'swig/altjira_wrap.cxx', SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
+
+# Altjira/noise Python module.
+altjiraNoiseWrapper = altjiraEnv.SWIGPython(target = [ 
+        'swig/altjiranoise_wrap.cxx', 'swig/python/AltjiraNoise.py'], 
+    source = 'swig/altjiranoise.i')
+
+altjiraNoisePyModuleEnv = altjiraEnv.Clone()
+altjiraNoisePyModuleEnv.Append(LIBS = ['altjira', 'altjiranoise', 'noise', 
+    'python' + lc.pythonVersion])
+
+altjiraNoisePyModule = altjiraNoisePyModuleEnv.SharedLibrary(
+    target = 'swig/python/_AltjiraNoise', 
+    source = 'swig/altjiranoise_wrap.cxx', SHLIBPREFIX = '', 
+        SHLIBSUFFIX = '.so')
+
+# AltjiraDraw Python module.
+altjiraDrawWrapper = altjiraDrawEnv.SWIGPython(target = [ 
+        'swig/altjiradraw_wrap.cxx', 'swig/python/AltjiraDraw.py'], 
+    source = 'swig/altjiradraw.i')
+
+altjiraDrawPyModuleEnv = altjiraEnv.Clone()
+altjiraDrawPyModuleEnv.Append(LIBS = ['altjira', 'altjiradraw', 
+    'python' + lc.pythonVersion])
+
+altjiraDrawPyModule = altjiraDrawPyModuleEnv.SharedLibrary(
+    target = 'swig/python/_AltjiraDraw', 
+    source = 'swig/altjiradraw_wrap.cxx', SHLIBPREFIX = '', 
+        SHLIBSUFFIX = '.so')
+
+pyModules = [altjiraPyModule]
+if (buildNoiseLib):
+    pyModules += [altjiraNoisePyModule]
+if (buildAltjiraDraw):
+    pyModules += [altjiraDrawPyModule]
+
+allHeaders = altjiraLibHeaders + lutHeaders + [lc.swigInterfaceFile]
+if (buildNoiseLib):
+    allHeaders += altjiraNoiseLibHeaders
+if (buildAltjiraDraw):
+    allHeaders += altjiraDrawLibHeaders
+
+installBinTargets = [targetBins]
+
+installHeaders = altjiraEnv.Install(prefix + '/include/' + lc.baseName, 
+    allHeaders)
+installLibs = altjiraEnv.Install(prefix + '/lib', targetLibs)
+installBins = altjiraEnv.Install(prefix + '/bin', installBinTargets)
+if (buildPyModule):
+    pyModuleTargets = ['swig/python/Altjira.py', altjiraPyModule]
+    if (buildNoiseLib):
+        pyModuleTargets += ['swig/python/AltjiraNoise.py', 
+            altjiraNoisePyModule]
+    if (buildAltjiraDraw):
+        pyModuleTargets += ['swig/python/AltjiraDraw.py', 
+            altjiraDrawPyModule]
+    installPyModules = altjiraEnv.Install(prefix + lc.pythonSitePackagesPath, 
+        pyModuleTargets)
+
+allTargets += (lookupTables + targetLibs + targetBins + targetTests)
+if (buildPyModule):
+    allTargets += pyModules
+
+installTargets = [installHeaders, installLibs, installBins]
+if (buildPyModule):
+    installTargets += [installPyModules]
+
+aliasLibs = Alias('libs', targetLibs)
+aliasBins = Alias('programs', targetBins)
+aliasTests = Alias('tests', targetTests)
+aliasAll = Alias('all', allTargets)
+aliasInstall = Alias('install', installTargets)
+if (haveIFClassgen):
+    aliasSources = Alias('sources', sources)
+if (haveIFTpl):
+    aliasInterfaces = Alias('interfaces', classInterfaces + [interfaces])
+if (buildPyModule):
+    aliasPyModule = Alias('pymodule', pyModules)
+
+Default('all')

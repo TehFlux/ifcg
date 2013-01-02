@@ -1,0 +1,30 @@
+body {
+    font-family: "Courier New",monospaced;
+    font-size: 12px;
+    color: #000000;
+    background-color: #cdd5d7;
+}
+.guDebugItem {
+    margin-left: 2em;
+}
+.guDebugItemEmp {
+    font-weight: bold;
+}
+.guAssertItemOK {
+    font-weight: bold;
+    margin-left: 2em;
+    color: #17a23b;
+}
+.guAssertItemFailed {
+    font-weight: bold;
+    margin-left: 2em;
+    color: #df2828;
+}
+.objField {
+    cursor: crosshair;
+    color: #000000;
+}
+.objField:hover {
+    cursor: crosshair;
+    color: #00e000;
+}

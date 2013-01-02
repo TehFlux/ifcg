@@ -1,0 +1,50 @@
+================================================================================
+Altjira - Ionflux' Image Processing Library
+Copyright © 2009-2010 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Channels
+================================================================================
+
+A channel is an object that represents pixel data of an image in a custom way.
+
+It is associated with an image and yields a (float) value for each pixel.
+
+The range of a channel should normally be 0-1.
+
+Channels can be combined (chained) to create arbitrarily complex composite 
+channels.
+
+--------------------------------------------------------------------------------
+Types of channels
+--------------------------------------------------------------------------------
+
++ Component channels:
+  > Hue, Saturation, Value, Luminance, Red, Green, Blue, Alpha
+  > Used as the source for chainable channels.
+
++ Chainable channels:
+  > Take one or more source channels as arguments.
+  > Composite channels:
+    * Linear Combination, Multiply
+    * Interpolation: Interpolate between any number of channels using one 
+      channel as the control channel.
+  > Adjustment channels:
+    * Mapping: Use a mapping to adjust the value of a channel.
+
+--------------------------------------------------------------------------------
+Usefulness
+--------------------------------------------------------------------------------
+
+Channels can be used to modify an image by replacing the data of one channel 
+with the data of another channel.
+
+Simple case:
+Replace the value channel with a mapping of the value channel.
+
+Complex case:
+Replace the hue channel with a mapping of itself depending on the luminance 
+channel.
+
+Channels can also be used as the input for other effects, to be defined later.
+
