@@ -29,6 +29,7 @@ import IFObjectBase as ib
 import CGeoUtils as cg
 from BGeoUtils import BGeoUtilsError
 import bpy
+import bmesh
 
 class Mesh:
     """Mesh.
@@ -53,27 +54,27 @@ class Mesh:
         else:
             self.cgMesh.clear()
         m = self.cgMesh
+        bm0 = bmesh.new()
+        bm0.from_mesh(bMesh)
         # Vertices.
-        for v in bMesh.vertices:
+        for v in bm0.verts:
             m.addVertex(cg.Vertex3.create(v.co[0], v.co[1], v.co[2]))
         # Faces.
         uvTex = None
-        if (len(bMesh.uv_textures) > 0):
-            uvTex = bMesh.uv_textures[0]
+        if (len(bm0.loops.layers.uv) > 0):
+            uvTex = bm0.loops.layers.uv[0]
         i = 0
-        for bf in bMesh.faces:
+        for bf in bm0.faces:
             f = cg.Face.create()
-            for v in bf.vertices:
-                f.addVertex(v)
+            for v in bf.verts:
+                f.addVertex(v.index)
             if (not uvTex is None):
                 k = 0
-                while (k < len(bf.vertices)):
+                while (k < len(bf.loops)):
                     tc0 = cg.TexCoords()
-                    if (i >= len(uvTex.data)):
-                        raise BGeoUtilsError("Not enough texture "
-                            + "coordinates in UV texture.")
-                    tc0.u = uvTex.data[i].uv[k][0]
-                    tc0.v = uvTex.data[i].uv[k][1]
+                    l1 = bf.loops[k]
+                    tc0.u = l1[uvTex].uv[0]
+                    tc0.v = l1[uvTex].uv[1]
                     f.addTexCoord(tc0)
                     k += 1
             m.addFace(f)
@@ -90,49 +91,46 @@ class Mesh:
             raise BGeoUtilsError("CGeoUtils mesh not set.")
         m = self.cgMesh
         m0 = self.getBMesh(meshName)
+        bm0 = bmesh.new()
         # Vertices.
         numVerts0 = m.getNumVertices()
-        numVerts1 = len(m0.vertices)
-        if (numVerts1 < numVerts0):
-            m0.vertices.add(numVerts0 - numVerts1)
         for i in range(0, numVerts0):
             v0 = m.getVertex(i)
-            v1 = m0.vertices[i]
-            v1.co[0] = v0.getX()
-            v1.co[1] = v0.getY()
-            v1.co[2] = v0.getZ()
+            bm0.verts.new((v0.getX(), v0.getY(), v0.getZ()))
+        bm0.verts.index_update()
         # Faces.
-        numFaces = m.getNumFaces()
-        m0.faces.add(numFaces)
-        if (len(m0.faces) < numFaces):
-            m0.faces.add(numFaces - len(m0.faces))
-        for i in range(0, numFaces):
+        numFaces0 = m.getNumFaces()
+        for i in range(0, numFaces0):
             f0 = m.getFace(i)
-            f1 = m0.faces[i]
             vt0 = []
+            vt1 = []
             nv0 = f0.getNumVertices()
             for k in range(0, nv0):
-                vt0 += [f0.getVertex(k)]
-            if (nv0 == 4):
-                f1.vertices_raw = vt0
-            else:
-                f1.vertices = vt0
+                vk = f0.getVertex(k)
+                vt1 += [ bm0.verts[vk] ]
+            bm0.faces.new(vt1)
+        bm0.faces.index_update()
         # UV texture
         if (createUVTex):
-            uv0 = m0.uv_textures.new()
-            uv1 = uv0.data
-            for i in range(0, numFaces):
+            uv1 = bm0.loops.layers.uv.new()
+            for i in range(0, numFaces0):
                 f0 = m.getFace(i)
-                uv2 = uv1[i].uv
-                numTexCoords = f0.getNumTexCoords()
-                if (len(uv2) != numTexCoords):
+                f1 = bm0.faces[i]
+                numTexCoords0 = f0.getNumTexCoords()
+                numTexCoords1 = len(f1.loops)
+                if (numTexCoords0 != numTexCoords1):
+                    bm0.free()
                     raise BGeoUtilsError("Invalid number of texture "
-                        "coordinates for face #" + str(i) + " (expected " 
-                        + len(uv2) + ", got " + numTexCoords + ").")
-                for k in range(0, numTexCoords):
-                    uv3 = f0.getTexCoord(k)
-                    uv2[k][0] = uv3.u
-                    uv2[k][1] = uv3.v
+                        "coordinates for face #" + str(i) + " (expected "
+                        + str(numTexCoords1) + ", " + "got " 
+                        + str(numTexCoords0) + ").")
+                for k in range(0, numTexCoords0):
+                    uv0 = f0.getTexCoord(k)
+                    l1 = f1.loops[k]
+                    l1[uv0].uv[0] = uv3.u
+                    l1[uv0].uv[1] = uv3.v
+        bm0.to_mesh(m0)
+        bm0.free()
         return m0
     
     def getBMesh(self, meshName = None):

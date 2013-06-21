@@ -177,6 +177,6 @@ class Arrow(Object):
         l0 = b.getExtent(cg.AXIS_Z)
         o0 = bpy.data.objects.get(self.name)
         m = o0.matrix_basis
-        v0 = cg.Vector3(m[2][0], m[2][1], m[2][2])
+        v0 = cg.Vector3(m[0][2], m[1][2], m[2][2])
         self.setLocation(p + v0.normalize() * 0.5 * l0)
 
