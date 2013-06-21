@@ -3,9 +3,9 @@
 import bpy
 import sys, os
 
-GEOUTILS_SVN_DIR = '/home/flux4/svn/stuff/trunk/geoutils'
+GEOUTILS_SVN_DIR = '/home/flux4/svn/ifcg/trunk/geoutils'
 """GeoUtils SVN directory."""
-GEOUTILS_SITE_DIR = '/home/flux4/usr/python3.2/lib/python3.2/site-packages'
+GEOUTILS_SITE_DIR = '/home/flux4/usr/python3.3/lib/python3.3/site-packages'
 """GeoUtils site packages directory."""
 
 def registerOperators():
