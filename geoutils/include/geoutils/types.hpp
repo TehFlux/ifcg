@@ -169,8 +169,24 @@ struct TexCoords
     double v;
 };
 
+/// RGBA Color.
+struct Color
+{
+    /// red component.
+    double red;
+    /// green component.
+    double green;
+    /// blue component.
+    double blue;
+    /// alpha component.
+    double alpha;
+};
+
 /// Vector of texture coordinates.
 typedef std::vector<Ionflux::GeoUtils::TexCoords> TexCoordsVector;
+/// Vector of Colors.
+typedef std::vector<Ionflux::GeoUtils::Color> ColorVector;
+
 
 class Face;
 

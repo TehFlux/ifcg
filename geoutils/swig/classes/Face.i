@@ -53,11 +53,13 @@ Ionflux::GeoUtils::TransformableObject
 		Face(const Ionflux::GeoUtils::Face& other);
         Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
         Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-        Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
+        Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
+        Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
         Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned 
         int v3 = Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
         Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-        Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
+        Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
+        Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
         virtual ~Face();
         virtual void copyVertices();
         virtual void update();
@@ -71,6 +73,8 @@ Ionflux::GeoUtils::TransformableObject
         newVerts);
         virtual void addTexCoords(const Ionflux::GeoUtils::TexCoordsVector&
         newTexCoords);
+        virtual void addVertexColors(const Ionflux::GeoUtils::ColorVector& 
+        newVertexColors);
         virtual Ionflux::GeoUtils::Vector3 getTangent();
         virtual Ionflux::GeoUtils::Vector3 getBinormal();
         virtual Ionflux::GeoUtils::Vector3 getNormal();
@@ -149,7 +153,18 @@ Ionflux::GeoUtils::TransformableObject
         virtual void removeTexCoord(Ionflux::GeoUtils::TexCoords 
         removeElement);
 		virtual void removeTexCoordIndex(unsigned int removeIndex);
-		virtual void clearTexCoords();
+		virtual void clearTexCoords();        
+        virtual unsigned int getNumVertexColors() const;
+        virtual Ionflux::GeoUtils::Color getVertexColor(unsigned int 
+        elementIndex = 0) const;
+		virtual int findVertexColor(Ionflux::GeoUtils::Color needle, unsigned int
+		occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::Color>& getVertexColors();
+        virtual void addVertexColor(Ionflux::GeoUtils::Color addElement);        
+        virtual void removeVertexColor(Ionflux::GeoUtils::Color 
+        removeElement);
+		virtual void removeVertexColorIndex(unsigned int removeIndex);
+		virtual void clearVertexColors();
         virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;

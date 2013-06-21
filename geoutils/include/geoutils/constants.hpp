@@ -142,6 +142,8 @@ const std::string SVG_TEMPLATE = "<?xml version=\"1.0\""
 
 /// Default texture coordinates.
 const Ionflux::GeoUtils::TexCoords DEFAULT_TEX_COORDS = { 0., 0. };
+/// Default vertex color.
+const Ionflux::GeoUtils::Color DEFAULT_VERTEX_COLOR = { 0., 0., 0., 1. };
 
 /// Centering method: Barycenter.
 const Ionflux::GeoUtils::CenteringMethod CENTER_BARYCENTER = 0;

@@ -116,7 +116,16 @@ struct TexCoords
     double v;
 };
 
+struct Color
+{
+    double red;
+    double green;
+    double blue;
+    double alpha;
+};
+
 typedef std::vector<Ionflux::GeoUtils::TexCoords> TexCoordsVector;
+typedef std::vector<Ionflux::GeoUtils::Color> ColorVector;
 
 class Face;
 
@@ -269,6 +278,7 @@ const std::string SVG_TEMPLATE = "<?xml version=\"1.0\""
     "</svg>";
 
 const Ionflux::GeoUtils::TexCoords DEFAULT_TEX_COORDS = { 0., 0. };
+const Ionflux::GeoUtils::VertexColor DEFAULT_VERTEX_COLOR = { 0., 0., 0., 1. };
 
 const Ionflux::GeoUtils::CenteringMethod CENTER_BARYCENTER = 0;
 const Ionflux::GeoUtils::CenteringMethod CENTER_BOUNDS = 1;
@@ -373,6 +383,10 @@ void setToVector(const Ionflux::GeoUtils::BoxBoundsItemSet& bs,
     Ionflux::GeoUtils::BoxBoundsItemVector& bv);
 void sort(Ionflux::GeoUtils::BoxBoundsItemVector& bv, 
     Ionflux::GeoUtils::BoxBoundsItemCompare* comp = 0);
+bool operator==(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1);
+bool operator!=(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1);
 
 namespace TransformNodes
 {
@@ -3499,11 +3513,13 @@ Ionflux::GeoUtils::TransformableObject
 		Face(const Ionflux::GeoUtils::Face& other);
         Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
         Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-        Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
+        Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
+        Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
         Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned 
         int v3 = Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
         Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-        Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
+        Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
+        Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
         virtual ~Face();
         virtual void copyVertices();
         virtual void update();
@@ -3517,6 +3533,8 @@ Ionflux::GeoUtils::TransformableObject
         newVerts);
         virtual void addTexCoords(const Ionflux::GeoUtils::TexCoordsVector&
         newTexCoords);
+        virtual void addVertexColors(const Ionflux::GeoUtils::ColorVector& 
+        newVertexColors);
         virtual Ionflux::GeoUtils::Vector3 getTangent();
         virtual Ionflux::GeoUtils::Vector3 getBinormal();
         virtual Ionflux::GeoUtils::Vector3 getNormal();
@@ -3595,7 +3613,18 @@ Ionflux::GeoUtils::TransformableObject
         virtual void removeTexCoord(Ionflux::GeoUtils::TexCoords 
         removeElement);
 		virtual void removeTexCoordIndex(unsigned int removeIndex);
-		virtual void clearTexCoords();
+		virtual void clearTexCoords();        
+        virtual unsigned int getNumVertexColors() const;
+        virtual Ionflux::GeoUtils::Color getVertexColor(unsigned int 
+        elementIndex = 0) const;
+		virtual int findVertexColor(Ionflux::GeoUtils::Color needle, unsigned int
+		occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::Color>& getVertexColors();
+        virtual void addVertexColor(Ionflux::GeoUtils::Color addElement);        
+        virtual void removeVertexColor(Ionflux::GeoUtils::Color 
+        removeElement);
+		virtual void removeVertexColorIndex(unsigned int removeIndex);
+		virtual void clearVertexColors();
         virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;
@@ -5395,6 +5424,7 @@ class Scatter
 %template(BoundingBoxVector) std::vector<Ionflux::GeoUtils::BoundingBox*>;
 %template(SplitVector) std::vector<Ionflux::GeoUtils::Split*>;
 %template(TexCoordsVector) std::vector<Ionflux::GeoUtils::TexCoords>;
+%template(ColorVector) std::vector<Ionflux::GeoUtils::Color>;
 %template(Dictionary) std::map<std::string, std::string>;
 %template(SVGShapeStyleVector) std::vector<Ionflux::GeoUtils::SVGShapeStyle*>;
 %template(SVGShapeStyleStringMap) std::map<std::string, Ionflux::GeoUtils::SVGShapeStyle*>;

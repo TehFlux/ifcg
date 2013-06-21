@@ -20,8 +20,9 @@ New
   > update to work with BMesh
   > Blender Object.matrix_basis seems to require M^T as input but 
     provides M as output. Why is that the case?
-  > test UV texture coordinate transfer between Blender mesh and 
-    GeoUtils mesh.
+  > test UV texture coordinate and vertex color transfer between Blender 
+    mesh and GeoUtils mesh
+  > create a more readable grid
 
 --------------------------------------------------------------------------------
 Critical stuff

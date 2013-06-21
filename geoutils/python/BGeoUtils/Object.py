@@ -141,7 +141,40 @@ class Object:
     def __str__(self):
         return "Object['" + str(self.name) + "]"
 
-class Arrow(Object):
+class PointingObject(Object):
+    """Pointing object.
+    
+    Base class for objects that have a base point and can point in some 
+    direction."""
+    
+    def __init__(self, name = "Unnamed", mesh = None, create = False):
+        Object.__init__(self, name, mesh, create)
+    
+    def setDirection(self, d):
+        """Set direction.
+        
+        Set the direction in which the object is pointing."""
+        n = d.normalize()
+        t = n.ortho().normalize()
+        b = n.cross(t).normalize()
+        TM = cg.Matrix3()
+        TM.setC0(t)
+        TM.setC1(b)
+        TM.setC2(n)
+        self.setTransform(TM)
+    
+    def setBasePoint(self, p):
+        """Set base point.
+        
+        Set the point from which the object starts."""
+        b = self.mesh.cgMesh.getBounds()
+        l0 = b.getExtent(cg.AXIS_Z)
+        o0 = bpy.data.objects.get(self.name)
+        m = o0.matrix_basis
+        v0 = cg.Vector3(m[0][2], m[1][2], m[2][2])
+        self.setLocation(p + v0.normalize() * 0.5 * l0)
+
+class Arrow(PointingObject):
     """Arrow.
     
     Arrow object."""
@@ -155,28 +188,17 @@ class Arrow(Object):
             m1 = bm.Mesh(name + "M", m0, True)
             mesh = m1
         Object.__init__(self, name, mesh, create)
+
+class Cylinder(PointingObject):
+    """Cylinder.
     
-    def setDirection(self, d):
-        """Set direction.
-        
-        Set the direction in which the arrow is pointing."""
-        n = d.normalize()
-        t = n.ortho().normalize()
-        b = n.cross(t).normalize()
-        TM = cg.Matrix3()
-        TM.setC0(t)
-        TM.setC1(b)
-        TM.setC2(n)
-        self.setTransform(TM)
+    Cylinder object."""
     
-    def setBasePoint(self, p):
-        """Set base point.
-        
-        Set the point from which the arrow starts."""
-        b = self.mesh.cgMesh.getBounds()
-        l0 = b.getExtent(cg.AXIS_Z)
-        o0 = bpy.data.objects.get(self.name)
-        m = o0.matrix_basis
-        v0 = cg.Vector3(m[0][2], m[1][2], m[2][2])
-        self.setLocation(p + v0.normalize() * 0.5 * l0)
+    def __init__(self, name = "UnnamedCylinder", subDivs = 10, length = 1., 
+        radius = 0.5, scale = 1., mesh = None, create = False):
+        if (mesh is None):
+            m0 = cg.Mesh.cylinder(subDivs, length * scale, radius * scale)
+            m1 = bm.Mesh(name + "M", m0, True)
+            mesh = m1
+        Object.__init__(self, name, mesh, create)
 

@@ -116,7 +116,16 @@ struct TexCoords
     double v;
 };
 
+struct Color
+{
+    double red;
+    double green;
+    double blue;
+    double alpha;
+};
+
 typedef std::vector<Ionflux::GeoUtils::TexCoords> TexCoordsVector;
+typedef std::vector<Ionflux::GeoUtils::Color> ColorVector;
 
 class Face;
 
@@ -269,6 +278,7 @@ const std::string SVG_TEMPLATE = "<?xml version=\"1.0\""
     "</svg>";
 
 const Ionflux::GeoUtils::TexCoords DEFAULT_TEX_COORDS = { 0., 0. };
+const Ionflux::GeoUtils::VertexColor DEFAULT_VERTEX_COLOR = { 0., 0., 0., 1. };
 
 const Ionflux::GeoUtils::CenteringMethod CENTER_BARYCENTER = 0;
 const Ionflux::GeoUtils::CenteringMethod CENTER_BOUNDS = 1;
@@ -373,6 +383,10 @@ void setToVector(const Ionflux::GeoUtils::BoxBoundsItemSet& bs,
     Ionflux::GeoUtils::BoxBoundsItemVector& bv);
 void sort(Ionflux::GeoUtils::BoxBoundsItemVector& bv, 
     Ionflux::GeoUtils::BoxBoundsItemCompare* comp = 0);
+bool operator==(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1);
+bool operator!=(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1);
 
 namespace TransformNodes
 {
@@ -2435,6 +2449,7 @@ class Scatter
 %template(BoundingBoxVector) std::vector<Ionflux::GeoUtils::BoundingBox*>;
 %template(SplitVector) std::vector<Ionflux::GeoUtils::Split*>;
 %template(TexCoordsVector) std::vector<Ionflux::GeoUtils::TexCoords>;
+%template(ColorVector) std::vector<Ionflux::GeoUtils::Color>;
 %template(Dictionary) std::map<std::string, std::string>;
 %template(SVGShapeStyleVector) std::vector<Ionflux::GeoUtils::SVGShapeStyle*>;
 %template(SVGShapeStyleStringMap) std::map<std::string, Ionflux::GeoUtils::SVGShapeStyle*>;

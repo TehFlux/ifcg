@@ -73,6 +73,8 @@ Ionflux::GeoUtils::TransformableObject
 		std::vector<unsigned int> vertices;
 		/// Texture coordinates vector.
 		std::vector<Ionflux::GeoUtils::TexCoords> uv;
+		/// Vertex color vector.
+		std::vector<Ionflux::GeoUtils::Color> vertexColors;
 		/// Vertex source.
 		Ionflux::GeoUtils::Vertex3Set* vertexSource;
 		
@@ -111,10 +113,12 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param initVerts Vertex index vector.
 		 * \param initVertexSource Vertex source.
 		 * \param initUV Texture coordinates.
+		 * \param initVertexColors Vertex colors.
 		 */
 		Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
 		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-		Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
+		Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
+		Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
 		
 		/** Constructor.
 		 *
@@ -126,11 +130,13 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param v3 Vertex index (3).
 		 * \param initVertexSource Vertex source.
 		 * \param initUV Texture coordinates.
+		 * \param initVertexColors Vertex colors.
 		 */
 		Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3 =
 		Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
 		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-		Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
+		Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
+		Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
 		
 		/** Destructor.
 		 *
@@ -198,6 +204,15 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void addTexCoords(const Ionflux::GeoUtils::TexCoordsVector& 
 		newTexCoords);
+		
+		/** Add vertex colors.
+		 *
+		 * Add vertex colors from a vertex color vector.
+		 *
+		 * \param newVertexColors Vertex colors.
+		 */
+		virtual void addVertexColors(const Ionflux::GeoUtils::ColorVector& 
+		newVertexColors);
 		
 		/** Get tangent vector.
 		 *
@@ -711,6 +726,72 @@ Ionflux::GeoUtils::TransformableObject
 		 * Clear all texCoords.
 		 */
 		virtual void clearTexCoords();
+		
+		/** Get number of vertexColors.
+		 *
+		 * \return Number of vertexColors.
+		 */
+		virtual unsigned int getNumVertexColors() const;
+		
+		/** Get vertexColor.
+		 *
+		 * Get the vertexColor at the specified index.
+		 *
+		 * \param elementIndex Element index.
+		 *
+		 * \return VertexColor at specified index.
+		 */
+		virtual Ionflux::GeoUtils::Color getVertexColor(unsigned int elementIndex
+		= 0) const;
+		
+		/** Find vertexColor.
+		 *
+		 * Find the specified occurence of a vertexColor.
+		 *
+		 * \param needle VertexColor to be found.
+		 * \param occurence Number of the occurence to be found.
+		 *
+		 * \return Index of the vertexColor, or -1 if the vertexColor cannot be 
+		 * found.
+		 */
+		virtual int findVertexColor(Ionflux::GeoUtils::Color needle, unsigned int
+		occurence = 1) const;
+        
+		/** Get vertex color vector.
+		 *
+		 * \return vertex color vector.
+		 */
+		virtual std::vector<Ionflux::GeoUtils::Color>& getVertexColors();
+		
+		/** Add vertexColor.
+		 *
+		 * Add a vertexColor.
+		 *
+		 * \param addElement VertexColor to be added.
+		 */
+		virtual void addVertexColor(Ionflux::GeoUtils::Color addElement);
+		
+		/** Remove vertexColor.
+		 *
+		 * Remove a vertexColor.
+		 *
+		 * \param removeElement VertexColor to be removed.
+		 */
+		virtual void removeVertexColor(Ionflux::GeoUtils::Color removeElement);
+		
+		/** Remove vertexColor.
+		 *
+		 * Remove a vertexColor.
+		 *
+		 * \param removeIndex VertexColor to be removed.
+		 */
+		virtual void removeVertexColorIndex(unsigned int removeIndex);
+		
+		/** Clear vertexColors.
+		 *
+		 * Clear all vertexColors.
+		 */
+		virtual void clearVertexColors();
 		
 		/** Get vertex source.
 		 *

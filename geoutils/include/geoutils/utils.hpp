@@ -248,6 +248,14 @@ bool operator==(const Ionflux::GeoUtils::TexCoords& c0,
 bool operator!=(const Ionflux::GeoUtils::TexCoords& c0, 
     const Ionflux::GeoUtils::TexCoords& c1);
 
+/// Color equality check.
+bool operator==(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1);
+
+/// Color non-equality check.
+bool operator!=(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1);
+
 /** Explode a string.
  *
  * Splits up a string of bytes at 'splitString', creating a vector containing 

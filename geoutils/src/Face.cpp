@@ -78,7 +78,8 @@ Face::Face(const Ionflux::GeoUtils::Face& other)
 
 Face::Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
 Ionflux::GeoUtils::Vertex3Set* initVertexSource, const 
-Ionflux::GeoUtils::TexCoordsVector* initUV)
+Ionflux::GeoUtils::TexCoordsVector* initUV, const 
+Ionflux::GeoUtils::ColorVector* initVertexColors)
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, 
 Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), 
 polygon(0), vertexSource(initVertexSource)
@@ -91,12 +92,15 @@ polygon(0), vertexSource(initVertexSource)
 	    setVertexSource(initVertexSource);
 	if (initUV != 0)
 	    addTexCoords(*initUV);
+	if (initVertexColors != 0)
+	    addVertexColors(*initVertexColors);
 	update();
 }
 
 Face::Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned int 
 v3, Ionflux::GeoUtils::Vertex3Set* initVertexSource, const 
-Ionflux::GeoUtils::TexCoordsVector* initUV)
+Ionflux::GeoUtils::TexCoordsVector* initUV, const 
+Ionflux::GeoUtils::ColorVector* initVertexColors)
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, 
 Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), 
 polygon(0), vertexSource(initVertexSource)
@@ -108,6 +112,8 @@ polygon(0), vertexSource(initVertexSource)
 	    setVertexSource(initVertexSource);
 	if (initUV != 0)
 	    addTexCoords(*initUV);
+	if (initVertexColors != 0)
+	    addVertexColors(*initVertexColors);
 	update();
 }
 
@@ -115,6 +121,7 @@ Face::~Face()
 {
 	clearVertices();
 	clearTexCoords();
+	clearVertexColors();
 	clear();
 }
 
@@ -199,6 +206,14 @@ newTexCoords)
 	for (TexCoordsVector::const_iterator i = newTexCoords.begin(); 
 	    i != newTexCoords.end(); i++)
 	    addTexCoord(*i);
+}
+
+void Face::addVertexColors(const Ionflux::GeoUtils::ColorVector& 
+newVertexColors)
+{
+	for (ColorVector::const_iterator i = newVertexColors.begin(); 
+	    i != newVertexColors.end(); i++)
+	    addVertexColor(*i);
 }
 
 Ionflux::GeoUtils::Vector3 Face::getTangent()
@@ -897,6 +912,85 @@ void Face::clearTexCoords()
     uv.clear();
 }
 
+unsigned int Face::getNumVertexColors() const
+{
+    return vertexColors.size();
+}
+
+Ionflux::GeoUtils::Color Face::getVertexColor(unsigned int elementIndex) 
+const
+{
+    if (elementIndex < vertexColors.size())
+		return vertexColors[elementIndex];
+	return Ionflux::GeoUtils::DEFAULT_VERTEX_COLOR;
+}
+
+int Face::findVertexColor(Ionflux::GeoUtils::Color needle, unsigned int 
+occurence) const
+{
+    bool found = false;
+	Ionflux::GeoUtils::Color currentVertexColor = Ionflux::GeoUtils::DEFAULT_VERTEX_COLOR;
+	unsigned int i = 0;
+	while (!found 
+		&& (i < vertexColors.size()))
+	{
+		currentVertexColor = vertexColors[i];
+		if (currentVertexColor == needle)
+        {
+            if (occurence == 1)
+			    found = true;
+            else
+                occurence--;
+		} else
+			i++;
+	}
+	if (found)
+        return i;
+	return -1;
+}
+
+std::vector<Ionflux::GeoUtils::Color>& Face::getVertexColors()
+{
+    return vertexColors;
+}
+
+void Face::addVertexColor(Ionflux::GeoUtils::Color addElement)
+{
+	vertexColors.push_back(addElement);
+}
+
+void Face::removeVertexColor(Ionflux::GeoUtils::Color removeElement)
+{
+    bool found = false;
+	Ionflux::GeoUtils::Color currentVertexColor = Ionflux::GeoUtils::DEFAULT_VERTEX_COLOR;
+	unsigned int i = 0;
+	while (!found 
+		&& (i < vertexColors.size()))
+	{
+		currentVertexColor = vertexColors[i];
+		if (currentVertexColor == removeElement)
+			found = true;
+		else
+			i++;
+	}
+	if (found)
+	{
+		vertexColors.erase(vertexColors.begin() + i);
+	}
+}
+
+void Face::removeVertexColorIndex(unsigned int removeIndex)
+{
+    if (removeIndex > vertexColors.size())
+        return;
+    vertexColors.erase(vertexColors.begin() + removeIndex);
+}
+
+void Face::clearVertexColors()
+{
+    vertexColors.clear();
+}
+
 void Face::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)
 {
 	vertexSource = newVertexSource;
@@ -915,6 +1009,7 @@ other)
         i != other.vertices.end(); i++)
         vertices.push_back(*i);
     uv = other.uv;
+    vertexColors = other.vertexColors;
     setVertexSource(other.vertexSource);
     update();
 	return *this;

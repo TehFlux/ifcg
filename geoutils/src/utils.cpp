@@ -215,6 +215,19 @@ bool operator!=(const Ionflux::GeoUtils::TexCoords& c0,
     return !(c0 == c1);
 }
 
+bool operator==(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1)
+{
+    return (c0.red == c1.red) && (c0.green == c1.green) 
+        && (c0.blue == c1.blue) && (c0.alpha == c1.alpha);
+}
+
+bool operator!=(const Ionflux::GeoUtils::Color& c0, 
+    const Ionflux::GeoUtils::Color& c1)
+{
+    return !(c0 == c1);
+}
+
 void explode(const std::string& bytes, const std::string& splitString, 
     Ionflux::ObjectBase::StringVector& result)
 {
