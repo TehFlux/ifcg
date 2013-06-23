@@ -46,7 +46,7 @@ Matrix3ClassInfo::Matrix3ClassInfo()
 {
 	name = "Matrix3";
 	desc = "Matrix (3x3)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Matrix3ClassInfo::~Matrix3ClassInfo()

@@ -85,6 +85,7 @@ ifmappingEnv = env.Clone()
 
 ifmappingEnv.VariantDir('build', 'src')
 ifmappingEnv.VariantDir('test/build', 'test')
+ifmappingEnv.VariantDir('swig/wrapper/build', 'swig/wrapper')
 
 def checkProgram(ctx, cmd):
     """Check for installed program."""
@@ -501,8 +502,8 @@ targetTests = []
 
 # IFMapping python module.
 ifmappingWrapper = ifmappingEnv.SWIGPython(target = [ 
-        'swig/ifmapping_wrap.cxx', 'swig/python/IFMapping.py'], 
-    source = 'swig/ifmapping.i')
+        'swig/wrapper/ifmapping_wrap.cxx', 'swig/python/IFMapping.py'], 
+    source = lc.swigInterfaceFile[0])
 
 ifmappingPyModuleEnv = ifmappingEnv.Clone()
 ifmappingPyModuleEnv.Append(LIBS = ['ifmapping', 'python' + lc.pythonVersion])
@@ -511,12 +512,12 @@ if (sys.platform == 'darwin'):
 
 ifmappingPyModule = ifmappingPyModuleEnv.SharedLibrary(
     target = 'swig/python/_IFMapping', 
-    source = 'swig/ifmapping_wrap.cxx', SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
+    source = 'swig/wrapper/ifmapping_wrap.cxx', SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
 
 # IFMapping/noise python module.
 ifmappingNoiseWrapper = ifmappingEnv.SWIGPython(target = [ 
-        'swig/ifmappingnoise_wrap.cxx', 'swig/python/IFMappingNoise.py'], 
-    source = 'swig/ifmappingnoise.i')
+        'swig/wrapper/ifmappingnoise_wrap.cxx', 'swig/python/IFMappingNoise.py'], 
+    source = lc.swigInterfaceFile[1])
 
 ifmappingNoisePyModuleEnv = ifmappingEnv.Clone()
 ifmappingNoisePyModuleEnv.Append(LIBS = ['ifmapping', 'ifmappingnoise', 
@@ -526,7 +527,7 @@ if (sys.platform == 'darwin'):
 
 ifmappingNoisePyModule = ifmappingNoisePyModuleEnv.SharedLibrary(
     target = 'swig/python/_IFMappingNoise', 
-    source = 'swig/ifmappingnoise_wrap.cxx', SHLIBPREFIX = '', 
+    source = 'swig/wrapper/ifmappingnoise_wrap.cxx', SHLIBPREFIX = '', 
         SHLIBSUFFIX = '.so')
 
 pyModules = [ifmappingPyModule]

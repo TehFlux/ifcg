@@ -45,7 +45,7 @@ Plane3ClassInfo::Plane3ClassInfo()
 {
 	name = "Plane3";
 	desc = "Plane (3D)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Plane3ClassInfo::~Plane3ClassInfo()

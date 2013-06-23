@@ -45,7 +45,7 @@ Matrix4ClassInfo::Matrix4ClassInfo()
 {
 	name = "Matrix4";
 	desc = "Matrix (4x4)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Matrix4ClassInfo::~Matrix4ClassInfo()

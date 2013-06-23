@@ -47,7 +47,7 @@ Line3ClassInfo::Line3ClassInfo()
 {
 	name = "Line3";
 	desc = "Line (3D)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Line3ClassInfo::~Line3ClassInfo()

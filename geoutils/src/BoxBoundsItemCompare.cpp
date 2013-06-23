@@ -47,7 +47,7 @@ BoxBoundsItemCompareClassInfo::BoxBoundsItemCompareClassInfo()
 {
 	name = "BoxBoundsItemCompare";
 	desc = "Box bounds item comparison function object";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 BoxBoundsItemCompareClassInfo::~BoxBoundsItemCompareClassInfo()

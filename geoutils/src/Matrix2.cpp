@@ -45,7 +45,7 @@ Matrix2ClassInfo::Matrix2ClassInfo()
 {
 	name = "Matrix2";
 	desc = "Matrix (2x2)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Matrix2ClassInfo::~Matrix2ClassInfo()

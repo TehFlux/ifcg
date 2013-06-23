@@ -47,7 +47,7 @@ Polygon3CompareClassInfo::Polygon3CompareClassInfo()
 {
 	name = "Polygon3Compare";
 	desc = "Polygon comparison function object";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Polygon3CompareClassInfo::~Polygon3CompareClassInfo()

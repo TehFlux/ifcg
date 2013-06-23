@@ -46,7 +46,7 @@ Vertex2ClassInfo::Vertex2ClassInfo()
 {
 	name = "Vertex2";
 	desc = "Vertex (2D)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vertex2ClassInfo::~Vertex2ClassInfo()

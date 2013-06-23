@@ -50,7 +50,7 @@ Vector3MappingClassInfo::Vector3MappingClassInfo()
 {
 	name = "Vector3Mapping";
 	desc = "Vector mapping (3 elements)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vector3MappingClassInfo::~Vector3MappingClassInfo()

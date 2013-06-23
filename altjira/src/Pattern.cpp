@@ -48,7 +48,7 @@ PatternClassInfo::PatternClassInfo()
 {
 	name = "Pattern";
 	desc = "Pattern";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 PatternClassInfo::~PatternClassInfo()

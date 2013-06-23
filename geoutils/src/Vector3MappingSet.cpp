@@ -43,7 +43,7 @@ Vector3MappingSetClassInfo::Vector3MappingSetClassInfo()
 {
 	name = "Vector3MappingSet";
 	desc = "Vector3MappingSet";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vector3MappingSetClassInfo::~Vector3MappingSetClassInfo()

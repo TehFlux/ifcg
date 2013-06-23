@@ -47,7 +47,7 @@ Polygon2ClassInfo::Polygon2ClassInfo()
 {
 	name = "Polygon2";
 	desc = "Polygon (2D)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Polygon2ClassInfo::~Polygon2ClassInfo()

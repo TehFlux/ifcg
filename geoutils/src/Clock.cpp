@@ -47,7 +47,7 @@ ClockClassInfo::ClockClassInfo()
 {
 	name = "Clock";
 	desc = "Clock";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 ClockClassInfo::~ClockClassInfo()

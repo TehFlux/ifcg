@@ -45,7 +45,7 @@ RangeClassInfo::RangeClassInfo()
 {
 	name = "Range";
 	desc = "Range of values";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 RangeClassInfo::~RangeClassInfo()

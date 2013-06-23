@@ -45,7 +45,7 @@ Range3ClassInfo::Range3ClassInfo()
 {
 	name = "Range3";
 	desc = "Range of values (3D)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Range3ClassInfo::~Range3ClassInfo()

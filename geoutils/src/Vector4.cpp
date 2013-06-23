@@ -45,7 +45,7 @@ Vector4ClassInfo::Vector4ClassInfo()
 {
 	name = "Vector4";
 	desc = "Vector (4 elements)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vector4ClassInfo::~Vector4ClassInfo()

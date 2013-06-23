@@ -45,7 +45,7 @@ Vector2ClassInfo::Vector2ClassInfo()
 {
 	name = "Vector2";
 	desc = "Vector (2 elements)";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vector2ClassInfo::~Vector2ClassInfo()

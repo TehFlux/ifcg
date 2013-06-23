@@ -47,7 +47,7 @@ SVGShapeStyleSourceClassInfo::SVGShapeStyleSourceClassInfo()
 {
 	name = "SVGShapeStyleSource";
 	desc = "SVG shape style source";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 SVGShapeStyleSourceClassInfo::~SVGShapeStyleSourceClassInfo()

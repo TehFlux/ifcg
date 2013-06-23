@@ -26,7 +26,7 @@
 # Boston, MA 02111-1307 USA
 # 
 # ==========================================================================
-import os, subprocess, shutil, shlex, string, copy, re
+import os, subprocess, shutil, shlex, string, copy, re, sys
 
 # Create a default local configuration file if it does not exist.
 if (not os.path.isfile('site_scons/local_config.py')):
@@ -75,8 +75,6 @@ else:
 if (ARGUMENTS.get('debug', debugDefault) == 'yes'):
     env.Append(CCFLAGS = '-g')
 
-env.VariantDir('deps/tinyxml/build', 'deps/tinyxml/src')
-
 altjiraEnv = env.Clone()
 
 if (hasattr(lc, 'prefix')):
@@ -87,6 +85,7 @@ prefix = ARGUMENTS.get('prefix', defaultPrefix)
 
 altjiraEnv.VariantDir('build', 'src')
 altjiraEnv.VariantDir('test/build', 'test')
+altjiraEnv.VariantDir('swig/wrapper/build', 'swig/wrapper')
 
 def checkProgram(ctx, cmd):
     """Check for installed program."""
@@ -483,6 +482,8 @@ altjiraLib = altjiraLibEnv.SharedLibrary(target = "lib/altjira",
 if (buildNoiseLib):
     altjiraNoiseLibEnv = altjiraNoiseEnv.Clone()
     altjiraNoiseLibEnv.Append(LIBS = ['altjira', 'ifmappingnoise', 'noise'])
+    if (sys.platform == 'darwin'):
+        altjiraNoiseLibEnv.Append(LIBS = ['ifobject'])
     altjiraNoiseLib = altjiraNoiseLibEnv.SharedLibrary(
         target = "lib/altjiranoise", source = altjiraNoiseLibSources)
 
@@ -490,6 +491,8 @@ if (buildNoiseLib):
 if (buildAltjiraDraw):
     altjiraDrawLibEnv = altjiraDrawEnv.Clone()
     altjiraDrawLibEnv.Append(LIBS = ['altjira', 'ifobject'])
+    if (sys.platform == 'darwin'):
+        altjiraDrawLibEnv.Append(LIBS = ['ifobject'])
     altjiraDrawLib = altjiraDrawLibEnv.SharedLibrary(
         target = "lib/altjiradraw", 
         source = altjiraDrawLibSources)
@@ -509,42 +512,49 @@ targetTests = []
 
 # Altjira Python module.
 altjiraWrapper = altjiraEnv.SWIGPython(target = [ 
-        'swig/altjira_wrap.cxx', 'swig/python/Altjira.py'], 
-    source = 'swig/altjira.i')
+        'swig/wrapper/altjira_wrap.cxx', 'swig/python/Altjira.py'], 
+    source = lc.swigInterfaceFile[0])
 
 altjiraPyModuleEnv = altjiraEnv.Clone()
 altjiraPyModuleEnv.Append(LIBS = ['altjira', 'python' + lc.pythonVersion])
+if (sys.platform == 'darwin'):
+    altjiraPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping'])
 
 altjiraPyModule = altjiraPyModuleEnv.SharedLibrary(
     target = 'swig/python/_Altjira', 
-    source = 'swig/altjira_wrap.cxx', SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
+    source = 'swig/wrapper/altjira_wrap.cxx', 
+    SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
 
 # Altjira/noise Python module.
 altjiraNoiseWrapper = altjiraEnv.SWIGPython(target = [ 
-        'swig/altjiranoise_wrap.cxx', 'swig/python/AltjiraNoise.py'], 
-    source = 'swig/altjiranoise.i')
+        'swig/wrapper/altjiranoise_wrap.cxx', 'swig/python/AltjiraNoise.py'], 
+    source = lc.swigInterfaceFile[1])
 
 altjiraNoisePyModuleEnv = altjiraEnv.Clone()
 altjiraNoisePyModuleEnv.Append(LIBS = ['altjira', 'altjiranoise', 'noise', 
     'python' + lc.pythonVersion])
+if (sys.platform == 'darwin'):
+    altjiraNoisePyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping'])
 
 altjiraNoisePyModule = altjiraNoisePyModuleEnv.SharedLibrary(
     target = 'swig/python/_AltjiraNoise', 
-    source = 'swig/altjiranoise_wrap.cxx', SHLIBPREFIX = '', 
+    source = 'swig/wrapper/altjiranoise_wrap.cxx', SHLIBPREFIX = '', 
         SHLIBSUFFIX = '.so')
 
 # AltjiraDraw Python module.
 altjiraDrawWrapper = altjiraDrawEnv.SWIGPython(target = [ 
-        'swig/altjiradraw_wrap.cxx', 'swig/python/AltjiraDraw.py'], 
-    source = 'swig/altjiradraw.i')
+        'swig/wrapper/altjiradraw_wrap.cxx', 'swig/python/AltjiraDraw.py'], 
+    source = lc.swigInterfaceFile[2])
 
 altjiraDrawPyModuleEnv = altjiraEnv.Clone()
 altjiraDrawPyModuleEnv.Append(LIBS = ['altjira', 'altjiradraw', 
     'python' + lc.pythonVersion])
+if (sys.platform == 'darwin'):
+    altjiraDrawPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping'])
 
 altjiraDrawPyModule = altjiraDrawPyModuleEnv.SharedLibrary(
     target = 'swig/python/_AltjiraDraw', 
-    source = 'swig/altjiradraw_wrap.cxx', SHLIBPREFIX = '', 
+    source = 'swig/wrapper/altjiradraw_wrap.cxx', SHLIBPREFIX = '', 
         SHLIBSUFFIX = '.so')
 
 pyModules = [altjiraPyModule]
