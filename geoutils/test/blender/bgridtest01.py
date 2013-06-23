@@ -14,11 +14,11 @@ def createGrid(gridName, direction, mat1, mat2, gridStart, gridStep1, gridStep2,
         while (not im.gt(cp[axis1], gridStop[axis1])):
             width = 0.001
             mat = mat1
-            if (im.eq(cp[axis2], 0., 0.1) 
+            if (im.eq(cp[axis2], 0.) 
                 and emphasizePlane):
                 width = width * 80
                 mat = mat2
-            if (im.eq(cp[axis1], 0., 0.1) and im.eq(cp[axis2], 0., 0.1) 
+            if (im.eq(cp[axis1], 0.) and im.eq(cp[axis2], 0.) 
                 and emphasizeAxes):
                 width = width * 4
             cyl = bgo.Cylinder("Cyl_" + gridName + ("_%03d_%03d" % (i, j)), 
@@ -42,9 +42,11 @@ gridStep = 1.
 blueMat = mm.getMaterial('Blue')
 redMat = mm.getMaterial('Red')
 greenMat = mm.getMaterial('Green')
+cyanMat = mm.getMaterial('Cyan')
 glowingBlueMat = mm.getMaterial('GlowingBlue')
 glowingRedMat = mm.getMaterial('GlowingRed')
 glowingGreenMat = mm.getMaterial('GlowingGreen')
+glowingCyanMat = mm.getMaterial('GlowingCyan')
 
 axis10 = cg.AXIS_X
 axis20 = cg.AXIS_Y
@@ -56,7 +58,7 @@ gridStop0 = cg.Vector3(5., 5., 0.)
 direction0 = cg.Vector3.E_Z
 
 createGrid("XY", direction0, redMat, glowingRedMat, gridStart0, gridStep10, 
-    gridStep20, gridStop0, axis10, axis20, True, True)
+    gridStep20, gridStop0, axis10, axis20, True, False)
 
 axis11 = cg.AXIS_X
 axis21 = cg.AXIS_Z
@@ -68,7 +70,7 @@ gridStop1 = cg.Vector3(5., 0., 5.)
 direction1 = cg.Vector3.E_Y
 
 createGrid("XZ", direction1, blueMat, glowingBlueMat, gridStart1, gridStep11, 
-    gridStep21, gridStop1, axis11, axis21, True, False)
+    gridStep21, gridStop1, axis11, axis21, True, True)
 
 axis12 = cg.AXIS_Y
 axis22 = cg.AXIS_Z
@@ -80,5 +82,5 @@ gridStop2 = cg.Vector3(0., 5., 5.)
 direction2 = cg.Vector3.E_X
 
 createGrid("YZ", direction2, greenMat, glowingGreenMat, gridStart2, gridStep12, 
-    gridStep22, gridStop2, axis12, axis22, True, False)
+    gridStep22, gridStop2, axis12, axis22, True, True)
 

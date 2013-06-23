@@ -44,7 +44,7 @@ PointSetClassInfo::PointSetClassInfo()
 {
 	name = "PointSet";
 	desc = "Point set";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 PointSetClassInfo::~PointSetClassInfo()

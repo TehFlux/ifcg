@@ -42,7 +42,7 @@ MappingClassInfo::MappingClassInfo()
 {
 	name = "Mapping";
 	desc = "Mapping";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 MappingClassInfo::~MappingClassInfo()

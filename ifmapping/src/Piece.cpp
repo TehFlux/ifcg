@@ -47,7 +47,7 @@ PieceClassInfo::PieceClassInfo()
 {
 	name = "Piece";
 	desc = "Piece";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 PieceClassInfo::~PieceClassInfo()

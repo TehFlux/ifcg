@@ -46,7 +46,7 @@ NoiseMappingClassInfo::NoiseMappingClassInfo()
 {
 	name = "NoiseMapping";
 	desc = "Noise mapping module";
-	baseClassInfo.push_back(IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 NoiseMappingClassInfo::~NoiseMappingClassInfo()

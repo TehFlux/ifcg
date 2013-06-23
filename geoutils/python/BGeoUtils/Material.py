@@ -153,10 +153,12 @@ class MaterialMap:
         self.getSimpleMaterial('Green', 0., 1., 0.)
         self.getSimpleMaterial('Blue', 0., 0., 1.)
         self.getSimpleMaterial('Magenta', 1., 0., 1.)
+        self.getSimpleMaterial('Cyan', 0., 1., 1.)
         self.getSimpleMaterial('GlowingRed', 1., 0., 0., emit = 1.)
         self.getSimpleMaterial('GlowingGreen', 0., 1., 0., emit = 1.)
         self.getSimpleMaterial('GlowingBlue', 0., 0., 1., emit = 1.)
         self.getSimpleMaterial('GlowingMagenta', 1., 0., 1., emit = 1.)
+        self.getSimpleMaterial('GlowingCyan', 0., 1., 1., emit = 1.)
         self.getSimpleMaterial('WireGlowingRed', 1., 0., 0., emit = 1., 
             mType = 'WIRE')
         self.getSimpleMaterial('WireGlowingGreen', 0., 1., 0., emit = 1., 

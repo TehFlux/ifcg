@@ -26,7 +26,7 @@
 # Boston, MA 02111-1307 USA
 # 
 # ==========================================================================
-import os, subprocess, shutil, shlex, string, copy, re
+import os, subprocess, shutil, shlex, string, copy, re, sys
 
 # Create a default local configuration file if it does not exist.
 if (not os.path.isfile('site_scons/local_config.py')):
@@ -506,6 +506,8 @@ ifmappingWrapper = ifmappingEnv.SWIGPython(target = [
 
 ifmappingPyModuleEnv = ifmappingEnv.Clone()
 ifmappingPyModuleEnv.Append(LIBS = ['ifmapping', 'python' + lc.pythonVersion])
+if (sys.platform == 'darwin'):
+    ifmappingPyModuleEnv.Append(LIBS = ['ifobject'])
 
 ifmappingPyModule = ifmappingPyModuleEnv.SharedLibrary(
     target = 'swig/python/_IFMapping', 
@@ -519,6 +521,8 @@ ifmappingNoiseWrapper = ifmappingEnv.SWIGPython(target = [
 ifmappingNoisePyModuleEnv = ifmappingEnv.Clone()
 ifmappingNoisePyModuleEnv.Append(LIBS = ['ifmapping', 'ifmappingnoise', 
     'noise', 'python' + lc.pythonVersion])
+if (sys.platform == 'darwin'):
+    ifmappingNoisePyModuleEnv.Append(LIBS = ['ifobject'])
 
 ifmappingNoisePyModule = ifmappingNoisePyModuleEnv.SharedLibrary(
     target = 'swig/python/_IFMappingNoise', 
