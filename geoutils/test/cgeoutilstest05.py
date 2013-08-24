@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """CGeoUtils test."""
 import os, math, random
@@ -14,7 +14,7 @@ def createArrow(polygonSet = None, length = 250., width = 4.,
     else:
         p0 = cg.Polygon3()
     verts = []
-    for i in xrange(0, 7):
+    for i in range(0, 7):
         verts += [p0.addVertex()]
     verts[0].setCoords(cg.Vector3(0., 0.5 * width, 0.))
     verts[1].setCoords(cg.Vector3(0., -0.5 * width, 0.))
@@ -59,7 +59,7 @@ def createVecArrow(v, polygonSet = None, width = 4.,
 def createPolyArrows(p, polygonSet, width = 4., 
     headLength = 25., headWidth = 4., o = None):
     """Create arrows for a polygon."""
-    for i in xrange(0, p.getNumEdges()):
+    for i in range(0, p.getNumEdges()):
         e = p.getEdge(i)
         v0 = p.getVertex(e.getV0()).getVector()
         v1 = p.getVertex(e.getV1()).getVector()
@@ -110,24 +110,24 @@ def randomT(rMin = -500., rMax = 500.):
     tz = random.random() * (rMax - rMin) + rMin
     return cg.Matrix4.translate(tx, ty, tz)
 
-print "Extracting attribute from SVG file..."
+print("Extracting attribute from SVG file...")
 d0 = cg.getAttrValue('test/images/leaf01.svg', 'path', 'leaf01', 'd')
-print "  leaf01.d = " + d0
+print("  leaf01.d = " + d0)
 
 vs0 = cg.Vertex3Set.create()
 cg.extractSVGVertices(d0, vs0)
-print "  vs0 = " + str(vs0)
+print("  vs0 = " + str(vs0))
 
-print "Creating polygon..."
+print("Creating polygon...")
 p0 = cg.Polygon3(vs0)
 v0 = p0.getBarycenter()
 m0 = cg.Matrix4.translate(v0.flip())
 m1 = cg.Matrix4.scale(.1, .1, .1)
 p1 = cg.Polygon3(p0)
 p1.transform(m1 * m0)
-print "  p0 = " + str(p0)
-print "  v0 = " + str(v0)
-print "  p1 = " + str(p1)
+print("  p0 = " + str(p0))
+print("  v0 = " + str(v0))
+print("  p1 = " + str(p1))
 
 ps0 = cg.Polygon3Set()
 p1.thisown = 0
@@ -137,7 +137,7 @@ p1 = None
 ps1 = cg.Polygon3Set()
 n0 = 400
 #n0 = 0
-for i in xrange(0, n0):
+for i in range(0, n0):
     m2 = (randomT(-480., 480) 
         * randomR(axis = cg.AXIS_X) 
         * randomR(axis = cg.AXIS_Y)  
@@ -148,7 +148,7 @@ for i in xrange(0, n0):
     ps0t.applyTransform()
     ps1.addPolygons(ps0t)
 
-print "Setting up view and image transform matrix..."
+print("Setting up view and image transform matrix...")
 rotZ = -30. * math.pi / 180.
 rotX = -35. * math.pi / 180.
 RX = cg.Matrix4.rotate(rotX, cg.AXIS_X)
@@ -170,12 +170,12 @@ PC = cg.Matrix4(
 )
 I = PC * cg.Matrix4.scale(40., 1., 40.)
 
-print "Transforming polygons..."
+print("Transforming polygons...")
 ps2 = cg.Polygon3Set(ps1)
 ps2.transformVI(V, I)
 ps2.applyTransform()
 
-print "Transforming axis vectors..."
+print("Transforming axis vectors...")
 # These need to be transformed separately because the vector arrows are 
 # genereted in the XY plane and are not truly 3D (think billboards).
 x0 = cg.mult3(100., cg.Vector3.E_X)
@@ -191,7 +191,7 @@ ztv0 = cg.Vertex3(z0)
 zt0 = ztv0.transformVI(V, I).getVector()
 #zt0 = ztv0.getVector()
 
-print "Transforming cube edge vectors..."
+print("Transforming cube edge vectors...")
 # These need to be transformed separately because the vector arrows are 
 # genereted in the XY plane and are not truly 3D (think billboards).
 cp0 = createCubePoly()
@@ -210,11 +210,14 @@ createPolyArrows(cpt0, ps2)
 #    px0 = ps2.getPolygon(i)
 #    print ("    %03d: " % i) + str(px0)
 
+print("Writing file '%s'..." % ('temp' + os.path.sep + "polygons03.svg"))
 ps0.writeSVG('temp' + os.path.sep + "polygons03.svg", 
     cg.SVG_DEFAULT_POLY_STYLE, "polygon", cg.AXIS_Z)
+print("Writing file '%s'..." % ('temp' + os.path.sep + "polygons04.svg"))
 ps1.writeSVG('temp' + os.path.sep + "polygons04.svg", 
     cg.SVG_DEFAULT_POLY_STYLE, "polygon", cg.AXIS_Z)
+print("Writing file '%s'..." % ('temp' + os.path.sep + "polygons05.svg"))
 ps2.writeSVG('temp' + os.path.sep + "polygons05.svg", 
     cg.SVG_DEFAULT_POLY_STYLE, "polygon", cg.AXIS_Z)
 
-print "All done!"
+print("All done!")

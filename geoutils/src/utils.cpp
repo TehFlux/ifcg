@@ -265,6 +265,10 @@ void extractSVGVertex(const std::string& rawData,
     target.setX(strtod(parts0[0].c_str(), 0));
     target.setY(strtod(parts0[1].c_str(), 0));
     target.setZ(0.);
+    /* <---- DEBUG ----- //
+    std::cerr << "[extractSVGVertex] v = " << target.getString() 
+        << std::endl;
+    // ----- DEBUG ----> */
 }
 
 void extractSVGVertices(const std::string& rawData, 
