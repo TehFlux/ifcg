@@ -14,6 +14,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Use getValueString() instead of getString()
+
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 + BGeoUtils
