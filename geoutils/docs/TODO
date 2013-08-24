@@ -10,9 +10,13 @@ Up next
 --------------------------------------------------------------------------------
 
 
+
 --------------------------------------------------------------------------------
 New
 --------------------------------------------------------------------------------
+
++ extractXMLVertices() adds a vertex to close the path by default, which 
+  breaks getBarycenter() for low vertex counts.
 
 + Use getValueString() instead of getString()
 

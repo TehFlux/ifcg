@@ -287,9 +287,10 @@ void extractSVGVertex(const std::string& rawData,
  *
  * \param rawData Source data.
  * \param target Where to store the vertex data.
+ * \param closePath Add a vertex to close the path
  */
 void extractSVGVertices(const std::string& rawData, 
-    Ionflux::GeoUtils::Vertex3Set& target);
+    Ionflux::GeoUtils::Vertex3Set& target, bool closePath = true);
 
 /**
  * Extract vertex from XML.

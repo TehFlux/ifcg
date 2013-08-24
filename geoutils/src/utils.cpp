@@ -272,7 +272,7 @@ void extractSVGVertex(const std::string& rawData,
 }
 
 void extractSVGVertices(const std::string& rawData, 
-    Ionflux::GeoUtils::Vertex3Set& target)
+    Ionflux::GeoUtils::Vertex3Set& target, bool closePath)
 {
     Ionflux::ObjectBase::StringVector parts0;
     if (rawData.size() == 0)
@@ -303,7 +303,8 @@ void extractSVGVertices(const std::string& rawData,
             target.addVertex(v0);
         }
     }
-    if (relative 
+    if (closePath 
+        && relative 
         && (first != 0))
     {
         Vertex3* v0 = Vertex3::create();

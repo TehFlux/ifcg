@@ -340,7 +340,7 @@ void explode(const std::string& bytes, const std::string& splitString,
 void extractSVGVertex(const std::string& rawData, 
     Ionflux::GeoUtils::Vertex3& target);
 void extractSVGVertices(const std::string& rawData, 
-    Ionflux::GeoUtils::Vertex3Set& target);
+    Ionflux::GeoUtils::Vertex3Set& target, bool closePath = true);
 void extractXMLVertex(const std::string& rawData, 
     Ionflux::GeoUtils::Vertex3& target);
 void extractXMLVertices(const std::string& rawData, 
