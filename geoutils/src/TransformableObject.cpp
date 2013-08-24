@@ -94,13 +94,11 @@ void TransformableObject::processTransformChange()
 	viChanged = false;
 }
 
-std::string TransformableObject::getString() const
+std::string TransformableObject::getValueString() const
 {
-	ostringstream status;
-	status << getClassName();
 	if (!useTransform && !useVI)
-	    return status.str();
-	status << "[";
+	    return "";
+	ostringstream status;
 	if (useTransform)
 	    status << transformMatrix;
 	if (useVI)
@@ -109,7 +107,6 @@ std::string TransformableObject::getString() const
 	        status << ", ";
 	    status << viewMatrix << ", " << imageMatrix;
 	}
-	status << "]";
 	return status.str();
 }
 

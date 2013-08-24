@@ -129,10 +129,9 @@ void Vertex3Set::addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts)
 	    addVertex(newVerts.getVertex(i));
 }
 
-std::string Vertex3Set::getString() const
+std::string Vertex3Set::getValueString() const
 {
 	ostringstream status;
-	status << getClassName() << "[";
 	bool e0 = true;
 	for (Vertex3Vector::const_iterator i = vertices.begin(); 
 	    i != vertices.end(); i++)
@@ -141,23 +140,13 @@ std::string Vertex3Set::getString() const
 	        status << ", ";
 	    else
 	        e0 = false;
-	    status << (*i)->getString();
+	    status << "(" << (*i)->getValueString() << ")";
 	}
 	if (!useTransform && !useVI)
-	{
-	    status << "]";
 	    return status.str();
-	}
-	status << "; ";
-	if (useTransform)
-	    status << transformMatrix;
-	if (useVI)
-	{
-	    if (useTransform)
-	        status << ", ";
-	    status << viewMatrix << ", " << imageMatrix;
-	}
-	status << "]";
+	if (!useTransform && !useVI)
+	    return status.str();
+	status << "; " << TransformableObject::getValueString();
 	return status.str();
 }
 

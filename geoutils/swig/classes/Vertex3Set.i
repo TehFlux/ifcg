@@ -57,7 +57,7 @@ class Vertex3Set
         virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& 
         newVerts);
         virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vertex3Set& scale(const 

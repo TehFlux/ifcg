@@ -342,15 +342,12 @@ Ionflux::GeoUtils::Vertex3& Vertex3::duplicate()
 	return *result;
 }
 
-std::string Vertex3::getString() const
+std::string Vertex3::getValueString() const
 {
 	ostringstream status;
-	status << getClassName() << "[" << x << ", " << y << ", " << z;
+	status << x << ", " << y << ", " << z;
 	if (!useTransform && !useVI)
-	{
-	    status << "]";
 	    return status.str();
-	}
 	status << "; ";
 	if (useTransform)
 	    status << transformMatrix;
@@ -360,7 +357,6 @@ std::string Vertex3::getString() const
 	        status << ", ";
 	    status << viewMatrix << ", " << imageMatrix;
 	}
-	status << "]";
 	return status.str();
 }
 

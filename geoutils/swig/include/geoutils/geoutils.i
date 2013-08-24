@@ -1290,7 +1290,7 @@ class TransformableObject
         TransformableObject();
 		TransformableObject(const Ionflux::GeoUtils::TransformableObject& other);
         virtual ~TransformableObject();
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual void copyTransform(const 
         Ionflux::GeoUtils::TransformableObject& other);
         virtual void onTransformChanged();
@@ -1472,7 +1472,7 @@ class Edge
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Edge& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Edge* copy() const;
 		static Ionflux::GeoUtils::Edge* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -1738,7 +1738,7 @@ class Vertex3Set
         virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& 
         newVerts);
         virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vertex3Set& scale(const 
@@ -1866,7 +1866,7 @@ class Vertex3
         Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
         image = 0);
         virtual Ionflux::GeoUtils::Vertex3& duplicate();
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Vertex3* create(double newX, double newY,
         double newZ);
         virtual std::string getXMLData() const;
@@ -2015,7 +2015,7 @@ class Polygon3
         virtual int createEdges();
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual std::string getSVG(const std::string& attrs = 
         SVG_DEFAULT_POLY_STYLE, const std::string& elementID = "polygon", 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Y, 

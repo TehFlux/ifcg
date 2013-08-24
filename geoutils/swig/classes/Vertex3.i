@@ -102,7 +102,7 @@ class Vertex3
         Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
         image = 0);
         virtual Ionflux::GeoUtils::Vertex3& duplicate();
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Vertex3* create(double newX, double newY,
         double newZ);
         virtual std::string getXMLData() const;

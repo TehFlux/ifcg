@@ -167,11 +167,11 @@ double Edge::operator[](int index) const
 	return result;
 }
 
-std::string Edge::getString() const
+std::string Edge::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << v0 << ", " << v1 << "]";
-	return state.str();
+	ostringstream status;
+	status << v0 << ", " << v1;
+	return status.str();
 }
 
 void Edge::setV0(int newV0)

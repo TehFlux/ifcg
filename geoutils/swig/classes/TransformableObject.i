@@ -50,7 +50,7 @@ class TransformableObject
         TransformableObject();
 		TransformableObject(const Ionflux::GeoUtils::TransformableObject& other);
         virtual ~TransformableObject();
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual void copyTransform(const 
         Ionflux::GeoUtils::TransformableObject& other);
         virtual void onTransformChanged();

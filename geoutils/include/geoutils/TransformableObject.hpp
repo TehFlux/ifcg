@@ -131,7 +131,7 @@ class TransformableObject
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** copy transform.
 		 *

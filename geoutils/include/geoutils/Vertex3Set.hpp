@@ -131,13 +131,13 @@ class Vertex3Set
 		 */
 		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object.
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Get barycenter.
 		 *

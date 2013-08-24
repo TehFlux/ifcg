@@ -67,7 +67,7 @@ class Edge
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Edge& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Edge* copy() const;
 		static Ionflux::GeoUtils::Edge* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

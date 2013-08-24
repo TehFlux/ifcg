@@ -211,13 +211,13 @@ class Polygon3
 		virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, int v2
 		= -1) const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object.
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Get SVG representation.
 		 *

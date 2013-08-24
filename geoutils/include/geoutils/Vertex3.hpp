@@ -403,13 +403,13 @@ class Vertex3
 		 */
 		virtual Ionflux::GeoUtils::Vertex3& duplicate();
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Create.
 		 *

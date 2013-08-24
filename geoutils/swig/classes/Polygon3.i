@@ -69,7 +69,7 @@ class Polygon3
         virtual int createEdges();
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual std::string getSVG(const std::string& attrs = 
         SVG_DEFAULT_POLY_STYLE, const std::string& elementID = "polygon", 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Y, 

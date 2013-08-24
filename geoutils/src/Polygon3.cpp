@@ -275,10 +275,10 @@ Ionflux::GeoUtils::Plane3 Polygon3::getPlane(int v0, int v1, int v2) const
 	return Plane3(a, b - a, c - a);;
 }
 
-std::string Polygon3::getString() const
+std::string Polygon3::getValueString() const
 {
 	ostringstream status;
-	status << getClassName() << "[verts: [";
+	status << "verts: [";
 	bool e0 = true;
 	for (unsigned int i = 0; i < getNumVertices(); i++)
 	{
@@ -287,35 +287,27 @@ std::string Polygon3::getString() const
 	        status << ", ";
 	    else
 	        e0 = false;
-	    status << (*v0);
-	}
-	status << "]; edges: [";
-	e0 = true;
-	for (EdgeVector::const_iterator j = edges.begin(); 
-	    j != edges.end(); j++)
-	{
-	    if (!e0)
-	        status << ", ";
-	    else
-	        e0 = false;
-	    status << (*j)->getString();
+	    status << "(" << v0->getValueString() << ")";
 	}
 	status << "]";
-	if (!useTransform && !useVI)
+	if (edges.size() > 0)
 	{
+	    status << " edges: [";
+	    e0 = true;
+	    for (EdgeVector::const_iterator j = edges.begin(); 
+	        j != edges.end(); j++)
+	    {
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << "(" << (*j)->getValueString() << ")";
+	    }
 	    status << "]";
+	}
+	if (!useTransform && !useVI)
 	    return status.str();
-	}
-	status << "; ";
-	if (useTransform)
-	    status << transformMatrix;
-	if (useVI)
-	{
-	    if (useTransform)
-	        status << ", ";
-	    status << viewMatrix << ", " << imageMatrix;
-	}
-	status << "]";
+	status << "; " << TransformableObject::getValueString();
 	return status.str();
 }
 
