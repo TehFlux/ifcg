@@ -387,6 +387,10 @@ bool operator==(const Ionflux::GeoUtils::Color& c0,
     const Ionflux::GeoUtils::Color& c1);
 bool operator!=(const Ionflux::GeoUtils::Color& c0, 
     const Ionflux::GeoUtils::Color& c1);
+Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
+    double a, double b, double c);
+int solveCubicEquation(double a, double b, double c, double d, 
+    Ionflux::GeoUtils::Vector3& target);
 
 namespace TransformNodes
 {

@@ -30,7 +30,6 @@
 #include "ifobject/types.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
-#include "geoutils/utils.hpp"
 #include "geoutils/Vector2.hpp"
 #include "ifobject/IFObject.hpp"
 
@@ -471,13 +470,13 @@ class Vector3
 		virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& plane) 
 		const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Get axis direction vector.
 		 *

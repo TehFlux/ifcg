@@ -31,6 +31,7 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/Vector2.hpp"
+#include "geoutils/Vector3.hpp"
 
 namespace Ionflux
 {
@@ -557,6 +558,22 @@ void sort(Ionflux::GeoUtils::BoxBoundsItemVector& bv,
  */
 Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
     double a, double b, double c);
+
+/** Solve cubic equation.
+ * 
+ * Solve a cubic equation of the form ax³ + bx² + cx + d = 0. An exception is 
+ * thrown if the parameters are invalid.
+ *
+ * \param a parameter a
+ * \param b parameter b
+ * \param c parameter c
+ * \param d parameter d
+ * \param target Where to store the solutions.
+ *
+ * \return The number of solutions.
+ */
+int solveCubicEquation(double a, double b, double c, double d, 
+    Ionflux::GeoUtils::Vector3& target);
 
 namespace TransformNodes
 {

@@ -29,6 +29,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <cmath>
+#include <gsl/gsl_poly.h>
 #include "geoutils/utils.hpp"
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/Vertex3Set.hpp"
@@ -726,6 +727,24 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
         throw GeoUtilsError(status.str());
     }
     return Vector2(d + ::sqrt(e), d - ::sqrt(e));
+}
+
+int solveCubicEquation(double a, double b, double c, double d, 
+    Ionflux::GeoUtils::Vector3& target)
+{
+    if (a == 0)
+    {
+        std::ostringstream status;
+        status << "[solveCubicEquation] "
+            "Invalid parameter value: a = " << a;
+        throw GeoUtilsError(status.str());
+    }
+    double x1 = 0.;
+    double x2 = 0.;
+    double x3 = 0.;
+    int result = gsl_poly_solve_cubic(b / a, c / a, d / a, &x1, &x2, &x3);
+    target.setElements(x1, x2, x3);
+    return result;
 }
 
 namespace TransformNodes

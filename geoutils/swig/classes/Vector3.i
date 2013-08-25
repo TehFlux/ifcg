@@ -114,7 +114,7 @@ class Vector3
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
         virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& 
         plane) const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Vector3 axis(Ionflux::GeoUtils::AxisID 
         axisID);
 		virtual Ionflux::GeoUtils::Vector3* copy() const;

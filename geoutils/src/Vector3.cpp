@@ -30,6 +30,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include "geoutils/utils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Plane3.hpp"
 
@@ -414,11 +415,11 @@ const
 	return (*this - plane.getP()) * plane.getNormal();
 }
 
-std::string Vector3::getString() const
+std::string Vector3::getValueString() const
 {
 	ostringstream state;
-	state << getClassName() << "[" << elements[0] << ", " << elements[1] 
-	    << ", " << elements[2] << "]";
+	state << elements[0] << ", " << elements[1] 
+	    << ", " << elements[2];
 	return state.str();
 }
 
