@@ -28,6 +28,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <algorithm>
+#include <cmath>
 #include "geoutils/utils.hpp"
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/Vertex3Set.hpp"
@@ -702,6 +703,29 @@ void sort(Ionflux::GeoUtils::BoxBoundsItemVector& bv,
     else
         wrap0.setTarget(comp);
     std::sort(bv.begin(), bv.end(), wrap0);
+}
+
+Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
+    double a, double b, double c)
+{
+    if (a == 0)
+    {
+        std::ostringstream status;
+        status << "[solveQuadraticEquation] "
+            "Invalid parameter value: a = " << a;
+        throw GeoUtilsError(status.str());
+    }
+    double d = -b / (2. * a);
+    double e = b * b - 4. * c * a;
+    if (e < 0)
+    {
+        std::ostringstream status;
+        status << "[solveQuadraticEquation] "
+            "Quadratic equation does not have real solutions "
+            "(a = " << a << ", b = " << b << ", c = " << c << ").";
+        throw GeoUtilsError(status.str());
+    }
+    return Vector2(d + ::sqrt(e), d - ::sqrt(e));
 }
 
 namespace TransformNodes

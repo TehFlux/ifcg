@@ -31,6 +31,7 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/utils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;

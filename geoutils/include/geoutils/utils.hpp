@@ -30,6 +30,7 @@
 #include "ifobject/types.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
+#include "geoutils/Vector2.hpp"
 
 namespace Ionflux
 {
@@ -541,6 +542,21 @@ void setToVector(const Ionflux::GeoUtils::BoxBoundsItemSet& bs,
  */
 void sort(Ionflux::GeoUtils::BoxBoundsItemVector& bv, 
     Ionflux::GeoUtils::BoxBoundsItemCompare* comp = 0);
+
+/** Solve quadratic equation.
+ * 
+ * Solve a quadratic equation of the form ax² + bx + c = 0. An exception is 
+ * thrown if the parameters are invalid or if the quadratic equation does not 
+ * have real solutions.
+ *
+ * \param a parameter a
+ * \param b parameter b
+ * \param c parameter c
+ *
+ * \return The solutions of the quadratic equation.
+ */
+Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
+    double a, double b, double c);
 
 namespace TransformNodes
 {

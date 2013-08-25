@@ -139,7 +139,7 @@ class Voxel
 		initIndex, double initEdgeLength = 1., const Ionflux::GeoUtils::Vector3& 
 		initOffset = Ionflux::GeoUtils::Vector3::ZERO);
 		
-		/** Convert voxels to a vertices.
+		/** Convert voxels to vertices.
 		 *
 		 * Convert voxels in the box bounds item set to vertices. The center 
 		 * of the voxel is taken as the vertex position..

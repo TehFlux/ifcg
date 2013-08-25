@@ -30,7 +30,6 @@
 #include "ifobject/types.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
-#include "geoutils/utils.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
