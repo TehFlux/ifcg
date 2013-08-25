@@ -330,6 +330,17 @@ Ionflux::ObjectBase::UIntVector createUIntVector3(unsigned int x0,
     unsigned int x1, unsigned int x2);
 Ionflux::ObjectBase::DoubleVector createDoubleVector3(double x0, double x1, 
     double x2);
+Ionflux::ObjectBase::IntVector createIntVector4(int x0, int x1, 
+    int x2, int x3);
+Ionflux::ObjectBase::UIntVector createUIntVector4(unsigned int x0, 
+    unsigned int x1, unsigned int x2, unsigned int x3);
+Ionflux::ObjectBase::DoubleVector createDoubleVector4(double x0, double x1, 
+    double x2, double x3);
+void createIntVector3(int x0, int x1, int x2, 
+    Ionflux::ObjectBase::IntVector& target);
+void createIntVector4(int x0, int x1, int x2, int x3, 
+    Ionflux::ObjectBase::IntVector& target);
+void shiftInt(Ionflux::ObjectBase::IntVector& target, int offset);
 bool lt(double v0, double v1, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 bool gt(double v0, double v1, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 bool eq(double v0, double v1, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);

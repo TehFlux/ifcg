@@ -33,6 +33,7 @@
 #include "geoutils/utils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Plane3.hpp"
+#include "geoutils/Range.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -400,6 +401,42 @@ Ionflux::GeoUtils::Vector3& other)
 	elements[1] -= other.elements[1];
 	elements[2] -= other.elements[2];
 	return *this;
+}
+
+int Vector3::findElement(double v, double t) const
+{
+	int k = 0;
+	bool found = false;
+	while (!found 
+	    && (k < 3))
+	{
+	    double c = elements[k];
+	    if (Ionflux::GeoUtils::eq(c, v, t))
+	        found = true;
+	    else
+	        k++;
+	}
+	if (found)
+	    return k;
+	return -1;
+}
+
+int Vector3::findMatchingElements(const Ionflux::GeoUtils::Vector3& other, 
+Ionflux::ObjectBase::DoubleVector& target, const Ionflux::GeoUtils::Range* 
+range, double t)
+{
+	target.clear();
+	for (unsigned int i = 0; i < 3; i++)
+	{
+	    double c = elements[i];
+	    if ((range == 0) 
+	        || (range->isInRange(c, t)))
+	    {
+	        if (other.findElement(c, t) >= 0)
+	            target.push_back(c);
+	    }
+	}
+	return target.size();
 }
 
 Ionflux::GeoUtils::Vector2 Vector3::getV2() const

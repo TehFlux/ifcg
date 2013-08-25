@@ -29,7 +29,6 @@
 
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
-#include "geoutils/utils.hpp"
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/Vertex3Set.hpp"
 #include "geoutils/Edge.hpp"
@@ -83,6 +82,8 @@ class Polygon3
 		virtual void recalculateBounds();
 		
 	public:
+		/// Point UV coordinate range.
+		static const Ionflux::GeoUtils::Range UV_RANGE;
 		/// Class information instance.
 		static const Polygon3ClassInfo polygon3ClassInfo;
 		/// Class information.
@@ -394,6 +395,62 @@ class Polygon3
 		 * \return Square polygon.
 		 */
 		static Ionflux::GeoUtils::Polygon3* square();
+		
+		/** Triangle check.
+		 *
+		 * Check whether the polygon is a triangle.
+		 *
+		 * \return Check result.
+		 */
+		virtual bool isTri();
+		
+		/** Quadrilateral check.
+		 *
+		 * Check whether the polygon is a quadrilateral.
+		 *
+		 * \return Check result.
+		 */
+		virtual bool isQuad();
+		
+		/** Calculate UV coefficients.
+		 *
+		 * Calculate the coefficients for the system of cubic equations needed
+		 * to obtain the UV coordinates for the specified point. The result of
+		 * the calculation is a 4x4 matrix, where each row contains the 
+		 * coefficients for one of the cubic equations used to calculate the 
+		 * point UV coordinates. The coefficients can be used to calculate 
+		 * either the U or V coordinate of the point, depending on the 
+		 * ordering of vertices. To calculate both the U and V coordinates, 
+		 * the function needs to be called twice with the appropriate 
+		 * permutation of vertex indices.
+		 * 
+		 * \sa getUV()
+		 *
+		 * \param p point.
+		 * \param target where to store the coefficients.
+		 * \param indices Vertex indices.
+		 * \param s scale factor for the coefficients.
+		 */
+		virtual void calculateUVCoefficients(const Ionflux::GeoUtils::Vertex3& p,
+		Ionflux::GeoUtils::Matrix4& target, Ionflux::ObjectBase::IntVector* 
+		indices = 0, double s = 1.);
+		
+		/** getUV.
+		 *
+		 * Calculate the UV coordinates of the specified point relative to the
+		 * (quadrilateral) polygon. The vertex order can be specified by the 
+		 * optional \c indices parameter.
+		 *
+		 * \param p point.
+		 * \param indices Vertex indices.
+		 * \param s scale factor for the coefficients.
+		 * \param t tolerance for comparisons.
+		 *
+		 * \return UV coordinates of point.
+		 */
+		virtual Ionflux::GeoUtils::Vector2 getUV(const 
+		Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* indices = 
+		0, double s = 1., double t = DEFAULT_TOLERANCE);
 		
 		/** Create polygon: circle.
 		 *

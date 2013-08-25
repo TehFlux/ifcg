@@ -53,6 +53,7 @@ CPPPATH = [
     prefix + '/python' + pythonVersion + '/include/python' 
         + pythonVersion, prefix + '/include', 
     '/home/flux4/svn/iftools/trunk/ifobject/include', 
+    '/home/flux4/svn/iftools/trunk/ifobject/swig/include', 
     '/home/flux4/svn/iftools/trunk/iftemplate/include', 
     '/home/flux4/svn/ifcg/trunk/ifmapping/include', 
     '/home/flux4/svn/ifcg/trunk/ifmapping/swig/include', 

@@ -187,6 +187,128 @@ Ionflux::ObjectBase::UIntVector createUIntVector3(unsigned int x0,
 Ionflux::ObjectBase::DoubleVector createDoubleVector3(double x0, double x1, 
     double x2);
 
+/** Create integer vector.
+ *
+ * Create a vector of integers with 4 elements.
+ * 
+ * \param x0 Element 0.
+ * \param x1 Element 1.
+ * \param x2 Element 2.
+ * \param x3 Element 3.
+ * 
+ * \return Vector of integers.
+ */
+Ionflux::ObjectBase::IntVector createIntVector4(int x0, int x1, 
+    int x2, int x3);
+
+/** Create unsigned integer vector.
+ *
+ * Create a vector of unsigned integers with 3 elements.
+ * 
+ * \param x0 Element 0.
+ * \param x1 Element 1.
+ * \param x2 Element 2.
+ * \param x3 Element 3.
+ * 
+ * \return Vector of unsigned integers.
+ */
+Ionflux::ObjectBase::UIntVector createUIntVector4(unsigned int x0, 
+    unsigned int x1, unsigned int x2, unsigned int x3);
+
+/** Create double vector.
+ *
+ * Create a vector of doubles with 4 elements.
+ * 
+ * \param x0 Element 0.
+ * \param x1 Element 1.
+ * \param x2 Element 2.
+ * \param x3 Element 3.
+ * 
+ * \return Vector of doubles.
+ */
+Ionflux::ObjectBase::DoubleVector createDoubleVector4(double x0, double x1, 
+    double x2, double x3);
+
+/** Create integer vector.
+ *
+ * Create a vector of integers with 4 elements.
+ * 
+ * \param x0 Element 0.
+ * \param x1 Element 1.
+ * \param x2 Element 2.
+ * \param target Where to store the values.
+ * 
+ * \return Vector of integers.
+ */
+void createIntVector3(int x0, int x1, int x2, 
+    Ionflux::ObjectBase::IntVector& target);
+
+/** Create integer vector.
+ *
+ * Create a vector of integers with 4 elements.
+ * 
+ * \param x0 Element 0.
+ * \param x1 Element 1.
+ * \param x2 Element 2.
+ * \param x3 Element 3.
+ * \param target Where to store the values.
+ * 
+ * \return Vector of integers.
+ */
+void createIntVector4(int x0, int x1, int x2, int x3, 
+    Ionflux::ObjectBase::IntVector& target);
+
+/** Shift elements in vector.
+ *
+ * Shift the elements in the vector by the specified offset. Elements that 
+ * would fall out of the vector are added back at the other end.
+ * 
+ * \param v vector
+ * \param offset shift offset
+ */
+template<class T> 
+void shift(std::vector<T>& v, int offset)
+{
+    if ((offset == 0) 
+        || (offset == static_cast<int>(v.size()))
+        || (offset == -static_cast<int>(v.size())))
+        return;
+    if (offset > 0)
+    {
+        if (offset > static_cast<int>(v.size()))
+            return shift(v, offset % v.size());
+        std::vector<T> temp;
+        int from = v.size() - offset;
+        for (int i = static_cast<int>(v.size()) - 1; i >= 0; i--)
+        {
+            if (i >= from)
+                temp.push_back(v[i]);
+            if (i < offset)
+                v[i] = temp[offset - i - 1];
+            else
+                v[i] = v[i - offset];
+        }
+    } else
+    {
+        if (offset > -static_cast<int>(v.size()))
+            return shift(v, offset % v.size());
+        std::vector<T> temp;
+        int from = v.size() + offset;
+        for (int i = 0; i < static_cast<int>(v.size()); i++)
+        {
+            if (i < static_cast<unsigned int>(-offset))
+                temp.push_back(v[i]);
+            if (i >= from)
+                v[i] = temp[i - from];
+            else
+                v[i] = v[i - offset];
+        }
+    }
+}
+
+/// Shift integer vector.
+void shiftInt(Ionflux::ObjectBase::IntVector& target, int offset);
+
 /** Comparison (with tolerance): less than.
  * 
  * Compare values within the specified tolerance.

@@ -40,6 +40,7 @@ namespace GeoUtils
 {
 
 class Plane3;
+class Range;
 
 /// Class information for class Vector3.
 class Vector3ClassInfo
@@ -449,6 +450,37 @@ class Vector3
 		 */
 		virtual Ionflux::GeoUtils::Vector3& operator-=(const 
 		Ionflux::GeoUtils::Vector3& other);
+		
+		/** Find elements.
+		 *
+		 * Find an element with the specified value in the vector.
+		 *
+		 * \param v value.
+		 * \param t Tolerance.
+		 *
+		 * \return Index of the matching element, or -1 if no element with the 
+		 * specified value was found.
+		 */
+		virtual int findElement(double v, double t = 
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+		
+		/** Find matching elements.
+		 *
+		 * Find matching elements in the two vectors. If the optional \c range
+		 * parameter is specified, only such elements will be considered that 
+		 * are within that range.
+		 *
+		 * \param other Vector.
+		 * \param target Where to store the matching elements.
+		 * \param range Range for valid values.
+		 * \param t Tolerance.
+		 *
+		 * \return The number of matching elements..
+		 */
+		virtual int findMatchingElements(const Ionflux::GeoUtils::Vector3& other,
+		Ionflux::ObjectBase::DoubleVector& target, const 
+		Ionflux::GeoUtils::Range* range = 0, double t = 
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
 		/** Create 2-element vector.
 		 *

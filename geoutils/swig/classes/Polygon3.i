@@ -48,6 +48,7 @@ class Polygon3
 : public Ionflux::GeoUtils::TransformableObject
 {
     public:
+		static const Ionflux::GeoUtils::Range UV_RANGE;
         
         Polygon3();
 		Polygon3(const Ionflux::GeoUtils::Polygon3& other);
@@ -102,6 +103,14 @@ class Polygon3
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual void getPolygon2(Ionflux::GeoUtils::Polygon2& target);
         static Ionflux::GeoUtils::Polygon3* square();
+        virtual bool isTri();
+        virtual bool isQuad();
+        virtual void calculateUVCoefficients(const 
+        Ionflux::GeoUtils::Vertex3& p, Ionflux::GeoUtils::Matrix4& target, 
+        Ionflux::ObjectBase::IntVector* indices = 0, double s = 1.);
+        virtual Ionflux::GeoUtils::Vector2 getUV(const 
+        Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* 
+        indices = 0, double s = 1., double t = DEFAULT_TOLERANCE);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
 		virtual Ionflux::GeoUtils::Polygon3* copy() const;

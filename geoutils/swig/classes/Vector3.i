@@ -35,6 +35,7 @@ namespace GeoUtils
 {
 
 class Plane3;
+class Range;
 
 class Vector3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -111,6 +112,12 @@ class Vector3
         Ionflux::GeoUtils::Vector3& other);
         virtual Ionflux::GeoUtils::Vector3& operator-=(const 
         Ionflux::GeoUtils::Vector3& other);
+        virtual int findElement(double v, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual int findMatchingElements(const Ionflux::GeoUtils::Vector3& 
+        other, Ionflux::ObjectBase::DoubleVector& target, const 
+        Ionflux::GeoUtils::Range* range = 0, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
         virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& 
         plane) const;

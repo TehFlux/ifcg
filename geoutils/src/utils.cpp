@@ -170,6 +170,63 @@ Ionflux::ObjectBase::DoubleVector createDoubleVector3(double x0, double x1,
     return v0;
 }
 
+Ionflux::ObjectBase::IntVector createIntVector4(int x0, int x1, 
+    int x2, int x3)
+{
+    Ionflux::ObjectBase::IntVector v0;
+    v0.push_back(x0);
+    v0.push_back(x1);
+    v0.push_back(x2);
+    v0.push_back(x3);
+    return v0;
+}
+
+Ionflux::ObjectBase::UIntVector createUIntVector4(unsigned int x0, 
+    unsigned int x1, unsigned int x2, unsigned int x3)
+{
+    Ionflux::ObjectBase::UIntVector v0;
+    v0.push_back(x0);
+    v0.push_back(x1);
+    v0.push_back(x2);
+    v0.push_back(x3);
+    return v0;
+}
+
+Ionflux::ObjectBase::DoubleVector createDoubleVector4(double x0, double x1, 
+    double x2, double x3)
+{
+    Ionflux::ObjectBase::DoubleVector v0;
+    v0.push_back(x0);
+    v0.push_back(x1);
+    v0.push_back(x2);
+    v0.push_back(x3);
+    return v0;
+}
+
+void createIntVector3(int x0, int x1, int x2, 
+    Ionflux::ObjectBase::IntVector& target)
+{
+    target.clear();
+    target.push_back(x0);
+    target.push_back(x1);
+    target.push_back(x2);
+}
+
+void createIntVector4(int x0, int x1, int x2, int x3, 
+    Ionflux::ObjectBase::IntVector& target)
+{
+    target.clear();
+    target.push_back(x0);
+    target.push_back(x1);
+    target.push_back(x2);
+    target.push_back(x3);
+}
+
+void shiftInt(Ionflux::ObjectBase::IntVector& target, int offset)
+{
+    shift(target, offset);
+}
+
 bool lt(double v0, double v1, double t)
 {
     if (v0 < (v1 - t))

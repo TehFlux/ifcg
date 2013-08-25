@@ -15,6 +15,11 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Add create<numeric type>Vector<n>(..., <target vector>) functions.
+  (necessary because swig does not recognize the vectors returned by such 
+  functions as of the correct type)
+  > create them automatically using a template
+
 + extractXMLVertices() adds a vertex to close the path by default, which 
   breaks getBarycenter() for low vertex counts.
 

@@ -47,6 +47,7 @@ CPPPATH = [
     prefix + '/python' + pythonVersion + '/include/python' 
         + pythonVersion, '/home/flux2/usr/include', 
     '/home/flux4/svn/iftools/trunk/ifobject/include', 
+    '/home/flux4/svn/iftools/trunk/ifobject/swig/include', 
     '/home/flux4/svn/iftools/trunk/iftemplate/include', 
     prefix + '/include/noise' 
 ]

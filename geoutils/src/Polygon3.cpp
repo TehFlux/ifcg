@@ -31,7 +31,9 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/utils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -51,6 +53,9 @@ Polygon3ClassInfo::Polygon3ClassInfo()
 Polygon3ClassInfo::~Polygon3ClassInfo()
 {
 }
+
+// public member constants
+const Ionflux::GeoUtils::Range Polygon3::UV_RANGE = Ionflux::GeoUtils::Range(0., 1.);
 
 // run-time type information instance constants
 const Polygon3ClassInfo Polygon3::polygon3ClassInfo;
@@ -529,6 +534,133 @@ Ionflux::GeoUtils::Polygon3* Polygon3::square()
 	p0->addVertices(verts0);
 	p0->createEdges();
 	return p0;
+}
+
+bool Polygon3::isTri()
+{
+	// TODO: Implementation.
+	return (getNumVertices() == 3);
+}
+
+bool Polygon3::isQuad()
+{
+	// TODO: Implementation.
+	return (getNumVertices() == 4);
+}
+
+void Polygon3::calculateUVCoefficients(const Ionflux::GeoUtils::Vertex3& p,
+Ionflux::GeoUtils::Matrix4& target, Ionflux::ObjectBase::IntVector* 
+indices, double s)
+{
+	if (!isQuad())
+	    throw GeoUtilsError(getErrorString(
+	        "Polygon is not a quadrilateral", "calculateUVCoefficients"));
+	Vertex3Vector vs;
+	if (indices != 0)
+	{
+	    if (indices->size() < 4)
+	        throw GeoUtilsError(getErrorString(
+	            "Not enough elements in index vector.", 
+	                "calculateUVCoefficients"));
+	    for (unsigned int i = 0; i < 4; i++)
+	    {
+	        Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	            getVertex((*indices)[i]), this, "calculateUVCoefficients", 
+	                "Vertex (0)");
+	        vs.push_back(v0);
+	    }
+	} else 
+	{
+	    for (unsigned int i = 0; i < 4; i++)
+	    {
+	        Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	            getVertex(i), this, "calculateUVCoefficients", 
+	                "Vertex (0)");
+	        vs.push_back(v0);
+	    }
+	}
+	Vector3 v1(vs[0]->getVector());
+	Vector3 v2(vs[1]->getVector());
+	Vector3 v3(vs[2]->getVector());
+	Vector3 v4(vs[3]->getVector());
+	/* Here the magic happens.
+	   (These equations come from parameterizing the lines through the 
+	   points on two opposite sides of the quadrilateral with u (or v, 
+	   respectively) and solving for the distance vector of p to that 
+	   line.)
+	 */
+	Vector3 a(v2 - v1);
+	Vector3 b(v3 - v2 - v4 + v1);
+	Vector3 d(v1 - v4);
+	Vector3 e(p.getVector() - v1);
+	Vector4 eta1((b * b) * d - (b * d) * b, 0.);
+	Vector4 eta2(2. * (a * b) * d + (b * b) * e - (b * d) * a 
+	    - (a * d) * b - (b * e) * b, 0.);
+	Vector4 eta3(2. * (a * b) * e + (a * a) * d - (a * d) * a 
+	    - (b * e) * a - (a * e) * b, 0.);
+	Vector4 eta4((a * a) * e - (a * e) * a, 0.);
+	target.setC0(eta1 * s);
+	target.setC1(eta2 * s);
+	target.setC2(eta3 * s);
+	target.setC3(eta4 * s);
+}
+
+Ionflux::GeoUtils::Vector2 Polygon3::getUV(const 
+Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* indices, 
+double s, double t)
+{
+	if (!isQuad())
+	    throw GeoUtilsError(getErrorString(
+	        "Polygon is not a quadrilateral", "getUV"));
+	Ionflux::ObjectBase::IntVector i0;
+	if (indices == 0)
+	{
+	    for (unsigned int i = 0; i < 4; i++)
+	        i0.push_back(i);
+	} else
+	    i0 = *indices;
+	if (i0.size() < 4)
+	    throw GeoUtilsError(getErrorString(
+	        "Not enough elements in index vector.", "getUV"));
+	// Calculate UV coefficients.
+	Matrix4 m0;
+	calculateUVCoefficients(p, m0, &i0, s);
+	shift(i0, -1);
+	Matrix4 m1;
+	calculateUVCoefficients(p, m1, &i0, s);
+	// Solve equations.
+	Vector3 s11;
+	solveCubicEquation(m0.getElement(0, 0), m0.getElement(0, 1), 
+	    m0.getElement(0, 2), m0.getElement(0, 3), s11);
+	Vector3 s12;
+	solveCubicEquation(m0.getElement(1, 0), m0.getElement(1, 1), 
+	    m0.getElement(1, 2), m0.getElement(1, 3), s12);
+	Vector3 s21;
+	solveCubicEquation(m1.getElement(0, 0), m1.getElement(0, 1), 
+	    m1.getElement(0, 2), m1.getElement(0, 3), s21);
+	Vector3 s22;
+	solveCubicEquation(m1.getElement(1, 0), m1.getElement(1, 1), 
+	    m1.getElement(1, 2), m1.getElement(1, 3), s22);
+	// Determine solutions of the equation systems.
+	Ionflux::ObjectBase::DoubleVector r0;
+	s11.findMatchingElements(s12, r0, &UV_RANGE, t);
+	Ionflux::ObjectBase::DoubleVector r1;
+	s21.findMatchingElements(s22, r1, &UV_RANGE, t);
+	if ((r0.size() == 0) 
+	    || (r1.size() == 0))
+	{
+	    std::ostringstream status;
+	    status << "No solution found for UV coordinates (p = (" 
+	        << p.getValueString() << "), quad = " << getValueString() 
+	        << ", s11 = (" << s11.getValueString() 
+	        << "), s12 = (" << s12.getValueString()
+	        << "), s21 = (" << s21.getValueString() 
+	        << "), s22 = (" << s22.getValueString()
+	        << ")).";
+	    throw GeoUtilsError(getErrorString(status.str(), "getUV"));
+	}
+	Vector2 result(r0[0], r1[0]);
+	return result;
 }
 
 Ionflux::GeoUtils::Polygon3* Polygon3::circle(unsigned int resolution)
