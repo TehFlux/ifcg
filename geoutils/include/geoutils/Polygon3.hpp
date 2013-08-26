@@ -474,7 +474,7 @@ class Polygon3
 		
 		/** Create polygon: circle.
 		 *
-		 * Create a circle polygon.
+		 * Create a circle polygon in the XZ plane.
 		 *
 		 * \param resolution Resolution.
 		 *
