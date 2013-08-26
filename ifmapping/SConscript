@@ -405,9 +405,7 @@ if (haveIFClassgen):
             ifmappingEnv.Source(target = [
                     'include/ifmapping/' + it + '.hpp', 
                     'src/' + it + '.cpp'], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/class/Class.hpp.tpl', 
-                    'template/class/Class.cpp.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     if (buildNoiseLib):
         for it in ifmappingNoiseLibClasses:
@@ -415,9 +413,7 @@ if (haveIFClassgen):
                 ifmappingEnv.Source(target = [
                         'include/ifmapping/' + it + '.hpp', 
                         'src/' + it + '.cpp'], 
-                    source = ['conf/class/' + it + '.conf',
-                        'template/class/Class.hpp.tpl', 
-                        'template/class/Class.cpp.tpl'])
+                    source = ['conf/class/' + it + '.conf'])
             ]
     allTargets += sources
 else:
@@ -436,8 +432,7 @@ if (haveIFTpl):
         interfaceTargets += [t0]
         classInterfaces += [ 
             ifmappingEnv.ClassInterface(target = [ t0 ], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/interface.i.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     interfaces += [ ifmappingEnv.Interface(target = lc.swigInterfaceFile[0], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[0]])]
@@ -448,8 +443,7 @@ if (haveIFTpl):
         interfaceTargets += [t0]
         classInterfaces += [ 
             ifmappingEnv.ClassInterface(target = [ t0 ], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/interface.i.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     interfaces += [ ifmappingEnv.Interface(target = lc.swigInterfaceFile[1], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[1]])]

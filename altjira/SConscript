@@ -399,9 +399,7 @@ if (haveIFClassgen):
             altjiraEnv.Source(target = [
                     'include/altjira/' + it + '.hpp', 
                     'src/' + it + '.cpp'], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/class/Class.hpp.tpl', 
-                    'template/class/Class.cpp.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     allTargets += sources
 else:
@@ -420,8 +418,7 @@ if (haveIFTpl):
         interfaceTargets += [t0]
         classInterfaces += [ 
             altjiraEnv.ClassInterface(target = [ t0 ], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/interface.i.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     interfaces += [ altjiraEnv.Interface(target = lc.swigInterfaceFile[0], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[0]]) ]
@@ -432,8 +429,7 @@ if (haveIFTpl):
         interfaceTargets += [t0]
         classInterfaces += [ 
             altjiraNoiseEnv.ClassInterface(target = [ t0 ], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/interface.i.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     interfaces += [ altjiraNoiseEnv.Interface(target = lc.swigInterfaceFile[1], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[1]]) ]
@@ -444,8 +440,7 @@ if (haveIFTpl):
         interfaceTargets += [t0]
         classInterfaces += [ 
             altjiraDrawEnv.ClassInterface(target = [ t0 ], 
-                source = ['conf/class/' + it + '.conf',
-                    'template/interface.i.tpl'])
+                source = ['conf/class/' + it + '.conf'])
         ]
     interfaces += [ altjiraDrawEnv.Interface(target = lc.swigInterfaceFile[2], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[2]]) ]

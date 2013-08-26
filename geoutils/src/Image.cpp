@@ -79,7 +79,7 @@ const Ionflux::GeoUtils::Vector3 Image::TANGENT_VECTORS[3][3] = {
        Ionflux::GeoUtils::Vector3(1, 0, 0) }, 
     { Ionflux::GeoUtils::Vector3(-1, -1, 0), 
        Ionflux::GeoUtils::Vector3(0, -1, 0), 
-       Ionflux::GeoUtils::Vector3(1, -1, 0) } 
+       Ionflux::GeoUtils::Vector3(1, -1, 0) }
 };
 
 // run-time type information instance constants
