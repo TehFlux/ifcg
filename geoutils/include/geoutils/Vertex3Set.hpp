@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Vertex3Set.hpp                  Vertex set (3D) (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -289,7 +289,7 @@ class Vertex3Set
 		 *
 		 * \return XML data representation.
 		 */
-		virtual std::string getXMLData() const;
+		virtual std::string getXMLData_legacy() const;
 		
 		/** Get XML representation.
 		 *
@@ -297,7 +297,7 @@ class Vertex3Set
 		 *
 		 * \return XML representation.
 		 */
-		virtual std::string getXML() const;
+		virtual std::string getXML_legacy() const;
 		
 		/** Assignment operator.
 		 *

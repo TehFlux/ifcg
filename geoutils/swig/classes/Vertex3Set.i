@@ -82,8 +82,8 @@ class Vertex3Set
         virtual Ionflux::GeoUtils::Matrix3 getCovariance();
         virtual Ionflux::GeoUtils::Matrix3 getPCABase();
         virtual Ionflux::GeoUtils::Plane3 getPlaneFit();
-        virtual std::string getXMLData() const;
-        virtual std::string getXML() const;
+        virtual std::string getXMLData_legacy() const;
+        virtual std::string getXML_legacy() const;
 		virtual Ionflux::GeoUtils::Vertex3Set* copy() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

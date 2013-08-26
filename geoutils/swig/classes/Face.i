@@ -125,7 +125,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
         virtual std::string getXMLDataVertices() const;
         virtual std::string getXMLDataTexCoords() const;
-        virtual std::string getXML() const;
+        virtual std::string getXML_legacy() const;
         virtual void setFromXMLData(const std::string& vertexData, const 
         std::string& texCoordData);
 		virtual Ionflux::GeoUtils::Face* copy() const;

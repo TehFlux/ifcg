@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * AcceptVolume3.hpp               Vector mapping: Accept volume (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

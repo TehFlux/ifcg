@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Compose3.hpp                    Vector mapping: Compose (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

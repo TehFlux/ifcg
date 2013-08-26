@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Normalize.hpp                   Transform node: Normalize (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

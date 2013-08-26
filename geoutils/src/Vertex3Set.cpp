@@ -290,7 +290,7 @@ Ionflux::GeoUtils::Plane3 Vertex3Set::getPlaneFit()
 	return Plane3::createFromNormal(pcaBase.getC2(), pcaBase.getC1(), bc);
 }
 
-std::string Vertex3Set::getXMLData() const
+std::string Vertex3Set::getXMLData_legacy() const
 {
 	ostringstream d0;
 	bool first = true;
@@ -301,15 +301,15 @@ std::string Vertex3Set::getXMLData() const
 	        d0 << " ";
 	    else
 	        first = false;
-	    d0 << (*i)->getXMLData();
+	    d0 << (*i)->getXMLData_legacy();
 	}
 	return d0.str();
 }
 
-std::string Vertex3Set::getXML() const
+std::string Vertex3Set::getXML_legacy() const
 {
 	ostringstream d0;
-	d0 << "<vertex3set d=\"" << getXMLData() << "\" />";
+	d0 << "<vertex3set d=\"" << getXMLData_legacy() << "\" />";
 	return d0.str();
 }
 

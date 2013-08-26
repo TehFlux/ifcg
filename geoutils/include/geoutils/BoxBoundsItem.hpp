@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * BoxBoundsItem.hpp               Item with box bounds (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

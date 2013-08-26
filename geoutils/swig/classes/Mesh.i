@@ -102,7 +102,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Mesh& duplicate();
         virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
-        virtual std::string getXML() const;
+        virtual std::string getXML_legacy() const;
         virtual void writeToFile(const std::string& fileName) const;
         virtual void removeBackfaces(const Ionflux::GeoUtils::Vector3& 
         front);

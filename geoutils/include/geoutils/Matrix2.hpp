@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Matrix2.hpp                     Matrix (2x2) (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

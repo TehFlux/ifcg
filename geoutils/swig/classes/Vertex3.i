@@ -103,14 +103,20 @@ class Vertex3
         image = 0);
         virtual Ionflux::GeoUtils::Vertex3& duplicate();
         virtual std::string getValueString() const;
-        static Ionflux::GeoUtils::Vertex3* create(double newX, double newY,
-        double newZ);
-        virtual std::string getXMLData() const;
-        virtual std::string getXML() const;
+        virtual std::string getXMLData_legacy() const;
+        virtual std::string getXML_legacy() const;
 		virtual Ionflux::GeoUtils::Vertex3* copy() const;
 		static Ionflux::GeoUtils::Vertex3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::GeoUtils::Vertex3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(double initX, double initY, 
+		double initZ, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::GeoUtils::Vector3& initCoords, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         virtual void setX(double newX);
         virtual double getX() const;

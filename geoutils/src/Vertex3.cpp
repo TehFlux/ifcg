@@ -34,6 +34,8 @@
 #include "geoutils/LinearInterpolator.hpp"
 #include "geoutils/Plane3.hpp"
 #include "geoutils/Vector4.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -60,6 +62,8 @@ const Ionflux::GeoUtils::Vertex3 Vertex3::ORIGIN = Ionflux::GeoUtils::Vertex3(0.
 // run-time type information instance constants
 const Vertex3ClassInfo Vertex3::vertex3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vertex3::CLASS_INFO = &Vertex3::vertex3ClassInfo;
+
+const std::string Vertex3::XML_ELEMENT_NAME = "vert3";
 
 Vertex3::Vertex3()
 : x(0.), y(0.), z(0.)
@@ -360,25 +364,17 @@ std::string Vertex3::getValueString() const
 	return status.str();
 }
 
-Ionflux::GeoUtils::Vertex3* Vertex3::create(double newX, double newY, 
-double newZ)
-{
-	Vertex3* v0 = create();
-	v0->setCoords(newX, newY, newZ);
-	return v0;
-}
-
-std::string Vertex3::getXMLData() const
+std::string Vertex3::getXMLData_legacy() const
 {
 	ostringstream d0;
 	d0 << x << "," << y << "," << z;
 	return d0.str();
 }
 
-std::string Vertex3::getXML() const
+std::string Vertex3::getXML_legacy() const
 {
 	ostringstream d0;
-	d0 << "<v3 d=\"" << getXMLData() << "\" />";
+	d0 << "<v3 d=\"" << getXMLData_legacy() << "\" />";
 	return d0.str();
 }
 
@@ -446,6 +442,67 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+Ionflux::GeoUtils::Vertex3* Vertex3::create(double initX, double initY, 
+double initZ, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vertex3* newObject = new Vertex3(initX, initY, initZ);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vertex3* Vertex3::create(const 
+Ionflux::ObjectBase::DoubleVector& initCoords, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vertex3* newObject = new Vertex3(initCoords);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vertex3* Vertex3::create(const 
+Ionflux::GeoUtils::Vector3& initCoords, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Vertex3* newObject = new Vertex3(initCoords);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Vertex3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Vertex3::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	d0 << "x=\"" << x << "\"";
+	d0 << " " << "y=\"" << y << "\"";
+	d0 << " " << "z=\"" << z << "\"";
+	return d0.str();
+}
+
+void Vertex3::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	// TODO: Implementation.
 }
 
 }

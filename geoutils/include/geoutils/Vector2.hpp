@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Vector2.hpp                     Vector (2 elements) (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Rotate.hpp                      Transform node: Rotate (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

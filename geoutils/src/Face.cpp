@@ -728,7 +728,7 @@ std::string Face::getXMLDataTexCoords() const
 	return d0.str();
 }
 
-std::string Face::getXML() const
+std::string Face::getXML_legacy() const
 {
 	ostringstream d0;
 	d0 << "<f d=\"" << getXMLDataVertices() << "\" uv=\"" 

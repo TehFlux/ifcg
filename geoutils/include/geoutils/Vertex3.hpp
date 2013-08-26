@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Vertex3.hpp                     Vertex (3D) (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -83,6 +83,8 @@ class Vertex3
 		static const Vertex3ClassInfo vertex3ClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -411,19 +413,6 @@ class Vertex3
 		 */
 		virtual std::string getValueString() const;
 		
-		/** Create.
-		 *
-		 * Create a new vertex.
-		 *
-		 * \param newX Element (X).
-		 * \param newY Element (Y).
-		 * \param newZ Element (Z).
-		 *
-		 * \return New vertex.
-		 */
-		static Ionflux::GeoUtils::Vertex3* create(double newX, double newY, 
-		double newZ);
-		
 		/** Get XML data representation.
 		 *
 		 * Get a representation of the object suitable for use in an XML data 
@@ -431,7 +420,7 @@ class Vertex3
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getXMLData() const;
+		virtual std::string getXMLData_legacy() const;
 		
 		/** Get XML representation.
 		 *
@@ -439,7 +428,7 @@ class Vertex3
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getXML() const;
+		virtual std::string getXML_legacy() const;
 		
 		/** Assignment operator.
 		 *
@@ -483,6 +472,66 @@ class Vertex3
 		 */
 		static Ionflux::GeoUtils::Vertex3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex3 object.
+		 *
+		 * \param initX Element (X).
+		 * \param initY Element (Y).
+		 * \param initZ Element (Z).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex3* create(double initX, double initY, 
+		double initZ, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex3 object.
+		 *
+		 * \param initCoords Coordinate vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex3 object.
+		 *
+		 * \param initCoords Coordinate vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::GeoUtils::Vector3& initCoords, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
 		
 		/** Get x coordinate.
 		 *

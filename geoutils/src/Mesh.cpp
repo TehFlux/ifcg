@@ -524,7 +524,7 @@ void Mesh::getPolygons(Ionflux::GeoUtils::Polygon3Set& target)
 	}
 }
 
-std::string Mesh::getXML() const
+std::string Mesh::getXML_legacy() const
 {
 	ostringstream d0;
 	std::string mID = getID();
@@ -532,12 +532,12 @@ std::string Mesh::getXML() const
 	    mID = DEFAULT_ID;
 	d0 << "<mesh id=\"" << mID << "\"><vertices>";
 	// Vertices.
-	d0 << vertexSource->getXML();
+	d0 << vertexSource->getXML_legacy();
 	// Faces.
 	d0 << "</vertices><faces>";
 	for (FaceVector::const_iterator i = faces.begin(); 
 	    i != faces.end(); i++)
-	    d0 << (*i)->getXML();
+	    d0 << (*i)->getXML_legacy();
 	d0 << "</faces></mesh>";
 	return d0.str();
 }
@@ -546,7 +546,7 @@ void Mesh::writeToFile(const std::string& fileName) const
 {
 	ofstream f0;
 	f0.open(fileName.c_str(), ios_base::out);
-	f0 << XML_HEADER << getXML();
+	f0 << XML_HEADER << getXML_legacy();
 }
 
 void Mesh::removeBackfaces(const Ionflux::GeoUtils::Vector3& front)

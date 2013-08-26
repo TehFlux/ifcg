@@ -8,7 +8,7 @@
  * BoxBoundsItemCompareDistanceVec3.hpp  Box bounds item comparison 
  * function object: Distance to point (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

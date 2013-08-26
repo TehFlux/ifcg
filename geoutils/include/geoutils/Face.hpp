@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Face.hpp                        Mesh face (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -543,7 +543,7 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \return XML representation.
 		 */
-		virtual std::string getXML() const;
+		virtual std::string getXML_legacy() const;
 		
 		/** Initialize from XML data.
 		 *

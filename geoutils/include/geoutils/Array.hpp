@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * Array.hpp                       Transform node: Array (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

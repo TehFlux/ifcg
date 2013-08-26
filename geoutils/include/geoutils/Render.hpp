@@ -8,7 +8,7 @@
  * Render.hpp                      Transform node: Render to image 
  * (header).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
