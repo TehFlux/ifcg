@@ -165,6 +165,7 @@ typedef int ImageSourceType;
 typedef std::string ImageID;
 
 typedef int MatrixSamplingMethod;
+typedef int QuadInterpolationTypeID;
 
 namespace TransformNodes
 {
@@ -296,6 +297,11 @@ const unsigned int COORDINATE_NOT_SET = UINT_MAX;
 
 const Ionflux::GeoUtils::MatrixSamplingMethod SAMPLE_AVERAGE = 0;
 const Ionflux::GeoUtils::MatrixSamplingMethod SAMPLE_MULTIPLY = 1;
+
+const Ionflux::GeoUtils::QuadInterpolationTypeID 
+    QUAD_INTERPOLATION_SYMMETRIC = 0;
+const Ionflux::GeoUtils::QuadInterpolationTypeID 
+    QUAD_INTERPOLATION_BILINEAR = 1;
 
 namespace TransformNodes
 {

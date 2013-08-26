@@ -172,6 +172,13 @@ const Ionflux::GeoUtils::MatrixSamplingMethod SAMPLE_AVERAGE = 0;
 /// Matrix sampling method: multiply.
 const Ionflux::GeoUtils::MatrixSamplingMethod SAMPLE_MULTIPLY = 1;
 
+/// Quad interpolation type ID: symmetric.
+const Ionflux::GeoUtils::QuadInterpolationTypeID 
+    QUAD_INTERPOLATION_SYMMETRIC = 0;
+/// Quad interpolation type ID: bilinear.
+const Ionflux::GeoUtils::QuadInterpolationTypeID 
+    QUAD_INTERPOLATION_BILINEAR = 1;
+
 namespace TransformNodes
 {
 

@@ -96,7 +96,26 @@ Line3::~Line3()
 	// TODO: Nothing ATM. ;-)
 }
 
-bool Line3::intersectPlane(const Ionflux::GeoUtils::Plane3& plane, 
+bool Line3::intersect(const Ionflux::GeoUtils::Line3& other, 
+Ionflux::GeoUtils::Vector3& result) const
+{
+	Vector3 r;
+	try
+	{
+	    Matrix3 m;
+	    m.setC0(u);
+	    m.setC1(other.u.flip());
+	    m.setC2(Vector3::ZERO);
+	    r = m.solve(other.p - p);
+	} catch (GeoUtilsError& e)
+	{
+	    return false;
+	}
+	result = r[0] * u + p;
+	return true;
+}
+
+bool Line3::intersect(const Ionflux::GeoUtils::Plane3& plane, 
 Ionflux::GeoUtils::Vector3& result) const
 {
 	Vector3 r;
@@ -134,7 +153,7 @@ double t) const
 	}
 	*/
 	Vector3 ip;
-	if (!intersectPlane(p0, ip))
+	if (!intersect(p0, ip))
 	    return false;
 	// Transform polygon and intersection point to tangent space.
 	Matrix3 tm = p0.getTangentBase();

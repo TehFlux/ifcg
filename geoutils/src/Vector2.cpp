@@ -258,11 +258,10 @@ Ionflux::GeoUtils::Vector2 Vector2::operator/(double c) const
 	return Vector2(elements[0] / c, elements[1] / c);
 }
 
-std::string Vector2::getString() const
+std::string Vector2::getValueString() const
 {
 	ostringstream state;
-	state << getClassName() << "[" << elements[0] << ", " << elements[1] 
-	    << "]";
+	state << elements[0] << ", " << elements[1];
 	return state.str();
 }
 

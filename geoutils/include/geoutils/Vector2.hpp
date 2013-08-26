@@ -312,13 +312,13 @@ class Vector2
 		 */
 		virtual Ionflux::GeoUtils::Vector2 operator/(double c) const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Get axis direction vector.
 		 *

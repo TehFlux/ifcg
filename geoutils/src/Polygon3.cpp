@@ -34,6 +34,7 @@
 #include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/utils.hpp"
+#include "geoutils/Line3.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -566,7 +567,7 @@ indices, double s)
 	    {
 	        Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
 	            getVertex((*indices)[i]), this, "calculateUVCoefficients", 
-	                "Vertex (0)");
+	                "Vertex");
 	        vs.push_back(v0);
 	    }
 	} else 
@@ -575,14 +576,14 @@ indices, double s)
 	    {
 	        Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
 	            getVertex(i), this, "calculateUVCoefficients", 
-	                "Vertex (0)");
+	                "Vertex");
 	        vs.push_back(v0);
 	    }
 	}
 	Vector3 v1(vs[0]->getVector());
-	Vector3 v2(vs[1]->getVector());
+	Vector3 v2(vs[3]->getVector());
 	Vector3 v3(vs[2]->getVector());
-	Vector3 v4(vs[3]->getVector());
+	Vector3 v4(vs[1]->getVector());
 	/* Here the magic happens.
 	   (These equations come from parameterizing the lines through the 
 	   points on two opposite sides of the quadrilateral with u (or v, 
@@ -607,7 +608,8 @@ indices, double s)
 
 Ionflux::GeoUtils::Vector2 Polygon3::getUV(const 
 Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* indices, 
-double s, double t)
+Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType, double s, 
+double t)
 {
 	if (!isQuad())
 	    throw GeoUtilsError(getErrorString(
@@ -625,42 +627,142 @@ double s, double t)
 	// Calculate UV coefficients.
 	Matrix4 m0;
 	calculateUVCoefficients(p, m0, &i0, s);
-	shift(i0, -1);
-	Matrix4 m1;
-	calculateUVCoefficients(p, m1, &i0, s);
-	// Solve equations.
+	// Solve equation systems.
+	double u = 0.;
+	double v = 0.;
 	Vector3 s11;
 	solveCubicEquation(m0.getElement(0, 0), m0.getElement(0, 1), 
 	    m0.getElement(0, 2), m0.getElement(0, 3), s11);
 	Vector3 s12;
 	solveCubicEquation(m0.getElement(1, 0), m0.getElement(1, 1), 
 	    m0.getElement(1, 2), m0.getElement(1, 3), s12);
-	Vector3 s21;
-	solveCubicEquation(m1.getElement(0, 0), m1.getElement(0, 1), 
-	    m1.getElement(0, 2), m1.getElement(0, 3), s21);
-	Vector3 s22;
-	solveCubicEquation(m1.getElement(1, 0), m1.getElement(1, 1), 
-	    m1.getElement(1, 2), m1.getElement(1, 3), s22);
-	// Determine solutions of the equation systems.
 	Ionflux::ObjectBase::DoubleVector r0;
 	s11.findMatchingElements(s12, r0, &UV_RANGE, t);
-	Ionflux::ObjectBase::DoubleVector r1;
-	s21.findMatchingElements(s22, r1, &UV_RANGE, t);
-	if ((r0.size() == 0) 
-	    || (r1.size() == 0))
+	if (r0.size() == 0)
 	{
 	    std::ostringstream status;
-	    status << "No solution found for UV coordinates (p = (" 
+	    status << "No solution found for U coordinates (p = (" 
 	        << p.getValueString() << "), quad = " << getValueString() 
 	        << ", s11 = (" << s11.getValueString() 
 	        << "), s12 = (" << s12.getValueString()
-	        << "), s21 = (" << s21.getValueString() 
-	        << "), s22 = (" << s22.getValueString()
 	        << ")).";
 	    throw GeoUtilsError(getErrorString(status.str(), "getUV"));
 	}
-	Vector2 result(r0[0], r1[0]);
-	return result;
+	u = r0[0];
+	if (interpolationType == QUAD_INTERPOLATION_SYMMETRIC)
+	{
+	    shift(i0, -1);
+	    Matrix4 m1;
+	    calculateUVCoefficients(p, m1, &i0, s);
+	    Vector3 s21;
+	    solveCubicEquation(m1.getElement(0, 0), m1.getElement(0, 1), 
+	        m1.getElement(0, 2), m1.getElement(0, 3), s21);
+	    Vector3 s22;
+	    solveCubicEquation(m1.getElement(1, 0), m1.getElement(1, 1), 
+	        m1.getElement(1, 2), m1.getElement(1, 3), s22);
+	    Ionflux::ObjectBase::DoubleVector r1;
+	    s21.findMatchingElements(s22, r1, &UV_RANGE, t);
+	    if (r0.size() == 0)
+	    {
+	        std::ostringstream status;
+	        status << "No solution found for V coordinates (p = (" 
+	            << p.getValueString() << "), quad = " << getValueString() 
+	            << "), s21 = (" << s21.getValueString() 
+	            << "), s22 = (" << s22.getValueString()
+	            << ")).";
+	        throw GeoUtilsError(getErrorString(status.str(), "getUV"));
+	    }
+	    v = r1[0];
+	} else
+	if (interpolationType == QUAD_INTERPOLATION_BILINEAR)
+	{
+	    Vertex3Vector vs;
+	    for (unsigned int i = 0; i < 4; i++)
+	    {
+	        Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	            getVertex(i0[i]), this, "getUV", "Vertex");
+	        vs.push_back(v0);
+	    }
+	    Vector3 v1(vs[0]->getVector());
+	    Vector3 v2(vs[1]->getVector());
+	    Vector3 v3(vs[2]->getVector());
+	    Vector3 v4(vs[3]->getVector());
+	    Vector3 w1(v1 + u * (v2 - v1));
+	    Vector3 w2(v4 + u * (v3 - v4));
+	    /* <---- DEBUG ----- //
+	    std::cerr << "[Polygon3::getUV] DEBUG: "
+	        "w1 = (" << w1.getValueString() << "), w2 = (" 
+	        << w2.getValueString() << ")" << std::endl;
+	    // ----- DEBUG ----> */
+	    Vector3 vp(p.getVector());
+	    v = (vp - w1).norm() / (w2 - w1).norm();
+	} else
+	{
+	    std::ostringstream status;
+	    status << "Unknown interpolation type: " << interpolationType;
+	    throw GeoUtilsError(getErrorString(status.str(), "getUV"));
+	}
+	return Vector2(u, v);
+}
+
+Ionflux::GeoUtils::Vertex3 Polygon3::getUVVertex(const 
+Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* indices, 
+Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType)
+{
+	if (!isQuad())
+	    throw GeoUtilsError(getErrorString(
+	        "Polygon is not a quadrilateral", "getUVVertex"));
+	Ionflux::ObjectBase::IntVector i0;
+	if (indices == 0)
+	{
+	    for (unsigned int i = 0; i < 4; i++)
+	        i0.push_back(i);
+	} else
+	    i0 = *indices;
+	if (i0.size() < 4)
+	    throw GeoUtilsError(getErrorString(
+	        "Not enough elements in index vector.", "getUVVertex"));
+	Vertex3Vector vs;
+	for (unsigned int i = 0; i < 4; i++)
+	{
+	    Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(i0[i]), this, "getUVVertex", "Vertex");
+	    vs.push_back(v0);
+	}
+	double u = uv[0];
+	double v = uv[1];
+	Vector3 p;
+	Vector3 v1(vs[0]->getVector());
+	Vector3 v2(vs[1]->getVector());
+	Vector3 v3(vs[2]->getVector());
+	Vector3 v4(vs[3]->getVector());
+	Vector3 w1(v1 + u * (v2 - v1));
+	Vector3 w2(v4 + u * (v3 - v4));
+	if (interpolationType == QUAD_INTERPOLATION_BILINEAR)
+	{
+	    p = w1 + v * (w2 - w1);
+	} else
+	if (interpolationType == QUAD_INTERPOLATION_SYMMETRIC)
+	{
+	    Vector3 w3(v1 + v * (v4 - v1));
+	    Vector3 w4(v2 + v * (v3 - v2));
+	    Line3 l0(w1, (w2 - w1).normalize());
+	    Line3 l1(w3, (w4 - w3).normalize());
+	    if (!l0.intersect(l1, p))
+	    {
+	        std::ostringstream status;
+	        status << "Interpolation lines do not intersect (uv = (" 
+	            << uv.getValueString() << "), quad = " << getValueString() 
+	            << ").";
+	        throw GeoUtilsError(getErrorString(status.str(), "getUVVertex"));
+	    }
+	} else
+	{
+	    std::ostringstream status;
+	    status << "Unknown interpolation type: " << interpolationType;
+	    throw GeoUtilsError(getErrorString(status.str(), "getUVVertex"));
+	}
+	return Vertex3(p);
 }
 
 Ionflux::GeoUtils::Polygon3* Polygon3::circle(unsigned int resolution)

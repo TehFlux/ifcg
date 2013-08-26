@@ -252,6 +252,9 @@ typedef std::string ImageID;
 /// Matrix sampling method.
 typedef int MatrixSamplingMethod;
 
+/// Quadrilateral interpolation type.
+typedef int QuadInterpolationTypeID;
+
 namespace TransformNodes
 {
 

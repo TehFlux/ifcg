@@ -206,7 +206,12 @@ v) const
 	    && ((y21 * y12 - y11 * y22) != 0.0))
 	    result = swapColumns().solve(v).swap();
 	else
-	    throw GeoUtilsError("Cannot solve 2x2 matrix equation.");
+	if ((y11 != 0.) && (y12 == 0.) && (y21 == 0.) 
+	    && (y22 == 0.) && (e == 0))
+	{
+	    result.setElement(0, d / y11);
+	    result.setElement(1, 0.);
+	}
 	return result;
 }
 

@@ -55,7 +55,9 @@ class Line3
         Line3(const Ionflux::GeoUtils::Vector3& initP, const 
         Ionflux::GeoUtils::Vector3& initU);
         virtual ~Line3();
-        virtual bool intersectPlane(const Ionflux::GeoUtils::Plane3& plane,
+        virtual bool intersect(const Ionflux::GeoUtils::Line3& other, 
+        Ionflux::GeoUtils::Vector3& result) const;
+        virtual bool intersect(const Ionflux::GeoUtils::Plane3& plane, 
         Ionflux::GeoUtils::Vector3& result) const;
         virtual bool intersectionInPoly(const Ionflux::GeoUtils::Polygon3& 
         poly, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;

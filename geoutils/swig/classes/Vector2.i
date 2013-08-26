@@ -84,7 +84,7 @@ class Vector2
         const;
         virtual Ionflux::GeoUtils::Vector2 operator*(double c) const;
         virtual Ionflux::GeoUtils::Vector2 operator/(double c) const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Vector2 axis(Ionflux::GeoUtils::AxisID 
         axisID);
 		virtual Ionflux::GeoUtils::Vector2* copy() const;

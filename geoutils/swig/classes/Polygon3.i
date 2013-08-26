@@ -110,7 +110,13 @@ class Polygon3
         Ionflux::ObjectBase::IntVector* indices = 0, double s = 1.);
         virtual Ionflux::GeoUtils::Vector2 getUV(const 
         Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* 
-        indices = 0, double s = 1., double t = DEFAULT_TOLERANCE);
+        indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
+        interpolationType = QUAD_INTERPOLATION_BILINEAR, double s = 1., 
+        double t = DEFAULT_TOLERANCE);
+        virtual Ionflux::GeoUtils::Vertex3 getUVVertex(const 
+        Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* 
+        indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
+        interpolationType = QUAD_INTERPOLATION_BILINEAR);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
 		virtual Ionflux::GeoUtils::Polygon3* copy() const;

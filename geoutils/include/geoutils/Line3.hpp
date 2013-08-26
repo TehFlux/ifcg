@@ -110,6 +110,18 @@ class Line3
 		 */
 		virtual ~Line3();
 		
+		/** Intersect line.
+		 *
+		 * Calculate the intersection point of the line and another line.
+		 *
+		 * \param other Line.
+		 * \param result Intersection point.
+		 *
+		 * \return \c true on success, \c false if no intersection exists.
+		 */
+		virtual bool intersect(const Ionflux::GeoUtils::Line3& other, 
+		Ionflux::GeoUtils::Vector3& result) const;
+		
 		/** Intersect plane.
 		 *
 		 * Calculate the intersection point of the line and the plane.
@@ -119,7 +131,7 @@ class Line3
 		 *
 		 * \return \c true on success, \c false if no intersection exists.
 		 */
-		virtual bool intersectPlane(const Ionflux::GeoUtils::Plane3& plane, 
+		virtual bool intersect(const Ionflux::GeoUtils::Plane3& plane, 
 		Ionflux::GeoUtils::Vector3& result) const;
 		
 		/** Polygon intersection test.

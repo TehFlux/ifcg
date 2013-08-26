@@ -435,14 +435,15 @@ class Polygon3
 		Ionflux::GeoUtils::Matrix4& target, Ionflux::ObjectBase::IntVector* 
 		indices = 0, double s = 1.);
 		
-		/** getUV.
+		/** Get UV coordinates for vertex.
 		 *
-		 * Calculate the UV coordinates of the specified point relative to the
-		 * (quadrilateral) polygon. The vertex order can be specified by the 
-		 * optional \c indices parameter.
+		 * Calculate the UV coordinates of the specified vertex relative to 
+		 * the (quadrilateral) polygon. The vertex order can be specified by 
+		 * the optional \c indices parameter.
 		 *
 		 * \param p point.
 		 * \param indices Vertex indices.
+		 * \param interpolationType interpolation type.
 		 * \param s scale factor for the coefficients.
 		 * \param t tolerance for comparisons.
 		 *
@@ -450,7 +451,26 @@ class Polygon3
 		 */
 		virtual Ionflux::GeoUtils::Vector2 getUV(const 
 		Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* indices = 
-		0, double s = 1., double t = DEFAULT_TOLERANCE);
+		0, Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType = 
+		QUAD_INTERPOLATION_BILINEAR, double s = 1., double t = 
+		DEFAULT_TOLERANCE);
+		
+		/** Get a vertex from UV coordinates.
+		 *
+		 * Get a vertex from the (quadrilateral) polygon by evaluating the 
+		 * specified UV coordinates. The vertex order can be specified by the 
+		 * optional \c indices parameter.
+		 *
+		 * \param uv UV coordinates.
+		 * \param indices Vertex indices.
+		 * \param interpolationType interpolation type.
+		 *
+		 * \return UV vertex.
+		 */
+		virtual Ionflux::GeoUtils::Vertex3 getUVVertex(const 
+		Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* indices =
+		0, Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType = 
+		QUAD_INTERPOLATION_BILINEAR);
 		
 		/** Create polygon: circle.
 		 *
