@@ -492,17 +492,23 @@ std::string Vertex3::getXMLElementName() const
 
 std::string Vertex3::getXMLAttributeData() const
 {
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
 	std::ostringstream d0;
 	d0 << "x=\"" << x << "\"";
 	d0 << " " << "y=\"" << y << "\"";
 	d0 << " " << "z=\"" << z << "\"";
+	if ((d0.str().size() > 0) && (a0.size() > 0))
+	    d0 << " ";
+    d0 << a0;
 	return d0.str();
 }
 
 void Vertex3::getXMLChildData(std::string& target, unsigned int 
 indentLevel) const
 {
-	// TODO: Implementation.
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	std::ostringstream d0;
+	target = d0.str();
 }
 
 }

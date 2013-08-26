@@ -7,7 +7,7 @@
  * --------------------------------------------------------------------------
  * LinearCombination.hpp           Linear combination mapping (header).
  * =========================================================================
- *
+ * 
  * This file is part of IFMapping - Ionflux Mapping Library.
  * 
  * IFMapping - Ionflux Mapping Library is free software; you can 
