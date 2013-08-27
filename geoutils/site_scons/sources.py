@@ -94,7 +94,8 @@ geoutilsLibHeaders = ['include/geoutils/constants.hpp',
     'include/geoutils/SVGImageProperties.hpp'
 ]
 
-geoutilsLibSources = ['build/utils.cpp', 
+geoutilsLibSources = [
+    'build/utils.cpp', 
 	'build/xmlutils.cpp', 
     'build/Accept3.cpp', 
     'build/AcceptLength3.cpp', 
@@ -262,6 +263,12 @@ geoutilsLibClasses = [
     'SVGImageProperties'
 ]
 
+geoutilsLibXMLClasses = [
+    'TransformableObject', 
+    'Vertex3', 
+    'Vertex3Set'
+]
+
 # Altjira/GeoUtils library
 altjiraGeoUtilsLibHeaders = [
     'include/geoutils/altjirageoutils.hpp',
@@ -297,5 +304,8 @@ altjiraGeoUtilsLibClasses = [
     'ImageItem', 
     'ImageSource', 
     'ImageLoader'
+]
+
+altjiraGeoUtilsLibXMLClasses = [
 ]
 

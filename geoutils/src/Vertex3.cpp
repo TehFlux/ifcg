@@ -1,6 +1,6 @@
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Vertex3.cpp                     Vertex (3D) (implementation).
@@ -492,22 +492,23 @@ std::string Vertex3::getXMLElementName() const
 
 std::string Vertex3::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::string a0(Ionflux::GeoUtils::TransformableObject::getXMLAttributeData());
 	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0 << " ";
 	d0 << "x=\"" << x << "\"";
 	d0 << " " << "y=\"" << y << "\"";
 	d0 << " " << "z=\"" << z << "\"";
-	if ((d0.str().size() > 0) && (a0.size() > 0))
-	    d0 << " ";
-    d0 << a0;
 	return d0.str();
 }
 
 void Vertex3::getXMLChildData(std::string& target, unsigned int 
 indentLevel) const
 {
-	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
 	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::GeoUtils::TransformableObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
 	target = d0.str();
 }
 

@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_TRANSFORMABLEOBJECT
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * TransformableObject.hpp         Transformable object (header).
@@ -104,6 +104,8 @@ class TransformableObject
 		static const TransformableObjectClassInfo transformableObjectClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -334,6 +336,32 @@ class TransformableObject
 		 */
 		static Ionflux::GeoUtils::TransformableObject* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
 		
 		/** Get transformation matrix.
 		 *

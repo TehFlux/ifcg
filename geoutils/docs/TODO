@@ -9,23 +9,20 @@ TODO
 Up next
 --------------------------------------------------------------------------------
 
-
++ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 --------------------------------------------------------------------------------
 New
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Critical stuff
 --------------------------------------------------------------------------------
 
 + Add create<numeric type>Vector<n>(..., <target vector>) functions.
   (necessary because swig does not recognize the vectors returned by such 
   functions as of the correct type)
   > create them automatically using a template
-
-+ extractXMLVertices() adds a vertex to close the path by default, which 
-  breaks getBarycenter() for low vertex counts.
-
-+ Use getValueString() instead of getString()
-
-+ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 + BGeoUtils
   > update to work with BMesh
@@ -35,9 +32,10 @@ New
     mesh and GeoUtils mesh
   > create a more readable grid
 
---------------------------------------------------------------------------------
-Critical stuff
---------------------------------------------------------------------------------
++ extractXMLVertices() adds a vertex to close the path by default, which 
+  breaks getBarycenter() for low vertex counts.
+
++ Use getValueString() instead of getString()
 
 + BoundingBox lookups use too much RAM.
 
@@ -103,6 +101,9 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ GeoUtils takes long to compile. Maybe break the core library into several 
+  libraries.
 
 + Blender
   > add operator for Mesh::makePlanar()

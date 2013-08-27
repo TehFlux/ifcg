@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_VERTEX3
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Vertex3.hpp                     Vertex (3D) (header).

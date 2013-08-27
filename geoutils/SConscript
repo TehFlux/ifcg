@@ -36,6 +36,7 @@ if (not os.path.isfile('site_scons/local_config.py')):
 import local_config as lc
 from sources import *
 from builders import buildSource, buildClassInterface, buildInterface
+from builders import buildClassXMLIO
 
 Help("""
 Type 'scons' to build the default targets.
@@ -52,6 +53,7 @@ Targets:
   tests                        Test programs.
   sources                      Source files (requires ifclassgen).
   interfaces                   SWIG interface declarations (requires iftpl).
+  xmlio                        XML I/O functions.
   pymodule                     Python module.
   install                      Install headers, libraries and programs.
 
@@ -181,10 +183,10 @@ if (not config.CheckLibWithHeader("python" + lc.pythonVersion,
     buildPyModule = False
 
 haveIFClassgen = True
-if (not config.CheckProgram("ifclassgen")):
+if (not config.CheckProgram("ifclassgen0")):
     haveIFClassgen = False
 haveIFTpl = True
-if (not config.CheckProgram("iftpl")):
+if (not config.CheckProgram("iftpl0")):
     haveIFTpl = False
 haveSWIG = True
 if (not config.CheckProgram("swig")):
@@ -205,11 +207,14 @@ for it in geoutilsEnv['CPPPATH']:
     swigIncludes += ('-I' + it + ' ')
 swigPythonBuilder = Builder(action = "swig -c++ -python "
     + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
+xmlIOBuilder = Builder(action = buildClassXMLIO)
 
 geoutilsEnv.Append(BUILDERS = { 'Source' : sourceBuilder, 
     'ClassInterface' : classInterfaceBuilder, 
     'Interface' : interfaceBuilder, 
-    'SWIGPython' : swigPythonBuilder })
+    'SWIGPython' : swigPythonBuilder, 
+    'ClassXMLIO' : xmlIOBuilder
+})
 
 altjiraGeoUtilsEnv = geoutilsEnv.Clone()
 if (buildAltjiraGeoUtils):
@@ -269,6 +274,43 @@ else:
     print "****************************************************************"
     print "iftpl not found -  Interface declarations will NOT be generated!"
     print "****************************************************************"
+
+# XML I/O functions.
+if (haveIFTpl):
+    #xmlIO = []
+    classXMLIO = []
+    # geoutils library
+    xmlIOTargets = []
+    for it in geoutilsLibXMLClasses:
+        t0 = 'temp/xmlutils/' + it + '_xml.hpp'
+        t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
+        t2 = 'temp/xmlutils/' + it + '_xml.cpp'
+        xmlIOTargets += [t0]
+        classXMLIO += [ 
+            geoutilsEnv.ClassXMLIO(target = [ t0, t1, t2 ], 
+                source = ['conf/class/' + it + '.conf'])
+        ]
+    #xmlIO += [ geoutilsEnv.XMLIO(target = lc.xmlIOFile, 
+    #    source = xmlIOTargets + lc.xmlIOTemplateFile) ]
+    # Altjira/GeoUtils library
+    xmlIOTargets = []
+    for it in altjiraGeoUtilsLibXMLClasses:
+        t0 = 'temp/xmlutils/' + it + '_xml.hpp'
+        t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
+        t2 = 'temp/xmlutils/' + it + '_xml.cpp'
+        xmlIOTargets += [t0]
+        classXMLIO += [ 
+            geoutilsEnv.ClassXMLIO(target = [ t0, t1, t2 ], 
+                source = ['conf/class/' + it + '.conf'])
+        ]
+    #xmlIO += [ geoutilsEnv.XMLIO(target = lc.xmlIOFile, 
+    #    source = xmlIOTargets + lc.xmlIOTemplateFile) ]
+    #allTargets += (classXMLIO + xmlIO)
+    allTargets += classXMLIO
+else:
+    print "***********************************************************"
+    print "iftpl not found -  XML I/O functions will NOT be generated!"
+    print "***********************************************************"
 
 ## tinyxml
 #tinyxmlLibEnv = env.Clone()
@@ -380,7 +422,9 @@ aliasInstall = Alias('install', installTargets)
 if (haveIFClassgen):
     aliasSources = Alias('sources', sources)
 if (haveIFTpl):
-    aliasInterfaces = Alias('interfaces', classInterfaces + [interfaces])
+    #aliasXMLIO = Alias('xmlio', classXMLIO + xmlIO)
+    aliasXMLIO = Alias('xmlio', classXMLIO)
+    aliasInterfaces = Alias('interfaces', classInterfaces + interfaces)
 if (buildPyModule):
     aliasPyModule = Alias('pymodule', pyModules)
 

@@ -1,6 +1,6 @@
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * TransformableObject.cpp         Transformable object (implementation).
@@ -32,6 +32,8 @@
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -56,6 +58,8 @@ TransformableObjectClassInfo::~TransformableObjectClassInfo()
 // run-time type information instance constants
 const TransformableObjectClassInfo TransformableObject::transformableObjectClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* TransformableObject::CLASS_INFO = &TransformableObject::transformableObjectClassInfo;
+
+const std::string TransformableObject::XML_ELEMENT_NAME = "transformableobject";
 
 TransformableObject::TransformableObject()
 : useTransform(false), useVI(false), transformChanged(false), viChanged(false), boundsCache(0), transformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), viewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), imageMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastTransformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastViewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastImageMatrix(Ionflux::GeoUtils::Matrix4::UNIT)
@@ -356,6 +360,30 @@ Ionflux::GeoUtils::TransformableObject*
 TransformableObject::upcast(Ionflux::ObjectBase::IFObject* other)
 {
     return dynamic_cast<TransformableObject*>(other);
+}
+
+std::string TransformableObject::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string TransformableObject::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void TransformableObject::getXMLChildData(std::string& target, unsigned int
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
 }
 
 }
