@@ -33,6 +33,8 @@
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3Set.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -59,6 +61,8 @@ const unsigned int Face::VERTEX_INDEX_NONE = UINT_MAX;
 // run-time type information instance constants
 const FaceClassInfo Face::faceClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Face::CLASS_INFO = &Face::faceClassInfo;
+
+const std::string Face::XML_ELEMENT_NAME = "face";
 
 Face::Face()
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), polygon(0), vertexSource(0)
@@ -1038,6 +1042,31 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string Face::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Face::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if ((d0.str().size() > 0) && (a0.size() > 0))
+	    d0 << " ";
+    d0 << a0;
+	return d0.str();
+}
+
+void Face::getXMLChildData(std::string& target, unsigned int indentLevel) 
+const
+{
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	std::ostringstream d0;
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(vertices, "", 
+        indentLevel, "pname=\"vertices\"");
+	target = d0.str();
 }
 
 }

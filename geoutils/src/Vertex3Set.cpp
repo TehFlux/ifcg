@@ -33,6 +33,8 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/gslutils.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -56,6 +58,8 @@ Vertex3SetClassInfo::~Vertex3SetClassInfo()
 // run-time type information instance constants
 const Vertex3SetClassInfo Vertex3Set::vertex3SetClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vertex3Set::CLASS_INFO = &Vertex3Set::vertex3SetClassInfo;
+
+const std::string Vertex3Set::XML_ELEMENT_NAME = "vertex3set";
 
 Vertex3Set::Vertex3Set()
 {
@@ -439,6 +443,31 @@ Vertex3Set::create(Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string Vertex3Set::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Vertex3Set::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if ((d0.str().size() > 0) && (a0.size() > 0))
+	    d0 << " ";
+    d0 << a0;
+	return d0.str();
+}
+
+void Vertex3Set::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	std::ostringstream d0;
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(vertices, "vert3vec", "", 
+        indentLevel, "pname=\"vertices\"");
+	target = d0.str();
 }
 
 }
