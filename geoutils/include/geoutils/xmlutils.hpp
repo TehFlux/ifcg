@@ -66,7 +66,7 @@ void getSVGPolygons(const std::string& fileName,
  * \param elementID Element ID.
  * \param target Vertex set to be initialized.
  */
-void getVertex3Set(const std::string& fileName, const std::string& elementID, 
+void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Vertex3Set& target);
 
 /**
@@ -93,6 +93,90 @@ void getMesh(const std::string& fileName, const std::string& elementID,
  */
 void getBoundingBox(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::BoundingBox& target);
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class TransformableObject;
+
+namespace XMLUtils
+{
+
+void getTransformableObject(const std::string& data, 
+Ionflux::GeoUtils::TransformableObject& target);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vertex3;
+
+namespace XMLUtils
+{
+
+void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& 
+target);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vertex3Set;
+
+namespace XMLUtils
+{
+
+void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& 
+target);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Face;
+
+namespace XMLUtils
+{
+
+void getFace(const std::string& data, Ionflux::GeoUtils::Face& target);
+
+}
 
 }
 

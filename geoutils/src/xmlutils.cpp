@@ -30,10 +30,10 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Polygon3Set.hpp"
 #include "geoutils/Polygon3.hpp"
-#include "geoutils/Vertex3Set.hpp"
 #include "geoutils/Mesh.hpp"
 #include "geoutils/BoundingBox.hpp"
 #include "ifobject/xmlutils_private.hpp"
+#include "geoutils/xmlutils_private.hpp"
 
 namespace Ionflux
 {
@@ -272,7 +272,7 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
 }
 
 // Initialize vertex set from an XML element.
-void getVertex3Set(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
+void getVertex3Set_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
 {
     std::ostringstream message;
     const char* a0 = e0->Value();
@@ -289,7 +289,7 @@ void getVertex3Set(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
     extractXMLVertices(d0, target);
 }
 
-void getVertex3Set(const std::string& fileName, const std::string& elementID, 
+void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Vertex3Set& target)
 {
     std::ostringstream message;
@@ -308,7 +308,261 @@ void getVertex3Set(const std::string& fileName, const std::string& elementID,
             "Element 'vertex3set' with ID '" << elementID << "' not found.";
         throw GeoUtilsError(message.str());
     }
+    getVertex3Set_legacy(m0, target);
+}
+
+}
+
+}
+
+#include "geoutils/TransformableObject.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getTransformableObject(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+elementName = Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getTransformableObject");
+    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+}
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+elementName)
+{
+    if (elementName.size() == 0)
+        getTransformableObject(e0, target);
+    else
+        getTransformableObject(e0, target, elementName);
+}
+
+void getTransformableObject(const std::string& data, Ionflux::GeoUtils::TransformableObject& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getTransformableObject] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
+    getTransformableObject(m0, target);
+}
+
+}
+
+}
+
+}
+#include "geoutils/Vertex3.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getVertex3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getVertex3");
+    getTransformableObject(e0, target, elementName);
+    // Get attribute data.
+    std::string a0;
+    // Property: x (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "x", true);
+    target.setX(::strtod(a0.c_str(), 0));
+    // Property: y (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "y", true);
+    target.setY(::strtod(a0.c_str(), 0));
+    // Property: z (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "z", true);
+    target.setZ(::strtod(a0.c_str(), 0));
+}
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName)
+{
+    if (elementName.size() == 0)
+        getVertex3(e0, target);
+    else
+        getVertex3(e0, target, elementName);
+}
+
+void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getVertex3] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
+    getVertex3(m0, target);
+}
+
+}
+
+}
+
+}
+#include "geoutils/Vertex3Set.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getVertex3Set(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName =
+Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getVertex3Set");
+    getTransformableObject(e0, target, elementName);
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: vertices (vector[object])
+        if ((en0 == "vert3vec") 
+            && (pName == "vertices"))
+        {
+            std::vector<Ionflux::GeoUtils::Vertex3*> pv0;
+            Ionflux::ObjectBase::XMLUtils::getObjVector<
+                Ionflux::GeoUtils::Vertex3, Ionflux::GeoUtils::Vertex3*>(ce0, pv0, 
+                "vert3vec", 
+                Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
+            target.addVertices(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName)
+{
+    if (elementName.size() == 0)
+        getVertex3Set(e0, target);
+    else
+        getVertex3Set(e0, target, elementName);
+}
+
+void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getVertex3Set] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME);
     getVertex3Set(m0, target);
+}
+
+}
+
+}
+
+}
+#include "geoutils/Face.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getFace(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Face& target, const std::string& elementName = 
+Ionflux::GeoUtils::Face::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getFace");
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: vertices (vector[integer])
+        if ((en0 == "vec") 
+            && (pName == "vertices"))
+        {
+            Ionflux::ObjectBase::UIntVector pv0;
+            Ionflux::ObjectBase::XMLUtils::getUIntVector(ce0, pv0);
+            target.addVertices(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Face& target, const std::string& elementName)
+{
+    if (elementName.size() == 0)
+        getFace(e0, target);
+    else
+        getFace(e0, target, elementName);
+}
+
+void getFace(const std::string& data, Ionflux::GeoUtils::Face& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getFace] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Face::XML_ELEMENT_NAME);
+    getFace(m0, target);
+}
+
 }
 
 }

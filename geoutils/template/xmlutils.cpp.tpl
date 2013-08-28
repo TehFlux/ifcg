@@ -30,10 +30,10 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Polygon3Set.hpp"
 #include "geoutils/Polygon3.hpp"
-#include "geoutils/Vertex3Set.hpp"
 #include "geoutils/Mesh.hpp"
 #include "geoutils/BoundingBox.hpp"
 #include "ifobject/xmlutils_private.hpp"
+#include "geoutils/xmlutils_private.hpp"
 
 namespace Ionflux
 {
@@ -272,7 +272,7 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
 }
 
 // Initialize vertex set from an XML element.
-void getVertex3Set(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
+void getVertex3Set_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
 {
     std::ostringstream message;
     const char* a0 = e0->Value();
@@ -289,7 +289,7 @@ void getVertex3Set(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
     extractXMLVertices(d0, target);
 }
 
-void getVertex3Set(const std::string& fileName, const std::string& elementID, 
+void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Vertex3Set& target)
 {
     std::ostringstream message;
@@ -308,16 +308,17 @@ void getVertex3Set(const std::string& fileName, const std::string& elementID,
             "Element 'vertex3set' with ID '" << elementID << "' not found.";
         throw GeoUtilsError(message.str());
     }
-    getVertex3Set(m0, target);
+    getVertex3Set_legacy(m0, target);
 }
 
 }
 
 }
 
+$TransformableObject
 $Vertex3
-$Face
 $Vertex3Set
+$Face
 
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).

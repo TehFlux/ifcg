@@ -27,10 +27,107 @@
  * 
  * ========================================================================== */
 
-$TransformableObject
-$Vertex3
-$Vertex3Set
-$Face
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class TransformableObject;
+
+namespace XMLUtils
+{
+
+void getTransformableObject(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+elementName = Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+elementName);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vertex3;
+
+namespace XMLUtils
+{
+
+void getVertex3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vertex3Set;
+
+namespace XMLUtils
+{
+
+void getVertex3Set(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName =
+Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME);
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Face;
+
+namespace XMLUtils
+{
+
+void getFace(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Face& target, const std::string& elementName = 
+Ionflux::GeoUtils::Face::XML_ELEMENT_NAME);
+
+void getObject0(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Face& target, const std::string& elementName);
+
+}
+
+}
+
+}
 
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).

@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  * Vertex3Set.i                    Vertex set (3D) (interface).
  * =========================================================================
-
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -101,6 +101,14 @@ class Vertex3Set
 		virtual void removeVertexIndex(unsigned int removeIndex);
 		virtual void clearVertices();
 };
+
+namespace XMLUtils
+{
+
+void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& 
+target);
+
+}
 
 }
 

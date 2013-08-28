@@ -1,11 +1,11 @@
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Hexagon2.i                      Hexagon (2D) (interface).
  * =========================================================================
-
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 

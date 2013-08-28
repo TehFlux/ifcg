@@ -427,8 +427,7 @@ void getMesh(const std::string& fileName, const std::string& elementID,
     Ionflux::GeoUtils::Mesh& target);
 void getBoundingBox(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::BoundingBox& target);
-void getVertex3Set(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Vertex3Set& target);
+void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, Ionflux::GeoUtils::Vertex3Set& target);
 
 // Classes
 

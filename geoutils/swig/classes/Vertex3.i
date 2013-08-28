@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  * Vertex3.i                       Vertex (3D) (interface).
  * =========================================================================
-
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -125,6 +125,14 @@ class Vertex3
         virtual void setZ(double newZ);
         virtual double getZ() const;
 };
+
+namespace XMLUtils
+{
+
+void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& 
+target);
+
+}
 
 }
 

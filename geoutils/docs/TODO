@@ -9,15 +9,25 @@ TODO
 Up next
 --------------------------------------------------------------------------------
 
-+ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
+
 
 --------------------------------------------------------------------------------
 New
 --------------------------------------------------------------------------------
 
++ Mesh
+  > Add a new UVLayer type that can be added to a mesh (and get rid of the 
+    old TexCoord stuff).
+  > Maybe even just add generic vertex data layers which can be implemented 
+    as a map of Vertex3Set.
+
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
+  > Mesh
+  > testing: Vertex3, Vertex3Set, Face
 
 + Add create<numeric type>Vector<n>(..., <target vector>) functions.
   (necessary because swig does not recognize the vectors returned by such 

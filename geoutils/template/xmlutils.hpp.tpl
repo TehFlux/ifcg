@@ -66,7 +66,7 @@ void getSVGPolygons(const std::string& fileName,
  * \param elementID Element ID.
  * \param target Vertex set to be initialized.
  */
-void getVertex3Set(const std::string& fileName, const std::string& elementID, 
+void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Vertex3Set& target);
 
 /**
@@ -98,9 +98,10 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
 
 }
 
+$TransformableObject
 $Vertex3
-$Face
 $Vertex3Set
+$Face
 
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).

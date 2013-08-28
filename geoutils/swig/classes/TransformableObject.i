@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  * TransformableObject.i           Transformable object (interface).
  * =========================================================================
-
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -102,6 +102,14 @@ class TransformableObject
         newLastImageMatrix);
         virtual Ionflux::GeoUtils::Matrix4 getLastImageMatrix() const;
 };
+
+namespace XMLUtils
+{
+
+void getTransformableObject(const std::string& data, 
+Ionflux::GeoUtils::TransformableObject& target);
+
+}
 
 }
 

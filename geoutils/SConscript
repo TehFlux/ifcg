@@ -36,7 +36,7 @@ if (not os.path.isfile('site_scons/local_config.py')):
 import local_config as lc
 from sources import *
 from builders import buildSource, buildClassInterface, buildInterface
-from builders import buildClassXMLIO
+from builders import buildClassXMLIO, buildXMLIO
 
 Help("""
 Type 'scons' to build the default targets.
@@ -207,13 +207,15 @@ for it in geoutilsEnv['CPPPATH']:
     swigIncludes += ('-I' + it + ' ')
 swigPythonBuilder = Builder(action = "swig -c++ -python "
     + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
-xmlIOBuilder = Builder(action = buildClassXMLIO)
+classXMLIOBuilder = Builder(action = buildClassXMLIO)
+xmlIOBuilder = Builder(action = buildXMLIO)
 
 geoutilsEnv.Append(BUILDERS = { 'Source' : sourceBuilder, 
     'ClassInterface' : classInterfaceBuilder, 
     'Interface' : interfaceBuilder, 
     'SWIGPython' : swigPythonBuilder, 
-    'ClassXMLIO' : xmlIOBuilder
+    'ClassXMLIO' : classXMLIOBuilder, 
+    'XMLIO' : xmlIOBuilder
 })
 
 altjiraGeoUtilsEnv = geoutilsEnv.Clone()
@@ -277,7 +279,7 @@ else:
 
 # XML I/O functions.
 if (haveIFTpl):
-    #xmlIO = []
+    xmlIO = []
     classXMLIO = []
     # geoutils library
     xmlIOTargets0 = []
@@ -300,11 +302,11 @@ if (haveIFTpl):
         ]
     xmlIO += [ 
         geoutilsEnv.XMLIO(target = lc.xmlIOFile[0], 
-            source = xmlIOTargets + [lc.xmlIOTemplateFile[0]]), 
+            source = xmlIOTargets0 + [lc.xmlIOTemplateFile[0]]), 
         geoutilsEnv.XMLIO(target = lc.xmlIOFile[1], 
-            source = xmlIOTargets + [lc.xmlIOTemplateFile[1]]), 
+            source = xmlIOTargets1 + [lc.xmlIOTemplateFile[1]]), 
         geoutilsEnv.XMLIO(target = lc.xmlIOFile[2], 
-            source = xmlIOTargets + [lc.xmlIOTemplateFile[2]])
+            source = xmlIOTargets2 + [lc.xmlIOTemplateFile[2]])
     ]
     ## Altjira/GeoUtils library
     #xmlIOTargets = []

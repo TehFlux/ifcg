@@ -1,11 +1,11 @@
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Face.i                          Mesh face (interface).
  * =========================================================================
-
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -169,6 +169,13 @@ Ionflux::GeoUtils::TransformableObject
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;
 };
+
+namespace XMLUtils
+{
+
+void getFace(const std::string& data, Ionflux::GeoUtils::Face& target);
+
+}
 
 }
 
