@@ -366,6 +366,7 @@ void getTransformableObject(const std::string& data, Ionflux::GeoUtils::Transfor
 }
 
 }
+
 #include "geoutils/Vertex3.hpp"
 
 namespace Ionflux
@@ -430,6 +431,7 @@ void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& target)
 }
 
 }
+
 #include "geoutils/Vertex3Set.hpp"
 
 namespace Ionflux
@@ -501,6 +503,7 @@ void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& targe
 }
 
 }
+
 #include "geoutils/Face.hpp"
 
 namespace Ionflux
@@ -568,6 +571,7 @@ void getFace(const std::string& data, Ionflux::GeoUtils::Face& target)
 }
 
 }
+
 
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).

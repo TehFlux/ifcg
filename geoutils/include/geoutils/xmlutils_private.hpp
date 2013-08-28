@@ -55,6 +55,7 @@ elementName);
 }
 
 
+
 namespace Ionflux
 {
 
@@ -78,6 +79,7 @@ void getObject0(TiXmlElement* e0,
 }
 
 }
+
 
 
 namespace Ionflux
@@ -105,6 +107,7 @@ void getObject0(TiXmlElement* e0,
 }
 
 
+
 namespace Ionflux
 {
 
@@ -128,6 +131,7 @@ void getObject0(TiXmlElement* e0,
 }
 
 }
+
 
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).

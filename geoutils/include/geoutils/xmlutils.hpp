@@ -121,6 +121,7 @@ Ionflux::GeoUtils::TransformableObject& target);
 }
 
 
+
 namespace Ionflux
 {
 
@@ -140,6 +141,7 @@ target);
 }
 
 }
+
 
 
 namespace Ionflux
@@ -163,6 +165,7 @@ target);
 }
 
 
+
 namespace Ionflux
 {
 
@@ -181,6 +184,7 @@ void getFace(const std::string& data, Ionflux::GeoUtils::Face& target);
 }
 
 }
+
 
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).
