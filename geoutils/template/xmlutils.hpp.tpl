@@ -98,6 +98,10 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
 
 }
 
+$Vertex3
+$Face
+$Vertex3Set
+
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).
  */

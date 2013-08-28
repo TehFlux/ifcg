@@ -420,13 +420,6 @@ Ionflux::GeoUtils::TransformNodes::InputNodeSpec createInputNodeSpec(
 
 // xmlutils.hpp
 
-std::string getAttrValue(const std::string& fileName, 
-    const std::string& elementName, const std::string& elementID, 
-    const std::string& attrName);
-void getAttrValues(const std::string& fileName, 
-    const std::string& elementName, const std::string& attrName, 
-    const Ionflux::ObjectBase::StringVector& elementIDs, 
-    Ionflux::ObjectBase::StringVector& target);
 void getSVGPolygons(const std::string& fileName, 
     const Ionflux::ObjectBase::StringVector& elementIDs, 
     Ionflux::GeoUtils::Polygon3Set& target);

@@ -280,33 +280,52 @@ if (haveIFTpl):
     #xmlIO = []
     classXMLIO = []
     # geoutils library
-    xmlIOTargets = []
+    xmlIOTargets0 = []
+    xmlIOTargets1 = []
+    xmlIOTargets2 = []
     for it in geoutilsLibXMLClasses:
         t0 = 'temp/xmlutils/' + it + '_xml.hpp'
         t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
         t2 = 'temp/xmlutils/' + it + '_xml.cpp'
-        xmlIOTargets += [t0]
+        xmlIOTargets0 += [t0]
+        xmlIOTargets1 += [t1]
+        xmlIOTargets2 += [t2]
         classXMLIO += [ 
-            geoutilsEnv.ClassXMLIO(target = [ t0, t1, t2 ], 
+            geoutilsEnv.ClassXMLIO(target = t0, 
+                source = ['conf/class/' + it + '.conf']), 
+            geoutilsEnv.ClassXMLIO(target = t1, 
+                source = ['conf/class/' + it + '.conf']), 
+            geoutilsEnv.ClassXMLIO(target = t2, 
                 source = ['conf/class/' + it + '.conf'])
         ]
-    #xmlIO += [ geoutilsEnv.XMLIO(target = lc.xmlIOFile, 
-    #    source = xmlIOTargets + lc.xmlIOTemplateFile) ]
-    # Altjira/GeoUtils library
-    xmlIOTargets = []
-    for it in altjiraGeoUtilsLibXMLClasses:
-        t0 = 'temp/xmlutils/' + it + '_xml.hpp'
-        t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
-        t2 = 'temp/xmlutils/' + it + '_xml.cpp'
-        xmlIOTargets += [t0]
-        classXMLIO += [ 
-            geoutilsEnv.ClassXMLIO(target = [ t0, t1, t2 ], 
-                source = ['conf/class/' + it + '.conf'])
-        ]
-    #xmlIO += [ geoutilsEnv.XMLIO(target = lc.xmlIOFile, 
-    #    source = xmlIOTargets + lc.xmlIOTemplateFile) ]
-    #allTargets += (classXMLIO + xmlIO)
-    allTargets += classXMLIO
+    xmlIO += [ 
+        geoutilsEnv.XMLIO(target = lc.xmlIOFile[0], 
+            source = xmlIOTargets + [lc.xmlIOTemplateFile[0]]), 
+        geoutilsEnv.XMLIO(target = lc.xmlIOFile[1], 
+            source = xmlIOTargets + [lc.xmlIOTemplateFile[1]]), 
+        geoutilsEnv.XMLIO(target = lc.xmlIOFile[2], 
+            source = xmlIOTargets + [lc.xmlIOTemplateFile[2]])
+    ]
+    ## Altjira/GeoUtils library
+    #xmlIOTargets = []
+    #for it in altjiraGeoUtilsLibXMLClasses:
+    #    t0 = 'temp/xmlutils/' + it + '_xml.hpp'
+    #    t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
+    #    t2 = 'temp/xmlutils/' + it + '_xml.cpp'
+    #    xmlIOTargets += [t0]
+    #    classXMLIO += [ 
+    #        geoutilsEnv.ClassXMLIO(target = [ t0, t1, t2 ], 
+    #            source = ['conf/class/' + it + '.conf'])
+    #    ]
+    #xmlIO += [ 
+    #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[3], 
+    #        source = xmlIOTargets + [lc.xmlIOTemplateFile[3]]), 
+    #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[4], 
+    #        source = xmlIOTargets + [lc.xmlIOTemplateFile[4]]), 
+    #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[5], 
+    #        source = xmlIOTargets + [lc.xmlIOTemplateFile[5]])
+    #]
+    allTargets += (classXMLIO + xmlIO)
 else:
     print "***********************************************************"
     print "iftpl not found -  XML I/O functions will NOT be generated!"

@@ -315,6 +315,10 @@ void getVertex3Set(const std::string& fileName, const std::string& elementID,
 
 }
 
+$Vertex3
+$Face
+$Vertex3Set
+
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).
  */
