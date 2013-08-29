@@ -44,8 +44,24 @@ void getTransformableObject(TiXmlElement* e0,
     Ionflux::GeoUtils::TransformableObject& target, const std::string& 
 elementName = Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::TransformableObject>(TiXmlElement* e0, 
+Ionflux::GeoUtils::TransformableObject& target, const std::string& 
 elementName);
 
 }
@@ -71,8 +87,24 @@ void getVertex3(TiXmlElement* e0,
     Ionflux::GeoUtils::Vertex3& target, const std::string& elementName = 
 Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName);
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vertex3>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vertex3& target, const std::string& elementName);
 
 }
 
@@ -97,8 +129,24 @@ void getVertex3Set(TiXmlElement* e0,
     Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName =
 Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME);
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName);
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vertex3Set>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName);
 
 }
 
@@ -123,8 +171,24 @@ void getFace(TiXmlElement* e0,
     Ionflux::GeoUtils::Face& target, const std::string& elementName = 
 Ionflux::GeoUtils::Face::XML_ELEMENT_NAME);
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::Face& target, const std::string& elementName);
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Face>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Face& target, const std::string& elementName);
 
 }
 

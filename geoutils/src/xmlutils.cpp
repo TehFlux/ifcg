@@ -335,16 +335,6 @@ elementName = Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME)
     Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
 }
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
-elementName)
-{
-    if (elementName.size() == 0)
-        getTransformableObject(e0, target);
-    else
-        getTransformableObject(e0, target, elementName);
-}
-
 void getTransformableObject(const std::string& data, Ionflux::GeoUtils::TransformableObject& target)
 {
     TiXmlDocument d0;
@@ -359,6 +349,36 @@ void getTransformableObject(const std::string& data, Ionflux::GeoUtils::Transfor
             d0.RootElement(), 
             Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
     getTransformableObject(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::TransformableObject>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+elementName)
+{
+    // <---- DEBUG ----- //
+    std::cerr << "[getObject0] Called for class 'TransformableObject'." 
+        << std::endl;
+    // ----- DEBUG ----> */
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getTransformableObject(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getTransformableObject(e0, target, elementName);
 }
 
 }
@@ -401,15 +421,6 @@ Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME)
     target.setZ(::strtod(a0.c_str(), 0));
 }
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName)
-{
-    if (elementName.size() == 0)
-        getVertex3(e0, target);
-    else
-        getVertex3(e0, target, elementName);
-}
-
 void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& target)
 {
     TiXmlDocument d0;
@@ -424,6 +435,35 @@ void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& target)
             d0.RootElement(), 
             Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
     getVertex3(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vertex3>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3& target, const std::string& elementName)
+{
+    // <---- DEBUG ----- //
+    std::cerr << "[getObject0] Called for class 'Vertex3'." 
+        << std::endl;
+    // ----- DEBUG ----> */
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getVertex3(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getVertex3(e0, target, elementName);
 }
 
 }
@@ -464,22 +504,14 @@ Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME)
         {
             std::vector<Ionflux::GeoUtils::Vertex3*> pv0;
             Ionflux::ObjectBase::XMLUtils::getObjVector<
-                Ionflux::GeoUtils::Vertex3, Ionflux::GeoUtils::Vertex3*>(ce0, pv0, 
+                    Ionflux::GeoUtils::Vertex3, 
+                    Ionflux::GeoUtils::Vertex3*>(ce0, pv0, 
                 "vert3vec", 
                 Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
             target.addVertices(pv0);
         }
         ce0 = ce0->NextSiblingElement();
     }
-}
-
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName)
-{
-    if (elementName.size() == 0)
-        getVertex3Set(e0, target);
-    else
-        getVertex3Set(e0, target, elementName);
 }
 
 void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& target)
@@ -496,6 +528,35 @@ void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& targe
             d0.RootElement(), 
             Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME);
     getVertex3Set(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vertex3Set>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName)
+{
+    // <---- DEBUG ----- //
+    std::cerr << "[getObject0] Called for class 'Vertex3Set'." 
+        << std::endl;
+    // ----- DEBUG ----> */
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getVertex3Set(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getVertex3Set(e0, target, elementName);
 }
 
 }
@@ -541,15 +602,6 @@ Ionflux::GeoUtils::Face::XML_ELEMENT_NAME)
     }
 }
 
-void getObject0(TiXmlElement* e0, 
-    Ionflux::GeoUtils::Face& target, const std::string& elementName)
-{
-    if (elementName.size() == 0)
-        getFace(e0, target);
-    else
-        getFace(e0, target, elementName);
-}
-
 void getFace(const std::string& data, Ionflux::GeoUtils::Face& target)
 {
     TiXmlDocument d0;
@@ -564,6 +616,35 @@ void getFace(const std::string& data, Ionflux::GeoUtils::Face& target)
             d0.RootElement(), 
             Ionflux::GeoUtils::Face::XML_ELEMENT_NAME);
     getFace(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Face>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Face& target, const std::string& elementName)
+{
+    // <---- DEBUG ----- //
+    std::cerr << "[getObject0] Called for class 'Face'." 
+        << std::endl;
+    // ----- DEBUG ----> */
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getFace(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getFace(e0, target, elementName);
 }
 
 }
