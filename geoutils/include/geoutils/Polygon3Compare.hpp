@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_POLYGON3COMPARE
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Polygon3Compare.hpp             Polygon comparison function object 

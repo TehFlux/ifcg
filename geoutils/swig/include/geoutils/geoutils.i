@@ -165,6 +165,7 @@ typedef int ImageSourceType;
 typedef std::string ImageID;
 
 typedef int MatrixSamplingMethod;
+typedef int QuadInterpolationTypeID;
 
 namespace TransformNodes
 {
@@ -297,6 +298,11 @@ const unsigned int COORDINATE_NOT_SET = UINT_MAX;
 const Ionflux::GeoUtils::MatrixSamplingMethod SAMPLE_AVERAGE = 0;
 const Ionflux::GeoUtils::MatrixSamplingMethod SAMPLE_MULTIPLY = 1;
 
+const Ionflux::GeoUtils::QuadInterpolationTypeID 
+    QUAD_INTERPOLATION_SYMMETRIC = 0;
+const Ionflux::GeoUtils::QuadInterpolationTypeID 
+    QUAD_INTERPOLATION_BILINEAR = 1;
+
 namespace TransformNodes
 {
 
@@ -330,6 +336,17 @@ Ionflux::ObjectBase::UIntVector createUIntVector3(unsigned int x0,
     unsigned int x1, unsigned int x2);
 Ionflux::ObjectBase::DoubleVector createDoubleVector3(double x0, double x1, 
     double x2);
+Ionflux::ObjectBase::IntVector createIntVector4(int x0, int x1, 
+    int x2, int x3);
+Ionflux::ObjectBase::UIntVector createUIntVector4(unsigned int x0, 
+    unsigned int x1, unsigned int x2, unsigned int x3);
+Ionflux::ObjectBase::DoubleVector createDoubleVector4(double x0, double x1, 
+    double x2, double x3);
+void createIntVector3(int x0, int x1, int x2, 
+    Ionflux::ObjectBase::IntVector& target);
+void createIntVector4(int x0, int x1, int x2, int x3, 
+    Ionflux::ObjectBase::IntVector& target);
+void shiftInt(Ionflux::ObjectBase::IntVector& target, int offset);
 bool lt(double v0, double v1, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 bool gt(double v0, double v1, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 bool eq(double v0, double v1, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
@@ -387,6 +404,10 @@ bool operator==(const Ionflux::GeoUtils::Color& c0,
     const Ionflux::GeoUtils::Color& c1);
 bool operator!=(const Ionflux::GeoUtils::Color& c0, 
     const Ionflux::GeoUtils::Color& c1);
+Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
+    double a, double b, double c);
+int solveCubicEquation(double a, double b, double c, double d, 
+    Ionflux::GeoUtils::Vector3& target);
 
 namespace TransformNodes
 {
@@ -399,13 +420,6 @@ Ionflux::GeoUtils::TransformNodes::InputNodeSpec createInputNodeSpec(
 
 // xmlutils.hpp
 
-std::string getAttrValue(const std::string& fileName, 
-    const std::string& elementName, const std::string& elementID, 
-    const std::string& attrName);
-void getAttrValues(const std::string& fileName, 
-    const std::string& elementName, const std::string& attrName, 
-    const Ionflux::ObjectBase::StringVector& elementIDs, 
-    Ionflux::ObjectBase::StringVector& target);
 void getSVGPolygons(const std::string& fileName, 
     const Ionflux::ObjectBase::StringVector& elementIDs, 
     Ionflux::GeoUtils::Polygon3Set& target);
@@ -413,8 +427,7 @@ void getMesh(const std::string& fileName, const std::string& elementID,
     Ionflux::GeoUtils::Mesh& target);
 void getBoundingBox(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::BoundingBox& target);
-void getVertex3Set(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Vertex3Set& target);
+void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, Ionflux::GeoUtils::Vertex3Set& target);
 
 // Classes
 
@@ -740,6 +753,7 @@ namespace GeoUtils
 {
 
 class Plane3;
+class Range;
 
 class Vector3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -816,10 +830,16 @@ class Vector3
         Ionflux::GeoUtils::Vector3& other);
         virtual Ionflux::GeoUtils::Vector3& operator-=(const 
         Ionflux::GeoUtils::Vector3& other);
+        virtual int findElement(double v, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual int findMatchingElements(const Ionflux::GeoUtils::Vector3& 
+        other, Ionflux::ObjectBase::DoubleVector& target, const 
+        Ionflux::GeoUtils::Range* range = 0, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
         virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& 
         plane) const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Vector3 axis(Ionflux::GeoUtils::AxisID 
         axisID);
 		virtual Ionflux::GeoUtils::Vector3* copy() const;
@@ -1343,6 +1363,14 @@ class TransformableObject
         virtual Ionflux::GeoUtils::Matrix4 getLastImageMatrix() const;
 };
 
+namespace XMLUtils
+{
+
+void getTransformableObject(const std::string& data, 
+Ionflux::GeoUtils::TransformableObject& target);
+
+}
+
 }
 
 }
@@ -1763,8 +1791,8 @@ class Vertex3Set
         virtual Ionflux::GeoUtils::Matrix3 getCovariance();
         virtual Ionflux::GeoUtils::Matrix3 getPCABase();
         virtual Ionflux::GeoUtils::Plane3 getPlaneFit();
-        virtual std::string getXMLData() const;
-        virtual std::string getXML() const;
+        virtual std::string getXMLData_legacy() const;
+        virtual std::string getXML_legacy() const;
 		virtual Ionflux::GeoUtils::Vertex3Set* copy() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -1782,6 +1810,14 @@ class Vertex3Set
 		virtual void removeVertexIndex(unsigned int removeIndex);
 		virtual void clearVertices();
 };
+
+namespace XMLUtils
+{
+
+void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& 
+target);
+
+}
 
 }
 
@@ -1867,14 +1903,20 @@ class Vertex3
         image = 0);
         virtual Ionflux::GeoUtils::Vertex3& duplicate();
         virtual std::string getValueString() const;
-        static Ionflux::GeoUtils::Vertex3* create(double newX, double newY,
-        double newZ);
-        virtual std::string getXMLData() const;
-        virtual std::string getXML() const;
+        virtual std::string getXMLData_legacy() const;
+        virtual std::string getXML_legacy() const;
 		virtual Ionflux::GeoUtils::Vertex3* copy() const;
 		static Ionflux::GeoUtils::Vertex3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::GeoUtils::Vertex3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(double initX, double initY, 
+		double initZ, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::GeoUtils::Vector3& initCoords, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         virtual void setX(double newX);
         virtual double getX() const;
@@ -1883,6 +1925,14 @@ class Vertex3
         virtual void setZ(double newZ);
         virtual double getZ() const;
 };
+
+namespace XMLUtils
+{
+
+void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& 
+target);
+
+}
 
 }
 
@@ -1994,6 +2044,7 @@ class Polygon3
 : public Ionflux::GeoUtils::TransformableObject
 {
     public:
+		static const Ionflux::GeoUtils::Range UV_RANGE;
         
         Polygon3();
 		Polygon3(const Ionflux::GeoUtils::Polygon3& other);
@@ -2048,6 +2099,20 @@ class Polygon3
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual void getPolygon2(Ionflux::GeoUtils::Polygon2& target);
         static Ionflux::GeoUtils::Polygon3* square();
+        virtual bool isTri();
+        virtual bool isQuad();
+        virtual void calculateUVCoefficients(const 
+        Ionflux::GeoUtils::Vertex3& p, Ionflux::GeoUtils::Matrix4& target, 
+        Ionflux::ObjectBase::IntVector* indices = 0, double s = 1.);
+        virtual Ionflux::GeoUtils::Vector2 getUV(const 
+        Ionflux::GeoUtils::Vertex3& p, Ionflux::ObjectBase::IntVector* 
+        indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
+        interpolationType = QUAD_INTERPOLATION_BILINEAR, double s = 1., 
+        double t = DEFAULT_TOLERANCE);
+        virtual Ionflux::GeoUtils::Vertex3 getUVVertex(const 
+        Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* 
+        indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
+        interpolationType = QUAD_INTERPOLATION_BILINEAR);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
 		virtual Ionflux::GeoUtils::Polygon3* copy() const;
@@ -2671,7 +2736,9 @@ class Line3
         Line3(const Ionflux::GeoUtils::Vector3& initP, const 
         Ionflux::GeoUtils::Vector3& initU);
         virtual ~Line3();
-        virtual bool intersectPlane(const Ionflux::GeoUtils::Plane3& plane,
+        virtual bool intersect(const Ionflux::GeoUtils::Line3& other, 
+        Ionflux::GeoUtils::Vector3& result) const;
+        virtual bool intersect(const Ionflux::GeoUtils::Plane3& plane, 
         Ionflux::GeoUtils::Vector3& result) const;
         virtual bool intersectionInPoly(const Ionflux::GeoUtils::Polygon3& 
         poly, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
@@ -3585,7 +3652,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
         virtual std::string getXMLDataVertices() const;
         virtual std::string getXMLDataTexCoords() const;
-        virtual std::string getXML() const;
+        virtual std::string getXML_legacy() const;
         virtual void setFromXMLData(const std::string& vertexData, const 
         std::string& texCoordData);
 		virtual Ionflux::GeoUtils::Face* copy() const;
@@ -3629,6 +3696,13 @@ Ionflux::GeoUtils::TransformableObject
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;
 };
+
+namespace XMLUtils
+{
+
+void getFace(const std::string& data, Ionflux::GeoUtils::Face& target);
+
+}
 
 }
 
@@ -3713,7 +3787,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Mesh& duplicate();
         virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
-        virtual std::string getXML() const;
+        virtual std::string getXML_legacy() const;
         virtual void writeToFile(const std::string& fileName) const;
         virtual void removeBackfaces(const Ionflux::GeoUtils::Vector3& 
         front);

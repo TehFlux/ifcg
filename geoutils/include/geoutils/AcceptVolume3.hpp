@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_ACCEPTVOLUME3
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * AcceptVolume3.hpp               Vector mapping: Accept volume (header).

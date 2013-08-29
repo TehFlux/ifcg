@@ -32,7 +32,6 @@
 #include <iomanip>
 #include <pango/pangocairo.h>
 #include <librsvg/rsvg.h>
-#include <librsvg/rsvg-cairo.h>
 #include "altjira/AltjiraError.hpp"
 #include "altjira/utils.hpp"
 #include "altjira/imageutils.hpp"
@@ -455,7 +454,7 @@ originY)
 	cairo_translate(context, 0.5 * width + originX, 
 	    0.5 * height + originY);
 	// Render the SVG.
-	rsvg_init();
+	//rsvg_init();
 	RsvgHandle* rsvg0 = rsvg_handle_new_from_data(
 	    reinterpret_cast<const guint8*>(svgData.c_str()), 
 	    svgData.size(), 0);
@@ -484,7 +483,7 @@ originY)
 	cairo_translate(context, 0.5 * width + originX, 
 	    0.5 * height + originY);
 	// Render the SVG.
-	rsvg_init();
+	//rsvg_init();
 	RsvgHandle* rsvg0 = rsvg_handle_new_from_file(
 	    reinterpret_cast<const gchar*>(svgFileName.c_str()), 0);
 	if (rsvg0 == 0)

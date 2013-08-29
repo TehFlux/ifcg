@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  * BlendChannel.i                  Color blender (Channel) (interface).
  * =========================================================================
-
+ * 
  * This file is part of Altjira - Ionflux' Image Processing Library.
  * 
  * Altjira - Ionflux' Image Processing Library is free software; you can 

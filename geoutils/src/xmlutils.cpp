@@ -371,10 +371,7 @@ void getObject0<Ionflux::GeoUtils::TransformableObject>(TiXmlElement* e0,
     Ionflux::GeoUtils::TransformableObject& target, const std::string& 
 elementName)
 {
-    // <---- DEBUG ----- //
-    std::cerr << "[getObject0] Called for class 'TransformableObject'." 
-        << std::endl;
-    // ----- DEBUG ----> */
+    
     if (elementName.size() == 0)
         Ionflux::GeoUtils::XMLUtils::getTransformableObject(e0, target);
     else
@@ -456,10 +453,7 @@ template<>
 void getObject0<Ionflux::GeoUtils::Vertex3>(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vertex3& target, const std::string& elementName)
 {
-    // <---- DEBUG ----- //
-    std::cerr << "[getObject0] Called for class 'Vertex3'." 
-        << std::endl;
-    // ----- DEBUG ----> */
+    
     if (elementName.size() == 0)
         Ionflux::GeoUtils::XMLUtils::getVertex3(e0, target);
     else
@@ -549,10 +543,7 @@ template<>
 void getObject0<Ionflux::GeoUtils::Vertex3Set>(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName)
 {
-    // <---- DEBUG ----- //
-    std::cerr << "[getObject0] Called for class 'Vertex3Set'." 
-        << std::endl;
-    // ----- DEBUG ----> */
+    
     if (elementName.size() == 0)
         Ionflux::GeoUtils::XMLUtils::getVertex3Set(e0, target);
     else
@@ -582,6 +573,7 @@ Ionflux::GeoUtils::Face::XML_ELEMENT_NAME)
 {
     Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
         elementName, "getFace");
+    getTransformableObject(e0, target, elementName);
     // Get child data.
     TiXmlElement* ce0 = e0->FirstChildElement();
     while (ce0 != 0)
@@ -637,10 +629,7 @@ template<>
 void getObject0<Ionflux::GeoUtils::Face>(TiXmlElement* e0, 
     Ionflux::GeoUtils::Face& target, const std::string& elementName)
 {
-    // <---- DEBUG ----- //
-    std::cerr << "[getObject0] Called for class 'Face'." 
-        << std::endl;
-    // ----- DEBUG ----> */
+    
     if (elementName.size() == 0)
         Ionflux::GeoUtils::XMLUtils::getFace(e0, target);
     else

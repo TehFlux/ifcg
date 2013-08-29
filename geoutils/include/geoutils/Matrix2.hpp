@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_MATRIX2
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Matrix2.hpp                     Matrix (2x2) (header).

@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_SVGSHAPESTYLEMAP
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * SVGShapeStyleMap.hpp            SVG shape style map (header).
