@@ -78,7 +78,7 @@ void getVertex3Set_legacy(const std::string& fileName, const std::string& elemen
  * \param elementID Element ID.
  * \param target Mesh to be initialized.
  */
-void getMesh(const std::string& fileName, const std::string& elementID, 
+void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Mesh& target);
 
 /**
@@ -102,6 +102,7 @@ $TransformableObject
 $Vertex3
 $Vertex3Set
 $Face
+$Mesh
 
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).

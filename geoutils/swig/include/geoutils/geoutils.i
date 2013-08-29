@@ -423,7 +423,7 @@ Ionflux::GeoUtils::TransformNodes::InputNodeSpec createInputNodeSpec(
 void getSVGPolygons(const std::string& fileName, 
     const Ionflux::ObjectBase::StringVector& elementIDs, 
     Ionflux::GeoUtils::Polygon3Set& target);
-void getMesh(const std::string& fileName, const std::string& elementID, 
+void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Mesh& target);
 void getBoundingBox(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::BoundingBox& target);
@@ -3834,6 +3834,13 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void removeFaceIndex(unsigned int removeIndex);
 		virtual void clearFaces();
 };
+
+namespace XMLUtils
+{
+
+void getMesh(const std::string& data, Ionflux::GeoUtils::Mesh& target);
+
+}
 
 }
 

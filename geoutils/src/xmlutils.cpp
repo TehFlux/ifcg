@@ -103,7 +103,7 @@ void getSVGPolygons(const std::string& fileName,
 }
 
 // Initialize mesh from an XML element.
-void getMesh(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
+void getMesh_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
 {
     std::ostringstream message;
     const char* a0 = e0->Value();
@@ -167,7 +167,7 @@ void getMesh(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
     target.update();
 }
 
-void getMesh(const std::string& fileName, const std::string& elementID, 
+void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Mesh& target)
 {
     std::ostringstream message;
@@ -183,7 +183,7 @@ void getMesh(const std::string& fileName, const std::string& elementID,
         message << "Element 'mesh' with ID '" << elementID << "' not found.";
         throw GeoUtilsError(message.str());
     }
-    getMesh(m0, target);
+    getMesh_legacy(m0, target);
 }
 
 // Initialize box bounds item from an XML element.
@@ -245,7 +245,7 @@ void getBoundingBox(TiXmlElement* e0, Ionflux::GeoUtils::BoundingBox& target)
         {
             // Mesh.
             Mesh* m0 = Mesh::create();
-            getMesh(c0, *m0);
+            getMesh_legacy(c0, *m0);
             target.addItem(m0);
         }
         c0 = c0->NextSiblingElement();
@@ -634,6 +634,89 @@ void getObject0<Ionflux::GeoUtils::Face>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getFace(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getFace(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Mesh.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getMesh(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Mesh& target, const std::string& elementName = 
+Ionflux::GeoUtils::Mesh::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getMesh");
+    getTransformableObject(e0, target, elementName);
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: vertexSource (object)
+        if ((en0 == "prop") 
+            && (pName == "vertex_source"))
+        {
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getMesh(const std::string& data, Ionflux::GeoUtils::Mesh& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getMesh] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Mesh::XML_ELEMENT_NAME);
+    getMesh(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Mesh>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Mesh& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getMesh(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getMesh(e0, target, elementName);
 }
 
 }

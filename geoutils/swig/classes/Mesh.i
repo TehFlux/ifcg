@@ -150,6 +150,13 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void clearFaces();
 };
 
+namespace XMLUtils
+{
+
+void getMesh(const std::string& data, Ionflux::GeoUtils::Mesh& target);
+
+}
+
 }
 
 }

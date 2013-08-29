@@ -197,6 +197,48 @@ Ionflux::GeoUtils::Face& target, const std::string& elementName);
 }
 
 
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Mesh;
+
+namespace XMLUtils
+{
+
+void getMesh(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Mesh& target, const std::string& elementName = 
+Ionflux::GeoUtils::Mesh::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Mesh>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Mesh& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).
  */

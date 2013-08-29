@@ -82,6 +82,8 @@ Ionflux::GeoUtils::TransformableObject
 		static const MeshClassInfo meshClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -547,6 +549,32 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		static Ionflux::GeoUtils::Mesh* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
 		
 		/** Get vertex source.
 		 *

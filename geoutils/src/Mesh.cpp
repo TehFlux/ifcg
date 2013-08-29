@@ -37,6 +37,8 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex.hpp"
 #include "geoutils/FaceCompareAxis.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -63,6 +65,8 @@ const std::string Mesh::DEFAULT_ID = "mesh01";
 // run-time type information instance constants
 const MeshClassInfo Mesh::meshClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Mesh::CLASS_INFO = &Mesh::meshClassInfo;
+
+const std::string Mesh::XML_ELEMENT_NAME = "mesh";
 
 Mesh::Mesh()
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), vertexSource(0)
@@ -1013,6 +1017,34 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string Mesh::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Mesh::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::GeoUtils::TransformableObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Mesh::getXMLChildData(std::string& target, unsigned int indentLevel) 
+const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::GeoUtils::TransformableObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	if (d0.str().size() > 0)
+	    d0 << "\n";
+	d0 << vertexSource->getXML0(indentLevel, "pname=\"vertex_source\"");
+	target = d0.str();
 }
 
 }

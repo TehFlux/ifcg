@@ -31,6 +31,7 @@ $TransformableObject
 $Vertex3
 $Vertex3Set
 $Face
+$Mesh
 
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).

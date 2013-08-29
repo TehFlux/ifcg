@@ -423,7 +423,7 @@ Ionflux::GeoUtils::TransformNodes::InputNodeSpec createInputNodeSpec(
 void getSVGPolygons(const std::string& fileName, 
     const Ionflux::ObjectBase::StringVector& elementIDs, 
     Ionflux::GeoUtils::Polygon3Set& target);
-void getMesh(const std::string& fileName, const std::string& elementID, 
+void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Mesh& target);
 void getBoundingBox(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::BoundingBox& target);

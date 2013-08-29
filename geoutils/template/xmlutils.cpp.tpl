@@ -103,7 +103,7 @@ void getSVGPolygons(const std::string& fileName,
 }
 
 // Initialize mesh from an XML element.
-void getMesh(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
+void getMesh_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
 {
     std::ostringstream message;
     const char* a0 = e0->Value();
@@ -167,7 +167,7 @@ void getMesh(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
     target.update();
 }
 
-void getMesh(const std::string& fileName, const std::string& elementID, 
+void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Mesh& target)
 {
     std::ostringstream message;
@@ -183,7 +183,7 @@ void getMesh(const std::string& fileName, const std::string& elementID,
         message << "Element 'mesh' with ID '" << elementID << "' not found.";
         throw GeoUtilsError(message.str());
     }
-    getMesh(m0, target);
+    getMesh_legacy(m0, target);
 }
 
 // Initialize box bounds item from an XML element.
@@ -245,7 +245,7 @@ void getBoundingBox(TiXmlElement* e0, Ionflux::GeoUtils::BoundingBox& target)
         {
             // Mesh.
             Mesh* m0 = Mesh::create();
-            getMesh(c0, *m0);
+            getMesh_legacy(c0, *m0);
             target.addItem(m0);
         }
         c0 = c0->NextSiblingElement();
@@ -319,6 +319,7 @@ $TransformableObject
 $Vertex3
 $Vertex3Set
 $Face
+$Mesh
 
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).

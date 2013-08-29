@@ -267,7 +267,8 @@ geoutilsLibXMLClasses = [
     'TransformableObject', 
     'Vertex3', 
     'Vertex3Set', 
-    'Face'
+    'Face', 
+    'Mesh'
 ]
 
 # Altjira/GeoUtils library

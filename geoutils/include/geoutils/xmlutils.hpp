@@ -78,7 +78,7 @@ void getVertex3Set_legacy(const std::string& fileName, const std::string& elemen
  * \param elementID Element ID.
  * \param target Mesh to be initialized.
  */
-void getMesh(const std::string& fileName, const std::string& elementID, 
+void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::Mesh& target);
 
 /**
@@ -178,6 +178,27 @@ namespace XMLUtils
 {
 
 void getFace(const std::string& data, Ionflux::GeoUtils::Face& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Mesh;
+
+namespace XMLUtils
+{
+
+void getMesh(const std::string& data, Ionflux::GeoUtils::Mesh& target);
 
 }
 
