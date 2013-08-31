@@ -29,7 +29,8 @@ Critical stuff
   > Add a new UVLayer type that can be added to a mesh (and get rid of the 
     old TexCoord stuff).
   > Maybe even just add generic vertex data layers which can be implemented 
-    as a map of Vertex3Set.
+    as a map of Vertex[2,3,4]Set (Vertex2 for texcoords, Vertex4 for vertex 
+    colors etc.).
 
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
   > Mesh
