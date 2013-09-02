@@ -47,7 +47,6 @@ Vector4ClassInfo::Vector4ClassInfo()
 {
 	name = "Vector4";
 	desc = "Vector (4 elements)";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vector4ClassInfo::~Vector4ClassInfo()
@@ -55,6 +54,7 @@ Vector4ClassInfo::~Vector4ClassInfo()
 }
 
 // public member constants
+const unsigned int Vector4::NUM_ELEMENTS = 4;
 const Ionflux::GeoUtils::Vector4 Vector4::ZERO = Ionflux::GeoUtils::Vector4(0., 0., 0., 0.);
 const Ionflux::GeoUtils::Vector4 Vector4::E_X = Ionflux::GeoUtils::Vector4(1., 0., 0., 0.);
 const Ionflux::GeoUtils::Vector4 Vector4::E_Y = Ionflux::GeoUtils::Vector4(0., 1., 0., 0.);
@@ -72,91 +72,60 @@ const Ionflux::ObjectBase::IFClassInfo* Vector4::CLASS_INFO = &Vector4::vector4C
 const std::string Vector4::XML_ELEMENT_NAME = "v4";
 
 Vector4::Vector4()
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	*this = ZERO;
+	zero();
 }
 
 Vector4::Vector4(const Ionflux::GeoUtils::Vector4& other)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
 	*this = other;
 }
 
 Vector4::Vector4(double initX0, double initX1, double initX2, double 
 initX3)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
+	initElements();
 	elements[0] = initX0;
 	elements[1] = initX1;
 	elements[2] = initX2;
-	elements[3] = initX3;\
+	elements[3] = initX3;
 }
 
-Vector4::Vector4(const Ionflux::ObjectBase::DoubleVector& initElements)
-: elements(0)
+Vector4::Vector4(const Ionflux::ObjectBase::DoubleVector& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setElements(initElements);
+	initElements();
+	Vector::setElements(initElements0);
 }
 
-Vector4::Vector4(const Ionflux::GeoUtils::Vector2& initElements, double 
+Vector4::Vector4(const Ionflux::GeoUtils::Vector2& initElements0, double 
 initZ, double initW)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setV2(initElements, initZ, initW);
+	initElements();
+	setV2(initElements0, initZ, initW);
 }
 
-Vector4::Vector4(const Ionflux::GeoUtils::Vector3& initElements, double 
+Vector4::Vector4(const Ionflux::GeoUtils::Vector3& initElements0, double 
 initW)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setV3(initElements, initW);
+	initElements();
+	setV3(initElements0, initW);
 }
 
 Vector4::~Vector4()
 {
-	delete[] elements;
-}
-
-void Vector4::setElements(const Ionflux::ObjectBase::DoubleVector& 
-newElements)
-{
-	unsigned int i = 0;
-	while ((i < 4) && (i < newElements.size()))
-	{
-	    elements[i] = newElements[i];
-	    i++;
-	}
+	// TODO: Nothing ATM. ;-)
 }
 
 void Vector4::setElements(const Ionflux::GeoUtils::Vector2& newElements)
@@ -187,54 +156,18 @@ newW)
 	elements[3] = newW;
 }
 
-void Vector4::getElements(Ionflux::ObjectBase::DoubleVector& target) const
-{
-	target.clear();
-	for (unsigned int i = 0; i < 4; i++)
-	    target.push_back(elements[i]);
-}
-
-double Vector4::getElement(int index) const
-{
-	// TODO: Implementation.
-	return (*this)[index];;
-}
-
-void Vector4::setElement(int index, double value)
-{
-	if ((index < 0) || (index > 3))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	elements[index] = value;
-}
-
-bool Vector4::eq(const Ionflux::GeoUtils::Vector4& other, double t)
-{
-	for (unsigned int i = 0; i < 4; i++)
-	    if (!Ionflux::GeoUtils::eq(elements[i], other.elements[i], t))
-	        return false;
-	return true;
-}
-
 Ionflux::GeoUtils::Vector4 Vector4::flip() const
 {
-	// TODO: Implementation.
-	return Vector4(-elements[0], -elements[1], -elements[2], -elements[3]);
-}
-
-double Vector4::norm() const
-{
-	// TODO: Implementation.
-	return ::sqrt((*this) * (*this));
+	Vector4 result(*this);
+	result.flipIP();
+	return result;
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::normalize() const
 {
-	// TODO: Implementation.
-	return (*this) / norm();
+	Vector4 result(*this);
+	result.normalize();
+	return result;
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::project(const 
@@ -261,73 +194,51 @@ const
 Ionflux::GeoUtils::Vector4 Vector4::permute(const 
 Ionflux::ObjectBase::IntVector& p) const
 {
-	if (p.size() < 4)
-	    throw GeoUtilsError("Not enough elements in permutation vector.");
+	if (p.size() < NUM_ELEMENTS)
+	{
+	    std::ostringstream status;
+	    status << "Not enough elements in permutation vector (p.size = " 
+	        << p.size() << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "permute"));
+	}
 	const Vector4& v = *this;
 	return Vector4(v[p[0]], v[p[1]], v[p[2]], v[p[3]]);
-}
-
-bool Vector4::operator==(const Ionflux::GeoUtils::Vector4& other) const
-{
-	for (unsigned int i = 0; i < 4; i++)
-	    if (elements[i] != other.elements[i])
-	        return false;
-	return true;
-}
-
-bool Vector4::operator!=(const Ionflux::GeoUtils::Vector4& other) const
-{
-	// TODO: Implementation.
-	return !(*this == other);;
-}
-
-double Vector4::operator[](int index) const
-{
-	if ((index < 0) || (index > 3))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	return elements[index];
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::operator+(const 
 Ionflux::GeoUtils::Vector4& other) const
 {
-	// TODO: Implementation.
-	return Vector4(elements[0] + other.elements[0], 
-    elements[1] + other.elements[1], 
-    elements[2] + other.elements[2], 
-    elements[3] + other.elements[3]);
+	Vector4 result;
+	result.addIP(*this);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::operator-(const 
 Ionflux::GeoUtils::Vector4& other) const
 {
-	// TODO: Implementation.
-	return Vector4(elements[0] - other.elements[0], 
-    elements[1] - other.elements[1], 
-    elements[2] - other.elements[2], 
-    elements[3] - other.elements[3]);
+	Vector4 result;
+	result.subtractIP(*this);
+	return result;
 }
 
 double Vector4::operator*(const Ionflux::GeoUtils::Vector4& other) const
 {
 	// TODO: Implementation.
-	return elements[0] * other.elements[0] + elements[1] * other.elements[1] + elements[2] * other.elements[2] + elements[3] * other.elements[3];
+	return dot(other);
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::operator*(double c) const
 {
-	// TODO: Implementation.
-	return Vector4(elements[0] * c, elements[1] * c, elements[2] * c, elements[3] * c);
+	Vector4 result;
+	result.multiplyIP(c);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::operator/(double c) const
 {
-	// TODO: Implementation.
-	return Vector4(elements[0] / c, elements[1] / c, elements[2] / c, elements[3] / c);
+	Vector4 result;
+	result.divideIP(c);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector2 Vector4::getV2() const
@@ -342,12 +253,10 @@ Ionflux::GeoUtils::Vector3 Vector4::getV3() const
 	return Vector3(elements[0], elements[1], elements[2]);
 }
 
-std::string Vector4::getValueString() const
+unsigned int Vector4::getNumElements() const
 {
-	std::ostringstream status;
-	status << elements[0] << ", " << elements[1] 
-	    << ", " << elements[2] << ", " << elements[3];
-	return status.str();
+	// TODO: Implementation.
+	return NUM_ELEMENTS;
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::axis(Ionflux::GeoUtils::AxisID axisID)
@@ -366,7 +275,8 @@ Ionflux::GeoUtils::Vector4 Vector4::axis(Ionflux::GeoUtils::AxisID axisID)
 	else
 	{
 	    ostringstream status;
-	    status << "Invalid axis: " << axisID;
+	    status << "[Vector4::axis] "
+	        "Invalid axis: " << axisID;
 	    throw GeoUtilsError(status.str());
 	}
 	return ZERO;
@@ -385,7 +295,8 @@ Ionflux::GeoUtils::Vector4 Vector4::axisH(Ionflux::GeoUtils::AxisID axisID)
 	else
 	{
 	    ostringstream status;
-	    status << "Invalid axis: " << axisID;
+	    status << "[Vector4::axisH] "
+	        "Invalid axis: " << axisID;
 	    throw GeoUtilsError(status.str());
 	}
 	return ZERO;
@@ -434,11 +345,9 @@ double Vector4::getX3() const
 Ionflux::GeoUtils::Vector4& Vector4::operator=(const 
 Ionflux::GeoUtils::Vector4& other)
 {
-    if ((elements == 0) || (other.elements == 0))
+    if (this == &other)
         return *this;
-    for (unsigned int i = 0; i < 4; i++)
-        elements[i] = other.elements[i];
-    return *this;
+    Vector::operator=(other);
 	return *this;
 }
 
@@ -475,7 +384,7 @@ std::string Vector4::getXMLElementName() const
 
 std::string Vector4::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::string a0(Ionflux::GeoUtils::Vector::getXMLAttributeData());
 	std::ostringstream d0;
 	if (a0.size() > 0)
 	    d0 << a0;
@@ -487,7 +396,7 @@ indentLevel) const
 {
 	std::ostringstream d0;
 	std::string bc0;
-	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	Ionflux::GeoUtils::Vector::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	target = d0.str();
 }

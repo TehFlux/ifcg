@@ -63,6 +63,12 @@ class Vector
 		/// Elements.
 		double* elements;
 		
+		/** Initialize elements.
+		 *
+		 * Initialize the element array.
+		 */
+		virtual void initElements();
+		
 	public:
 		/// Number of elements.
 		static const unsigned int NUM_ELEMENTS;
@@ -93,11 +99,11 @@ class Vector
 		 */
 		virtual ~Vector();
 		
-		/** Initialize elements.
+		/** Zero elements.
 		 *
-		 * Initialize the elements in the vector.
+		 * Set elements to zero.
 		 */
-		virtual void initElements();
+		virtual void zero();
 		
 		/** Set elements.
 		 *
@@ -149,7 +155,7 @@ class Vector
 		 * \return Result of the comparison.
 		 */
 		virtual bool eq(const Ionflux::GeoUtils::Vector& other, double t = 
-		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
 		
 		/** Dot product.
 		 *
@@ -159,7 +165,7 @@ class Vector
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual double dot(const Ionflux::GeoUtils::Vector& other);
+		virtual double dot(const Ionflux::GeoUtils::Vector& other) const;
 		
 		/** Norm.
 		 *
@@ -167,7 +173,7 @@ class Vector
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual double norm();
+		virtual double norm() const;
 		
 		/** Normalize (in-place).
 		 *
@@ -270,6 +276,16 @@ class Vector
 		 * \return Element at specified index.
 		 */
 		virtual double operator[](unsigned int index) const;
+		
+		/** Multiply vectors (dot product).
+		 *
+		 * Multiply vectors (dot product).
+		 *
+		 * \param other Vector.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual double operator*(const Ionflux::GeoUtils::Vector& other) const;
 		
 		/** Get string representation of value.
 		 *

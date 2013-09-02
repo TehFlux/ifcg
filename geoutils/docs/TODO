@@ -15,8 +15,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Vector types (Vector2, Vector3, Vector4) should be derived from Vector and 
-  use the generalized implementation.
++ Testing
+  > Vector2, Vector3, Vector4
 
 --------------------------------------------------------------------------------
 Critical stuff

@@ -407,7 +407,7 @@ Ionflux::GeoUtils::Vector2::XML_ELEMENT_NAME)
 {
     Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
         elementName, "getVector2");
-    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    getVector(e0, target, elementName);
 }
 
 void getVector2(const std::string& data, Ionflux::GeoUtils::Vector2& target)
@@ -475,7 +475,7 @@ Ionflux::GeoUtils::Vector3::XML_ELEMENT_NAME)
 {
     Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
         elementName, "getVector3");
-    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    getVector(e0, target, elementName);
 }
 
 void getVector3(const std::string& data, Ionflux::GeoUtils::Vector3& target)
@@ -543,7 +543,7 @@ Ionflux::GeoUtils::Vector4::XML_ELEMENT_NAME)
 {
     Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
         elementName, "getVector4");
-    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    getVector(e0, target, elementName);
 }
 
 void getVector4(const std::string& data, Ionflux::GeoUtils::Vector4& target)

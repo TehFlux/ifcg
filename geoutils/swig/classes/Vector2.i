@@ -43,9 +43,10 @@ class Vector2ClassInfo
 };
 
 class Vector2
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Vector
 {
     public:
+		static const unsigned int NUM_ELEMENTS;
 		static const Ionflux::GeoUtils::Vector2 ZERO;
 		static const Ionflux::GeoUtils::Vector2 E_X;
 		static const Ionflux::GeoUtils::Vector2 E_Y;
@@ -53,38 +54,27 @@ class Vector2
         Vector2();
 		Vector2(const Ionflux::GeoUtils::Vector2& other);
         Vector2(double initX0, double initX1);
-        Vector2(const Ionflux::ObjectBase::DoubleVector& initElements);
+        Vector2(const Ionflux::ObjectBase::DoubleVector& initElements0);
         virtual ~Vector2();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
         virtual void setElements(double newX0, double newX1);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
-        const;
-        virtual double getElement(int index) const;
-        virtual void setElement(int index, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Vector2& other, double t =
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Vector2 flip() const;
-        virtual double norm() const;
         virtual Ionflux::GeoUtils::Vector2 normalize() const;
         virtual Ionflux::GeoUtils::Vector2 project(const 
         Ionflux::GeoUtils::Vector2& other) const;
         virtual Ionflux::GeoUtils::Vector2 ortho(const 
         Ionflux::GeoUtils::Vector2& other) const;
         virtual Ionflux::GeoUtils::Vector2 swap() const;
-        virtual bool operator==(const Ionflux::GeoUtils::Vector2& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Vector2& other) 
-        const;
+        virtual Ionflux::GeoUtils::Vector2 multElements(const 
+        Ionflux::GeoUtils::Vector2& other) const;
         virtual Ionflux::GeoUtils::Vector2 operator+(const 
         Ionflux::GeoUtils::Vector2& other) const;
         virtual Ionflux::GeoUtils::Vector2 operator-(const 
         Ionflux::GeoUtils::Vector2& other) const;
+        virtual Ionflux::GeoUtils::Vector2 operator*(double c) const;
         virtual double operator*(const Ionflux::GeoUtils::Vector2& other) 
         const;
-        virtual Ionflux::GeoUtils::Vector2 operator*(double c) const;
         virtual Ionflux::GeoUtils::Vector2 operator/(double c) const;
-        virtual std::string getValueString() const;
+        virtual unsigned int getNumElements() const;
         static Ionflux::GeoUtils::Vector2 axis(Ionflux::GeoUtils::AxisID 
         axisID);
 		virtual Ionflux::GeoUtils::Vector2* copy() const;

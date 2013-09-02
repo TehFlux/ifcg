@@ -51,7 +51,7 @@ class Vector
         Vector();
 		Vector(const Ionflux::GeoUtils::Vector& other);
         virtual ~Vector();
-        virtual void initElements();
+        virtual void zero();
         virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
         newElements);
         virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
@@ -59,9 +59,9 @@ class Vector
         virtual double getElement(unsigned int index) const;
         virtual void setElement(unsigned int index, double value);
         virtual bool eq(const Ionflux::GeoUtils::Vector& other, double t = 
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual double dot(const Ionflux::GeoUtils::Vector& other);
-        virtual double norm();
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual double dot(const Ionflux::GeoUtils::Vector& other) const;
+        virtual double norm() const;
         virtual Ionflux::GeoUtils::Vector& normalizeIP();
         virtual Ionflux::GeoUtils::Vector& multiplyIP(double c);
         virtual Ionflux::GeoUtils::Vector& divideIP(double c);
@@ -75,6 +75,8 @@ class Vector
         virtual bool operator==(const Ionflux::GeoUtils::Vector& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Vector& other) 
+        const;
+        virtual double operator*(const Ionflux::GeoUtils::Vector& other) 
         const;
         virtual std::string getValueString() const;
         virtual unsigned int getNumElements() const;

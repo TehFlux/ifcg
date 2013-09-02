@@ -31,7 +31,7 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/Vector2.hpp"
-#include "ifobject/IFObject.hpp"
+#include "geoutils/Vector.hpp"
 
 namespace Ionflux
 {
@@ -59,15 +59,15 @@ class Vector3ClassInfo
  * A vector in three-dimensional space.
  */
 class Vector3
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Vector
 {
 	private:
 		
 	protected:
-		/// Elements.
-		double* elements;
 		
 	public:
+		/// Number of elements.
+		static const unsigned int NUM_ELEMENTS;
 		/// Zero vector.
 		static const Ionflux::GeoUtils::Vector3 ZERO;
 		/// Unit vector (X).
@@ -113,18 +113,18 @@ class Vector3
 		 *
 		 * Construct new Vector3 object.
 		 *
-		 * \param initElements Element vector.
+		 * \param initElements0 Element vector.
 		 */
-		Vector3(const Ionflux::ObjectBase::DoubleVector& initElements);
+		Vector3(const Ionflux::ObjectBase::DoubleVector& initElements0);
 		
 		/** Constructor.
 		 *
 		 * Construct new Vector3 object.
 		 *
-		 * \param initElements Element vector.
+		 * \param initElements0 Element vector.
 		 * \param initZ Z coordinate.
 		 */
-		Vector3(const Ionflux::GeoUtils::Vector2& initElements, double initZ = 
+		Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double initZ = 
 		1.);
 		
 		/** Destructor.
@@ -132,17 +132,6 @@ class Vector3
 		 * Destruct Vector3 object.
 		 */
 		virtual ~Vector3();
-		
-		/** Set elements.
-		 *
-		 * Set elements from a vector of doubles. If the vector contains fewer
-		 * than the required number of elements, the remaining elements will 
-		 * be left alone.
-		 *
-		 * \param newElements Element vector.
-		 */
-		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-		newElements);
 		
 		/** Set elements.
 		 *
@@ -174,47 +163,6 @@ class Vector3
 		virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, double 
 		newZ = 1.);
 		
-		/** Get elements.
-		 *
-		 * Store the elements of the vector in a vector of doubles.
-		 *
-		 * \param target Target vector.
-		 */
-		virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
-		const;
-		
-		/** Get element.
-		 *
-		 * Get the element at the specified index.
-		 *
-		 * \param index Index.
-		 *
-		 * \return Element at the specified index.
-		 */
-		virtual double getElement(int index) const;
-		
-		/** Set element.
-		 *
-		 * Set the element at the specified index.
-		 *
-		 * \param index Index.
-		 * \param value Value.
-		 */
-		virtual void setElement(int index, double value);
-		
-		/** Comparison (with tolerance): equal.
-		 *
-		 * Compare the vector with another vector using the specified 
-		 * tolerance.
-		 *
-		 * \param other Vector.
-		 * \param t Tolerance.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool eq(const Ionflux::GeoUtils::Vector3& other, double t = 
-		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-		
 		/** Flip vector.
 		 *
 		 * Create a new vector which is equal to the original vector 
@@ -223,14 +171,6 @@ class Vector3
 		 * \return Result of the calculation.
 		 */
 		virtual Ionflux::GeoUtils::Vector3 flip() const;
-		
-		/** Norm.
-		 *
-		 * Get the norm (length) of the vector.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual double norm() const;
 		
 		/** Normalize vector.
 		 *
@@ -349,36 +289,6 @@ class Vector3
 		 */
 		virtual Ionflux::GeoUtils::AxisTriple getAxisOrder() const;
 		
-		/** Comparison operator: equality.
-		 *
-		 * Compare equality.
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator==(const Ionflux::GeoUtils::Vector3& other) const;
-		
-		/** Comparison operator: inequality.
-		 *
-		 * Compare inequality.
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator!=(const Ionflux::GeoUtils::Vector3& other) const;
-		
-		/** Subscript operator.
-		 *
-		 * Subscript operator.
-		 *
-		 * \param index Index.
-		 *
-		 * \return Element at specified index.
-		 */
-		virtual double operator[](int index) const;
-		
 		/** Add vectors.
 		 *
 		 * Add vectors.
@@ -442,9 +352,9 @@ class Vector3
 		virtual Ionflux::GeoUtils::Vector3& operator+=(const 
 		Ionflux::GeoUtils::Vector3& other);
 		
-		/** Add vectors.
+		/** Subtract vectors.
 		 *
-		 * Add vectors.
+		 * Subtract vectors.
 		 *
 		 * \param other Vector.
 		 *
@@ -504,13 +414,13 @@ class Vector3
 		virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& plane) 
 		const;
 		
-		/** Get string representation of value.
+		/** Get number of elements.
 		 *
-		 * Get a string representation of the value of the object
+		 * Get the number of elements in the vector
 		 *
-		 * \return String representation.
+		 * \return Number of elements.
 		 */
-		virtual std::string getValueString() const;
+		virtual unsigned int getNumElements() const;
 		
 		/** Get axis direction vector.
 		 *

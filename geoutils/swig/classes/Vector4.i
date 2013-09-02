@@ -43,9 +43,10 @@ class Vector4ClassInfo
 };
 
 class Vector4
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Vector
 {
     public:
+		static const unsigned int NUM_ELEMENTS;
 		static const Ionflux::GeoUtils::Vector4 ZERO;
 		static const Ionflux::GeoUtils::Vector4 E_X;
 		static const Ionflux::GeoUtils::Vector4 E_Y;
@@ -60,14 +61,12 @@ class Vector4
 		Vector4(const Ionflux::GeoUtils::Vector4& other);
         Vector4(double initX0, double initX1, double initX2, double 
         initX3);
-        Vector4(const Ionflux::ObjectBase::DoubleVector& initElements);
-        Vector4(const Ionflux::GeoUtils::Vector2& initElements, double 
+        Vector4(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Vector4(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 0., double initW = 1.);
-        Vector4(const Ionflux::GeoUtils::Vector3& initElements, double 
+        Vector4(const Ionflux::GeoUtils::Vector3& initElements0, double 
         initW = 1.);
         virtual ~Vector4();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
         virtual void setElements(const Ionflux::GeoUtils::Vector2& 
         newElements);
         virtual void setElements(const Ionflux::GeoUtils::Vector3& 
@@ -76,14 +75,7 @@ class Vector4
         double newZ = 0., double newW = 1.);
         virtual void setV3(const Ionflux::GeoUtils::Vector3& newElements, 
         double newW = 1.);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
-        const;
-        virtual double getElement(int index) const;
-        virtual void setElement(int index, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Vector4& other, double t =
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Vector4 flip() const;
-        virtual double norm() const;
         virtual Ionflux::GeoUtils::Vector4 normalize() const;
         virtual Ionflux::GeoUtils::Vector4 project(const 
         Ionflux::GeoUtils::Vector4& other) const;
@@ -93,10 +85,6 @@ class Vector4
         int pw) const;
         virtual Ionflux::GeoUtils::Vector4 permute(const 
         Ionflux::ObjectBase::IntVector& p) const;
-        virtual bool operator==(const Ionflux::GeoUtils::Vector4& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Vector4& other) 
-        const;
         virtual Ionflux::GeoUtils::Vector4 operator+(const 
         Ionflux::GeoUtils::Vector4& other) const;
         virtual Ionflux::GeoUtils::Vector4 operator-(const 
@@ -107,7 +95,7 @@ class Vector4
         virtual Ionflux::GeoUtils::Vector4 operator/(double c) const;
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
         virtual Ionflux::GeoUtils::Vector3 getV3() const;
-        virtual std::string getValueString() const;
+        virtual unsigned int getNumElements() const;
         static Ionflux::GeoUtils::Vector4 axis(Ionflux::GeoUtils::AxisID 
         axisID);
         static Ionflux::GeoUtils::Vector4 axisH(Ionflux::GeoUtils::AxisID 

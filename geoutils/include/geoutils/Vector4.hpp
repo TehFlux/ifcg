@@ -32,7 +32,7 @@
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
 #include "geoutils/Vector3.hpp"
-#include "ifobject/IFObject.hpp"
+#include "geoutils/Vector.hpp"
 
 namespace Ionflux
 {
@@ -57,15 +57,15 @@ class Vector4ClassInfo
  * A vector in four-dimensional space.
  */
 class Vector4
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Vector
 {
 	private:
 		
 	protected:
-		/// Elements.
-		double* elements;
 		
 	public:
+		/// Number of elements.
+		static const unsigned int NUM_ELEMENTS;
 		/// Zero vector.
 		static const Ionflux::GeoUtils::Vector4 ZERO;
 		/// Unit vector (X).
@@ -120,29 +120,29 @@ class Vector4
 		 *
 		 * Construct new Vector4 object.
 		 *
-		 * \param initElements Element vector.
+		 * \param initElements0 Element vector.
 		 */
-		Vector4(const Ionflux::ObjectBase::DoubleVector& initElements);
+		Vector4(const Ionflux::ObjectBase::DoubleVector& initElements0);
 		
 		/** Constructor.
 		 *
 		 * Construct new Vector4 object.
 		 *
-		 * \param initElements Element vector.
+		 * \param initElements0 Element vector.
 		 * \param initZ Z coordinate.
 		 * \param initW W coordinate.
 		 */
-		Vector4(const Ionflux::GeoUtils::Vector2& initElements, double initZ = 
+		Vector4(const Ionflux::GeoUtils::Vector2& initElements0, double initZ = 
 		0., double initW = 1.);
 		
 		/** Constructor.
 		 *
 		 * Construct new Vector4 object.
 		 *
-		 * \param initElements Element vector.
+		 * \param initElements0 Element vector.
 		 * \param initW W coordinate.
 		 */
-		Vector4(const Ionflux::GeoUtils::Vector3& initElements, double initW = 
+		Vector4(const Ionflux::GeoUtils::Vector3& initElements0, double initW = 
 		1.);
 		
 		/** Destructor.
@@ -150,17 +150,6 @@ class Vector4
 		 * Destruct Vector4 object.
 		 */
 		virtual ~Vector4();
-		
-		/** Set elements.
-		 *
-		 * Set elements from a vector of doubles. If the vector contains fewer
-		 * than the required number of elements, the remaining elements will 
-		 * be left alone.
-		 *
-		 * \param newElements Element vector.
-		 */
-		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-		newElements);
 		
 		/** Set elements.
 		 *
@@ -203,47 +192,6 @@ class Vector4
 		virtual void setV3(const Ionflux::GeoUtils::Vector3& newElements, double 
 		newW = 1.);
 		
-		/** Get elements.
-		 *
-		 * Store the elements of the vector in a vector of doubles.
-		 *
-		 * \param target Target vector.
-		 */
-		virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
-		const;
-		
-		/** Get element.
-		 *
-		 * Get the element at the specified index.
-		 *
-		 * \param index Index.
-		 *
-		 * \return Element at the specified index.
-		 */
-		virtual double getElement(int index) const;
-		
-		/** Set element.
-		 *
-		 * Set the element at the specified index.
-		 *
-		 * \param index Index.
-		 * \param value Value.
-		 */
-		virtual void setElement(int index, double value);
-		
-		/** Comparison (with tolerance): equal.
-		 *
-		 * Compare the vector with another vector using the specified 
-		 * tolerance.
-		 *
-		 * \param other Vector.
-		 * \param t Tolerance.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool eq(const Ionflux::GeoUtils::Vector4& other, double t = 
-		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-		
 		/** Flip vector.
 		 *
 		 * Create a new vector which is equal to the original vector 
@@ -252,14 +200,6 @@ class Vector4
 		 * \return Result of the calculation.
 		 */
 		virtual Ionflux::GeoUtils::Vector4 flip() const;
-		
-		/** Norm.
-		 *
-		 * Get the norm (length) of the vector.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual double norm() const;
 		
 		/** Normalize vector.
 		 *
@@ -317,36 +257,6 @@ class Vector4
 		 */
 		virtual Ionflux::GeoUtils::Vector4 permute(const 
 		Ionflux::ObjectBase::IntVector& p) const;
-		
-		/** Comparison operator: equality.
-		 *
-		 * Compare equality.
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator==(const Ionflux::GeoUtils::Vector4& other) const;
-		
-		/** Comparison operator: inequality.
-		 *
-		 * Compare inequality.
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator!=(const Ionflux::GeoUtils::Vector4& other) const;
-		
-		/** Subscript operator.
-		 *
-		 * Subscript operator.
-		 *
-		 * \param index Index.
-		 *
-		 * \return Element at specified index.
-		 */
-		virtual double operator[](int index) const;
 		
 		/** Add vectors.
 		 *
@@ -416,13 +326,13 @@ class Vector4
 		 */
 		virtual Ionflux::GeoUtils::Vector3 getV3() const;
 		
-		/** Get string representation of value.
+		/** Get number of elements.
 		 *
-		 * Get a string representation of the value of the object
+		 * Get the number of elements in the vector
 		 *
-		 * \return String representation.
+		 * \return Number of elements.
 		 */
-		virtual std::string getValueString() const;
+		virtual unsigned int getNumElements() const;
 		
 		/** Get axis direction vector.
 		 *

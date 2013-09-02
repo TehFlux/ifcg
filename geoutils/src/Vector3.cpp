@@ -50,7 +50,6 @@ Vector3ClassInfo::Vector3ClassInfo()
 {
 	name = "Vector3";
 	desc = "Vector (3 elements)";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Vector3ClassInfo::~Vector3ClassInfo()
@@ -58,6 +57,7 @@ Vector3ClassInfo::~Vector3ClassInfo()
 }
 
 // public member constants
+const unsigned int Vector3::NUM_ELEMENTS = 3;
 const Ionflux::GeoUtils::Vector3 Vector3::ZERO = Ionflux::GeoUtils::Vector3(0., 0., 0.);
 const Ionflux::GeoUtils::Vector3 Vector3::E_X = Ionflux::GeoUtils::Vector3(1., 0., 0.);
 const Ionflux::GeoUtils::Vector3 Vector3::E_Y = Ionflux::GeoUtils::Vector3(0., 1., 0.);
@@ -71,77 +71,49 @@ const Ionflux::ObjectBase::IFClassInfo* Vector3::CLASS_INFO = &Vector3::vector3C
 const std::string Vector3::XML_ELEMENT_NAME = "v3";
 
 Vector3::Vector3()
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[3];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	*this = ZERO;
+	zero();
 }
 
 Vector3::Vector3(const Ionflux::GeoUtils::Vector3& other)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[3];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
 	*this = other;
 }
 
 Vector3::Vector3(double initX0, double initX1, double initX2)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[3];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
+	initElements();
 	elements[0] = initX0;
 	elements[1] = initX1;
 	elements[2] = initX2;
 }
 
-Vector3::Vector3(const Ionflux::ObjectBase::DoubleVector& initElements)
-: elements(0)
+Vector3::Vector3(const Ionflux::ObjectBase::DoubleVector& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[3];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setElements(initElements);
+	initElements();
+	Vector::setElements(initElements0);
 }
 
-Vector3::Vector3(const Ionflux::GeoUtils::Vector2& initElements, double 
+Vector3::Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double 
 initZ)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[3];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setV2(initElements, initZ);
+	initElements();
+	setV2(initElements0, initZ);
 }
 
 Vector3::~Vector3()
 {
-	delete[] elements;
-}
-
-void Vector3::setElements(const Ionflux::ObjectBase::DoubleVector& 
-newElements)
-{
-	unsigned int i = 0;
-	while ((i < 3) && (i < newElements.size()))
-	{
-	    elements[i] = newElements[i];
-	    i++;
-	}
+	// TODO: Nothing ATM. ;-)
 }
 
 void Vector3::setElements(double newX0, double newX1, double newX2)
@@ -164,54 +136,18 @@ newZ)
 	elements[2] = newZ;
 }
 
-void Vector3::getElements(Ionflux::ObjectBase::DoubleVector& target) const
-{
-	target.clear();
-	for (unsigned int i = 0; i < 3; i++)
-	    target.push_back(elements[i]);
-}
-
-double Vector3::getElement(int index) const
-{
-	// TODO: Implementation.
-	return (*this)[index];;
-}
-
-void Vector3::setElement(int index, double value)
-{
-	if ((index < 0) || (index > 2))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	elements[index] = value;
-}
-
-bool Vector3::eq(const Ionflux::GeoUtils::Vector3& other, double t)
-{
-	for (unsigned int i = 0; i < 3; i++)
-	    if (!Ionflux::GeoUtils::eq(elements[i], other.elements[i], t))
-	        return false;
-	return true;
-}
-
 Ionflux::GeoUtils::Vector3 Vector3::flip() const
 {
-	// TODO: Implementation.
-	return Vector3(-elements[0], -elements[1], -elements[2]);
-}
-
-double Vector3::norm() const
-{
-	// TODO: Implementation.
-	return ::sqrt((*this) * (*this));
+	Vector3 result(*this);
+	result.flipIP();
+	return result;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::normalize() const
 {
-	// TODO: Implementation.
-	return (*this) / norm();
+	Vector3 result(*this);
+	result.normalize();
+	return result;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::cross(const Ionflux::GeoUtils::Vector3&
@@ -281,8 +217,13 @@ Ionflux::GeoUtils::Vector3 Vector3::permute(int px, int py, int pz) const
 Ionflux::GeoUtils::Vector3 Vector3::permute(const 
 Ionflux::ObjectBase::IntVector& p) const
 {
-	if (p.size() < 3)
-	    throw GeoUtilsError("Not enough elements in permutation vector.");
+	if (p.size() < NUM_ELEMENTS)
+	{
+	    std::ostringstream status;
+	    status << "Not enough elements in permutation vector (p.size = " 
+	        << p.size() << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "permute"));
+	}
 	const Vector3& v = *this;
 	return Vector3(v[p[0]], v[p[1]], v[p[2]]);
 }
@@ -290,8 +231,9 @@ Ionflux::ObjectBase::IntVector& p) const
 Ionflux::GeoUtils::Vector3 Vector3::multElements(const 
 Ionflux::GeoUtils::Vector3& other) const
 {
-	// TODO: Implementation.
-	return Vector3(elements[0] * other.elements[0], elements[1] * other.elements[1], elements[2] * other.elements[2]);
+	Vector3 result(*this);
+	result.multiplyIP(other);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::interpolate(const 
@@ -328,82 +270,53 @@ Ionflux::GeoUtils::AxisTriple Vector3::getAxisOrder() const
 	return result;
 }
 
-bool Vector3::operator==(const Ionflux::GeoUtils::Vector3& other) const
-{
-	for (unsigned int i = 0; i < 3; i++)
-	    if (elements[i] != other.elements[i])
-	        return false;
-	return true;
-}
-
-bool Vector3::operator!=(const Ionflux::GeoUtils::Vector3& other) const
-{
-	// TODO: Implementation.
-	return !(*this == other);;
-}
-
-double Vector3::operator[](int index) const
-{
-	if ((index < 0) || (index > 2))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	return elements[index];
-}
-
 Ionflux::GeoUtils::Vector3 Vector3::operator+(const 
 Ionflux::GeoUtils::Vector3& other) const
 {
-	// TODO: Implementation.
-	return Vector3(elements[0] + other.elements[0], 
-    elements[1] + other.elements[1], 
-    elements[2] + other.elements[2]);
+	Vector3 result;
+	result.addIP(*this);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::operator-(const 
 Ionflux::GeoUtils::Vector3& other) const
 {
-	// TODO: Implementation.
-	return Vector3(elements[0] - other.elements[0], 
-    elements[1] - other.elements[1], 
-    elements[2] - other.elements[2]);
+	Vector3 result;
+	result.subtractIP(*this);
+	return result;
 }
 
 double Vector3::operator*(const Ionflux::GeoUtils::Vector3& other) const
 {
 	// TODO: Implementation.
-	return elements[0] * other.elements[0] + elements[1] * other.elements[1] + elements[2] * other.elements[2];
+	return dot(other);
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::operator*(double c) const
 {
-	// TODO: Implementation.
-	return Vector3(elements[0] * c, elements[1] * c, elements[2] * c);
+	Vector3 result;
+	result.multiplyIP(c);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::operator/(double c) const
 {
-	// TODO: Implementation.
-	return Vector3(elements[0] / c, elements[1] / c, elements[2] / c);
+	Vector3 result;
+	result.divideIP(c);
+	return result;
 }
 
 Ionflux::GeoUtils::Vector3& Vector3::operator+=(const 
 Ionflux::GeoUtils::Vector3& other)
 {
-	elements[0] += other.elements[0];
-	elements[1] += other.elements[1];
-	elements[2] += other.elements[2];
+	addIP(other);
 	return *this;
 }
 
 Ionflux::GeoUtils::Vector3& Vector3::operator-=(const 
 Ionflux::GeoUtils::Vector3& other)
 {
-	elements[0] -= other.elements[0];
-	elements[1] -= other.elements[1];
-	elements[2] -= other.elements[2];
+	subtractIP(other);
 	return *this;
 }
 
@@ -456,12 +369,10 @@ const
 	return (*this - plane.getP()) * plane.getNormal();
 }
 
-std::string Vector3::getValueString() const
+unsigned int Vector3::getNumElements() const
 {
-	ostringstream state;
-	state << elements[0] << ", " << elements[1] 
-	    << ", " << elements[2];
-	return state.str();
+	// TODO: Implementation.
+	return NUM_ELEMENTS;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::axis(Ionflux::GeoUtils::AxisID axisID)
@@ -477,7 +388,8 @@ Ionflux::GeoUtils::Vector3 Vector3::axis(Ionflux::GeoUtils::AxisID axisID)
 	else
 	{
 	    ostringstream status;
-	    status << "Invalid axis: " << axisID;
+	    status << "[Vector3::axis] "
+	        "Invalid axis: " << axisID;
 	    throw GeoUtilsError(status.str());
 	}
 	return ZERO;
@@ -516,11 +428,9 @@ double Vector3::getX2() const
 Ionflux::GeoUtils::Vector3& Vector3::operator=(const 
 Ionflux::GeoUtils::Vector3& other)
 {
-    if ((elements == 0) || (other.elements == 0))
+    if (this == &other)
         return *this;
-    for (unsigned int i = 0; i < 3; i++)
-        elements[i] = other.elements[i];
-    return *this;
+    Vector::operator=(other);
 	return *this;
 }
 
@@ -557,7 +467,7 @@ std::string Vector3::getXMLElementName() const
 
 std::string Vector3::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::string a0(Ionflux::GeoUtils::Vector::getXMLAttributeData());
 	std::ostringstream d0;
 	if (a0.size() > 0)
 	    d0 << a0;
@@ -569,7 +479,7 @@ indentLevel) const
 {
 	std::ostringstream d0;
 	std::string bc0;
-	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	Ionflux::GeoUtils::Vector::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	target = d0.str();
 }

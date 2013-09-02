@@ -97,6 +97,15 @@ void Vector::initElements()
 	}
 }
 
+void Vector::zero()
+{
+	if (elements == 0)
+	    initElements();
+	unsigned int numElements = getNumElements();
+	for (unsigned int i = 0; i < numElements; i++)
+	    elements[i] = 0.;
+}
+
 void Vector::setElements(const Ionflux::ObjectBase::DoubleVector& 
 newElements)
 {
@@ -137,7 +146,7 @@ void Vector::setElement(unsigned int index, double value)
 	elements[index] = value;
 }
 
-bool Vector::eq(const Ionflux::GeoUtils::Vector& other, double t)
+bool Vector::eq(const Ionflux::GeoUtils::Vector& other, double t) const
 {
 	unsigned int numElements = getNumElements();
 	for (unsigned int i = 0; i < numElements; i++)
@@ -146,7 +155,7 @@ bool Vector::eq(const Ionflux::GeoUtils::Vector& other, double t)
 	return true;
 }
 
-double Vector::dot(const Ionflux::GeoUtils::Vector& other)
+double Vector::dot(const Ionflux::GeoUtils::Vector& other) const
 {
 	unsigned int numElements = getNumElements();
 	unsigned int oNumElements = other.getNumElements();
@@ -163,7 +172,7 @@ double Vector::dot(const Ionflux::GeoUtils::Vector& other)
 	return result;
 }
 
-double Vector::norm()
+double Vector::norm() const
 {
 	unsigned int numElements = getNumElements();
 	double result = 0.;
@@ -281,6 +290,12 @@ double Vector::operator[](unsigned int index) const
 	    throw GeoUtilsError(getErrorString(status.str(), "setElement"));
 	}
 	return elements[index];
+}
+
+double Vector::operator*(const Ionflux::GeoUtils::Vector& other) const
+{
+	// TODO: Implementation.
+	return dot(other);
 }
 
 std::string Vector::getValueString() const
