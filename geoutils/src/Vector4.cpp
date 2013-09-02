@@ -31,6 +31,8 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -66,6 +68,8 @@ const Ionflux::GeoUtils::Vector4 Vector4::H_E_Z = Ionflux::GeoUtils::Vector4(0.,
 // run-time type information instance constants
 const Vector4ClassInfo Vector4::vector4ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vector4::CLASS_INFO = &Vector4::vector4ClassInfo;
+
+const std::string Vector4::XML_ELEMENT_NAME = "v4";
 
 Vector4::Vector4()
 : elements(0)
@@ -338,12 +342,12 @@ Ionflux::GeoUtils::Vector3 Vector4::getV3() const
 	return Vector3(elements[0], elements[1], elements[2]);
 }
 
-std::string Vector4::getString() const
+std::string Vector4::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << elements[0] << ", " << elements[1] 
-	    << ", " << elements[2] << ", " << elements[3] << "]";
-	return state.str();
+	std::ostringstream status;
+	status << elements[0] << ", " << elements[1] 
+	    << ", " << elements[2] << ", " << elements[3];
+	return status.str();
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::axis(Ionflux::GeoUtils::AxisID axisID)
@@ -440,10 +444,52 @@ Ionflux::GeoUtils::Vector4& other)
 
 Ionflux::GeoUtils::Vector4* Vector4::copy() const
 {
-    Vector4* newVector4 = 
-        new Vector4();
+    Vector4* newVector4 = create();
     *newVector4 = *this;
     return newVector4;
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::upcast(Ionflux::ObjectBase::IFObject* 
+other)
+{
+    return dynamic_cast<Vector4*>(other);
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Vector4* newObject = new Vector4();
+    if (newObject == 0)
+    {
+        return 0;
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Vector4::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Vector4::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Vector4::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
 }
 
 Ionflux::GeoUtils::Vector4 operator*(double c, const 

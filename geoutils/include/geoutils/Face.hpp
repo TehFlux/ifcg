@@ -371,14 +371,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Face& other) const;
 		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
-		
 		/** Backface check.
 		 *
 		 * Check whether the face faces backwards relative to the specified 
@@ -556,6 +548,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void setFromXMLData(const std::string& vertexData, const 
 		std::string& texCoordData);
+		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *

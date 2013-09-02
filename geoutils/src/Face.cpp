@@ -571,35 +571,6 @@ bool Face::operator!=(const Ionflux::GeoUtils::Face& other) const
 	return !(*this == other);;
 }
 
-std::string Face::getString() const
-{
-	ostringstream result;
-	result << getClassName() << "[verts: [";
-	bool e0 = true;
-	for (UIntVector::const_iterator i = vertices.begin(); 
-	    i != vertices.end(); i++)
-	{
-	    if (!e0)
-	        result << ", ";
-	    else
-	        e0 = false;
-	    result << *i;
-	}
-	result << "]; uv: [";
-	e0 = true;
-	for (TexCoordsVector::const_iterator j = uv.begin(); 
-	    j != uv.end(); j++)
-	{
-	    if (!e0)
-	        result << ", ";
-	    else
-	        e0 = false;
-	    result << "(" << (*j).u << ", " << (*j).v << ")";
-	}
-	result << "]]";
-	return result.str();
-}
-
 bool Face::isBackface(const Ionflux::GeoUtils::Vector3& front)
 {
 	if (normal == 0)
@@ -758,6 +729,74 @@ texCoordData)
 	    uv0.v = v0->getY();
 	    addTexCoord(uv0);
 	}
+}
+
+std::string Face::getValueString() const
+{
+	std::ostringstream status;
+	bool e0 = true;
+	// vertices
+	status << "verts: ";
+	unsigned int numVerts = vertices.size();
+	if (numVerts > 0)
+	{
+	    status << "(";
+	    for (UIntVector::const_iterator i = vertices.begin(); 
+	        i != vertices.end(); i++)
+	    {
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << *i;
+	    }
+	    status << ")";
+	} else
+	    status << "<none>";
+	// texture coordinates
+	unsigned int numUV = uv.size();
+	if (numUV > 0)
+	{
+	    status << "; uv: [";
+	    e0 = true;
+	    for (TexCoordsVector::const_iterator j = uv.begin(); 
+	        j != uv.end(); j++)
+	    {
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << "(" << (*j).u << ", " << (*j).v << ")";
+	    }
+	    status << "]";
+	} else
+	    status << "<none>";
+	// vertex colors
+	unsigned int numVCol = vertexColors.size();
+	if (numVCol > 0)
+	{
+	    status << "; vcol: [";
+	    e0 = true;
+	    for (ColorVector::const_iterator j = vertexColors.begin(); 
+	        j != vertexColors.end(); j++)
+	    {
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << "(" << (*j).red << ", " << (*j).green << ", " 
+	            << (*j).blue << ", " << (*j).alpha << ")";
+	    }
+	    status << "]";
+	} else
+	    status << "<none>";
+	// transformable object data
+	if (!useTransform && !useVI)
+	    return status.str();
+	if (!useTransform && !useVI)
+	    return status.str();
+	status << "; " << TransformableObject::getValueString();
+	return status.str();
 }
 
 unsigned int Face::getNumVertices() const

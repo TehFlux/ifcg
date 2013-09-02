@@ -35,6 +35,7 @@
 #include "geoutils/Clock.hpp"
 #include "geoutils/Range.hpp"
 #include "geoutils/Range3.hpp"
+#include "geoutils/Vector.hpp"
 #include "geoutils/Vector2.hpp"
 #include "geoutils/Matrix2.hpp"
 #include "geoutils/Vertex2.hpp"

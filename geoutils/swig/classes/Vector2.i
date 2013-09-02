@@ -88,6 +88,10 @@ class Vector2
         static Ionflux::GeoUtils::Vector2 axis(Ionflux::GeoUtils::AxisID 
         axisID);
 		virtual Ionflux::GeoUtils::Vector2* copy() const;
+		static Ionflux::GeoUtils::Vector2* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);
@@ -96,6 +100,14 @@ class Vector2
 
 Ionflux::GeoUtils::Vector2 operator*(double c, const 
 Ionflux::GeoUtils::Vector2& v);
+
+namespace XMLUtils
+{
+
+void getVector2(const std::string& data, Ionflux::GeoUtils::Vector2& 
+target);
+
+}
 
 }
 

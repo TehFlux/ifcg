@@ -34,6 +34,8 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Plane3.hpp"
 #include "geoutils/Range.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -65,6 +67,8 @@ const Ionflux::GeoUtils::Vector3 Vector3::E_SUM = Ionflux::GeoUtils::Vector3(1.,
 // run-time type information instance constants
 const Vector3ClassInfo Vector3::vector3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vector3::CLASS_INFO = &Vector3::vector3ClassInfo;
+
+const std::string Vector3::XML_ELEMENT_NAME = "v3";
 
 Vector3::Vector3()
 : elements(0)
@@ -544,6 +548,30 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string Vector3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Vector3::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Vector3::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
 }
 
 Ionflux::GeoUtils::Vector3 operator*(double c, const 

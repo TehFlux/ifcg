@@ -467,6 +467,7 @@ class Clock
 }
 
 $Range
+$Vector
 
 namespace Ionflux
 {

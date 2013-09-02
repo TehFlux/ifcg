@@ -462,6 +462,14 @@ Ionflux::GeoUtils::TransformableObject
 		indices, unsigned int maxIterations = 10000, double p = 1., double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object.
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
+		
 		/** Create mesh: plane.
 		 *
 		 * Create a plane mesh.

@@ -315,6 +315,10 @@ void getVertex3Set_legacy(const std::string& fileName, const std::string& elemen
 
 }
 
+$Vector
+$Vector2
+$Vector3
+$Vector4
 $TransformableObject
 $Vertex3
 $Vertex3Set

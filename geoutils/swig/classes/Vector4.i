@@ -107,12 +107,16 @@ class Vector4
         virtual Ionflux::GeoUtils::Vector4 operator/(double c) const;
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
         virtual Ionflux::GeoUtils::Vector3 getV3() const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Vector4 axis(Ionflux::GeoUtils::AxisID 
         axisID);
         static Ionflux::GeoUtils::Vector4 axisH(Ionflux::GeoUtils::AxisID 
         axisID);
 		virtual Ionflux::GeoUtils::Vector4* copy() const;
+		static Ionflux::GeoUtils::Vector4* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Vector4* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);
@@ -125,6 +129,14 @@ class Vector4
 
 Ionflux::GeoUtils::Vector4 operator*(double c, const 
 Ionflux::GeoUtils::Vector4& v);
+
+namespace XMLUtils
+{
+
+void getVector4(const std::string& data, Ionflux::GeoUtils::Vector4& 
+target);
+
+}
 
 }
 

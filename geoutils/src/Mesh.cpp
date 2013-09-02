@@ -34,6 +34,7 @@
 #include <fstream>
 #include <algorithm>
 #include "ifmapping/utils.hpp"
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex.hpp"
 #include "geoutils/FaceCompareAxis.hpp"
@@ -624,6 +625,61 @@ indices, unsigned int maxIterations, double p, double t)
 	return nonPlanar;
 }
 
+std::string Mesh::getValueString() const
+{
+	std::ostringstream status;
+	// vertices
+	status << "verts: ";
+	if (vertexSource != 0)
+	{
+	    unsigned int numVerts = vertexSource->getNumVertices();
+	    if (numVerts > 0)
+	    {
+	        status << "[";
+	        bool e0 = true;
+	        for (unsigned int i = 0; i < numVerts; i++)
+	        {
+	            Vertex3* v0 = vertexSource->getVertex(i);
+	            if (!e0)
+	                status << ", ";
+	            else
+	                e0 = false;
+	            status << "(" << v0->getValueString() << ")";
+	        }
+	        status << "]";
+	    } else
+	        status << "<none>";
+	} else
+	    status << "<none>";
+	// faces
+	status << "; faces: ";
+	unsigned int numFaces = faces.size();
+	if (numFaces > 0)
+	{
+	    status << "[";
+	    bool e0 = true;
+	    for (FaceVector::const_iterator i = faces.begin(); 
+	        i != faces.end(); i++)
+	    {
+	        Face* f0 = *i;
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << "(" << f0->getValueString() << ")";
+	    }
+	    status << "]";
+	} else
+	    status << "<none>";
+	// transformable object data
+	if (!useTransform && !useVI)
+	    return status.str();
+	if (!useTransform && !useVI)
+	    return status.str();
+	status << "; " << TransformableObject::getValueString();
+	return status.str();
+}
+
 Ionflux::GeoUtils::Mesh* Mesh::plane()
 {
 	Mesh* m0 = create();
@@ -1044,6 +1100,10 @@ const
 	if (d0.str().size() > 0)
 	    d0 << "\n";
 	d0 << vertexSource->getXML0(indentLevel, "pname=\"vertex_source\"");
+	if (d0.str().size() > 0)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(faces, "vec", "", 
+        indentLevel, "pname=\"faces\"");
 	target = d0.str();
 }
 

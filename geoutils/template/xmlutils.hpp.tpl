@@ -98,6 +98,10 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
 
 }
 
+$Vector
+$Vector2
+$Vector3
+$Vector4
 $TransformableObject
 $Vertex3
 $Vertex3Set

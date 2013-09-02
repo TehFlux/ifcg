@@ -1,11 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_VECTOR2
-#define IONFLUX_GEOUTILS_VECTOR2
+#ifndef IONFLUX_GEOUTILS_VECTOR
+#define IONFLUX_GEOUTILS_VECTOR
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * Vector2.hpp                     Vector (2 elements) (header).
+ * Vector.hpp                      Vector (header).
  * =========================================================================
  * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -38,23 +38,23 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-/// Class information for class Vector2.
-class Vector2ClassInfo
+/// Class information for class Vector.
+class VectorClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
 	public:
 		/// Constructor.
-		Vector2ClassInfo();
+		VectorClassInfo();
 		/// Destructor.
-		virtual ~Vector2ClassInfo();
+		virtual ~VectorClassInfo();
 };
 
-/** Vector (2 elements).
+/** Vector.
  * \ingroup geoutils
  *
- * A vector in two-dimensional space.
+ * A numeric vector.
  */
-class Vector2
+class Vector
 : public Ionflux::ObjectBase::IFObject
 {
 	private:
@@ -64,14 +64,10 @@ class Vector2
 		double* elements;
 		
 	public:
-		/// Zero vector.
-		static const Ionflux::GeoUtils::Vector2 ZERO;
-		/// Unit vector (X).
-		static const Ionflux::GeoUtils::Vector2 E_X;
-		/// Unit vector (Y).
-		static const Ionflux::GeoUtils::Vector2 E_Y;
+		/// Number of elements.
+		static const unsigned int NUM_ELEMENTS;
 		/// Class information instance.
-		static const Vector2ClassInfo vector2ClassInfo;
+		static const VectorClassInfo vectorClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
 		/// XML element name.
@@ -79,40 +75,29 @@ class Vector2
 		
 		/** Constructor.
 		 *
-		 * Construct new Vector2 object.
+		 * Construct new Vector object.
 		 */
-		Vector2();
+		Vector();
 		
 		/** Constructor.
 		 *
-		 * Construct new Vector2 object.
+		 * Construct new Vector object.
 		 *
 		 * \param other Other object.
 		 */
-		Vector2(const Ionflux::GeoUtils::Vector2& other);
-		
-		/** Constructor.
-		 *
-		 * Construct new Vector2 object.
-		 *
-		 * \param initX0 Element (X0).
-		 * \param initX1 Element (X1).
-		 */
-		Vector2(double initX0, double initX1);
-		
-		/** Constructor.
-		 *
-		 * Construct new Vector2 object.
-		 *
-		 * \param initElements Element vector.
-		 */
-		Vector2(const Ionflux::ObjectBase::DoubleVector& initElements);
+		Vector(const Ionflux::GeoUtils::Vector& other);
 		
 		/** Destructor.
 		 *
-		 * Destruct Vector2 object.
+		 * Destruct Vector object.
 		 */
-		virtual ~Vector2();
+		virtual ~Vector();
+		
+		/** Initialize elements.
+		 *
+		 * Initialize the elements in the vector.
+		 */
+		virtual void initElements();
 		
 		/** Set elements.
 		 *
@@ -124,15 +109,6 @@ class Vector2
 		 */
 		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
 		newElements);
-		
-		/** Set elements.
-		 *
-		 * Set elements of the vector.
-		 *
-		 * \param newX0 Element (x0).
-		 * \param newX1 Element (x1).
-		 */
-		virtual void setElements(double newX0, double newX1);
 		
 		/** Get elements.
 		 *
@@ -151,7 +127,7 @@ class Vector2
 		 *
 		 * \return Element at the specified index.
 		 */
-		virtual double getElement(int index) const;
+		virtual double getElement(unsigned int index) const;
 		
 		/** Set element.
 		 *
@@ -160,7 +136,7 @@ class Vector2
 		 * \param index Index.
 		 * \param value Value.
 		 */
-		virtual void setElement(int index, double value);
+		virtual void setElement(unsigned int index, double value);
 		
 		/** Comparison (with tolerance): equal.
 		 *
@@ -172,65 +148,98 @@ class Vector2
 		 *
 		 * \return Result of the comparison.
 		 */
-		virtual bool eq(const Ionflux::GeoUtils::Vector2& other, double t = 
+		virtual bool eq(const Ionflux::GeoUtils::Vector& other, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Flip vector.
+		/** Dot product.
 		 *
-		 * Create a new vector which is equal to the original vector 
-		 * multiplied by -1.
+		 * Calculate the dot product of this vector and another vector.
+		 *
+		 * \param other Vector.
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual Ionflux::GeoUtils::Vector2 flip() const;
+		virtual double dot(const Ionflux::GeoUtils::Vector& other);
 		
 		/** Norm.
 		 *
-		 * Get the norm (length) of the vector.
+		 * Calculate the norm of this vector.
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual double norm() const;
+		virtual double norm();
 		
-		/** Normalize vector.
+		/** Normalize (in-place).
 		 *
-		 * Create a new vector which is equal to the normalized original 
-		 * vector.
+		 * Normalize the vector (in-place).
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual Ionflux::GeoUtils::Vector2 normalize() const;
+		virtual Ionflux::GeoUtils::Vector& normalizeIP();
 		
-		/** Projection.
+		/** Multiply (in-place).
 		 *
-		 * Calculate the projection of another vector on the vector.
+		 * Multiply the vector by a scalar (in-place).
+		 *
+		 * \param c Value.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Vector& multiplyIP(double c);
+		
+		/** Divide (in-place).
+		 *
+		 * Divide the vector by a scalar (in-place).
+		 *
+		 * \param c Value.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Vector& divideIP(double c);
+		
+		/** Flip (in-place).
+		 *
+		 * Flip the vector (in-place).
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Vector& flipIP();
+		
+		/** Multiply (in-place).
+		 *
+		 * Multiply the elements in this vector by the elements from another 
+		 * vector (in-place).
 		 *
 		 * \param other Vector.
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual Ionflux::GeoUtils::Vector2 project(const 
-		Ionflux::GeoUtils::Vector2& other) const;
+		virtual Ionflux::GeoUtils::Vector& multiplyIP(const 
+		Ionflux::GeoUtils::Vector& other);
 		
-		/** Orthogonalize vector.
+		/** Subtract (in-place).
 		 *
-		 * Rotate the other vector (v1) within the plane defined by the 
-		 * original vector (v0) and v1, so it is orthogonal to v0.
+		 * Subtract the elements from another vector from the elements in this
+		 * vector (in-place).
 		 *
 		 * \param other Vector.
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual Ionflux::GeoUtils::Vector2 ortho(const 
-		Ionflux::GeoUtils::Vector2& other) const;
+		virtual Ionflux::GeoUtils::Vector& subtractIP(const 
+		Ionflux::GeoUtils::Vector& other);
 		
-		/** Swap elements.
+		/** Add (in-place).
 		 *
-		 * Swap the elements of the vector.
+		 * Add the elements from another vector to the elements in this vector
+		 * (in-place).
+		 *
+		 * \param other Vector.
 		 *
 		 * \return Result of the calculation.
 		 */
-		virtual Ionflux::GeoUtils::Vector2 swap() const;
+		virtual Ionflux::GeoUtils::Vector& addIP(const Ionflux::GeoUtils::Vector&
+		other);
 		
 		/** Comparison operator: equality.
 		 *
@@ -240,7 +249,7 @@ class Vector2
 		 *
 		 * \return Result of the comparison.
 		 */
-		virtual bool operator==(const Ionflux::GeoUtils::Vector2& other) const;
+		virtual bool operator==(const Ionflux::GeoUtils::Vector& other) const;
 		
 		/** Comparison operator: inequality.
 		 *
@@ -250,7 +259,7 @@ class Vector2
 		 *
 		 * \return Result of the comparison.
 		 */
-		virtual bool operator!=(const Ionflux::GeoUtils::Vector2& other) const;
+		virtual bool operator!=(const Ionflux::GeoUtils::Vector& other) const;
 		
 		/** Subscript operator.
 		 *
@@ -260,59 +269,7 @@ class Vector2
 		 *
 		 * \return Element at specified index.
 		 */
-		virtual double operator[](int index) const;
-		
-		/** Add vectors.
-		 *
-		 * Add vectors.
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual Ionflux::GeoUtils::Vector2 operator+(const 
-		Ionflux::GeoUtils::Vector2& other) const;
-		
-		/** Subtract vectors.
-		 *
-		 * Subtract vectors.
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual Ionflux::GeoUtils::Vector2 operator-(const 
-		Ionflux::GeoUtils::Vector2& other) const;
-		
-		/** Multiply vectors.
-		 *
-		 * Multiply vectors (dot product).
-		 *
-		 * \param other Vector.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual double operator*(const Ionflux::GeoUtils::Vector2& other) const;
-		
-		/** Multiply vector by scalar.
-		 *
-		 * Multiply vector by a scalar.
-		 *
-		 * \param c Scalar factor.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual Ionflux::GeoUtils::Vector2 operator*(double c) const;
-		
-		/** Divide vector by scalar.
-		 *
-		 * Divide vector by a scalar.
-		 *
-		 * \param c Scalar factor.
-		 *
-		 * \return Result of the calculation.
-		 */
-		virtual Ionflux::GeoUtils::Vector2 operator/(double c) const;
+		virtual double operator[](unsigned int index) const;
 		
 		/** Get string representation of value.
 		 *
@@ -322,15 +279,13 @@ class Vector2
 		 */
 		virtual std::string getValueString() const;
 		
-		/** Get axis direction vector.
+		/** Get number of elements.
 		 *
-		 * Get the direction vector for the specified axis.
+		 * Get the number of elements in the vector
 		 *
-		 * \param axisID Axis.
-		 *
-		 * \return Axis direction vector.
+		 * \return Number of elements.
 		 */
-		static Ionflux::GeoUtils::Vector2 axis(Ionflux::GeoUtils::AxisID axisID);
+		virtual unsigned int getNumElements() const;
 		
 		/** Assignment operator.
 		 *
@@ -340,8 +295,8 @@ class Vector2
 		 *
 		 * \return The object itself.
 		 */
-		virtual Ionflux::GeoUtils::Vector2& operator=(const 
-		Ionflux::GeoUtils::Vector2& other);
+		virtual Ionflux::GeoUtils::Vector& operator=(const 
+		Ionflux::GeoUtils::Vector& other);
 		
 		/** Copy.
 		 *
@@ -349,7 +304,7 @@ class Vector2
 		 *
 		 * \return Newly allocated copy of the object.
 		 */
-		virtual Ionflux::GeoUtils::Vector2* copy() const;
+		virtual Ionflux::GeoUtils::Vector* copy() const;
 		
 		/** Upcast.
 		 *
@@ -359,7 +314,7 @@ class Vector2
 		 *
 		 * \return The more specific object, or 0 if the cast failed.
 		 */
-		static Ionflux::GeoUtils::Vector2* upcast(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::GeoUtils::Vector* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		
 		/** Create instance.
@@ -372,7 +327,7 @@ class Vector2
 		 *
 		 * \return Pointer to the new instance.
 		 */
-		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::GeoUtils::Vector* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         
 		/** Get XML element name.
@@ -400,53 +355,13 @@ class Vector2
 		 */
 		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
 		const;
-		
-		/** Get element x0.
-		 *
-		 * \return Current value of element x0.
-		 */
-		virtual double getX0() const;
-		
-		/** Set element x0.
-		 *
-		 * Set new value of element x0.
-		 *
-		 * \param newX0 New value of element x0.
-		 */
-		virtual void setX0(double newX0);
-		
-		/** Get element x1.
-		 *
-		 * \return Current value of element x1.
-		 */
-		virtual double getX1() const;
-		
-		/** Set element x1.
-		 *
-		 * Set new value of element x1.
-		 *
-		 * \param newX1 New value of element x1.
-		 */
-		virtual void setX1(double newX1);
 };
 
-/** Multiply vector by scalar.
- *
- * Multiply vector by a scalar.
- *
- * \param c Scalar factor.
- * \param v Vector.
- *
- * \return Result of the calculation.
- */
-Ionflux::GeoUtils::Vector2 operator*(double c, const 
-Ionflux::GeoUtils::Vector2& v);
-
 }
 
 }
 
-/** \file Vector2.hpp
- * \brief Vector (2 elements) (header).
+/** \file Vector.hpp
+ * \brief Vector (header).
  */
 #endif

@@ -531,6 +531,79 @@ class Range
 }
 
 
+%{
+#include "geoutils/Vector.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VectorClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VectorClassInfo();
+        virtual ~VectorClassInfo();
+};
+
+class Vector
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+		static const unsigned int NUM_ELEMENTS;
+        
+        Vector();
+		Vector(const Ionflux::GeoUtils::Vector& other);
+        virtual ~Vector();
+        virtual void initElements();
+        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
+        newElements);
+        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
+        const;
+        virtual double getElement(unsigned int index) const;
+        virtual void setElement(unsigned int index, double value);
+        virtual bool eq(const Ionflux::GeoUtils::Vector& other, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual double dot(const Ionflux::GeoUtils::Vector& other);
+        virtual double norm();
+        virtual Ionflux::GeoUtils::Vector& normalizeIP();
+        virtual Ionflux::GeoUtils::Vector& multiplyIP(double c);
+        virtual Ionflux::GeoUtils::Vector& divideIP(double c);
+        virtual Ionflux::GeoUtils::Vector& flipIP();
+        virtual Ionflux::GeoUtils::Vector& multiplyIP(const 
+        Ionflux::GeoUtils::Vector& other);
+        virtual Ionflux::GeoUtils::Vector& subtractIP(const 
+        Ionflux::GeoUtils::Vector& other);
+        virtual Ionflux::GeoUtils::Vector& addIP(const 
+        Ionflux::GeoUtils::Vector& other);
+        virtual bool operator==(const Ionflux::GeoUtils::Vector& other) 
+        const;
+        virtual bool operator!=(const Ionflux::GeoUtils::Vector& other) 
+        const;
+        virtual std::string getValueString() const;
+        virtual unsigned int getNumElements() const;
+		virtual Ionflux::GeoUtils::Vector* copy() const;
+		static Ionflux::GeoUtils::Vector* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Vector* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+};
+
+namespace XMLUtils
+{
+
+void getVector(const std::string& data, Ionflux::GeoUtils::Vector& target);
+
+}
+
+}
+
+}
+
+
 namespace Ionflux
 {
 
@@ -857,6 +930,14 @@ class Vector3
 
 Ionflux::GeoUtils::Vector3 operator*(double c, const 
 Ionflux::GeoUtils::Vector3& v);
+
+namespace XMLUtils
+{
+
+void getVector3(const std::string& data, Ionflux::GeoUtils::Vector3& 
+target);
+
+}
 
 }
 
@@ -3624,7 +3705,6 @@ Ionflux::GeoUtils::TransformableObject
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Face& other) 
         const;
-        virtual std::string getString() const;
         virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::Range3 getBounds();
@@ -3655,6 +3735,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual std::string getXML_legacy() const;
         virtual void setFromXMLData(const std::string& vertexData, const 
         std::string& texCoordData);
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Face* copy() const;
 		static Ionflux::GeoUtils::Face* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -3797,6 +3878,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::ObjectBase::UIntVector& indices, unsigned int 
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
         static Ionflux::GeoUtils::Mesh* cylinder(unsigned int subDivs = 10,

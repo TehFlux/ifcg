@@ -140,6 +140,14 @@ class Vector3
 Ionflux::GeoUtils::Vector3 operator*(double c, const 
 Ionflux::GeoUtils::Vector3& v);
 
+namespace XMLUtils
+{
+
+void getVector3(const std::string& data, Ionflux::GeoUtils::Vector3& 
+target);
+
+}
+
 }
 
 }

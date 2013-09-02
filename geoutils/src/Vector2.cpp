@@ -32,6 +32,8 @@
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/utils.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -61,6 +63,8 @@ const Ionflux::GeoUtils::Vector2 Vector2::E_Y = Ionflux::GeoUtils::Vector2(0., 1
 // run-time type information instance constants
 const Vector2ClassInfo Vector2::vector2ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vector2::CLASS_INFO = &Vector2::vector2ClassInfo;
+
+const std::string Vector2::XML_ELEMENT_NAME = "v2";
 
 Vector2::Vector2()
 : elements(0)
@@ -314,10 +318,52 @@ Ionflux::GeoUtils::Vector2& other)
 
 Ionflux::GeoUtils::Vector2* Vector2::copy() const
 {
-    Vector2* newVector2 = 
-        new Vector2();
+    Vector2* newVector2 = create();
     *newVector2 = *this;
     return newVector2;
+}
+
+Ionflux::GeoUtils::Vector2* Vector2::upcast(Ionflux::ObjectBase::IFObject* 
+other)
+{
+    return dynamic_cast<Vector2*>(other);
+}
+
+Ionflux::GeoUtils::Vector2* Vector2::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Vector2* newObject = new Vector2();
+    if (newObject == 0)
+    {
+        return 0;
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Vector2::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Vector2::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Vector2::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
 }
 
 Ionflux::GeoUtils::Vector2 operator*(double c, const 

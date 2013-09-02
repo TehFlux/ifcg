@@ -32,6 +32,7 @@
 #include <iomanip>
 #include <pango/pangocairo.h>
 #include <librsvg/rsvg.h>
+#include <librsvg/rsvg-cairo.h>
 #include "altjira/AltjiraError.hpp"
 #include "altjira/utils.hpp"
 #include "altjira/imageutils.hpp"

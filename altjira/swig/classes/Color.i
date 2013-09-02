@@ -125,7 +125,7 @@ class Color
         const;
         virtual bool operator!=(const Ionflux::Altjira::Color& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         static Ionflux::Altjira::Color interpolate(const 
         Ionflux::Altjira::ColorPair& colors, double factor = 0.5);
 		virtual Ionflux::Altjira::Color* copy() const;

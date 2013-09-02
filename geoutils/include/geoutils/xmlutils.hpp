@@ -106,6 +106,93 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Vector;
+
+namespace XMLUtils
+{
+
+void getVector(const std::string& data, Ionflux::GeoUtils::Vector& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector2;
+
+namespace XMLUtils
+{
+
+void getVector2(const std::string& data, Ionflux::GeoUtils::Vector2& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector3;
+
+namespace XMLUtils
+{
+
+void getVector3(const std::string& data, Ionflux::GeoUtils::Vector3& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector4;
+
+namespace XMLUtils
+{
+
+void getVector4(const std::string& data, Ionflux::GeoUtils::Vector4& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class TransformableObject;
 
 namespace XMLUtils

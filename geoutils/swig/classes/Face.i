@@ -97,7 +97,6 @@ Ionflux::GeoUtils::TransformableObject
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Face& other) 
         const;
-        virtual std::string getString() const;
         virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::Range3 getBounds();
@@ -128,6 +127,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual std::string getXML_legacy() const;
         virtual void setFromXMLData(const std::string& vertexData, const 
         std::string& texCoordData);
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Face* copy() const;
 		static Ionflux::GeoUtils::Face* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

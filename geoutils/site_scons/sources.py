@@ -160,6 +160,7 @@ geoutilsLibSources = [
     'build/TransformableObject.cpp', 
     'build/Translate.cpp', 
     'build/Unwrap.cpp', 
+    'build/Vector.cpp', 
     'build/Vector2.cpp', 
     'build/Vector3.cpp', 
     'build/Vector3Mapping.cpp', 
@@ -244,6 +245,7 @@ geoutilsLibClasses = [
     'TransformableObject', 
     'Translate', 
     'Unwrap', 
+    'Vector', 
     'Vector2', 
     'Vector3', 
     'Vector3Mapping', 
@@ -264,6 +266,10 @@ geoutilsLibClasses = [
 ]
 
 geoutilsLibXMLClasses = [
+    'Vector', 
+    'Vector2', 
+    'Vector3', 
+    'Vector4', 
     'TransformableObject', 
     'Vertex3', 
     'Vertex3Set', 

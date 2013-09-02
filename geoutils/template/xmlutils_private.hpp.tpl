@@ -27,6 +27,10 @@
  * 
  * ========================================================================== */
 
+$Vector
+$Vector2
+$Vector3
+$Vector4
 $TransformableObject
 $Vertex3
 $Vertex3Set

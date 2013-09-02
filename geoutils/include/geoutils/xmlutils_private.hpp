@@ -35,6 +35,174 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Vector;
+
+namespace XMLUtils
+{
+
+void getVector(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vector& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vector::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vector>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vector& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector2;
+
+namespace XMLUtils
+{
+
+void getVector2(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vector2& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vector2::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vector2>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vector2& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector3;
+
+namespace XMLUtils
+{
+
+void getVector3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vector3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vector3::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vector3>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vector3& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector4;
+
+namespace XMLUtils
+{
+
+void getVector4(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vector4& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vector4::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vector4>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vector4& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class TransformableObject;
 
 namespace XMLUtils

@@ -349,12 +349,11 @@ bool Color::operator!=(const Ionflux::Altjira::Color& other) const
 	return !(*this == other);;
 }
 
-std::string Color::getString() const
+std::string Color::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << red << ", " << green << ", " 
-	    << blue << ", " << alpha << "]";
-	return state.str();
+	std::ostringstream status;
+	status << red << ", " << green << ", " << blue << ", " << alpha;
+	return status.str();
 }
 
 Ionflux::Altjira::Color Color::interpolate(const 

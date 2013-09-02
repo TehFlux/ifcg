@@ -112,6 +112,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::ObjectBase::UIntVector& indices, unsigned int 
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
         static Ionflux::GeoUtils::Mesh* cylinder(unsigned int subDivs = 10,

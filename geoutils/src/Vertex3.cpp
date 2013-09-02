@@ -348,7 +348,7 @@ Ionflux::GeoUtils::Vertex3& Vertex3::duplicate()
 
 std::string Vertex3::getValueString() const
 {
-	ostringstream status;
+	std::ostringstream status;
 	status << x << ", " << y << ", " << z;
 	if (!useTransform && !useVI)
 	    return status.str();
