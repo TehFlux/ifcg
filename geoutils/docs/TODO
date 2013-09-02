@@ -15,15 +15,18 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ Vector types (Vector2, Vector3, Vector4) should be derived from Vector and 
+  use the generalized implementation.
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ After testing of the current code, implement custom XML I/O functions for 
-  Vertex3 that process a list of coordinates in a single XML attribute.
-  (use Ionflux::ObjectBase::vectorFromList())
++ Vertex3
+  > implement custom XML I/O functions that process a list of coordinates 
+    in a single XML attribute (see Vector).
+  > Vertex3 should not duplicate so much functionality from Vector3. Maybe 
+    make Vertex3 have a 'position' property that is a Vector3.
 
 + Mesh
   > Add generic vertex and face data layers which can be implemented 
