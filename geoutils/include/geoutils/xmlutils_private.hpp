@@ -203,6 +203,132 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class VectorSet;
+
+namespace XMLUtils
+{
+
+void getVectorSet(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSet& target, const std::string& elementName = 
+Ionflux::GeoUtils::VectorSet::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::VectorSet>(TiXmlElement* e0, 
+Ionflux::GeoUtils::VectorSet& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VectorSetSet;
+
+namespace XMLUtils
+{
+
+void getVectorSetSet(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName
+= Ionflux::GeoUtils::VectorSetSet::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::VectorSetSet>(TiXmlElement* e0, 
+Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class FaceData;
+
+namespace XMLUtils
+{
+
+void getFaceData(TiXmlElement* e0, 
+    Ionflux::GeoUtils::FaceData& target, const std::string& elementName = 
+Ionflux::GeoUtils::FaceData::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::FaceData>(TiXmlElement* e0, 
+Ionflux::GeoUtils::FaceData& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class TransformableObject;
 
 namespace XMLUtils

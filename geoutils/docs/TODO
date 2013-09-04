@@ -1,6 +1,6 @@
 ================================================================================
 GeoUtils - Ionflux' Geometry Library
-Copyright © 2009-2010 Jörn P. Meier
+Copyright © 2009-2013 Jörn P. Meier
 mail@ionflux.org
 --------------------------------------------------------------------------------
 TODO
@@ -15,12 +15,14 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Testing
-  > Vector2, Vector3, Vector4
+
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Testing
+  > Vector2, Vector3, Vector4
 
 + Vertex3
   > implement custom XML I/O functions that process a list of coordinates 
@@ -28,10 +30,8 @@ Critical stuff
   > Vertex3 should not duplicate so much functionality from Vector3. Maybe 
     make Vertex3 have a 'position' property that is a Vector3.
 
-+ Mesh
-  > Add generic vertex and face data layers which can be implemented 
-    as a map of Vertex[2,3,4]Set (Vertex2 for texcoords, Vertex4 for vertex 
-    colors etc.).
++ Face
+  > replace uv, vertexColors with one VectorSetSet property
 
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
   > Mesh

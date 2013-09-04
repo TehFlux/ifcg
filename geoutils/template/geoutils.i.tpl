@@ -191,6 +191,14 @@ typedef std::vector<Ionflux::GeoUtils::TransformNodes::Connection*>
 typedef std::vector<Ionflux::GeoUtils::TransformNodes::ParamControl*> 
     ParamControlVector;
 
+class Vector;
+class VectorSet;
+
+typedef std::vector<Ionflux::GeoUtils::Vector*> VectorVector;
+typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
+
+typedef int FaceDataTypeID;
+
 // constants.hpp
 
 const double DEFAULT_TOLERANCE = 1.0e-6;
@@ -303,6 +311,10 @@ const Ionflux::GeoUtils::QuadInterpolationTypeID
 const Ionflux::GeoUtils::QuadInterpolationTypeID 
     QUAD_INTERPOLATION_BILINEAR = 1;
 
+const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_TEX_COORD = 0;
+const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_COLOR = 1;
+const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_NORMAL = 2;
+
 namespace TransformNodes
 {
 
@@ -408,6 +420,8 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
     double a, double b, double c);
 int solveCubicEquation(double a, double b, double c, double d, 
     Ionflux::GeoUtils::Vector3& target);
+std::string getFaceDataTypeIDString(
+    Ionflux::GeoUtils::FaceDataTypeID typeID);
 
 namespace TransformNodes
 {
@@ -2276,6 +2290,10 @@ class Scatter
 
 }
 
+$VectorSet
+$VectorSetSet
+$FaceData
+
 %template(Vertex2Vector) std::vector<Ionflux::GeoUtils::Vertex2*>;
 %template(EdgeVector) std::vector<Ionflux::GeoUtils::Edge*>;
 %template(Vertex3Vector) std::vector<Ionflux::GeoUtils::Vertex3*>;
@@ -2294,4 +2312,6 @@ class Scatter
 %template(InputNodeSpecVector) std::vector<Ionflux::GeoUtils::TransformNodes::InputNodeSpec>;
 %template(Vector3Vector) std::vector<Ionflux::GeoUtils::Vector3*>;
 %template(ParamControlVector) std::vector<Ionflux::GeoUtils::TransformNodes::ParamControl*>;
+%template(VectorVector) std::vector<Ionflux::GeoUtils::Vector*>;
+%template(VectorSetVector) std::vector<Ionflux::GeoUtils::VectorSet*>;
 

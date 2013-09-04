@@ -193,6 +193,72 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class VectorSet;
+
+namespace XMLUtils
+{
+
+void getVectorSet(const std::string& data, Ionflux::GeoUtils::VectorSet& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VectorSetSet;
+
+namespace XMLUtils
+{
+
+void getVectorSetSet(const std::string& data, 
+Ionflux::GeoUtils::VectorSetSet& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class FaceData;
+
+namespace XMLUtils
+{
+
+void getFaceData(const std::string& data, Ionflux::GeoUtils::FaceData& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class TransformableObject;
 
 namespace XMLUtils

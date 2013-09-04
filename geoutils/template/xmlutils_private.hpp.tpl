@@ -31,6 +31,9 @@ $Vector
 $Vector2
 $Vector3
 $Vector4
+$VectorSet
+$VectorSetSet
+$FaceData
 $TransformableObject
 $Vertex3
 $Vertex3Set

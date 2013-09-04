@@ -296,7 +296,7 @@ void shift(std::vector<T>& v, int offset)
         int from = v.size() + offset;
         for (int i = 0; i < static_cast<int>(v.size()); i++)
         {
-            if (i < static_cast<unsigned int>(-offset))
+            if (i < -offset)
                 temp.push_back(v[i]);
             if (i >= from)
                 v[i] = temp[i - from];
@@ -696,6 +696,10 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
  */
 int solveCubicEquation(double a, double b, double c, double d, 
     Ionflux::GeoUtils::Vector3& target);
+
+/// Get face data type ID string representation.
+std::string getFaceDataTypeIDString(
+    Ionflux::GeoUtils::FaceDataTypeID typeID);
 
 namespace TransformNodes
 {

@@ -297,6 +297,17 @@ class Vector3Mapping;
 typedef std::vector<Ionflux::GeoUtils::Mapping::Vector3Mapping*> 
     Vector3MappingVector;
 
+class Vector;
+class VectorSet;
+
+/// Vector of vectors.
+typedef std::vector<Ionflux::GeoUtils::Vector*> VectorVector;
+/// Vector of vector sets.
+typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
+
+/// Face data type ID.
+typedef int FaceDataTypeID;
+
 }
 
 }

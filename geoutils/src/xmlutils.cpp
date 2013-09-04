@@ -594,6 +594,261 @@ void getObject0<Ionflux::GeoUtils::Vector4>(TiXmlElement* e0,
 
 }
 
+#include "geoutils/VectorSet.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getVectorSet(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSet& target, const std::string& elementName = 
+Ionflux::GeoUtils::VectorSet::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getVectorSet");
+    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: vectors (vector[object])
+        if ((en0 == "vectorvec") 
+            && (pName == "vectors"))
+        {
+            std::vector<Ionflux::GeoUtils::Vector*> pv0;
+            Ionflux::ObjectBase::XMLUtils::getObjVector<
+                    Ionflux::GeoUtils::Vector, 
+                    Ionflux::GeoUtils::Vector*>(ce0, pv0, 
+                "vectorvec", 
+                Ionflux::GeoUtils::Vector::XML_ELEMENT_NAME);
+            target.addVectors(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getVectorSet(const std::string& data, Ionflux::GeoUtils::VectorSet& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getVectorSet] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::VectorSet::XML_ELEMENT_NAME);
+    getVectorSet(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::VectorSet>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSet& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getVectorSet(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getVectorSet(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/VectorSetSet.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getVectorSetSet(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName
+= Ionflux::GeoUtils::VectorSetSet::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getVectorSetSet");
+    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: vectorSets (vector[object])
+        if ((en0 == "vectorsetvec") 
+            && (pName == "vector_sets"))
+        {
+            std::vector<Ionflux::GeoUtils::VectorSet*> pv0;
+            Ionflux::ObjectBase::XMLUtils::getObjVector<
+                    Ionflux::GeoUtils::VectorSet, 
+                    Ionflux::GeoUtils::VectorSet*>(ce0, pv0, 
+                "vectorsetvec", 
+                Ionflux::GeoUtils::VectorSet::XML_ELEMENT_NAME);
+            target.addVectorSets(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getVectorSetSet(const std::string& data, Ionflux::GeoUtils::VectorSetSet& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getVectorSetSet] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::VectorSetSet::XML_ELEMENT_NAME);
+    getVectorSetSet(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::VectorSetSet>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSetSet& target, const std::string& 
+elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getVectorSetSet(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getVectorSetSet(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/FaceData.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+void getFaceData(TiXmlElement* e0, 
+    Ionflux::GeoUtils::FaceData& target, const std::string& elementName = 
+Ionflux::GeoUtils::FaceData::XML_ELEMENT_NAME)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getFaceData");
+    getVectorSet(e0, target, elementName);
+    // Get attribute data.
+    std::string a0;
+    // Property: dataType (integer)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "datatype", true);
+    target.setDataType(::strtol(a0.c_str(), 0, 10));
+}
+
+void getFaceData(const std::string& data, Ionflux::GeoUtils::FaceData& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getFaceData] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::FaceData::XML_ELEMENT_NAME);
+    getFaceData(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::FaceData>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::FaceData& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getFaceData(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getFaceData(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
 #include "geoutils/TransformableObject.hpp"
 
 namespace Ionflux

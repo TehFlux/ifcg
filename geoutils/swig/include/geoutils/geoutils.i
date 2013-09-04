@@ -191,6 +191,14 @@ typedef std::vector<Ionflux::GeoUtils::TransformNodes::Connection*>
 typedef std::vector<Ionflux::GeoUtils::TransformNodes::ParamControl*> 
     ParamControlVector;
 
+class Vector;
+class VectorSet;
+
+typedef std::vector<Ionflux::GeoUtils::Vector*> VectorVector;
+typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
+
+typedef int FaceDataTypeID;
+
 // constants.hpp
 
 const double DEFAULT_TOLERANCE = 1.0e-6;
@@ -303,6 +311,10 @@ const Ionflux::GeoUtils::QuadInterpolationTypeID
 const Ionflux::GeoUtils::QuadInterpolationTypeID 
     QUAD_INTERPOLATION_BILINEAR = 1;
 
+const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_TEX_COORD = 0;
+const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_COLOR = 1;
+const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_NORMAL = 2;
+
 namespace TransformNodes
 {
 
@@ -408,6 +420,8 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
     double a, double b, double c);
 int solveCubicEquation(double a, double b, double c, double d, 
     Ionflux::GeoUtils::Vector3& target);
+std::string getFaceDataTypeIDString(
+    Ionflux::GeoUtils::FaceDataTypeID typeID);
 
 namespace TransformNodes
 {
@@ -5621,6 +5635,200 @@ class Scatter
 
 }
 
+
+%{
+#include "geoutils/VectorSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Vector;
+
+class VectorSetClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VectorSetClassInfo();
+        virtual ~VectorSetClassInfo();
+};
+
+class VectorSet
+: virtual public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        VectorSet();
+		VectorSet(const Ionflux::GeoUtils::VectorSet& other);
+        VectorSet(Ionflux::GeoUtils::VectorVector& initVectors);
+        virtual ~VectorSet();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::VectorSet* copy() const;
+		static Ionflux::GeoUtils::VectorSet* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::VectorSet* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::VectorSet* 
+		create(Ionflux::GeoUtils::VectorVector& initVectors, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);        
+        virtual unsigned int getNumVectors() const;
+        virtual Ionflux::GeoUtils::Vector* getVector(unsigned int 
+        elementIndex = 0) const;
+		virtual int findVector(Ionflux::GeoUtils::Vector* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::Vector*>& getVectors();
+        virtual void addVector(Ionflux::GeoUtils::Vector* addElement);
+		virtual Ionflux::GeoUtils::Vector* addVector();
+		virtual void addVectors(std::vector<Ionflux::GeoUtils::Vector*>& 
+		newVectors);
+		virtual void addVectors(Ionflux::GeoUtils::VectorSet* newVectors);        
+        virtual void removeVector(Ionflux::GeoUtils::Vector* 
+        removeElement);
+		virtual void removeVectorIndex(unsigned int removeIndex);
+		virtual void clearVectors();
+};
+
+namespace XMLUtils
+{
+
+void getVectorSet(const std::string& data, Ionflux::GeoUtils::VectorSet& 
+target);
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/VectorSetSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VectorSet;
+
+class VectorSetSetClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VectorSetSetClassInfo();
+        virtual ~VectorSetSetClassInfo();
+};
+
+class VectorSetSet
+: virtual public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        VectorSetSet();
+		VectorSetSet(const Ionflux::GeoUtils::VectorSetSet& other);
+        VectorSetSet(Ionflux::GeoUtils::VectorSetVector& initVectorSets);
+        virtual ~VectorSetSet();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::VectorSetSet* copy() const;
+		static Ionflux::GeoUtils::VectorSetSet* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::VectorSetSet* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::VectorSetSet* 
+		create(Ionflux::GeoUtils::VectorSetVector& initVectorSets, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);        
+        virtual unsigned int getNumVectorSets() const;
+        virtual Ionflux::GeoUtils::VectorSet* getVectorSet(unsigned int 
+        elementIndex = 0) const;
+		virtual int findVectorSet(Ionflux::GeoUtils::VectorSet* needle, unsigned 
+		int occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::VectorSet*>& 
+        getVectorSets();
+        virtual void addVectorSet(Ionflux::GeoUtils::VectorSet* 
+        addElement);
+		virtual Ionflux::GeoUtils::VectorSet* addVectorSet();
+		virtual void addVectorSets(std::vector<Ionflux::GeoUtils::VectorSet*>& 
+		newVectorSets);
+		virtual void addVectorSets(Ionflux::GeoUtils::VectorSetSet* 
+		newVectorSets);        
+        virtual void removeVectorSet(Ionflux::GeoUtils::VectorSet* 
+        removeElement);
+		virtual void removeVectorSetIndex(unsigned int removeIndex);
+		virtual void clearVectorSets();
+};
+
+namespace XMLUtils
+{
+
+void getVectorSetSet(const std::string& data, 
+Ionflux::GeoUtils::VectorSetSet& target);
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/FaceData.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class FaceDataClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        FaceDataClassInfo();
+        virtual ~FaceDataClassInfo();
+};
+
+class FaceData
+: public Ionflux::GeoUtils::VectorSet
+{
+    public:
+        
+        FaceData();
+		FaceData(const Ionflux::GeoUtils::FaceData& other);
+        FaceData(Ionflux::GeoUtils::VectorVector& initVectors);
+        virtual ~FaceData();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::FaceData* copy() const;
+		static Ionflux::GeoUtils::FaceData* upcast(Ionflux::ObjectBase::IFObject*
+		other);
+		static Ionflux::GeoUtils::FaceData* create(Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+		static Ionflux::GeoUtils::FaceData* 
+		create(Ionflux::GeoUtils::VectorVector& initVectors, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setDataType(Ionflux::GeoUtils::FaceDataTypeID 
+        newDataType);
+        virtual Ionflux::GeoUtils::FaceDataTypeID getDataType() const;
+};
+
+namespace XMLUtils
+{
+
+void getFaceData(const std::string& data, Ionflux::GeoUtils::FaceData& 
+target);
+
+}
+
+}
+
+}
+
+
 %template(Vertex2Vector) std::vector<Ionflux::GeoUtils::Vertex2*>;
 %template(EdgeVector) std::vector<Ionflux::GeoUtils::Edge*>;
 %template(Vertex3Vector) std::vector<Ionflux::GeoUtils::Vertex3*>;
@@ -5639,4 +5847,6 @@ class Scatter
 %template(InputNodeSpecVector) std::vector<Ionflux::GeoUtils::TransformNodes::InputNodeSpec>;
 %template(Vector3Vector) std::vector<Ionflux::GeoUtils::Vector3*>;
 %template(ParamControlVector) std::vector<Ionflux::GeoUtils::TransformNodes::ParamControl*>;
+%template(VectorVector) std::vector<Ionflux::GeoUtils::Vector*>;
+%template(VectorSetVector) std::vector<Ionflux::GeoUtils::VectorSet*>;
 
