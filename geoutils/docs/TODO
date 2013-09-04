@@ -15,11 +15,17 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ Face
+  > test the new face data API
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ VectorSet, VectorSetSet assignment should create a deep copy.
+
++ see if duplicate() can be replaced with copy()
+  > if not, make the difference clear in the docs
 
 + Testing
   > Vector2, Vector3, Vector4
