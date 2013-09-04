@@ -157,7 +157,7 @@ void getMesh_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
             }
             std::string texCoordData(a0);
             Face* f2 = Face::create();
-            f2->setFromXMLData(vertexData, texCoordData);
+            f2->setFromXMLData_legacy(vertexData, texCoordData);
             fv0.push_back(f2);
         }
         f1 = f1->NextSiblingElement();

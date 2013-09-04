@@ -311,10 +311,6 @@ const Ionflux::GeoUtils::QuadInterpolationTypeID
 const Ionflux::GeoUtils::QuadInterpolationTypeID 
     QUAD_INTERPOLATION_BILINEAR = 1;
 
-const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_TEX_COORD = 0;
-const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_COLOR = 1;
-const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_NORMAL = 2;
-
 namespace TransformNodes
 {
 
@@ -420,8 +416,6 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
     double a, double b, double c);
 int solveCubicEquation(double a, double b, double c, double d, 
     Ionflux::GeoUtils::Vector3& target);
-std::string getFaceDataTypeIDString(
-    Ionflux::GeoUtils::FaceDataTypeID typeID);
 
 namespace TransformNodes
 {

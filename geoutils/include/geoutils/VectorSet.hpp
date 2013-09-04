@@ -101,6 +101,26 @@ class VectorSet
 		 */
 		virtual ~VectorSet();
 		
+		/** Comparison operator: equality.
+		 *
+		 * Compare equality.
+		 *
+		 * \param other Vector set.
+		 *
+		 * \return Result of the comparison.
+		 */
+		virtual bool operator==(const Ionflux::GeoUtils::VectorSet& other) const;
+		
+		/** Comparison operator: inequality.
+		 *
+		 * Compare inequality.
+		 *
+		 * \param other Vector set.
+		 *
+		 * \return Result of the comparison.
+		 */
+		virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) const;
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.
@@ -246,7 +266,7 @@ class VectorSet
 		 *
 		 * \param newVectors vectors.
 		 */
-		virtual void addVectors(std::vector<Ionflux::GeoUtils::Vector*>& 
+		virtual void addVectors(const std::vector<Ionflux::GeoUtils::Vector*>& 
 		newVectors);
 		
 		/** Add vectors.

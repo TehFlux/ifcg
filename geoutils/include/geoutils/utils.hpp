@@ -697,10 +697,6 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
 int solveCubicEquation(double a, double b, double c, double d, 
     Ionflux::GeoUtils::Vector3& target);
 
-/// Get face data type ID string representation.
-std::string getFaceDataTypeIDString(
-    Ionflux::GeoUtils::FaceDataTypeID typeID);
-
 namespace TransformNodes
 {
 

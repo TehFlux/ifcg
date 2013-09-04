@@ -804,20 +804,6 @@ int solveCubicEquation(double a, double b, double c, double d,
     return result;
 }
 
-std::string getFaceDataTypeIDString(
-    Ionflux::GeoUtils::FaceDataTypeID typeID)
-{
-    if (typeID == FACE_DATA_TEX_COORD)
-        return "FACE_DATA_TEX_COORD";
-    else
-    if (typeID == FACE_DATA_VERTEX_COLOR)
-        return "FACE_DATA_VERTEX_COLOR";
-    else
-    if (typeID == FACE_DATA_VERTEX_NORMAL)
-        return "FACE_DATA_VERTEX_NORMAL";
-    return "<unknown>";
-}
-
 namespace TransformNodes
 {
 

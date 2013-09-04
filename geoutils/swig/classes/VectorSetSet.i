@@ -53,6 +53,10 @@ class VectorSetSet
 		VectorSetSet(const Ionflux::GeoUtils::VectorSetSet& other);
         VectorSetSet(Ionflux::GeoUtils::VectorSetVector& initVectorSets);
         virtual ~VectorSetSet();
+        virtual bool operator==(const Ionflux::GeoUtils::VectorSetSet& 
+        other) const;
+        virtual bool operator!=(const Ionflux::GeoUtils::VectorSetSet& 
+        other) const;
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::VectorSetSet* copy() const;
 		static Ionflux::GeoUtils::VectorSetSet* 

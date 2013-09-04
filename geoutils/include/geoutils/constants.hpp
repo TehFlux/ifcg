@@ -179,13 +179,6 @@ const Ionflux::GeoUtils::QuadInterpolationTypeID
 const Ionflux::GeoUtils::QuadInterpolationTypeID 
     QUAD_INTERPOLATION_BILINEAR = 1;
 
-/// Face data type ID: texture coordinates.
-const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_TEX_COORD = 0;
-/// Face data type ID: vertex color.
-const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_COLOR = 1;
-/// Face data type ID: vertex normal.
-const Ionflux::GeoUtils::FaceDataTypeID FACE_DATA_VERTEX_NORMAL = 2;
-
 namespace TransformNodes
 {
 

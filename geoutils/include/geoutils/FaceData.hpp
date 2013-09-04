@@ -64,6 +64,14 @@ class FaceData
 		Ionflux::GeoUtils::FaceDataTypeID dataType;
 		
 	public:
+		/// .
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_UNDEFINED;
+		/// .
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_TEX_COORD;
+		/// .
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_VERTEX_COLOR;
+		/// .
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_VERTEX_NORMAL;
 		/// Class information instance.
 		static const FaceDataClassInfo faceDataClassInfo;
 		/// Class information.
@@ -90,8 +98,18 @@ class FaceData
 		 * Construct new FaceData object.
 		 *
 		 * \param initVectors Vectors.
+		 * \param initDataType Data type.
 		 */
-		FaceData(Ionflux::GeoUtils::VectorVector& initVectors);
+		FaceData(Ionflux::GeoUtils::VectorVector& initVectors, 
+		Ionflux::GeoUtils::FaceDataTypeID initDataType = TYPE_UNDEFINED);
+		
+		/** Constructor.
+		 *
+		 * Construct new FaceData object.
+		 *
+		 * \param initDataType Data type.
+		 */
+		FaceData(Ionflux::GeoUtils::FaceDataTypeID initDataType);
 		
 		/** Destructor.
 		 *
@@ -106,6 +124,28 @@ class FaceData
 		 * \return String representation.
 		 */
 		virtual std::string getValueString() const;
+		
+		/** Type check.
+		 *
+		 * Check the data type of the face data object.
+		 *
+		 * \param typeID Face data type ID.
+		 *
+		 * \return \c true if the face data object has the specified data type, 
+		 * \c false otherwise.
+		 */
+		virtual bool hasType(Ionflux::GeoUtils::FaceDataTypeID typeID);
+		
+		/** Get face data type ID string representation.
+		 *
+		 * Get a string representation for a face data type ID.
+		 *
+		 * \param typeID Face data type ID.
+		 *
+		 * \return String representation.
+		 */
+		static std::string getTypeIDString(Ionflux::GeoUtils::FaceDataTypeID 
+		typeID);
 		
 		/** Assignment operator.
 		 *
@@ -155,10 +195,23 @@ class FaceData
 		 * Create a new FaceData object.
 		 *
 		 * \param initVectors Vectors.
+		 * \param initDataType Data type.
 		 * \param parentObject Parent object.
 		 */
 		static Ionflux::GeoUtils::FaceData* 
 		create(Ionflux::GeoUtils::VectorVector& initVectors, 
+		Ionflux::GeoUtils::FaceDataTypeID initDataType = TYPE_UNDEFINED, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new FaceData object.
+		 *
+		 * \param initDataType Data type.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::FaceData* 
+		create(Ionflux::GeoUtils::FaceDataTypeID initDataType, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.

@@ -157,7 +157,7 @@ void getMesh_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
             }
             std::string texCoordData(a0);
             Face* f2 = Face::create();
-            f2->setFromXMLData(vertexData, texCoordData);
+            f2->setFromXMLData_legacy(vertexData, texCoordData);
             fv0.push_back(f2);
         }
         f1 = f1->NextSiblingElement();
@@ -1123,6 +1123,11 @@ Ionflux::GeoUtils::Face::XML_ELEMENT_NAME)
             Ionflux::ObjectBase::UIntVector pv0;
             Ionflux::ObjectBase::XMLUtils::getUIntVector(ce0, pv0);
             target.addVertices(pv0);
+        }
+        // Property: faceData ()
+        if ((en0 == "data") 
+            && (pName == "fds"))
+        {
         }
         ce0 = ce0->NextSiblingElement();
     }

@@ -15,12 +15,19 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Face
-  > test the new face data API
+
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Face
+  > test the new face data API
+
++ Vertex3Set
+  > use extendedCreate and extendedVectorAddFuncs
+
++ Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
 + VectorSet, VectorSetSet assignment should create a deep copy.
 

@@ -88,6 +88,30 @@ VectorSet::~VectorSet()
 	// TODO: Nothing ATM. ;-)
 }
 
+bool VectorSet::operator==(const Ionflux::GeoUtils::VectorSet& other) const
+{
+	if (vectors.size() != other.vectors.size())
+	    return false;
+	for (unsigned int i = 0; i < vectors.size(); i++)
+	{
+	    Vector* v0 = vectors[i];
+	    Vector* v1 = other.vectors[i];
+	    if ((v0 != 0) && (v1 != 0))
+	    {
+	        if (*v0 != *v1)
+	            return false;
+	    } else
+	        return false;
+	}
+	return true;
+}
+
+bool VectorSet::operator!=(const Ionflux::GeoUtils::VectorSet& other) const
+{
+	// TODO: Implementation.
+	return !(*this == other);;
+}
+
 std::string VectorSet::getValueString() const
 {
 	ostringstream status;
@@ -159,10 +183,10 @@ Ionflux::GeoUtils::Vector* VectorSet::addVector()
 	return o0;
 }
 
-void VectorSet::addVectors(std::vector<Ionflux::GeoUtils::Vector*>& 
+void VectorSet::addVectors(const std::vector<Ionflux::GeoUtils::Vector*>& 
 newVectors)
 {
-	for (std::vector<Ionflux::GeoUtils::Vector*>::iterator i = newVectors.begin(); 
+	for (std::vector<Ionflux::GeoUtils::Vector*>::const_iterator i = newVectors.begin(); 
 	    i != newVectors.end(); i++)
 	    addVector(*i);
 }

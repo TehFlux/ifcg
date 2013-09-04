@@ -46,12 +46,21 @@ class FaceData
 : public Ionflux::GeoUtils::VectorSet
 {
     public:
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_UNDEFINED;
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_TEX_COORD;
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_VERTEX_COLOR;
+		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_VERTEX_NORMAL;
         
         FaceData();
 		FaceData(const Ionflux::GeoUtils::FaceData& other);
-        FaceData(Ionflux::GeoUtils::VectorVector& initVectors);
+        FaceData(Ionflux::GeoUtils::VectorVector& initVectors, 
+        Ionflux::GeoUtils::FaceDataTypeID initDataType = TYPE_UNDEFINED);
+        FaceData(Ionflux::GeoUtils::FaceDataTypeID initDataType);
         virtual ~FaceData();
         virtual std::string getValueString() const;
+        virtual bool hasType(Ionflux::GeoUtils::FaceDataTypeID typeID);
+        static std::string 
+        getTypeIDString(Ionflux::GeoUtils::FaceDataTypeID typeID);
 		virtual Ionflux::GeoUtils::FaceData* copy() const;
 		static Ionflux::GeoUtils::FaceData* upcast(Ionflux::ObjectBase::IFObject*
 		other);
@@ -59,6 +68,10 @@ class FaceData
 		parentObject = 0);
 		static Ionflux::GeoUtils::FaceData* 
 		create(Ionflux::GeoUtils::VectorVector& initVectors, 
+		Ionflux::GeoUtils::FaceDataTypeID initDataType = TYPE_UNDEFINED, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::FaceData* 
+		create(Ionflux::GeoUtils::FaceDataTypeID initDataType, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setDataType(Ionflux::GeoUtils::FaceDataTypeID 
         newDataType);

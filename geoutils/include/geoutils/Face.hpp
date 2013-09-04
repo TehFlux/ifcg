@@ -38,6 +38,9 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class VectorSetSet;
+class FaceData;
+
 /// Class information for class Face.
 class FaceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -71,12 +74,10 @@ Ionflux::GeoUtils::TransformableObject
 		Ionflux::GeoUtils::Polygon3* polygon;
 		/// Vertex index vector.
 		std::vector<unsigned int> vertices;
-		/// Texture coordinates vector.
-		std::vector<Ionflux::GeoUtils::TexCoords> uv;
-		/// Vertex color vector.
-		std::vector<Ionflux::GeoUtils::Color> vertexColors;
 		/// Vertex source.
 		Ionflux::GeoUtils::Vertex3Set* vertexSource;
+		/// face data.
+		Ionflux::GeoUtils::VectorSetSet* faceData;
 		
 		/** Recalculate bounds.
 		 *
@@ -118,9 +119,9 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param initVertexColors Vertex colors.
 		 */
 		Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
-		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-		Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
-		Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
+		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
+		initVertexColors = 0);
 		
 		/** Constructor.
 		 *
@@ -136,9 +137,9 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3 =
 		Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
-		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-		Ionflux::GeoUtils::TexCoordsVector* initUV = 0, const 
-		Ionflux::GeoUtils::ColorVector* initVertexColors = 0);
+		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
+		initVertexColors = 0);
 		
 		/** Destructor.
 		 *
@@ -189,32 +190,115 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void addVertices(unsigned int v0, unsigned int v1, unsigned int 
 		v2, unsigned int v3 = Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE);
 		
-		/** Add vertex indices.
+		/** Add face data.
 		 *
-		 * Add vertex indices from a vertex vector.
+		 * Add a face data entry.
 		 *
-		 * \param newVerts Vertex indices.
+		 * \param newFaceData Face data.
+		 *
+		 * \return New face data.
 		 */
-		virtual void addVertices(const Ionflux::ObjectBase::UIntVector& 
-		newVerts);
+		virtual Ionflux::GeoUtils::VectorSet* 
+		addFaceData(Ionflux::GeoUtils::FaceData* newFaceData);
 		
-		/** Add texture coordinates.
+		/** Add face data.
 		 *
-		 * Add texture coordinates from a texture coordinates vector.
+		 * Add a face data entry of a certain type.
 		 *
-		 * \param newTexCoords Texture coordinates.
+		 * \param dataType Face data type ID.
+		 *
+		 * \return New face data.
 		 */
-		virtual void addTexCoords(const Ionflux::GeoUtils::TexCoordsVector& 
-		newTexCoords);
+		virtual Ionflux::GeoUtils::VectorSet* 
+		addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType);
 		
-		/** Add vertex colors.
+		/** Get face data by type.
 		 *
-		 * Add vertex colors from a vertex color vector.
+		 * Get face data entries of a certain type.
 		 *
-		 * \param newVertexColors Vertex colors.
+		 * \param dataType Face data type ID.
+		 * \param target Where to store the face data.
 		 */
-		virtual void addVertexColors(const Ionflux::GeoUtils::ColorVector& 
-		newVertexColors);
+		virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
+		dataType, Ionflux::GeoUtils::VectorSetSet& target);
+		
+		/** Get face data by type and index..
+		 *
+		 * Get face data by type and index. This gets the face data record 
+		 * that represents the \c index-th occurence of face data of the 
+		 * specified type.
+		 *
+		 * \param dataType Face data type ID.
+		 * \param index face data index.
+		 *
+		 * \return Face data entry, or 0 if no matching face data exists.
+		 */
+		virtual Ionflux::GeoUtils::FaceData* 
+		getFaceDataByType0(Ionflux::GeoUtils::FaceDataTypeID dataType, unsigned 
+		int index = 0);
+		
+		/** Get texture coordinates.
+		 *
+		 * Get texture coordinates.
+		 *
+		 * \param dataType Face data type ID.
+		 * \param target Where to store the face data.
+		 */
+		virtual void getTexCoords(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+		Ionflux::GeoUtils::VectorSetSet& target);
+		
+		/** Get texture coordinates.
+		 *
+		 * Get texture coordinates by index.
+		 *
+		 * \param index face data index.
+		 *
+		 * \return .
+		 */
+		virtual Ionflux::GeoUtils::FaceData* getTexCoords0(unsigned int index = 
+		0);
+		
+		/** Get vertex colors.
+		 *
+		 * Get vertex colors.
+		 *
+		 * \param dataType Face data type ID.
+		 * \param target Where to store the face data.
+		 */
+		virtual void getVertexColors(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+		Ionflux::GeoUtils::VectorSetSet& target);
+		
+		/** Get vertex colors.
+		 *
+		 * Get vertex colors by index.
+		 *
+		 * \param index face data index.
+		 *
+		 * \return .
+		 */
+		virtual Ionflux::GeoUtils::FaceData* getVertexColors0(unsigned int index 
+		= 0);
+		
+		/** Get vertex normals.
+		 *
+		 * Get vertex normals.
+		 *
+		 * \param dataType Face data type ID.
+		 * \param target Where to store the face data.
+		 */
+		virtual void getVertexNormals(Ionflux::GeoUtils::FaceDataTypeID dataType,
+		Ionflux::GeoUtils::VectorSetSet& target);
+		
+		/** Get vertex normals.
+		 *
+		 * Get vertex normals by index.
+		 *
+		 * \param index face data index.
+		 *
+		 * \return .
+		 */
+		virtual Ionflux::GeoUtils::FaceData* getVertexNormals0(unsigned int index
+		= 0);
 		
 		/** Get tangent vector.
 		 *
@@ -494,25 +578,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual Ionflux::GeoUtils::Face& duplicate();
 		
-		/** Create face.
-		 *
-		 * Create a triangle or a quad face.
-		 *
-		 * \param v0 Vertex index (0).
-		 * \param v1 Vertex index (1).
-		 * \param v2 Vertex index (2).
-		 * \param v3 Vertex index (3).
-		 * \param initVertexSource Vertex source.
-		 * \param initUV Texture coordinates.
-		 *
-		 * \return New face.
-		 */
-		static Ionflux::GeoUtils::Face* create(unsigned int v0, unsigned int v1, 
-		unsigned int v2, unsigned int v3 = 
-		Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
-		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, const 
-		Ionflux::GeoUtils::TexCoordsVector* initUV = 0);
-		
 		/** Get XML data representation for vertex indices.
 		 *
 		 * Get a representation of the vertex indices suitable for use in an 
@@ -520,7 +585,7 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \return XML data representation of vertex indices.
 		 */
-		virtual std::string getXMLDataVertices() const;
+		virtual std::string getXMLDataVertices_legacy() const;
 		
 		/** Get XML data representation for texture coordinates.
 		 *
@@ -529,7 +594,7 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \return XML data representation of UV coordinates.
 		 */
-		virtual std::string getXMLDataTexCoords() const;
+		virtual std::string getXMLDataTexCoords_legacy() const;
 		
 		/** Get XML representation.
 		 *
@@ -546,7 +611,7 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param vertexData Vertex index data.
 		 * \param texCoordData Texture coordinate data.
 		 */
-		virtual void setFromXMLData(const std::string& vertexData, const 
+		virtual void setFromXMLData_legacy(const std::string& vertexData, const 
 		std::string& texCoordData);
 		
 		/** Get string representation of value.
@@ -599,6 +664,42 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		static Ionflux::GeoUtils::Face* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Face object.
+		 *
+		 * \param initVerts Vertex index vector.
+		 * \param initVertexSource Vertex source.
+		 * \param initUV Texture coordinates.
+		 * \param initVertexColors Vertex colors.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Face* create(const 
+		Ionflux::ObjectBase::UIntVector* initVerts, 
+		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Face object.
+		 *
+		 * \param v0 Vertex index (0).
+		 * \param v1 Vertex index (1).
+		 * \param v2 Vertex index (2).
+		 * \param v3 Vertex index (3).
+		 * \param initVertexSource Vertex source.
+		 * \param initUV Texture coordinates.
+		 * \param initVertexColors Vertex colors.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Face* create(unsigned int v0, unsigned int v1, 
+		unsigned int v2, unsigned int v3 = 
+		Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
+		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.
 		 *
@@ -668,6 +769,30 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void addVertex(unsigned int addElement);
 		
+		/** Create vertex.
+		 *
+		 * Create a new vertex which is managed by the vertex set.
+		 *
+		 * \return New vertex.
+		 */
+		virtual unsigned int addVertex();
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex vector.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(const std::vector<unsigned int>& newVertices);
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex set.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(Ionflux::GeoUtils::Face* newVertices);
+		
 		/** Remove vertex.
 		 *
 		 * Remove a vertex.
@@ -690,137 +815,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void clearVertices();
 		
-		/** Get number of texCoords.
-		 *
-		 * \return Number of texCoords.
-		 */
-		virtual unsigned int getNumTexCoords() const;
-		
-		/** Get texCoord.
-		 *
-		 * Get the texCoord at the specified index.
-		 *
-		 * \param elementIndex Element index.
-		 *
-		 * \return TexCoord at specified index.
-		 */
-		virtual Ionflux::GeoUtils::TexCoords getTexCoord(unsigned int 
-		elementIndex = 0) const;
-		
-		/** Find texCoord.
-		 *
-		 * Find the specified occurence of a texCoord.
-		 *
-		 * \param needle TexCoord to be found.
-		 * \param occurence Number of the occurence to be found.
-		 *
-		 * \return Index of the texCoord, or -1 if the texCoord cannot be found.
-		 */
-		virtual int findTexCoord(Ionflux::GeoUtils::TexCoords needle, unsigned 
-		int occurence = 1) const;
-        
-		/** Get texture coordinates vector.
-		 *
-		 * \return texture coordinates vector.
-		 */
-		virtual std::vector<Ionflux::GeoUtils::TexCoords>& getTexCoords();
-		
-		/** Add texCoord.
-		 *
-		 * Add a texCoord.
-		 *
-		 * \param addElement TexCoord to be added.
-		 */
-		virtual void addTexCoord(Ionflux::GeoUtils::TexCoords addElement);
-		
-		/** Remove texCoord.
-		 *
-		 * Remove a texCoord.
-		 *
-		 * \param removeElement TexCoord to be removed.
-		 */
-		virtual void removeTexCoord(Ionflux::GeoUtils::TexCoords removeElement);
-		
-		/** Remove texCoord.
-		 *
-		 * Remove a texCoord.
-		 *
-		 * \param removeIndex TexCoord to be removed.
-		 */
-		virtual void removeTexCoordIndex(unsigned int removeIndex);
-		
-		/** Clear texCoords.
-		 *
-		 * Clear all texCoords.
-		 */
-		virtual void clearTexCoords();
-		
-		/** Get number of vertexColors.
-		 *
-		 * \return Number of vertexColors.
-		 */
-		virtual unsigned int getNumVertexColors() const;
-		
-		/** Get vertexColor.
-		 *
-		 * Get the vertexColor at the specified index.
-		 *
-		 * \param elementIndex Element index.
-		 *
-		 * \return VertexColor at specified index.
-		 */
-		virtual Ionflux::GeoUtils::Color getVertexColor(unsigned int elementIndex
-		= 0) const;
-		
-		/** Find vertexColor.
-		 *
-		 * Find the specified occurence of a vertexColor.
-		 *
-		 * \param needle VertexColor to be found.
-		 * \param occurence Number of the occurence to be found.
-		 *
-		 * \return Index of the vertexColor, or -1 if the vertexColor cannot be 
-		 * found.
-		 */
-		virtual int findVertexColor(Ionflux::GeoUtils::Color needle, unsigned int
-		occurence = 1) const;
-        
-		/** Get vertex color vector.
-		 *
-		 * \return vertex color vector.
-		 */
-		virtual std::vector<Ionflux::GeoUtils::Color>& getVertexColors();
-		
-		/** Add vertexColor.
-		 *
-		 * Add a vertexColor.
-		 *
-		 * \param addElement VertexColor to be added.
-		 */
-		virtual void addVertexColor(Ionflux::GeoUtils::Color addElement);
-		
-		/** Remove vertexColor.
-		 *
-		 * Remove a vertexColor.
-		 *
-		 * \param removeElement VertexColor to be removed.
-		 */
-		virtual void removeVertexColor(Ionflux::GeoUtils::Color removeElement);
-		
-		/** Remove vertexColor.
-		 *
-		 * Remove a vertexColor.
-		 *
-		 * \param removeIndex VertexColor to be removed.
-		 */
-		virtual void removeVertexColorIndex(unsigned int removeIndex);
-		
-		/** Clear vertexColors.
-		 *
-		 * Clear all vertexColors.
-		 */
-		virtual void clearVertexColors();
-		
 		/** Get vertex source.
 		 *
 		 * \return Current value of vertex source.
@@ -835,6 +829,20 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
 		newVertexSource);
+		
+		/** Get face data.
+		 *
+		 * \return Current value of face data.
+		 */
+		virtual Ionflux::GeoUtils::VectorSetSet* getFaceData() const;
+		
+		/** Set face data.
+		 *
+		 * Set new value of face data.
+		 *
+		 * \param newFaceData New value of face data.
+		 */
+		virtual void setFaceData(Ionflux::GeoUtils::VectorSetSet* newFaceData);
 };
 
 }

@@ -31,8 +31,11 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3Set.hpp"
+#include "geoutils/VectorSetSet.hpp"
+#include "geoutils/FaceData.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 
@@ -65,7 +68,7 @@ const Ionflux::ObjectBase::IFClassInfo* Face::CLASS_INFO = &Face::faceClassInfo;
 const std::string Face::XML_ELEMENT_NAME = "face";
 
 Face::Face()
-: Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), polygon(0), vertexSource(0)
+: Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), polygon(0), vertexSource(0), faceData(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -73,7 +76,7 @@ Face::Face()
 }
 
 Face::Face(const Ionflux::GeoUtils::Face& other)
-: Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), polygon(0), vertexSource(0)
+: Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), polygon(0), vertexSource(0), faceData(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -81,12 +84,12 @@ Face::Face(const Ionflux::GeoUtils::Face& other)
 }
 
 Face::Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
-Ionflux::GeoUtils::Vertex3Set* initVertexSource, const 
-Ionflux::GeoUtils::TexCoordsVector* initUV, const 
-Ionflux::GeoUtils::ColorVector* initVertexColors)
+Ionflux::GeoUtils::Vertex3Set* initVertexSource, 
+Ionflux::GeoUtils::FaceData* initUV, Ionflux::GeoUtils::FaceData* 
+initVertexColors)
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, 
 Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), 
-polygon(0), vertexSource(initVertexSource)
+polygon(0), vertexSource(initVertexSource), faceData(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -95,19 +98,19 @@ polygon(0), vertexSource(initVertexSource)
 	if (initVertexSource != 0)
 	    setVertexSource(initVertexSource);
 	if (initUV != 0)
-	    addTexCoords(*initUV);
+	    addFaceData(initUV);
 	if (initVertexColors != 0)
-	    addVertexColors(*initVertexColors);
+	    addFaceData(initVertexColors);
 	update();
 }
 
 Face::Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned int 
-v3, Ionflux::GeoUtils::Vertex3Set* initVertexSource, const 
-Ionflux::GeoUtils::TexCoordsVector* initUV, const 
-Ionflux::GeoUtils::ColorVector* initVertexColors)
+v3, Ionflux::GeoUtils::Vertex3Set* initVertexSource, 
+Ionflux::GeoUtils::FaceData* initUV, Ionflux::GeoUtils::FaceData* 
+initVertexColors)
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, 
 Ionflux::GeoUtils::Vector3::ZERO, ""), tangent(0), normal(0), binormal(0), 
-polygon(0), vertexSource(initVertexSource)
+polygon(0), vertexSource(initVertexSource), faceData(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -115,24 +118,23 @@ polygon(0), vertexSource(initVertexSource)
 	if (initVertexSource != 0)
 	    setVertexSource(initVertexSource);
 	if (initUV != 0)
-	    addTexCoords(*initUV);
+	    addFaceData(initUV);
 	if (initVertexColors != 0)
-	    addVertexColors(*initVertexColors);
+	    addFaceData(initVertexColors);
 	update();
 }
 
 Face::~Face()
 {
 	clearVertices();
-	clearTexCoords();
-	clearVertexColors();
 	clear();
 }
 
 void Face::recalculateBounds()
 {
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
+	        "recalculateBounds"));
 	TransformableObject::recalculateBounds();
 	Polygon3* p0 = getPolygon();
 	*boundsCache = p0->getBounds();
@@ -142,7 +144,8 @@ void Face::recalculateBounds()
 void Face::copyVertices()
 {
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
+	        "copyVertices"));
 	setVertexSource(&(vertexSource->duplicate()));
 }
 
@@ -181,7 +184,7 @@ void Face::clear()
 {
 	vertices.clear();
 	setVertexSource(0);
-	uv.clear();
+	setFaceData(0);
 	clearTangentSpace();
 	clearPolygon();
 	BoxBoundsItem::clear();
@@ -197,27 +200,97 @@ unsigned int v3)
 	    addVertex(v3);
 }
 
-void Face::addVertices(const Ionflux::ObjectBase::UIntVector& newVerts)
+Ionflux::GeoUtils::VectorSet* 
+Face::addFaceData(Ionflux::GeoUtils::FaceData* newFaceData)
 {
-	for (UIntVector::const_iterator i = newVerts.begin(); 
-	    i != newVerts.end(); i++)
-	    addVertex(*i);
+	if (faceData == 0)
+	    faceData = VectorSetSet::create();
+	faceData->addVectorSet(newFaceData);
+	return newFaceData;
 }
 
-void Face::addTexCoords(const Ionflux::GeoUtils::TexCoordsVector& 
-newTexCoords)
+Ionflux::GeoUtils::VectorSet* 
+Face::addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType)
 {
-	for (TexCoordsVector::const_iterator i = newTexCoords.begin(); 
-	    i != newTexCoords.end(); i++)
-	    addTexCoord(*i);
+	FaceData* newData = FaceData::create(dataType);
+	addFaceData(newData);
+	return newData;
 }
 
-void Face::addVertexColors(const Ionflux::GeoUtils::ColorVector& 
-newVertexColors)
+void Face::getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+Ionflux::GeoUtils::VectorSetSet& target)
 {
-	for (ColorVector::const_iterator i = newVertexColors.begin(); 
-	    i != newVertexColors.end(); i++)
-	    addVertexColor(*i);
+	if (faceData == 0)
+	    return;
+	for (unsigned int i = 0; i < faceData->getNumVectorSets(); i++)
+	{
+	    FaceData* cfd = FaceData::upcast(faceData->getVectorSet(i));
+	    if ((cfd != 0) 
+	        && cfd->hasType(dataType))
+	        target.addVectorSet(cfd);
+	}
+}
+
+Ionflux::GeoUtils::FaceData* 
+Face::getFaceDataByType0(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+unsigned int index)
+{
+	if (faceData == 0)
+	    return 0;
+	FaceData* result = 0;
+	unsigned int i = 0;
+	unsigned int k = 0;
+	while ((i < faceData->getNumVectorSets()) 
+	    && (result == 0))
+	{
+	    FaceData* cfd = FaceData::upcast(faceData->getVectorSet(i));
+	    if ((cfd != 0) 
+	        && cfd->hasType(dataType))
+	    {
+	        if (k == index)
+	            result = cfd;
+	        else
+	            k++;
+	    }
+	    i++;
+	}
+	return result;
+}
+
+void Face::getTexCoords(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+Ionflux::GeoUtils::VectorSetSet& target)
+{
+	getFaceDataByType(FaceData::TYPE_TEX_COORD, target);
+}
+
+Ionflux::GeoUtils::FaceData* Face::getTexCoords0(unsigned int index)
+{
+	// TODO: Implementation.
+	return getFaceDataByType0(FaceData::TYPE_TEX_COORD, index);;
+}
+
+void Face::getVertexColors(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+Ionflux::GeoUtils::VectorSetSet& target)
+{
+	getFaceDataByType(FaceData::TYPE_VERTEX_COLOR, target);
+}
+
+Ionflux::GeoUtils::FaceData* Face::getVertexColors0(unsigned int index)
+{
+	// TODO: Implementation.
+	return getFaceDataByType0(FaceData::TYPE_VERTEX_COLOR, index);;
+}
+
+void Face::getVertexNormals(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+Ionflux::GeoUtils::VectorSetSet& target)
+{
+	getFaceDataByType(FaceData::TYPE_VERTEX_NORMAL, target);
+}
+
+Ionflux::GeoUtils::FaceData* Face::getVertexNormals0(unsigned int index)
+{
+	// TODO: Implementation.
+	return getFaceDataByType0(FaceData::TYPE_VERTEX_NORMAL, index);;
 }
 
 Ionflux::GeoUtils::Vector3 Face::getTangent()
@@ -225,9 +298,11 @@ Ionflux::GeoUtils::Vector3 Face::getTangent()
 	if (tangent != 0)
 	    return *tangent;
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source is not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
+	        "getTangent"));
 	if (vertices.size() < 3)
-	    throw GeoUtilsError("Face does not have enough vertices.");
+	    throw GeoUtilsError(getErrorString(
+	        "Face does not have enough vertices.", "getTangent"));
 	Vertex3* pv0 = vertexSource->getVertex(vertices[0]);
 	Vector3 p0 = pv0->getVector();
 	Vertex3* pv1 = vertexSource->getVertex(vertices[1]);
@@ -235,14 +310,23 @@ Ionflux::GeoUtils::Vector3 Face::getTangent()
 	tangent = Vector3::create();
 	addLocalRef(tangent);
 	Vector3 b = getBinormal();
-	if (uv.size() < 3)
+	FaceData* uv = getTexCoords0();
+	if ((uv == 0) 
+	    || (uv->getNumVectors() < 3))
 	{
 	    *tangent = b.ortho(p1 - p0).normalize();
 	    return *tangent;
 	}
-	TexCoords uv0 = uv[0];
-	TexCoords uv1 = uv[1];
-	*tangent = 1. / (uv1.u - uv0.u) * ((p1 - p0) - (uv1.v - uv0.v) * b);
+	// Calculate tangent vector according to texture coordinates.
+	Vector* uv0 = Ionflux::ObjectBase::nullPointerCheck(
+	    uv->getVector(0), this, "getTangent", "Texture coordinate vector");
+	Vector* uv1 = Ionflux::ObjectBase::nullPointerCheck(
+	    uv->getVector(1), this, "getTangent", "Texture coordinate vector");
+	double u0 = uv0->getElement(0);
+	double v0 = uv0->getElement(1);
+	double u1 = uv1->getElement(0);
+	double v1 = uv1->getElement(1);
+	*tangent = 1. / (u1 - u0) * ((p1 - p0) - (v1 - v0) * b);
 	return *tangent;
 }
 
@@ -262,17 +346,29 @@ Ionflux::GeoUtils::Vector3 Face::getBinormal()
 	Vector3 p1 = pv1->getVector();
 	Vertex3* pv2 = vertexSource->getVertex(vertices[2]);
 	Vector3 p2 = pv2->getVector();
-	if (uv.size() < 3)
+	FaceData* uv = getTexCoords0();
+	if ((uv == 0) 
+	    || (uv->getNumVectors() < 3))
 	{
 	    *binormal = (p2 - p0).normalize();
 	    return *binormal;
 	}
-	TexCoords uv0 = uv[0];
-	TexCoords uv1 = uv[1];
-	TexCoords uv2 = uv[2];
-	*binormal = 1. / ((uv2.v - uv0.v) * (uv1.u - uv0.u) 
-	    - (uv1.v - uv0.v) * (uv2.u - uv0.u)) 
-	    * ((uv1.u - uv0.u) * (p2 - p0) - (uv2.u - uv0.u) * (p1 - p0));
+	// Calculate binormal vector according to texture coordinates.
+	Vector* uv0 = Ionflux::ObjectBase::nullPointerCheck(
+	    uv->getVector(0), this, "getBinormal", "Texture coordinate vector");
+	Vector* uv1 = Ionflux::ObjectBase::nullPointerCheck(
+	    uv->getVector(1), this, "getBinormal", "Texture coordinate vector");
+	Vector* uv2 = Ionflux::ObjectBase::nullPointerCheck(
+	    uv->getVector(2), this, "getBinormal", "Texture coordinate vector");
+	double u0 = uv0->getElement(0);
+	double v0 = uv0->getElement(1);
+	double u1 = uv1->getElement(0);
+	double v1 = uv1->getElement(1);
+	double u2 = uv2->getElement(0);
+	double v2 = uv2->getElement(1);
+	*binormal = 1. / ((v2 - v0) * (u1 - u0) 
+	    - (v1 - v0) * (u2 - u0)) 
+	    * ((u1 - u0) * (p2 - p0) - (u2 - u0) * (p1 - p0));
 	return *binormal;
 }
 
@@ -284,7 +380,8 @@ Ionflux::GeoUtils::Vector3 Face::getNormal()
 	Vector3 b = getBinormal();
 	normal = new Vector3();
 	if (normal == 0)
-	    throw GeoUtilsError("Could not allocate object.");
+	    throw GeoUtilsError(getErrorString("Could not allocate object.", 
+	        "getNormal"));
 	addLocalRef(normal);
 	*normal = t.cross(b).normalize();
 	return *normal;
@@ -302,7 +399,8 @@ Ionflux::GeoUtils::Matrix3 Face::getTangentBase()
 Ionflux::GeoUtils::Polygon3* Face::getPolygon()
 {
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source is not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
+	        "getPolygon"));
 	if (polygon != 0)
 	    return polygon;
 	polygon = Polygon3::create();
@@ -483,24 +581,30 @@ Ionflux::GeoUtils::FaceVector Face::getTris()
 	v1.push_back(vertices[0]);
 	v1.push_back(vertices[2]);
 	v1.push_back(vertices[3]);
-	TexCoordsVector uv0;
-	TexCoordsVector uv1;
-	if (uv.size() == vertices.size())
+	FaceData* uv0 = 0;
+	FaceData* uv1 = 0;
+	FaceData* uv = getTexCoords0();
+	if ((uv != 0) 
+	    && (uv->getNumVectors() == vertices.size()))
 	{
-	    uv0.push_back(uv[0]);
-	    uv0.push_back(uv[1]);
-	    uv0.push_back(uv[2]);
-	    uv1.push_back(uv[0]);
-	    uv1.push_back(uv[2]);
-	    uv1.push_back(uv[3]);
+	    uv0 = FaceData::create();
+	    uv0->addVector(Ionflux::ObjectBase::nullPointerCheck(
+	        uv->getVector(0), this, "Texture coordinate vector")->copy());
+	    uv0->addVector(Ionflux::ObjectBase::nullPointerCheck(
+	        uv->getVector(1), this, "Texture coordinate vector")->copy());
+	    uv0->addVector(Ionflux::ObjectBase::nullPointerCheck(
+	        uv->getVector(2), this, "Texture coordinate vector")->copy());
+	    uv1 = FaceData::create();
+	    uv1->addVector(Ionflux::ObjectBase::nullPointerCheck(
+	        uv->getVector(0), this, "Texture coordinate vector")->copy());
+	    uv1->addVector(Ionflux::ObjectBase::nullPointerCheck(
+	        uv->getVector(2), this, "Texture coordinate vector")->copy());
+	    uv1->addVector(Ionflux::ObjectBase::nullPointerCheck(
+	        uv->getVector(3), this, "Texture coordinate vector")->copy());
 	}
-	Face* f0 = new Face(&v0, vertexSource, &uv0);
-	if (f0 == 0)
-	    throw GeoUtilsError("Could not allocate object");
+	Face* f0 = Face::create(&v0, vertexSource, uv0);
 	result.push_back(f0);
-	Face* f1 = new Face(&v1, vertexSource, &uv1);
-	if (f1 == 0)
-	    throw GeoUtilsError("Could not allocate object");
+	Face* f1 = Face::create(&v1, vertexSource, uv1);
 	result.push_back(f1);
 	return result;
 }
@@ -516,11 +620,11 @@ void Face::makePlanar(double p, double t)
 	if (isPlanar(t))
 	    return;
 	if (vertexSource == 0)
-	    throw GeoUtilsError("[Face::makePlanar] "
-	        "Vertex source is not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
+	        "makePlanar"));
 	if (vertices.size() < 3)
-	    throw GeoUtilsError("[Face::makePlanar] "
-	        "Face does not have enough vertices.");
+	    throw GeoUtilsError(getErrorString(
+	        "Face does not have enough vertices.", "makePlanar"));
 	Vertex3Set vs;
 	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
 	    vs.addVertex(vertexSource->getVertex(*i)->copy());
@@ -539,8 +643,9 @@ void Face::makePlanar(double p, double t)
 
 bool Face::operator==(const Ionflux::GeoUtils::Face& other) const
 {
-	if ((vertices.size() != other.vertices.size()) 
-	    || (uv.size() != other.uv.size()))
+	if (vertices.size() != other.vertices.size()) 
+	    return false;
+	if (vertexSource != other.vertexSource)
 	    return false;
 	bool result = true;
 	unsigned int i = 0;
@@ -551,18 +656,18 @@ bool Face::operator==(const Ionflux::GeoUtils::Face& other) const
 	        result = false;
 	    i++;
 	}
-	i = 0;
-	while (result 
-	    && (i < uv.size()))
-	{
-	    if (uv[i] != other.uv[i])
-	        result = false;
-	    i++;
-	}
-	if (!result 
-	    || (vertexSource != other.vertexSource))
+	if ((faceData == 0) 
+	    && (other.faceData == 0))
+	    return result;
+	if ((faceData == 0) 
+	    && (other.faceData != 0))
 	    return false;
-	return true;
+	if ((faceData != 0) 
+	    && (other.faceData == 0))
+	    return false;
+	if (*faceData != *other.faceData)
+	    return false;
+	return result;
 }
 
 bool Face::operator!=(const Ionflux::GeoUtils::Face& other) const
@@ -583,7 +688,8 @@ bool Face::isBackface(const Ionflux::GeoUtils::Vector3& front)
 Ionflux::GeoUtils::Vector3 Face::getBarycenter()
 {
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
+	        "getBarycenter"));
 	Polygon3* p0 = getPolygon();
 	Vector3 b0 = p0->getBarycenter();
 	return b0;
@@ -657,21 +763,7 @@ Ionflux::GeoUtils::Face& Face::duplicate()
 	return *copy();
 }
 
-Ionflux::GeoUtils::Face* Face::create(unsigned int v0, unsigned int v1, 
-unsigned int v2, unsigned int v3, Ionflux::GeoUtils::Vertex3Set* 
-initVertexSource, const Ionflux::GeoUtils::TexCoordsVector* initUV)
-{
-	Face* f0 = create();
-	f0->addVertices(v0, v1, v2, v3);
-	if (initVertexSource != 0)
-	    f0->setVertexSource(initVertexSource);
-	if (initUV != 0)
-	    f0->addTexCoords(*initUV);
-	f0->update();
-	return f0;
-}
-
-std::string Face::getXMLDataVertices() const
+std::string Face::getXMLDataVertices_legacy() const
 {
 	ostringstream d0;
 	bool first = true;
@@ -687,48 +779,28 @@ std::string Face::getXMLDataVertices() const
 	return d0.str();
 }
 
-std::string Face::getXMLDataTexCoords() const
+std::string Face::getXMLDataTexCoords_legacy() const
 {
-	ostringstream d0;
-	bool first = true;
-	for (TexCoordsVector::const_iterator i = uv.begin(); 
-	    i != uv.end(); i++)
-	{
-	    if (!first)
-	        d0 << " ";
-	    else
-	        first = false;
-	    d0 << (*i).u << "," << (*i).v;
-	}
-	return d0.str();
+	// NOTE: Not implemented, use the new XML I/O API instead.
+	return "";
 }
 
 std::string Face::getXML_legacy() const
 {
 	ostringstream d0;
-	d0 << "<f d=\"" << getXMLDataVertices() << "\" uv=\"" 
-	    << getXMLDataTexCoords() << "\" />";
+	d0 << "<f d=\"" << getXMLDataVertices_legacy() << "\" uv=\"" 
+	    << getXMLDataTexCoords_legacy() << "\" />";
 	return d0.str();
 }
 
-void Face::setFromXMLData(const std::string& vertexData, const std::string&
-texCoordData)
+void Face::setFromXMLData_legacy(const std::string& vertexData, const 
+std::string& texCoordData)
 {
 	Ionflux::ObjectBase::StringVector parts0;
 	explode(vertexData, " ", parts0);
 	for (Ionflux::ObjectBase::StringVector::const_iterator i = 
 	    parts0.begin(); i != parts0.end(); i++)
 	    addVertex(strtol((*i).c_str(), 0, 10));
-	Vertex3Set vs0;
-	extractSVGVertices(texCoordData, vs0);
-	for (unsigned int k = 0; k < vs0.getNumVertices(); k++)
-	{
-	    Vertex3* v0 = vs0.getVertex(k);
-	    TexCoords uv0;
-	    uv0.u = v0->getX();
-	    uv0.v = v0->getY();
-	    addTexCoord(uv0);
-	}
 }
 
 std::string Face::getValueString() const
@@ -753,43 +825,12 @@ std::string Face::getValueString() const
 	    status << ")";
 	} else
 	    status << "<none>";
-	// texture coordinates
-	unsigned int numUV = uv.size();
-	if (numUV > 0)
+	// face data
+	if (faceData != 0)
 	{
-	    status << "; uv: [";
-	    e0 = true;
-	    for (TexCoordsVector::const_iterator j = uv.begin(); 
-	        j != uv.end(); j++)
-	    {
-	        if (!e0)
-	            status << ", ";
-	        else
-	            e0 = false;
-	        status << "(" << (*j).u << ", " << (*j).v << ")";
-	    }
-	    status << "]";
-	} else
-	    status << "<none>";
-	// vertex colors
-	unsigned int numVCol = vertexColors.size();
-	if (numVCol > 0)
-	{
-	    status << "; vcol: [";
-	    e0 = true;
-	    for (ColorVector::const_iterator j = vertexColors.begin(); 
-	        j != vertexColors.end(); j++)
-	    {
-	        if (!e0)
-	            status << ", ";
-	        else
-	            e0 = false;
-	        status << "(" << (*j).red << ", " << (*j).green << ", " 
-	            << (*j).blue << ", " << (*j).alpha << ")";
-	    }
-	    status << "]";
-	} else
-	    status << "<none>";
+	    status << "; faceData: [" 
+	        << faceData->getValueString() << "]";
+	}
 	// transformable object data
 	if (!useTransform && !useVI)
 	    return status.str();
@@ -844,6 +885,27 @@ void Face::addVertex(unsigned int addElement)
 	vertices.push_back(addElement);
 }
 
+unsigned int Face::addVertex()
+{
+	unsigned int o0 = 0;
+	addVertex(o0);
+	return o0;
+}
+
+void Face::addVertices(const std::vector<unsigned int>& newVertices)
+{
+	for (std::vector<unsigned int>::const_iterator i = newVertices.begin(); 
+	    i != newVertices.end(); i++)
+	    addVertex(*i);
+}
+
+void Face::addVertices(Ionflux::GeoUtils::Face* newVertices)
+{
+	for (unsigned int i = 0; 
+	    i < newVertices->getNumVertices(); i++)
+	    addVertex(newVertices->getVertex(i));
+}
+
 void Face::removeVertex(unsigned int removeElement)
 {
     bool found = false;
@@ -876,164 +938,6 @@ void Face::clearVertices()
     vertices.clear();
 }
 
-unsigned int Face::getNumTexCoords() const
-{
-    return uv.size();
-}
-
-Ionflux::GeoUtils::TexCoords Face::getTexCoord(unsigned int elementIndex) 
-const
-{
-    if (elementIndex < uv.size())
-		return uv[elementIndex];
-	return Ionflux::GeoUtils::DEFAULT_TEX_COORDS;
-}
-
-int Face::findTexCoord(Ionflux::GeoUtils::TexCoords needle, unsigned int 
-occurence) const
-{
-    bool found = false;
-	Ionflux::GeoUtils::TexCoords currentTexCoord = Ionflux::GeoUtils::DEFAULT_TEX_COORDS;
-	unsigned int i = 0;
-	while (!found 
-		&& (i < uv.size()))
-	{
-		currentTexCoord = uv[i];
-		if (currentTexCoord == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
-		} else
-			i++;
-	}
-	if (found)
-        return i;
-	return -1;
-}
-
-std::vector<Ionflux::GeoUtils::TexCoords>& Face::getTexCoords()
-{
-    return uv;
-}
-
-void Face::addTexCoord(Ionflux::GeoUtils::TexCoords addElement)
-{
-	uv.push_back(addElement);
-}
-
-void Face::removeTexCoord(Ionflux::GeoUtils::TexCoords removeElement)
-{
-    bool found = false;
-	Ionflux::GeoUtils::TexCoords currentTexCoord = Ionflux::GeoUtils::DEFAULT_TEX_COORDS;
-	unsigned int i = 0;
-	while (!found 
-		&& (i < uv.size()))
-	{
-		currentTexCoord = uv[i];
-		if (currentTexCoord == removeElement)
-			found = true;
-		else
-			i++;
-	}
-	if (found)
-	{
-		uv.erase(uv.begin() + i);
-	}
-}
-
-void Face::removeTexCoordIndex(unsigned int removeIndex)
-{
-    if (removeIndex > uv.size())
-        return;
-    uv.erase(uv.begin() + removeIndex);
-}
-
-void Face::clearTexCoords()
-{
-    uv.clear();
-}
-
-unsigned int Face::getNumVertexColors() const
-{
-    return vertexColors.size();
-}
-
-Ionflux::GeoUtils::Color Face::getVertexColor(unsigned int elementIndex) 
-const
-{
-    if (elementIndex < vertexColors.size())
-		return vertexColors[elementIndex];
-	return Ionflux::GeoUtils::DEFAULT_VERTEX_COLOR;
-}
-
-int Face::findVertexColor(Ionflux::GeoUtils::Color needle, unsigned int 
-occurence) const
-{
-    bool found = false;
-	Ionflux::GeoUtils::Color currentVertexColor = Ionflux::GeoUtils::DEFAULT_VERTEX_COLOR;
-	unsigned int i = 0;
-	while (!found 
-		&& (i < vertexColors.size()))
-	{
-		currentVertexColor = vertexColors[i];
-		if (currentVertexColor == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
-		} else
-			i++;
-	}
-	if (found)
-        return i;
-	return -1;
-}
-
-std::vector<Ionflux::GeoUtils::Color>& Face::getVertexColors()
-{
-    return vertexColors;
-}
-
-void Face::addVertexColor(Ionflux::GeoUtils::Color addElement)
-{
-	vertexColors.push_back(addElement);
-}
-
-void Face::removeVertexColor(Ionflux::GeoUtils::Color removeElement)
-{
-    bool found = false;
-	Ionflux::GeoUtils::Color currentVertexColor = Ionflux::GeoUtils::DEFAULT_VERTEX_COLOR;
-	unsigned int i = 0;
-	while (!found 
-		&& (i < vertexColors.size()))
-	{
-		currentVertexColor = vertexColors[i];
-		if (currentVertexColor == removeElement)
-			found = true;
-		else
-			i++;
-	}
-	if (found)
-	{
-		vertexColors.erase(vertexColors.begin() + i);
-	}
-}
-
-void Face::removeVertexColorIndex(unsigned int removeIndex)
-{
-    if (removeIndex > vertexColors.size())
-        return;
-    vertexColors.erase(vertexColors.begin() + removeIndex);
-}
-
-void Face::clearVertexColors()
-{
-    vertexColors.clear();
-}
-
 void Face::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)
 {
 	vertexSource = newVertexSource;
@@ -1044,6 +948,16 @@ Ionflux::GeoUtils::Vertex3Set* Face::getVertexSource() const
 	return vertexSource;
 }
 
+void Face::setFaceData(Ionflux::GeoUtils::VectorSetSet* newFaceData)
+{
+	faceData = newFaceData;
+}
+
+Ionflux::GeoUtils::VectorSetSet* Face::getFaceData() const
+{
+	return faceData;
+}
+
 Ionflux::GeoUtils::Face& Face::operator=(const Ionflux::GeoUtils::Face& 
 other)
 {
@@ -1051,9 +965,7 @@ other)
     for (UIntVector::const_iterator i = other.vertices.begin(); 
         i != other.vertices.end(); i++)
         vertices.push_back(*i);
-    uv = other.uv;
-    vertexColors = other.vertexColors;
-    setVertexSource(other.vertexSource);
+    setFaceData(other.faceData->copy());
     update();
 	return *this;
 }
@@ -1074,6 +986,40 @@ Ionflux::GeoUtils::Face* Face::create(Ionflux::ObjectBase::IFObject*
 parentObject)
 {
     Face* newObject = new Face();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Face* Face::create(const 
+Ionflux::ObjectBase::UIntVector* initVerts, Ionflux::GeoUtils::Vertex3Set* 
+initVertexSource, Ionflux::GeoUtils::FaceData* initUV, 
+Ionflux::GeoUtils::FaceData* initVertexColors, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Face* newObject = new Face(initVerts, initVertexSource, initUV, 
+    initVertexColors);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Face* Face::create(unsigned int v0, unsigned int v1, 
+unsigned int v2, unsigned int v3, Ionflux::GeoUtils::Vertex3Set* 
+initVertexSource, Ionflux::GeoUtils::FaceData* initUV, 
+Ionflux::GeoUtils::FaceData* initVertexColors, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Face* newObject = new Face(v0, v1, v2, v3, initVertexSource, initUV, 
+    initVertexColors);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object.");
@@ -1109,6 +1055,8 @@ const
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(vertices, "", 
         indentLevel, "pname=\"vertices\"");
+	if (d0.str().size() > 0)
+	    d0 << "\n";
 	target = d0.str();
 }
 

@@ -54,6 +54,12 @@ FaceDataClassInfo::~FaceDataClassInfo()
 {
 }
 
+// public member constants
+const Ionflux::GeoUtils::FaceDataTypeID FaceData::TYPE_UNDEFINED = 0;
+const Ionflux::GeoUtils::FaceDataTypeID FaceData::TYPE_TEX_COORD = 1;
+const Ionflux::GeoUtils::FaceDataTypeID FaceData::TYPE_VERTEX_COLOR = 2;
+const Ionflux::GeoUtils::FaceDataTypeID FaceData::TYPE_VERTEX_NORMAL = 3;
+
 // run-time type information instance constants
 const FaceDataClassInfo FaceData::faceDataClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* FaceData::CLASS_INFO = &FaceData::faceDataClassInfo;
@@ -61,6 +67,7 @@ const Ionflux::ObjectBase::IFClassInfo* FaceData::CLASS_INFO = &FaceData::faceDa
 const std::string FaceData::XML_ELEMENT_NAME = "facedata";
 
 FaceData::FaceData()
+: dataType(TYPE_UNDEFINED)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -68,17 +75,28 @@ FaceData::FaceData()
 }
 
 FaceData::FaceData(const Ionflux::GeoUtils::FaceData& other)
+: dataType(TYPE_UNDEFINED)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	*this = other;
 }
 
-FaceData::FaceData(Ionflux::GeoUtils::VectorVector& initVectors)
+FaceData::FaceData(Ionflux::GeoUtils::VectorVector& initVectors, 
+Ionflux::GeoUtils::FaceDataTypeID initDataType)
+: dataType(initDataType)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	addVectors(initVectors);
+}
+
+FaceData::FaceData(Ionflux::GeoUtils::FaceDataTypeID initDataType)
+: dataType(initDataType)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	// TODO: Nothing ATM. ;-)
 }
 
 FaceData::~FaceData()
@@ -90,8 +108,31 @@ std::string FaceData::getValueString() const
 {
 	ostringstream status;
 	status << VectorSet::getValueString() << "; dataType = " 
-	    << getFaceDataTypeIDString(dataType);
+	    << getTypeIDString(dataType);
 	return status.str();
+}
+
+bool FaceData::hasType(Ionflux::GeoUtils::FaceDataTypeID typeID)
+{
+	// TODO: Implementation.
+	return dataType == typeID;
+}
+
+std::string FaceData::getTypeIDString(Ionflux::GeoUtils::FaceDataTypeID 
+typeID)
+{
+	if (typeID == TYPE_UNDEFINED)
+	    return "TYPE_UNDEFINED";
+	else
+	if (typeID == TYPE_TEX_COORD)
+	    return "TYPE_TEX_COORD";
+	else
+	if (typeID == TYPE_VERTEX_COLOR)
+	    return "TYPE_VERTEX_COLOR";
+	else
+	if (typeID == TYPE_VERTEX_NORMAL)
+	    return "TYPE_VERTEX_NORMAL";
+	return "<unknown>";
 }
 
 void FaceData::setDataType(Ionflux::GeoUtils::FaceDataTypeID newDataType)
@@ -142,9 +183,24 @@ FaceData::create(Ionflux::ObjectBase::IFObject* parentObject)
 
 Ionflux::GeoUtils::FaceData* 
 FaceData::create(Ionflux::GeoUtils::VectorVector& initVectors, 
+Ionflux::GeoUtils::FaceDataTypeID initDataType, 
 Ionflux::ObjectBase::IFObject* parentObject)
 {
-    FaceData* newObject = new FaceData(initVectors);
+    FaceData* newObject = new FaceData(initVectors, initDataType);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::FaceData* 
+FaceData::create(Ionflux::GeoUtils::FaceDataTypeID initDataType, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    FaceData* newObject = new FaceData(initDataType);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object.");
