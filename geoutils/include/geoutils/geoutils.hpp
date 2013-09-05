@@ -30,7 +30,6 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
-#include "geoutils/xmlutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Clock.hpp"
 #include "geoutils/Range.hpp"
@@ -86,6 +85,7 @@
 #include "geoutils/transformnodes.hpp"
 #include "geoutils/Vector3MappingSet.hpp"
 #include "geoutils/Voxel.hpp"
+#include "geoutils/xmlutils.hpp"
 
 /** \file geoutils.hpp
  * \brief GeoUtils library (header).

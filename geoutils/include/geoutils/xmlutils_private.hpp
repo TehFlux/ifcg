@@ -1,5 +1,5 @@
-#ifndef IONFLUX_GEOUTILS_XMLUTILS
-#define IONFLUX_GEOUTILS_XMLUTILS
+#ifndef IONFLUX_GEOUTILS_XMLUTILS_PRIVATE
+#define IONFLUX_GEOUTILS_XMLUTILS_PRIVATE
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009 Jörn P. Meier
@@ -40,9 +40,14 @@ class Vector;
 namespace XMLUtils
 {
 
+/// Initialize Vector from TiXmlElement.
 void getVector(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vector& target, const std::string& elementName = 
 Ionflux::GeoUtils::Vector::XML_ELEMENT_NAME);
+
+/// Create new Vector from TiXmlElement.
+Ionflux::GeoUtils::Vector* createVector(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Vector::XML_ELEMENT_NAME);
 
 }
 
@@ -59,6 +64,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Vector from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Vector>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Vector& target, const std::string& elementName);
@@ -82,9 +88,14 @@ class Vector2;
 namespace XMLUtils
 {
 
+/// Initialize Vector2 from TiXmlElement.
 void getVector2(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vector2& target, const std::string& elementName = 
 Ionflux::GeoUtils::Vector2::XML_ELEMENT_NAME);
+
+/// Create new Vector2 from TiXmlElement.
+Ionflux::GeoUtils::Vector2* createVector2(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Vector2::XML_ELEMENT_NAME);
 
 }
 
@@ -101,6 +112,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Vector2 from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Vector2>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Vector2& target, const std::string& elementName);
@@ -124,9 +136,14 @@ class Vector3;
 namespace XMLUtils
 {
 
+/// Initialize Vector3 from TiXmlElement.
 void getVector3(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vector3& target, const std::string& elementName = 
 Ionflux::GeoUtils::Vector3::XML_ELEMENT_NAME);
+
+/// Create new Vector3 from TiXmlElement.
+Ionflux::GeoUtils::Vector3* createVector3(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Vector3::XML_ELEMENT_NAME);
 
 }
 
@@ -143,6 +160,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Vector3 from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Vector3>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Vector3& target, const std::string& elementName);
@@ -166,9 +184,14 @@ class Vector4;
 namespace XMLUtils
 {
 
+/// Initialize Vector4 from TiXmlElement.
 void getVector4(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vector4& target, const std::string& elementName = 
 Ionflux::GeoUtils::Vector4::XML_ELEMENT_NAME);
+
+/// Create new Vector4 from TiXmlElement.
+Ionflux::GeoUtils::Vector4* createVector4(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Vector4::XML_ELEMENT_NAME);
 
 }
 
@@ -185,6 +208,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Vector4 from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Vector4>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Vector4& target, const std::string& elementName);
@@ -208,10 +232,15 @@ class VectorSet;
 namespace XMLUtils
 {
 
+/// Initialize VectorSet from TiXmlElement.
 void getVectorSet(TiXmlElement* e0, 
     Ionflux::GeoUtils::VectorSet& target, const std::string& elementName = 
 Ionflux::GeoUtils::VectorSet::XML_ELEMENT_NAME);
 
+/// Create new VectorSet from TiXmlElement.
+Ionflux::GeoUtils::VectorSet* createVectorSet(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::VectorSet::XML_ELEMENT_NAME);
+
 }
 
 }
@@ -227,51 +256,10 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize VectorSet from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::VectorSet>(TiXmlElement* e0, 
 Ionflux::GeoUtils::VectorSet& target, const std::string& elementName);
-
-}
-
-}
-
-}
-
-
-
-namespace Ionflux
-{
-
-namespace GeoUtils
-{
-
-class VectorSetSet;
-
-namespace XMLUtils
-{
-
-void getVectorSetSet(TiXmlElement* e0, 
-    Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName
-= Ionflux::GeoUtils::VectorSetSet::XML_ELEMENT_NAME);
-
-}
-
-}
-
-}
-
-namespace Ionflux
-{
-
-namespace ObjectBase
-{
-
-namespace XMLUtils
-{
-
-template<>
-void getObject0<Ionflux::GeoUtils::VectorSetSet>(TiXmlElement* e0, 
-Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName);
 
 }
 
@@ -292,9 +280,14 @@ class FaceData;
 namespace XMLUtils
 {
 
+/// Initialize FaceData from TiXmlElement.
 void getFaceData(TiXmlElement* e0, 
     Ionflux::GeoUtils::FaceData& target, const std::string& elementName = 
 Ionflux::GeoUtils::FaceData::XML_ELEMENT_NAME);
+
+/// Create new FaceData from TiXmlElement.
+Ionflux::GeoUtils::FaceData* createFaceData(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::FaceData::XML_ELEMENT_NAME);
 
 }
 
@@ -311,9 +304,83 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize FaceData from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::FaceData>(TiXmlElement* e0, 
 Ionflux::GeoUtils::FaceData& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Get object vector for polymorphic type VectorSet.
+template<>
+void getObjVector<Ionflux::GeoUtils::VectorSet,
+    Ionflux::GeoUtils::VectorSet*>(TiXmlElement* e0, 
+    std::vector<Ionflux::GeoUtils::VectorSet*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VectorSetSet;
+
+namespace XMLUtils
+{
+
+/// Initialize VectorSetSet from TiXmlElement.
+void getVectorSetSet(TiXmlElement* e0, 
+    Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName
+= Ionflux::GeoUtils::VectorSetSet::XML_ELEMENT_NAME);
+
+/// Create new VectorSetSet from TiXmlElement.
+Ionflux::GeoUtils::VectorSetSet* createVectorSetSet(TiXmlElement* e0, const
+std::string& elementName = 
+Ionflux::GeoUtils::VectorSetSet::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize VectorSetSet from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::VectorSetSet>(TiXmlElement* e0, 
+Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName);
 
 }
 
@@ -334,9 +401,15 @@ class TransformableObject;
 namespace XMLUtils
 {
 
+/// Initialize TransformableObject from TiXmlElement.
 void getTransformableObject(TiXmlElement* e0, 
     Ionflux::GeoUtils::TransformableObject& target, const std::string& 
 elementName = Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
+
+/// Create new TransformableObject from TiXmlElement.
+Ionflux::GeoUtils::TransformableObject* 
+createTransformableObject(TiXmlElement* e0, const std::string& elementName 
+= Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
 
 }
 
@@ -353,6 +426,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize TransformableObject from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::TransformableObject>(TiXmlElement* e0, 
 Ionflux::GeoUtils::TransformableObject& target, const std::string& 
@@ -377,9 +451,14 @@ class Vertex3;
 namespace XMLUtils
 {
 
+/// Initialize Vertex3 from TiXmlElement.
 void getVertex3(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vertex3& target, const std::string& elementName = 
 Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
+
+/// Create new Vertex3 from TiXmlElement.
+Ionflux::GeoUtils::Vertex3* createVertex3(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Vertex3::XML_ELEMENT_NAME);
 
 }
 
@@ -396,6 +475,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Vertex3 from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Vertex3>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Vertex3& target, const std::string& elementName);
@@ -419,8 +499,14 @@ class Vertex3Set;
 namespace XMLUtils
 {
 
+/// Initialize Vertex3Set from TiXmlElement.
 void getVertex3Set(TiXmlElement* e0, 
     Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName =
+Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME);
+
+/// Create new Vertex3Set from TiXmlElement.
+Ionflux::GeoUtils::Vertex3Set* createVertex3Set(TiXmlElement* e0, const 
+std::string& elementName = 
 Ionflux::GeoUtils::Vertex3Set::XML_ELEMENT_NAME);
 
 }
@@ -438,6 +524,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Vertex3Set from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Vertex3Set>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Vertex3Set& target, const std::string& elementName);
@@ -461,9 +548,14 @@ class Face;
 namespace XMLUtils
 {
 
+/// Initialize Face from TiXmlElement.
 void getFace(TiXmlElement* e0, 
     Ionflux::GeoUtils::Face& target, const std::string& elementName = 
 Ionflux::GeoUtils::Face::XML_ELEMENT_NAME);
+
+/// Create new Face from TiXmlElement.
+Ionflux::GeoUtils::Face* createFace(TiXmlElement* e0, const std::string& 
+elementName = Ionflux::GeoUtils::Face::XML_ELEMENT_NAME);
 
 }
 
@@ -480,6 +572,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Face from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Face>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Face& target, const std::string& elementName);
@@ -503,9 +596,14 @@ class Mesh;
 namespace XMLUtils
 {
 
+/// Initialize Mesh from TiXmlElement.
 void getMesh(TiXmlElement* e0, 
     Ionflux::GeoUtils::Mesh& target, const std::string& elementName = 
 Ionflux::GeoUtils::Mesh::XML_ELEMENT_NAME);
+
+/// Create new Mesh from TiXmlElement.
+Ionflux::GeoUtils::Mesh* createMesh(TiXmlElement* e0, const std::string& 
+elementName = Ionflux::GeoUtils::Mesh::XML_ELEMENT_NAME);
 
 }
 
@@ -522,6 +620,7 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
+/// Initialize Mesh from TiXmlElement.
 template<>
 void getObject0<Ionflux::GeoUtils::Mesh>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Mesh& target, const std::string& elementName);

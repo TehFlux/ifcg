@@ -1,5 +1,5 @@
-#ifndef IONFLUX_GEOUTILS_XMLUTILS
-#define IONFLUX_GEOUTILS_XMLUTILS
+#ifndef IONFLUX_GEOUTILS_XMLUTILS_PRIVATE
+#define IONFLUX_GEOUTILS_XMLUTILS_PRIVATE
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009 Jörn P. Meier
@@ -32,8 +32,32 @@ $Vector2
 $Vector3
 $Vector4
 $VectorSet
-$VectorSetSet
 $FaceData
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Get object vector for polymorphic type VectorSet.
+template<>
+void getObjVector<Ionflux::GeoUtils::VectorSet,
+    Ionflux::GeoUtils::VectorSet*>(TiXmlElement* e0, 
+    std::vector<Ionflux::GeoUtils::VectorSet*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName);
+
+}
+
+}
+
+}
+
+$VectorSetSet
 $TransformableObject
 $Vertex3
 $Vertex3Set

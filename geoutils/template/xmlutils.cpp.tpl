@@ -25,15 +25,12 @@
  * 
  * ========================================================================== */
 #include <sstream>
-#include "geoutils/utils.hpp"
-#include "geoutils/xmlutils.hpp"
-#include "geoutils/GeoUtilsError.hpp"
-#include "geoutils/Polygon3Set.hpp"
-#include "geoutils/Polygon3.hpp"
-#include "geoutils/Mesh.hpp"
-#include "geoutils/BoundingBox.hpp"
+#include "geoutils/geoutils.hpp"
 #include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils_private.hpp"
+
+using namespace Ionflux::GeoUtils;
+using namespace Ionflux::GeoUtils::XMLUtils;
 
 namespace Ionflux
 {
@@ -320,8 +317,8 @@ $Vector2
 $Vector3
 $Vector4
 $VectorSet
-$VectorSetSet
 $FaceData
+$VectorSetSet
 $TransformableObject
 $Vertex3
 $Vertex3Set

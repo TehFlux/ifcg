@@ -1057,6 +1057,7 @@ const
         indentLevel, "pname=\"vertices\"");
 	if (d0.str().size() > 0)
 	    d0 << "\n";
+	d0 << faceData->getXML0(indentLevel, "pname=\"fds\"");
 	target = d0.str();
 }
 

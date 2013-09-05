@@ -59,7 +59,7 @@ TransformableObjectClassInfo::~TransformableObjectClassInfo()
 const TransformableObjectClassInfo TransformableObject::transformableObjectClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* TransformableObject::CLASS_INFO = &TransformableObject::transformableObjectClassInfo;
 
-const std::string TransformableObject::XML_ELEMENT_NAME = "transformableobject";
+const std::string TransformableObject::XML_ELEMENT_NAME = "transformable_object";
 
 TransformableObject::TransformableObject()
 : useTransform(false), useVI(false), transformChanged(false), viChanged(false), boundsCache(0), transformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), viewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), imageMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastTransformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastViewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastImageMatrix(Ionflux::GeoUtils::Matrix4::UNIT)
