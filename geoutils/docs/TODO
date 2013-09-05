@@ -15,7 +15,9 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ Testing
+  > Vector2, Vector3, Vector4
+  > VectorSet XML I/O (polymorphic)
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -33,9 +35,6 @@ Critical stuff
 
 + see if duplicate() can be replaced with copy()
   > if not, make the difference clear in the docs
-
-+ Testing
-  > Vector2, Vector3, Vector4
 
 + Vertex3
   > implement custom XML I/O functions that process a list of coordinates 
