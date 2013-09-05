@@ -17,14 +17,11 @@ print("GeoUtils test script: " + testName)
 
 vs0 = cg.Vertex3Set.create()
 vs0.setID("vs0")
-v0 = vs0.addVertex()
-v0.setCoords(1., 3., 5.)
-v0 = vs0.addVertex()
-v0.setCoords(2., -1., 4.)
-v0 = vs0.addVertex()
-v0.setCoords(-5., -3., 7.)
+vs0.addVertex(cg.Vertex3.create(1., 3., 5.))
+vs0.addVertex(cg.Vertex3.create(2., -1., 4.))
+vs0.addVertex(cg.Vertex3.create(-5., -3., 7.))
 
-print("  Vertex set:")
+print("  Vertex set (%s):" % vs0.getID())
 for i in range(0, vs0.getNumVertices()):
     v0 = vs0.getVertex(i)
     print("    %s" % (v0.getString()))
@@ -39,6 +36,7 @@ vs1 = cg.Vertex3Set()
 cg.getVertex3Set(xml0, vs1)
 
 print("  Vertex set (from XML):")
+print("    name = '%s'" % vs1.getID())
 for i in range(0, vs0.getNumVertices()):
     v0 = vs1.getVertex(i)
     print("    %s" % (v0.getString()))
