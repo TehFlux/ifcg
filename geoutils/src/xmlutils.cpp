@@ -421,7 +421,6 @@ void getObject0<Ionflux::GeoUtils::Vector>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getVector(e0, target, elementName);
 }
 
-/// Get object vector for polymorphic type Vector.
 template<>
 void getObjVector<Ionflux::GeoUtils::Vector,
     Ionflux::GeoUtils::Vector*>(TiXmlElement* e0, 
@@ -434,6 +433,7 @@ void getObjVector<Ionflux::GeoUtils::Vector,
     TiXmlElement* ce0 = e0->FirstChildElement();
     while (ce0 != 0)
     {
+        // Iterate over vector entries.
         std::string en0(ce0->Value());
         if (en0 == childElementName)
         {
@@ -477,6 +477,87 @@ void getObjVector<Ionflux::GeoUtils::Vector,
             throw Ionflux::ObjectBase::IFError(status.str());
         }
         ce0 = ce0->NextSiblingElement();
+    }
+}
+
+template<>
+void getObjMap<Ionflux::GeoUtils::Vector,
+    Ionflux::GeoUtils::Vector*>(TiXmlElement* e0, 
+    std::map<std::string, Ionflux::GeoUtils::Vector*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName)
+{
+    checkElementNameOrError(e0, elementName, "getObjMap<Vector>");
+    TiXmlElement* ee0 = e0->FirstChildElement();
+    while (ee0 != 0)
+    {
+        // Iterate over map entries.
+        std::string en0(ee0->Value());
+        if (en0 == "entry")
+        {
+            std::string k = getAttributeValue(ee0, "key", false);
+            TiXmlElement* ce0 = ee0->FirstChildElement();
+            if (ce0 == 0)
+            {
+                std::ostringstream status;
+                status << "[getObjMap<Vector>] "
+                    << "Missing value for key: '" << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            std::string en1(ce0->Value());
+            Ionflux::GeoUtils::Vector* co0 = 0;
+            // Add an object of the appropriate class. 
+            if (en1 == childElementName)
+            {
+                // default (Vector)
+                co0 = Ionflux::GeoUtils::Vector::create();
+                getObject0(ce0, *co0, childElementName);
+            } else
+            if (en1 == 
+                Vector2::XML_ELEMENT_NAME)
+            {
+                // Vector2
+                Vector2* co1 = 
+                    Vector2::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Vector3::XML_ELEMENT_NAME)
+            {
+                // Vector3
+                Vector3* co1 = 
+                    Vector3::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Vector4::XML_ELEMENT_NAME)
+            {
+                // Vector4
+                Vector4* co1 = 
+                    Vector4::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            {
+                std::ostringstream status;
+                status << "[getObjMap<Vector>] "
+                    << "Unexpected child element name: '" << en1 << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            typename std::map<std::string, 
+                Ionflux::GeoUtils::Vector*>::iterator j = target.find(k);
+            if (j != target.end())
+            {
+                std::ostringstream status;
+                status << "[getObjMap<Vector>] Duplicate key: '" 
+                    << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            target[k] = co0;
+        }
+        ee0 = ee0->NextSiblingElement();
     }
 }
 
@@ -857,7 +938,6 @@ void getObject0<Ionflux::GeoUtils::VectorSet>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getVectorSet(e0, target, elementName);
 }
 
-/// Get object vector for polymorphic type VectorSet.
 template<>
 void getObjVector<Ionflux::GeoUtils::VectorSet,
     Ionflux::GeoUtils::VectorSet*>(TiXmlElement* e0, 
@@ -870,6 +950,7 @@ void getObjVector<Ionflux::GeoUtils::VectorSet,
     TiXmlElement* ce0 = e0->FirstChildElement();
     while (ce0 != 0)
     {
+        // Iterate over vector entries.
         std::string en0(ce0->Value());
         if (en0 == childElementName)
         {
@@ -895,6 +976,69 @@ void getObjVector<Ionflux::GeoUtils::VectorSet,
             throw Ionflux::ObjectBase::IFError(status.str());
         }
         ce0 = ce0->NextSiblingElement();
+    }
+}
+
+template<>
+void getObjMap<Ionflux::GeoUtils::VectorSet,
+    Ionflux::GeoUtils::VectorSet*>(TiXmlElement* e0, 
+    std::map<std::string, Ionflux::GeoUtils::VectorSet*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName)
+{
+    checkElementNameOrError(e0, elementName, "getObjMap<VectorSet>");
+    TiXmlElement* ee0 = e0->FirstChildElement();
+    while (ee0 != 0)
+    {
+        // Iterate over map entries.
+        std::string en0(ee0->Value());
+        if (en0 == "entry")
+        {
+            std::string k = getAttributeValue(ee0, "key", false);
+            TiXmlElement* ce0 = ee0->FirstChildElement();
+            if (ce0 == 0)
+            {
+                std::ostringstream status;
+                status << "[getObjMap<VectorSet>] "
+                    << "Missing value for key: '" << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            std::string en1(ce0->Value());
+            Ionflux::GeoUtils::VectorSet* co0 = 0;
+            // Add an object of the appropriate class. 
+            if (en1 == childElementName)
+            {
+                // default (VectorSet)
+                co0 = Ionflux::GeoUtils::VectorSet::create();
+                getObject0(ce0, *co0, childElementName);
+            } else
+            if (en1 == 
+                FaceData::XML_ELEMENT_NAME)
+            {
+                // FaceData
+                FaceData* co1 = 
+                    FaceData::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            {
+                std::ostringstream status;
+                status << "[getObjMap<VectorSet>] "
+                    << "Unexpected child element name: '" << en1 << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            typename std::map<std::string, 
+                Ionflux::GeoUtils::VectorSet*>::iterator j = target.find(k);
+            if (j != target.end())
+            {
+                std::ostringstream status;
+                status << "[getObjMap<VectorSet>] Duplicate key: '" 
+                    << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            target[k] = co0;
+        }
+        ee0 = ee0->NextSiblingElement();
     }
 }
 
@@ -1219,7 +1363,6 @@ elementName)
         Ionflux::GeoUtils::XMLUtils::getTransformableObject(e0, target, elementName);
 }
 
-/// Get object vector for polymorphic type TransformableObject.
 template<>
 void getObjVector<Ionflux::GeoUtils::TransformableObject,
     Ionflux::GeoUtils::TransformableObject*>(TiXmlElement* e0, 
@@ -1232,6 +1375,7 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
     TiXmlElement* ce0 = e0->FirstChildElement();
     while (ce0 != 0)
     {
+        // Iterate over vector entries.
         std::string en0(ce0->Value());
         if (en0 == childElementName)
         {
@@ -1282,6 +1426,96 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             throw Ionflux::ObjectBase::IFError(status.str());
         }
         ce0 = ce0->NextSiblingElement();
+    }
+}
+
+template<>
+void getObjMap<Ionflux::GeoUtils::TransformableObject,
+    Ionflux::GeoUtils::TransformableObject*>(TiXmlElement* e0, 
+    std::map<std::string, Ionflux::GeoUtils::TransformableObject*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName)
+{
+    checkElementNameOrError(e0, elementName, "getObjMap<TransformableObject>");
+    TiXmlElement* ee0 = e0->FirstChildElement();
+    while (ee0 != 0)
+    {
+        // Iterate over map entries.
+        std::string en0(ee0->Value());
+        if (en0 == "entry")
+        {
+            std::string k = getAttributeValue(ee0, "key", false);
+            TiXmlElement* ce0 = ee0->FirstChildElement();
+            if (ce0 == 0)
+            {
+                std::ostringstream status;
+                status << "[getObjMap<TransformableObject>] "
+                    << "Missing value for key: '" << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            std::string en1(ce0->Value());
+            Ionflux::GeoUtils::TransformableObject* co0 = 0;
+            // Add an object of the appropriate class. 
+            if (en1 == childElementName)
+            {
+                throw Ionflux::ObjectBase::IFError(
+                    "[getObjVector<TransformableObject>] "
+                    "Cannot create instance of abstract class.");
+            } else
+            if (en1 == 
+                Vertex3::XML_ELEMENT_NAME)
+            {
+                // Vertex3
+                Vertex3* co1 = 
+                    Vertex3::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Vertex3Set::XML_ELEMENT_NAME)
+            {
+                // Vertex3Set
+                Vertex3Set* co1 = 
+                    Vertex3Set::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Face::XML_ELEMENT_NAME)
+            {
+                // Face
+                Face* co1 = 
+                    Face::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Mesh::XML_ELEMENT_NAME)
+            {
+                // Mesh
+                Mesh* co1 = 
+                    Mesh::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            {
+                std::ostringstream status;
+                status << "[getObjMap<TransformableObject>] "
+                    << "Unexpected child element name: '" << en1 << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            typename std::map<std::string, 
+                Ionflux::GeoUtils::TransformableObject*>::iterator j = target.find(k);
+            if (j != target.end())
+            {
+                std::ostringstream status;
+                status << "[getObjMap<TransformableObject>] Duplicate key: '" 
+                    << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            target[k] = co0;
+        }
+        ee0 = ee0->NextSiblingElement();
     }
 }
 
