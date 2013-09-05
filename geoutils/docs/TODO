@@ -18,7 +18,7 @@ New
 + Testing
   > Vector2, Vector3, Vector4
   > XML I/O (polymorphic)
-    . Vector, VectorSet
+    . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -30,25 +30,24 @@ Critical stuff
 + Vertex3Set
   > use extendedCreate and extendedVectorAddFuncs
 
++ Matrix types
+  > add a common base class (see Vector)
+  > enable XML I/O
+
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
 + VectorSet, VectorSetSet assignment should create a deep copy.
 
-+ see if duplicate() can be replaced with copy()
-  > if not, make the difference clear in the docs
++ Make sure objects correctly implement copy assignment and the 
+  IFObject::copy() function.
+  > See if duplicate() can be replaced with copy(). If not, make the 
+    difference clear in the docs.
 
 + Vertex3
   > implement custom XML I/O functions that process a list of coordinates 
     in a single XML attribute (see Vector).
   > Vertex3 should not duplicate so much functionality from Vector3. Maybe 
     make Vertex3 have a 'position' property that is a Vector3.
-
-+ Face
-  > replace uv, vertexColors with one VectorSetSet property
-
-+ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
-  > Mesh
-  > testing: Vertex3, Vertex3Set, Face
 
 + Add create<numeric type>Vector<n>(..., <target vector>) functions.
   (necessary because swig does not recognize the vectors returned by such 
@@ -57,6 +56,7 @@ Critical stuff
 
 + BGeoUtils
   > update to work with BMesh
+  > add operators to import/export Mesh data from GeoUtils XML data.
   > Blender Object.matrix_basis seems to require M^T as input but 
     provides M as output. Why is that the case?
   > test UV texture coordinate and vertex color transfer between Blender 
@@ -114,10 +114,10 @@ Critical stuff
 
 + Port test scripts to Python 3.
 
-+ Enable 'create' functions on all classes.
++ Enable create, upcast, classinfo on all classes.
 
-+ All uses of 'new' within the library should be checked for 0 return values 
-  (or use create()).
++ Use create() instead of operator new.
+  > otherwise check for 0 return values
 
 + Make sure all assignment operators support self-assignment.
 
@@ -136,12 +136,8 @@ Important stuff
 + GeoUtils takes long to compile. Maybe break the core library into several 
   libraries.
 
-+ Blender
-  > add operator for Mesh::makePlanar()
-    . work on selected faces
-
-+ Write more tests.
-  > BoundingBox:
++ Testing
+  > BoundingBox
     . update(). Fixed some phoniness in the implementation across all 
       versions. The initial value of bounds should be the actual bounds of 
       the first element, not just its center or the range from the origin to 
@@ -154,15 +150,17 @@ Important stuff
   > Use check<...>Inner() for intersection tests in the JavaScript and Python 
     versions instead of surely and maybe sets.
 
-+ BGeoUtils:
++ BGeoUtils
   > Test the UV texture layer generation in Mesh.createBMesh().
+  > add operator for Mesh::makePlanar()
+    . work on selected faces
 
 + Look for possible conflicts (especially regarding bounds calculation and 
   updating) in the classes derived from both BoxBoundsItem and 
   TransformableObject (Mesh, Face; update(), updateBounds(), getBounds(), 
   updateRadiusAndCenter()). 
 
-+ Face:
++ Face
   > This is a TransformableObject but cannot be transformed without side 
     effects (vertices may belong to multiple faces). Therefore right now, it 
     is not possible to apply transformations to faces. Find a better solution 
@@ -171,7 +169,7 @@ Important stuff
   > Add Face::clear() in all versions.
   > Move uv parameter to the back in Face constructor (Python version).
 
-+ API changes.
++ API changes
   > Polygon3::transform(Matrix3) is expected to translate the polygon to the 
     origin before the transformation is applied (required by 
     Line3::intersectionInPoly). This seems counterintuitive and should be fixed. 
@@ -190,20 +188,12 @@ Important stuff
 
 + TransformableObject: Do some benchmarking on the transform matrix checks.
 
-+ Create a nice glue layer for Blender (see BlenderGeoUtils.py).
-
-+ Make sure objects correctly implement copy assignment and the 
-  IFObject::copy() function.
-
 + Generate the documentation using Doxygen.
   > Add a main page.
 
 --------------------------------------------------------------------------------
 Nice to have
 --------------------------------------------------------------------------------
-
-+ Class templates.
-  > Add the proxyTarget feature to other property styles (done for vector).
 
 + Transform nodes:
   > Each update call updates all outputs, not just the ones the caller was 
@@ -267,11 +257,11 @@ Nice to have
 Side-tracks
 --------------------------------------------------------------------------------
 
-+ Polygons:
++ Polygons
   > Allow simple lighting using a number of point light sources and select 
     a style according to the resulting intensity.
 
-+ Brush creation:
++ Brush creation
   > Make sure the correct style is used for sub-plygons inside a brush sheet 
     cell. This currently onls works if the number of styles divides the number 
     of sub-polygons evenly.
