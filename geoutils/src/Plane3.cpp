@@ -52,14 +52,6 @@ Plane3ClassInfo::~Plane3ClassInfo()
 {
 }
 
-// public member constants
-const Ionflux::GeoUtils::Plane3 Plane3::XY = Ionflux::GeoUtils::Plane3(Ionflux::GeoUtils::Vector3::ZERO, 
-    Ionflux::GeoUtils::Vector3::E_X, Ionflux::GeoUtils::Vector3::E_Y);
-const Ionflux::GeoUtils::Plane3 Plane3::YZ = Ionflux::GeoUtils::Plane3(Ionflux::GeoUtils::Vector3::ZERO, 
-    Ionflux::GeoUtils::Vector3::E_Y, Ionflux::GeoUtils::Vector3::E_Z);
-const Ionflux::GeoUtils::Plane3 Plane3::ZX = Ionflux::GeoUtils::Plane3(Ionflux::GeoUtils::Vector3::ZERO, 
-    Ionflux::GeoUtils::Vector3::E_Z, Ionflux::GeoUtils::Vector3::E_X);
-
 // run-time type information instance constants
 const Plane3ClassInfo Plane3::plane3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Plane3::CLASS_INFO = &Plane3::plane3ClassInfo;
@@ -136,12 +128,31 @@ bool Plane3::operator!=(const Ionflux::GeoUtils::Plane3& other) const
 	return !(*this == other);;
 }
 
-std::string Plane3::getString() const
+std::string Plane3::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << p.getString() 
-	    << ", " << u.getString() << ", " << v.getString() << "]";
-	return state.str();
+	std::ostringstream status;
+	status << "p = (" << p.getValueString() 
+	    << "), u = (" << u.getValueString() << ", v = (" 
+	    << v.getValueString() << ")";
+	return status.str();
+}
+
+const Ionflux::GeoUtils::Plane3& Plane3::planeXY()
+{
+	static const Plane3 p0(Vector3::ZERO, Vector3::E_X, Vector3::E_Y);
+	return p0;
+}
+
+const Ionflux::GeoUtils::Plane3& Plane3::planeYZ()
+{
+	static const Plane3 p0(Vector3::ZERO, Vector3::E_Y, Vector3::E_Z);
+	return p0;
+}
+
+const Ionflux::GeoUtils::Plane3& Plane3::planeZX()
+{
+	static const Plane3 p0(Vector3::ZERO, Vector3::E_Z, Vector3::E_X);
+	return p0;
 }
 
 Ionflux::GeoUtils::Plane3 Plane3::createFromNormal(const 
@@ -207,10 +218,28 @@ setV(other.getV());
 
 Ionflux::GeoUtils::Plane3* Plane3::copy() const
 {
-    Plane3* newPlane3 = 
-        new Plane3();
+    Plane3* newPlane3 = create();
     *newPlane3 = *this;
     return newPlane3;
+}
+
+Ionflux::GeoUtils::Plane3* Plane3::upcast(Ionflux::ObjectBase::IFObject* 
+other)
+{
+    return dynamic_cast<Plane3*>(other);
+}
+
+Ionflux::GeoUtils::Plane3* Plane3::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Plane3* newObject = new Plane3();
+    if (newObject == 0)
+    {
+        return 0;
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
 }
 
 }

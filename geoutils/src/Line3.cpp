@@ -54,14 +54,6 @@ Line3ClassInfo::~Line3ClassInfo()
 {
 }
 
-// public member constants
-const Ionflux::GeoUtils::Line3 Line3::X = Ionflux::GeoUtils::Line3(Ionflux::GeoUtils::Vector3::ZERO, 
-    Ionflux::GeoUtils::Vector3::E_X);
-const Ionflux::GeoUtils::Line3 Line3::Y = Ionflux::GeoUtils::Line3(Ionflux::GeoUtils::Vector3::ZERO, 
-    Ionflux::GeoUtils::Vector3::E_Y);
-const Ionflux::GeoUtils::Line3 Line3::Z = Ionflux::GeoUtils::Line3(Ionflux::GeoUtils::Vector3::ZERO, 
-    Ionflux::GeoUtils::Vector3::E_Z);
-
 // run-time type information instance constants
 const Line3ClassInfo Line3::line3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Line3::CLASS_INFO = &Line3::line3ClassInfo;
@@ -204,12 +196,33 @@ bool Line3::operator!=(const Ionflux::GeoUtils::Line3& other) const
 	return !(*this == other);;
 }
 
-std::string Line3::getString() const
+std::string Line3::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << p.getString() 
-	    << ", " << u.getString() << "]";
-	return state.str();
+	std::ostringstream status;
+	status << "p = (" << p.getValueString() 
+	    << "), u = (" << u.getValueString();
+	return status.str();
+}
+
+const Ionflux::GeoUtils::Line3& Line3::axisX()
+{
+	static const Line3 l0(Ionflux::GeoUtils::Vector3::ZERO, 
+	    Ionflux::GeoUtils::Vector3::E_X);
+	return l0;
+}
+
+const Ionflux::GeoUtils::Line3& Line3::axisY()
+{
+	static const Line3 l0(Ionflux::GeoUtils::Vector3::ZERO, 
+	    Ionflux::GeoUtils::Vector3::E_Y);
+	return l0;
+}
+
+const Ionflux::GeoUtils::Line3& Line3::axisZ()
+{
+	static const Line3 l0(Ionflux::GeoUtils::Vector3::ZERO, 
+	    Ionflux::GeoUtils::Vector3::E_Z);
+	return l0;
 }
 
 void Line3::setP(const Ionflux::GeoUtils::Vector3& newP)

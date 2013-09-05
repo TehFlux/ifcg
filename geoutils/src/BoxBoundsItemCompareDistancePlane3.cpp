@@ -44,13 +44,13 @@ namespace GeoUtils
 {
 
 BoxBoundsItemCompareDistancePlane3::BoxBoundsItemCompareDistancePlane3()
-: Ionflux::GeoUtils::BoxBoundsItemCompare(false), reference(Ionflux::GeoUtils::Plane3::XY)
+: Ionflux::GeoUtils::BoxBoundsItemCompare(false)
 {
-	// TODO: Nothing ATM. ;-)
+	setReference(Plane3::planeXY());
 }
 
 BoxBoundsItemCompareDistancePlane3::BoxBoundsItemCompareDistancePlane3(const Ionflux::GeoUtils::BoxBoundsItemCompareDistancePlane3& other)
-: Ionflux::GeoUtils::BoxBoundsItemCompare(false), reference(Ionflux::GeoUtils::Plane3::XY)
+: Ionflux::GeoUtils::BoxBoundsItemCompare(false)
 {
 	*this = other;
 }

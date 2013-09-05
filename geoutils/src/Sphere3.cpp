@@ -51,9 +51,6 @@ Sphere3ClassInfo::~Sphere3ClassInfo()
 {
 }
 
-// public member constants
-const Ionflux::GeoUtils::Sphere3 Sphere3::UNIT = Ionflux::GeoUtils::Sphere3(Ionflux::GeoUtils::Vector3::ZERO, 1.);
-
 // run-time type information instance constants
 const Sphere3ClassInfo Sphere3::sphere3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Sphere3::CLASS_INFO = &Sphere3::sphere3ClassInfo;
@@ -132,15 +129,12 @@ bool Sphere3::operator!=(const Ionflux::GeoUtils::Sphere3& other) const
 	return !(*this == other);;
 }
 
-std::string Sphere3::getString() const
+std::string Sphere3::getValueString() const
 {
 	ostringstream status;
-	status << getClassName() << "[" << p.getString() << ", " << r;
+	status << "p = (" << p.getValueString() << "), " << r;
 	if (!useTransform && !useVI)
-	{
-	    status << "]";
 	    return status.str();
-	}
 	status << "; ";
 	if (useTransform)
 	    status << transformMatrix;
@@ -150,7 +144,6 @@ std::string Sphere3::getString() const
 	        status << ", ";
 	    status << viewMatrix << ", " << imageMatrix;
 	}
-	status << "]";
 	return status.str();
 }
 
@@ -214,6 +207,12 @@ Ionflux::GeoUtils::Sphere3& Sphere3::duplicate()
 {
 	// TODO: Implementation.
 	return *copy();
+}
+
+const Ionflux::GeoUtils::Sphere3& Sphere3::unit()
+{
+	static const Sphere3 s0(Ionflux::GeoUtils::Vector3::ZERO, 1.);
+	return s0;
 }
 
 void Sphere3::setP(const Ionflux::GeoUtils::Vector3& newP)

@@ -69,12 +69,6 @@ class Line3
 		Ionflux::GeoUtils::Vector3 u;
 		
 	public:
-		/// X axis.
-		static const Ionflux::GeoUtils::Line3 X;
-		/// Y axis.
-		static const Ionflux::GeoUtils::Line3 Y;
-		/// Z axis.
-		static const Ionflux::GeoUtils::Line3 Z;
 		/// Class information instance.
 		static const Line3ClassInfo line3ClassInfo;
 		/// Class information.
@@ -169,13 +163,37 @@ class Line3
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
+		
+		/** Get axis (X).
+		 *
+		 * Get a line corresponding to the X axis.
+		 *
+		 * \return Line.
+		 */
+		static const Ionflux::GeoUtils::Line3& axisX();
+		
+		/** Get axis (Y).
+		 *
+		 * Get a line corresponding to the Y axis.
+		 *
+		 * \return Line.
+		 */
+		static const Ionflux::GeoUtils::Line3& axisY();
+		
+		/** Get axis (Z).
+		 *
+		 * Get a line corresponding to the Z axis.
+		 *
+		 * \return Line.
+		 */
+		static const Ionflux::GeoUtils::Line3& axisZ();
 		
 		/** Assignment operator.
 		 *

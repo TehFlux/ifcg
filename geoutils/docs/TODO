@@ -135,6 +135,8 @@ Important stuff
 
 + GeoUtils takes long to compile. Maybe break the core library into several 
   libraries.
+  > math
+  > transform nodes
 
 + Testing
   > BoundingBox

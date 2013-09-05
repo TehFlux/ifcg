@@ -411,6 +411,8 @@ double Vertex3::getZ() const
 Ionflux::GeoUtils::Vertex3& Vertex3::operator=(const 
 Ionflux::GeoUtils::Vertex3& other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
     x = other.x;
     y = other.y;
@@ -492,14 +494,12 @@ std::string Vertex3::getXMLElementName() const
 
 std::string Vertex3::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::GeoUtils::TransformableObject::getXMLAttributeData());
-	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0 << " ";
-	d0 << "x=\"" << x << "\"";
-	d0 << " " << "y=\"" << y << "\"";
-	d0 << " " << "z=\"" << z << "\"";
-	return d0.str();
+    std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+    std::ostringstream d0;
+    if (a0.size() > 0)
+        d0 << a0 << " ";
+    d0 << "d=\"" << x << "," << y << "," << z << "\"";
+    return d0.str();
 }
 
 void Vertex3::getXMLChildData(std::string& target, unsigned int 

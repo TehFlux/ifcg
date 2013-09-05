@@ -70,12 +70,6 @@ class Plane3
 		Ionflux::GeoUtils::Vector3 v;
 		
 	public:
-		/// XY plane.
-		static const Ionflux::GeoUtils::Plane3 XY;
-		/// YZ plane.
-		static const Ionflux::GeoUtils::Plane3 YZ;
-		/// ZX plane.
-		static const Ionflux::GeoUtils::Plane3 ZX;
 		/// Class information instance.
 		static const Plane3ClassInfo plane3ClassInfo;
 		/// Class information.
@@ -166,13 +160,37 @@ class Plane3
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Plane3& other) const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
+		
+		/** Get plane (XY).
+		 *
+		 * Get a plane corresponding to the XY coordinate plane.
+		 *
+		 * \return Plane.
+		 */
+		static const Ionflux::GeoUtils::Plane3& planeXY();
+		
+		/** Get plane (YZ).
+		 *
+		 * Get a plane corresponding to the YZ coordinate plane.
+		 *
+		 * \return Plane.
+		 */
+		static const Ionflux::GeoUtils::Plane3& planeYZ();
+		
+		/** Get plane (ZX).
+		 *
+		 * Get a plane corresponding to the ZX coordinate plane.
+		 *
+		 * \return Plane.
+		 */
+		static const Ionflux::GeoUtils::Plane3& planeZX();
 		
 		/** Create plane from normal vector.
 		 *
@@ -212,6 +230,30 @@ class Plane3
 		 * \return Newly allocated copy of the object.
 		 */
 		virtual Ionflux::GeoUtils::Plane3* copy() const;
+		
+		/** Upcast.
+		 *
+		 * Cast an IFObject to the most specific type.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		static Ionflux::GeoUtils::Plane3* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::Plane3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		
 		/** Get position vector.
 		 *

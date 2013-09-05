@@ -2116,9 +2116,6 @@ class Plane3
 : public Ionflux::ObjectBase::IFObject
 {
     public:
-		static const Ionflux::GeoUtils::Plane3 XY;
-		static const Ionflux::GeoUtils::Plane3 YZ;
-		static const Ionflux::GeoUtils::Plane3 ZX;
         
         Plane3();
 		Plane3(const Ionflux::GeoUtils::Plane3& other);
@@ -2134,12 +2131,19 @@ class Plane3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Plane3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
+        static const Ionflux::GeoUtils::Plane3& planeXY();
+        static const Ionflux::GeoUtils::Plane3& planeYZ();
+        static const Ionflux::GeoUtils::Plane3& planeZX();
         static Ionflux::GeoUtils::Plane3 createFromNormal(const 
         Ionflux::GeoUtils::Vector3& n, const Ionflux::GeoUtils::Vector3& t 
         = Ionflux::GeoUtils::Vector3::E_X, const 
         Ionflux::GeoUtils::Vector3& p = Ionflux::GeoUtils::Vector3::ZERO);
 		virtual Ionflux::GeoUtils::Plane3* copy() const;
+		static Ionflux::GeoUtils::Plane3* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Plane3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setU(const Ionflux::GeoUtils::Vector3& newU);
@@ -2860,9 +2864,6 @@ class Line3
 : public Ionflux::ObjectBase::IFObject
 {
     public:
-		static const Ionflux::GeoUtils::Line3 X;
-		static const Ionflux::GeoUtils::Line3 Y;
-		static const Ionflux::GeoUtils::Line3 Z;
         
         Line3();
 		Line3(const Ionflux::GeoUtils::Line3& other);
@@ -2879,7 +2880,10 @@ class Line3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
+        static const Ionflux::GeoUtils::Line3& axisX();
+        static const Ionflux::GeoUtils::Line3& axisY();
+        static const Ionflux::GeoUtils::Line3& axisZ();
 		virtual Ionflux::GeoUtils::Line3* copy() const;
 		static Ionflux::GeoUtils::Line3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -2974,7 +2978,6 @@ class Sphere3
 : public Ionflux::GeoUtils::Object3
 {
     public:
-		static const Ionflux::GeoUtils::Sphere3 UNIT;
         
         Sphere3();
 		Sphere3(const Ionflux::GeoUtils::Sphere3& other);
@@ -2988,7 +2991,7 @@ class Sphere3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Sphere3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Sphere3& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Sphere3& translate(const 
@@ -3008,6 +3011,7 @@ class Sphere3
         Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
         image = 0);
         virtual Ionflux::GeoUtils::Sphere3& duplicate();
+        static const Ionflux::GeoUtils::Sphere3& unit();
 		virtual Ionflux::GeoUtils::Sphere3* copy() const;
 		static Ionflux::GeoUtils::Sphere3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

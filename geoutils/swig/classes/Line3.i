@@ -46,9 +46,6 @@ class Line3
 : public Ionflux::ObjectBase::IFObject
 {
     public:
-		static const Ionflux::GeoUtils::Line3 X;
-		static const Ionflux::GeoUtils::Line3 Y;
-		static const Ionflux::GeoUtils::Line3 Z;
         
         Line3();
 		Line3(const Ionflux::GeoUtils::Line3& other);
@@ -65,7 +62,10 @@ class Line3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
+        static const Ionflux::GeoUtils::Line3& axisX();
+        static const Ionflux::GeoUtils::Line3& axisY();
+        static const Ionflux::GeoUtils::Line3& axisZ();
 		virtual Ionflux::GeoUtils::Line3* copy() const;
 		static Ionflux::GeoUtils::Line3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

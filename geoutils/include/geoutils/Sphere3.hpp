@@ -69,8 +69,6 @@ class Sphere3
 		double r;
 		
 	public:
-		/// Unit sphere.
-		static const Ionflux::GeoUtils::Sphere3 UNIT;
 		/// Class information instance.
 		static const Sphere3ClassInfo sphere3ClassInfo;
 		/// Class information.
@@ -153,13 +151,13 @@ class Sphere3
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Sphere3& other) const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Scale.
 		 *
@@ -261,6 +259,14 @@ class Sphere3
 		 * \return The duplicated object.
 		 */
 		virtual Ionflux::GeoUtils::Sphere3& duplicate();
+		
+		/** Get unit sphere.
+		 *
+		 * Get a sphere corresponding to the unit sphere.
+		 *
+		 * \return Line.
+		 */
+		static const Ionflux::GeoUtils::Sphere3& unit();
 		
 		/** Assignment operator.
 		 *

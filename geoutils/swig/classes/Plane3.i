@@ -46,9 +46,6 @@ class Plane3
 : public Ionflux::ObjectBase::IFObject
 {
     public:
-		static const Ionflux::GeoUtils::Plane3 XY;
-		static const Ionflux::GeoUtils::Plane3 YZ;
-		static const Ionflux::GeoUtils::Plane3 ZX;
         
         Plane3();
 		Plane3(const Ionflux::GeoUtils::Plane3& other);
@@ -64,12 +61,19 @@ class Plane3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Plane3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
+        static const Ionflux::GeoUtils::Plane3& planeXY();
+        static const Ionflux::GeoUtils::Plane3& planeYZ();
+        static const Ionflux::GeoUtils::Plane3& planeZX();
         static Ionflux::GeoUtils::Plane3 createFromNormal(const 
         Ionflux::GeoUtils::Vector3& n, const Ionflux::GeoUtils::Vector3& t 
         = Ionflux::GeoUtils::Vector3::E_X, const 
         Ionflux::GeoUtils::Vector3& p = Ionflux::GeoUtils::Vector3::ZERO);
 		virtual Ionflux::GeoUtils::Plane3* copy() const;
+		static Ionflux::GeoUtils::Plane3* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Plane3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setU(const Ionflux::GeoUtils::Vector3& newU);

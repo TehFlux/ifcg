@@ -1,6 +1,6 @@
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * xmlutils.cpp                   XML utility functions (implementation).
@@ -1562,20 +1562,13 @@ void getVertex3(TiXmlElement* e0,
     Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
         elementName, "getVertex3");
     getTransformableObject(e0, target, elementName);
-    // Get attribute data.
+    // Get element attribute data.
     std::string a0;
-    // Property: x (float)
     a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
-        e0, "x", true);
-    target.setX(::strtod(a0.c_str(), 0));
-    // Property: y (float)
-    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
-        e0, "y", true);
-    target.setY(::strtod(a0.c_str(), 0));
-    // Property: z (float)
-    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
-        e0, "z", true);
-    target.setZ(::strtod(a0.c_str(), 0));
+        e0, "d", true);
+    Ionflux::ObjectBase::DoubleVector dv0;
+    Ionflux::ObjectBase::vectorFromList(a0, dv0);
+    target.setCoords(dv0);
 }
 
 void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& target)

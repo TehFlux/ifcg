@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_XMLUTILS
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * xmlutils.hpp                     XML utility functions (header).
