@@ -17,7 +17,8 @@ New
 
 + Testing
   > Vector2, Vector3, Vector4
-  > VectorSet XML I/O (polymorphic)
+  > XML I/O (polymorphic)
+    . Vector, VectorSet
 
 --------------------------------------------------------------------------------
 Critical stuff
