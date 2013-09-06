@@ -125,6 +125,8 @@ std::string VectorSet::getValueString() const
 	        e0 = false;
 	    status << "(" << (*i)->getValueString() << ")";
 	}
+	if (vectors.size() == 0)
+	    status << "<none>";
 	return status.str();
 }
 
@@ -315,10 +317,15 @@ indentLevel) const
 	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
 	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(vectors, "vectorvec", "", 
         indentLevel, "pname=\"vectors\"");
+    xcFirst = false;
 	target = d0.str();
 }
 

@@ -82,6 +82,11 @@ class Vector2
 		other);
 		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vector2* create(double initX0, double initX1, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);

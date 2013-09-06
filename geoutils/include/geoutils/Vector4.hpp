@@ -399,6 +399,56 @@ class Vector4
 		static Ionflux::GeoUtils::Vector4* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         
+		/** Create instance.
+		 *
+		 * Create a new Vector4 object.
+		 *
+		 * \param initX0 Element (X0).
+		 * \param initX1 Element (X1).
+		 * \param initX2 Element (X2).
+		 * \param initX3 Element (X3).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector4* create(double initX0, double initX1, 
+		double initX2, double initX3, Ionflux::ObjectBase::IFObject* parentObject
+		= 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector4 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector4 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param initZ Z coordinate.
+		 * \param initW W coordinate.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 0., double 
+		initW = 1., Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector4 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param initW W coordinate.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector3& initElements0, double initW = 1., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
 		/** Get XML element name.
 		 *
 		 * Get the XML element name for the object.

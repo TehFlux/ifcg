@@ -212,6 +212,75 @@ Ionflux::GeoUtils::TransformableObject
 		virtual Ionflux::GeoUtils::VectorSet* 
 		addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType);
 		
+		/** Add face data.
+		 *
+		 * Add a face data entry of a certain type. The face data entry will 
+		 * be composed of the specified input vectors.
+		 *
+		 * \param dataType Face data type ID.
+		 * \param v0 Face data vector (0).
+		 * \param v1 Face data vector (1).
+		 * \param v2 Face data vector (2).
+		 * \param v3 Face data vector (3).
+		 *
+		 * \return New face data.
+		 */
+		virtual Ionflux::GeoUtils::VectorSet* 
+		addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+		Ionflux::GeoUtils::Vector* v0, Ionflux::GeoUtils::Vector* v1 = 0, 
+		Ionflux::GeoUtils::Vector* v2 = 0, Ionflux::GeoUtils::Vector* v3 = 0);
+		
+		/** Add texture coordinates.
+		 *
+		 * Add texture coordinates. The face data entry will be composed of 
+		 * the specified input vectors.
+		 *
+		 * \param v0 Face data vector (0).
+		 * \param v1 Face data vector (1).
+		 * \param v2 Face data vector (2).
+		 * \param v3 Face data vector (3).
+		 *
+		 * \return New face data.
+		 */
+		virtual Ionflux::GeoUtils::VectorSet* 
+		addTexCoords(Ionflux::GeoUtils::Vector* v0, Ionflux::GeoUtils::Vector* v1
+		= 0, Ionflux::GeoUtils::Vector* v2 = 0, Ionflux::GeoUtils::Vector* v3 = 
+		0);
+		
+		/** Add vertex colors.
+		 *
+		 * Add vertex colors. The face data entry will be composed of the 
+		 * specified input vectors.
+		 *
+		 * \param v0 Face data vector (0).
+		 * \param v1 Face data vector (1).
+		 * \param v2 Face data vector (2).
+		 * \param v3 Face data vector (3).
+		 *
+		 * \return New face data.
+		 */
+		virtual Ionflux::GeoUtils::VectorSet* 
+		addVertexColors(Ionflux::GeoUtils::Vector* v0, Ionflux::GeoUtils::Vector*
+		v1 = 0, Ionflux::GeoUtils::Vector* v2 = 0, Ionflux::GeoUtils::Vector* v3 
+		= 0);
+		
+		/** Add vertex normals.
+		 *
+		 * Add vertex normals. The face data entry will be composed of the 
+		 * specified input vectors.
+		 *
+		 * \param v0 Face data vector (0).
+		 * \param v1 Face data vector (1).
+		 * \param v2 Face data vector (2).
+		 * \param v3 Face data vector (3).
+		 *
+		 * \return New face data.
+		 */
+		virtual Ionflux::GeoUtils::VectorSet* 
+		addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
+		Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 0, 
+		Ionflux::GeoUtils::Vector* v3 = 0);
+		
 		/** Get face data by type.
 		 *
 		 * Get face data entries of a certain type.

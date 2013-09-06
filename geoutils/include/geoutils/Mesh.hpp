@@ -57,8 +57,8 @@ class MeshClassInfo
  * A mesh.
  */
 class Mesh
-: public Ionflux::GeoUtils::BoxBoundsItem, public 
-Ionflux::GeoUtils::ItemSource, public 
+: virtual public Ionflux::GeoUtils::BoxBoundsItem, virtual public 
+Ionflux::GeoUtils::ItemSource, virtual public 
 Ionflux::GeoUtils::TransformableObject
 {
 	private:
@@ -287,14 +287,6 @@ Ionflux::GeoUtils::TransformableObject
 		 * \return Result of the comparison.
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Mesh& other) const;
-		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
 		
 		/** Get barycenter.
 		 *
@@ -557,6 +549,30 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		static Ionflux::GeoUtils::Mesh* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Mesh object.
+		 *
+		 * \param initVerts Vertex vector.
+		 * \param initFaces Face vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Vector* 
+		initVerts, const Ionflux::GeoUtils::FaceVector* initFaces, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Mesh object.
+		 *
+		 * \param initVertexSource Vertex source.
+		 * \param initFaces Face vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Set* 
+		initVertexSource, const Ionflux::GeoUtils::FaceVector* initFaces, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.
 		 *

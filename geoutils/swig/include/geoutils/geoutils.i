@@ -688,6 +688,11 @@ class Vector2
 		other);
 		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vector2* create(double initX0, double initX1, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);
@@ -953,6 +958,14 @@ class Vector3
 		other);
 		static Ionflux::GeoUtils::Vector3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(double initX0, double initX1, 
+		double initX2, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);
@@ -1169,6 +1182,18 @@ class Vector4
 		other);
 		static Ionflux::GeoUtils::Vector4* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(double initX0, double initX1, 
+		double initX2, double initX3, Ionflux::ObjectBase::IFObject* parentObject
+		= 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 0., double 
+		initW = 1., Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector3& initElements0, double initW = 1., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);
@@ -3095,8 +3120,8 @@ class BoxBoundsItem
         other) const;
         virtual bool operator!=(const Ionflux::GeoUtils::BoxBoundsItem& 
         other) const;
-        virtual std::string getXML() const;
-        virtual std::string getString() const;
+        virtual std::string getXML_legacy() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::BoxBoundsItem* copy() const;
 		static Ionflux::GeoUtils::BoxBoundsItem* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -3343,7 +3368,6 @@ class ItemSource
         virtual ~ItemSource();
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID) = 0;
-        virtual std::string getString() const;
 };
 
 }
@@ -3421,7 +3445,7 @@ class BoundingBoxClassInfo
 };
 
 class BoundingBox
-: public Ionflux::GeoUtils::BoxBoundsItem
+: virtual public Ionflux::GeoUtils::BoxBoundsItem
 {
     public:
         
@@ -3494,11 +3518,10 @@ class BoundingBox
         virtual unsigned int getNumItems() const;
         virtual void getItems(Ionflux::GeoUtils::BoxBoundsItemSet& target) 
         const;
-        virtual std::string getString() const;
         virtual void setChildIDs(const std::string& prefix, bool showLevel 
         = true, bool keepExisting = true, bool recursive = false, unsigned 
         int level = 0, unsigned int fieldWidth = 2);
-        virtual std::string getXML() const;
+        virtual std::string getXML_legacy() const;
         virtual void writeToFile(const std::string& fileName) const;
 		virtual Ionflux::GeoUtils::BoundingBox* copy() const;
 		static Ionflux::GeoUtils::BoundingBox* 
@@ -3740,6 +3763,23 @@ Ionflux::GeoUtils::TransformableObject
         addFaceData(Ionflux::GeoUtils::FaceData* newFaceData);
         virtual Ionflux::GeoUtils::VectorSet* 
         addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+        Ionflux::GeoUtils::Vector* v0, Ionflux::GeoUtils::Vector* v1 = 0, 
+        Ionflux::GeoUtils::Vector* v2 = 0, Ionflux::GeoUtils::Vector* v3 = 
+        0);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addTexCoords(Ionflux::GeoUtils::Vector* v0, 
+        Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
+        0, Ionflux::GeoUtils::Vector* v3 = 0);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addVertexColors(Ionflux::GeoUtils::Vector* v0, 
+        Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
+        0, Ionflux::GeoUtils::Vector* v3 = 0);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
+        Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
+        0, Ionflux::GeoUtils::Vector* v3 = 0);
         virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
         dataType, Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::FaceData* 
@@ -3873,8 +3913,8 @@ class MeshClassInfo
 };
 
 class Mesh
-: public Ionflux::GeoUtils::BoxBoundsItem, public 
-Ionflux::GeoUtils::ItemSource, public 
+: virtual public Ionflux::GeoUtils::BoxBoundsItem, virtual public 
+Ionflux::GeoUtils::ItemSource, virtual public 
 Ionflux::GeoUtils::TransformableObject
 {
     public:
@@ -3912,7 +3952,6 @@ Ionflux::GeoUtils::TransformableObject
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Mesh& other) 
         const;
-        virtual std::string getString() const;
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Mesh& scale(const 
@@ -3955,6 +3994,12 @@ Ionflux::GeoUtils::TransformableObject
 		other);
 		static Ionflux::GeoUtils::Mesh* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Vector* 
+		initVerts, const Ionflux::GeoUtils::FaceVector* initFaces, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Set* 
+		initVertexSource, const Ionflux::GeoUtils::FaceVector* initFaces, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;        

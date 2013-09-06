@@ -475,6 +475,41 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         
+		/** Create instance.
+		 *
+		 * Create a new Vector3 object.
+		 *
+		 * \param initX0 Element (X0).
+		 * \param initX1 Element (X1).
+		 * \param initX2 Element (X2).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector3* create(double initX0, double initX1, 
+		double initX2, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector3 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector3 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param initZ Z coordinate.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
 		/** Get XML element name.
 		 *
 		 * Get the XML element name for the object.

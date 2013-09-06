@@ -1034,14 +1034,6 @@ const
 	target = items;
 }
 
-std::string BoundingBox::getString() const
-{
-	ostringstream state;
-	state << getClassName() << "[" << center.getString() 
-	    << ", " << rVec.getString() << ", '" << itemID << "']";
-	return state.str();
-}
-
 void BoundingBox::setChildIDs(const std::string& prefix, bool showLevel, 
 bool keepExisting, bool recursive, unsigned int level, unsigned int 
 fieldWidth)
@@ -1070,7 +1062,7 @@ fieldWidth)
 	}
 }
 
-std::string BoundingBox::getXML() const
+std::string BoundingBox::getXML_legacy() const
 {
 	ostringstream d0;
 	if (itemID.size() == 0)
@@ -1080,7 +1072,7 @@ std::string BoundingBox::getXML() const
 	    << rVec[1] << "," << rVec[2] << "\"><items>";
 	for (BoxBoundsItemSet::const_iterator i = items.begin(); 
 	    i != items.end(); i++)
-	    d0 << (*i)->getXML();
+	    d0 << (*i)->getXML_legacy();
 	d0 << "</items></bbox>";
 	return d0.str();
 }
@@ -1089,7 +1081,7 @@ void BoundingBox::writeToFile(const std::string& fileName) const
 {
 	ofstream f0;
 	f0.open(fileName.c_str(), ios_base::out);
-	f0 << XML_HEADER << getXML();
+	f0 << XML_HEADER << getXML_legacy();
 }
 
 void BoundingBox::setLevel(int newLevel)

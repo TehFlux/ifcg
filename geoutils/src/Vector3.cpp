@@ -460,6 +460,47 @@ parentObject)
     return newObject;
 }
 
+Ionflux::GeoUtils::Vector3* Vector3::create(double initX0, double initX1, 
+double initX2, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector3* newObject = new Vector3(initX0, initX1, initX2);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector3* Vector3::create(const 
+Ionflux::ObjectBase::DoubleVector& initElements0, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector3* newObject = new Vector3(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector3* Vector3::create(const 
+Ionflux::GeoUtils::Vector2& initElements0, double initZ, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector3* newObject = new Vector3(initElements0, initZ);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
 std::string Vector3::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

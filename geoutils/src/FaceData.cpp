@@ -107,8 +107,8 @@ FaceData::~FaceData()
 std::string FaceData::getValueString() const
 {
 	ostringstream status;
-	status << VectorSet::getValueString() << "; dataType = " 
-	    << getTypeIDString(dataType);
+	status << getTypeIDString(dataType) << "; [" 
+	    << VectorSet::getValueString() << "]";
 	return status.str();
 }
 

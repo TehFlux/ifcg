@@ -105,6 +105,18 @@ class Vector4
 		other);
 		static Ionflux::GeoUtils::Vector4* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(double initX0, double initX1, 
+		double initX2, double initX3, Ionflux::ObjectBase::IFObject* parentObject
+		= 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 0., double 
+		initW = 1., Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector3& initElements0, double initW = 1., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);

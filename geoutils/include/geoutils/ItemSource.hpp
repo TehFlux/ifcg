@@ -102,14 +102,6 @@ class ItemSource
 		virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const std::string& 
 		itemID) = 0;
 		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
-		
 		/** Assignment operator.
 		 *
 		 * Assign an object.

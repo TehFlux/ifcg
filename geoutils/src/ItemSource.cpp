@@ -76,13 +76,6 @@ ItemSource::~ItemSource()
 	// TODO: Nothing ATM. ;-)
 }
 
-std::string ItemSource::getString() const
-{
-	ostringstream state;
-	state << getClassName();
-	return state.str();
-}
-
 Ionflux::GeoUtils::ItemSource& ItemSource::operator=(const 
 Ionflux::GeoUtils::ItemSource& other)
 {

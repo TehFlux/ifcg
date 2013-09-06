@@ -58,7 +58,7 @@ class BoundingBoxClassInfo
  * A bounding box which can contain other BoxBoundsItems.
  */
 class BoundingBox
-: public Ionflux::GeoUtils::BoxBoundsItem
+: virtual public Ionflux::GeoUtils::BoxBoundsItem
 {
 	private:
 		
@@ -479,14 +479,6 @@ class BoundingBox
 		 */
 		virtual void getItems(Ionflux::GeoUtils::BoxBoundsItemSet& target) const;
 		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
-		
 		/** Set child item IDs.
 		 *
 		 * Set item IDs for the child objects of the bounding box. The ID will
@@ -510,7 +502,7 @@ class BoundingBox
 		 *
 		 * \return XML representation.
 		 */
-		virtual std::string getXML() const;
+		virtual std::string getXML_legacy() const;
 		
 		/** Write to file.
 		 *

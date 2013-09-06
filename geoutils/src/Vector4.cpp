@@ -370,7 +370,62 @@ parentObject)
     Vector4* newObject = new Vector4();
     if (newObject == 0)
     {
-        return 0;
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::create(double initX0, double initX1, 
+double initX2, double initX3, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector4* newObject = new Vector4(initX0, initX1, initX2, initX3);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::create(const 
+Ionflux::ObjectBase::DoubleVector& initElements0, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector4* newObject = new Vector4(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::create(const 
+Ionflux::GeoUtils::Vector2& initElements0, double initZ, double initW, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector4* newObject = new Vector4(initElements0, initZ, initW);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::create(const 
+Ionflux::GeoUtils::Vector3& initElements0, double initW, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector4* newObject = new Vector4(initElements0, initW);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

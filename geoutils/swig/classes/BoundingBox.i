@@ -43,7 +43,7 @@ class BoundingBoxClassInfo
 };
 
 class BoundingBox
-: public Ionflux::GeoUtils::BoxBoundsItem
+: virtual public Ionflux::GeoUtils::BoxBoundsItem
 {
     public:
         
@@ -116,11 +116,10 @@ class BoundingBox
         virtual unsigned int getNumItems() const;
         virtual void getItems(Ionflux::GeoUtils::BoxBoundsItemSet& target) 
         const;
-        virtual std::string getString() const;
         virtual void setChildIDs(const std::string& prefix, bool showLevel 
         = true, bool keepExisting = true, bool recursive = false, unsigned 
         int level = 0, unsigned int fieldWidth = 2);
-        virtual std::string getXML() const;
+        virtual std::string getXML_legacy() const;
         virtual void writeToFile(const std::string& fileName) const;
 		virtual Ionflux::GeoUtils::BoundingBox* copy() const;
 		static Ionflux::GeoUtils::BoundingBox* 

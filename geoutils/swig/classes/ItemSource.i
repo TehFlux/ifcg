@@ -54,7 +54,6 @@ class ItemSource
         virtual ~ItemSource();
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID) = 0;
-        virtual std::string getString() const;
 };
 
 }

@@ -76,6 +76,23 @@ Ionflux::GeoUtils::TransformableObject
         addFaceData(Ionflux::GeoUtils::FaceData* newFaceData);
         virtual Ionflux::GeoUtils::VectorSet* 
         addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+        Ionflux::GeoUtils::Vector* v0, Ionflux::GeoUtils::Vector* v1 = 0, 
+        Ionflux::GeoUtils::Vector* v2 = 0, Ionflux::GeoUtils::Vector* v3 = 
+        0);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addTexCoords(Ionflux::GeoUtils::Vector* v0, 
+        Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
+        0, Ionflux::GeoUtils::Vector* v3 = 0);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addVertexColors(Ionflux::GeoUtils::Vector* v0, 
+        Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
+        0, Ionflux::GeoUtils::Vector* v3 = 0);
+        virtual Ionflux::GeoUtils::VectorSet* 
+        addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
+        Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
+        0, Ionflux::GeoUtils::Vector* v3 = 0);
         virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
         dataType, Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::FaceData* 

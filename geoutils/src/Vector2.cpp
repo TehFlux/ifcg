@@ -257,7 +257,34 @@ parentObject)
     Vector2* newObject = new Vector2();
     if (newObject == 0)
     {
-        return 0;
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector2* Vector2::create(double initX0, double initX1, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector2* newObject = new Vector2(initX0, initX1);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector2* Vector2::create(const 
+Ionflux::ObjectBase::DoubleVector& initElements0, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector2* newObject = new Vector2(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

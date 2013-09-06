@@ -296,6 +296,28 @@ class Vector2
 		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         
+		/** Create instance.
+		 *
+		 * Create a new Vector2 object.
+		 *
+		 * \param initX0 Element (X0).
+		 * \param initX1 Element (X1).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector2* create(double initX0, double initX1, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector2 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
 		/** Get XML element name.
 		 *
 		 * Get the XML element name for the object.

@@ -467,10 +467,15 @@ indentLevel) const
 	Ionflux::GeoUtils::TransformableObject::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
 	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(vertices, "vert3vec", "", 
         indentLevel, "pname=\"vertices\"");
+    xcFirst = false;
 	target = d0.str();
 }
 

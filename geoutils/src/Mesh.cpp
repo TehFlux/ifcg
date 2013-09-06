@@ -382,15 +382,6 @@ bool Mesh::operator!=(const Ionflux::GeoUtils::Mesh& other) const
 	return !(*this == other);;
 }
 
-std::string Mesh::getString() const
-{
-	ostringstream result;
-	result << getClassName();
-	if (itemID.size() > 0)
-	    result << "[" << itemID << "]";
-	return result.str();
-}
-
 Ionflux::GeoUtils::Vector3 Mesh::getBarycenter()
 {
 	if (vertexSource == 0)
@@ -666,7 +657,7 @@ std::string Mesh::getValueString() const
 	            status << ", ";
 	        else
 	            e0 = false;
-	        status << "(" << f0->getValueString() << ")";
+	        status << "[" << f0->getValueString() << "]";
 	    }
 	    status << "]";
 	} else
@@ -1075,6 +1066,34 @@ parentObject)
     return newObject;
 }
 
+Ionflux::GeoUtils::Mesh* Mesh::create(Ionflux::GeoUtils::Vertex3Vector* 
+initVerts, const Ionflux::GeoUtils::FaceVector* initFaces, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Mesh* newObject = new Mesh(initVerts, initFaces);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Mesh* Mesh::create(Ionflux::GeoUtils::Vertex3Set* 
+initVertexSource, const Ionflux::GeoUtils::FaceVector* initFaces, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Mesh* newObject = new Mesh(initVertexSource, initFaces);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
 std::string Mesh::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;
@@ -1097,13 +1116,22 @@ const
 	Ionflux::GeoUtils::TransformableObject::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
 	if (d0.str().size() > 0)
-	    d0 << "\n";
-	d0 << vertexSource->getXML0(indentLevel, "pname=\"vertex_source\"");
-	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+    if (vertexSource != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << vertexSource->getXML0(indentLevel, "pname=\"vertex_source\"");
+	    xcFirst = false;
+    }
+	if (!xcFirst || haveBCData)
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(faces, "vec", "", 
         indentLevel, "pname=\"faces\"");
+    xcFirst = false;
 	target = d0.str();
 }
 

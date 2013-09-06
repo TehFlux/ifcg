@@ -387,15 +387,15 @@ class BoxBoundsItem
 		 *
 		 * \return XML representation.
 		 */
-		virtual std::string getXML() const;
+		virtual std::string getXML_legacy() const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *

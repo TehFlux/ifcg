@@ -43,8 +43,8 @@ class MeshClassInfo
 };
 
 class Mesh
-: public Ionflux::GeoUtils::BoxBoundsItem, public 
-Ionflux::GeoUtils::ItemSource, public 
+: virtual public Ionflux::GeoUtils::BoxBoundsItem, virtual public 
+Ionflux::GeoUtils::ItemSource, virtual public 
 Ionflux::GeoUtils::TransformableObject
 {
     public:
@@ -82,7 +82,6 @@ Ionflux::GeoUtils::TransformableObject
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Mesh& other) 
         const;
-        virtual std::string getString() const;
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Mesh& scale(const 
@@ -125,6 +124,12 @@ Ionflux::GeoUtils::TransformableObject
 		other);
 		static Ionflux::GeoUtils::Mesh* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Vector* 
+		initVerts, const Ionflux::GeoUtils::FaceVector* initFaces, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Set* 
+		initVertexSource, const Ionflux::GeoUtils::FaceVector* initFaces, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;        

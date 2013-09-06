@@ -91,8 +91,8 @@ class BoxBoundsItem
         other) const;
         virtual bool operator!=(const Ionflux::GeoUtils::BoxBoundsItem& 
         other) const;
-        virtual std::string getXML() const;
-        virtual std::string getString() const;
+        virtual std::string getXML_legacy() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::BoxBoundsItem* copy() const;
 		static Ionflux::GeoUtils::BoxBoundsItem* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

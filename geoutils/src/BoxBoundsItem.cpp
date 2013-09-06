@@ -326,7 +326,7 @@ other) const
 	return !(*this == other);;
 }
 
-std::string BoxBoundsItem::getXML() const
+std::string BoxBoundsItem::getXML_legacy() const
 {
 	ostringstream d0;
 	if (itemID.size() == 0)
@@ -337,12 +337,12 @@ std::string BoxBoundsItem::getXML() const
 	return d0.str();
 }
 
-std::string BoxBoundsItem::getString() const
+std::string BoxBoundsItem::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << center.getString() 
-	    << ", " << rVec.getString() << ", '" << itemID << "']";
-	return state.str();
+	std::ostringstream status;
+	status << "center = (" << center.getValueString() << "), radius = ("
+	    << rVec.getValueString() << ")";
+	return status.str();
 }
 
 void BoxBoundsItem::setCenter(const Ionflux::GeoUtils::Vector3& newCenter)

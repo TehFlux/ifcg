@@ -217,6 +217,72 @@ Face::addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType)
 	return newData;
 }
 
+Ionflux::GeoUtils::VectorSet* 
+Face::addFaceData(Ionflux::GeoUtils::FaceDataTypeID dataType, 
+Ionflux::GeoUtils::Vector* v0, Ionflux::GeoUtils::Vector* v1, 
+Ionflux::GeoUtils::Vector* v2, Ionflux::GeoUtils::Vector* v3)
+{
+	FaceData* newData = FaceData::create(dataType);
+	unsigned int numNonNull = 0;
+	if (v0 != 0)
+	{
+	    newData->addVector(v0);
+	    numNonNull++;
+	}
+	if (v1 != 0)
+	{
+	    newData->addVector(v1);
+	    numNonNull++;
+	}
+	if (v2 != 0)
+	{
+	    newData->addVector(v2);
+	    numNonNull++;
+	}
+	if (v3 != 0)
+	{
+	    newData->addVector(v3);
+	    numNonNull++;
+	}
+	unsigned int expected = getNumVertices();
+	if (numNonNull < expected)
+	{
+	    std::ostringstream status;
+	    status << "Not enough input vectors for face data (" 
+	        << FaceData::getTypeIDString(dataType) << ", expected " 
+	        << expected << ", have " << numNonNull << ")";
+	    throw GeoUtilsError(getErrorString(status.str(), "addFaceData"));
+	}
+	addFaceData(newData);
+	return newData;
+}
+
+Ionflux::GeoUtils::VectorSet* Face::addTexCoords(Ionflux::GeoUtils::Vector*
+v0, Ionflux::GeoUtils::Vector* v1, Ionflux::GeoUtils::Vector* v2, 
+Ionflux::GeoUtils::Vector* v3)
+{
+	// TODO: Implementation.
+	return addFaceData(FaceData::TYPE_TEX_COORD, v0, v1, v2, v3);
+}
+
+Ionflux::GeoUtils::VectorSet* 
+Face::addVertexColors(Ionflux::GeoUtils::Vector* v0, 
+Ionflux::GeoUtils::Vector* v1, Ionflux::GeoUtils::Vector* v2, 
+Ionflux::GeoUtils::Vector* v3)
+{
+	// TODO: Implementation.
+	return addFaceData(FaceData::TYPE_VERTEX_COLOR, v0, v1, v2, v3);
+}
+
+Ionflux::GeoUtils::VectorSet* 
+Face::addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
+Ionflux::GeoUtils::Vector* v1, Ionflux::GeoUtils::Vector* v2, 
+Ionflux::GeoUtils::Vector* v3)
+{
+	// TODO: Implementation.
+	return addFaceData(FaceData::TYPE_VERTEX_NORMAL, v0, v1, v2, v3);
+}
+
 void Face::getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID dataType, 
 Ionflux::GeoUtils::VectorSetSet& target)
 {
@@ -1051,13 +1117,22 @@ const
 	Ionflux::GeoUtils::TransformableObject::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
 	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(vertices, "", 
         indentLevel, "pname=\"vertices\"");
-	if (d0.str().size() > 0)
-	    d0 << "\n";
-	d0 << faceData->getXML0(indentLevel, "pname=\"fds\"");
+    xcFirst = false;
+    if (faceData != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << faceData->getXML0(indentLevel, "pname=\"fds\"");
+	    xcFirst = false;
+    }
 	target = d0.str();
 }
 

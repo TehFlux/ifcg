@@ -440,7 +440,7 @@ void getObjVector<Ionflux::GeoUtils::Vector,
             // default (Vector)
             Ionflux::GeoUtils::Vector* co0 = 
                 Ionflux::GeoUtils::Vector::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -449,7 +449,7 @@ void getObjVector<Ionflux::GeoUtils::Vector,
             // Vector2
             Vector2* co0 = 
                 Vector2::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -458,7 +458,7 @@ void getObjVector<Ionflux::GeoUtils::Vector,
             // Vector3
             Vector3* co0 = 
                 Vector3::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -467,7 +467,7 @@ void getObjVector<Ionflux::GeoUtils::Vector,
             // Vector4
             Vector4* co0 = 
                 Vector4::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         {
@@ -957,7 +957,7 @@ void getObjVector<Ionflux::GeoUtils::VectorSet,
             // default (VectorSet)
             Ionflux::GeoUtils::VectorSet* co0 = 
                 Ionflux::GeoUtils::VectorSet::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -966,7 +966,7 @@ void getObjVector<Ionflux::GeoUtils::VectorSet,
             // FaceData
             FaceData* co0 = 
                 FaceData::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         {
@@ -1389,7 +1389,7 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             // Vertex3
             Vertex3* co0 = 
                 Vertex3::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -1398,7 +1398,7 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             // Vertex3Set
             Vertex3Set* co0 = 
                 Vertex3Set::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -1407,7 +1407,7 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             // Face
             Face* co0 = 
                 Face::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         if (en0 == 
@@ -1416,7 +1416,7 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             // Mesh
             Mesh* co0 = 
                 Mesh::create();
-            getObject0(ce0, *co0, childElementName);
+            getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
         {
@@ -1775,7 +1775,7 @@ void getFace(TiXmlElement* e0,
                 ce0, "pname", true);
         // Property: vertices (vector[integer])
         if ((pName == "vertices") 
-            && (en0 == "vec"))
+            && (en0 == "uintv"))
         {
             Ionflux::ObjectBase::UIntVector pv0;
             Ionflux::ObjectBase::XMLUtils::getUIntVector(ce0, pv0);
@@ -1784,6 +1784,9 @@ void getFace(TiXmlElement* e0,
         // Property: faceData (object)
         if (pName == "fds")
         {
+            Ionflux::GeoUtils::VectorSetSet* co0 = 
+                createVectorSetSet(ce0, en0);
+            target.setFaceData(co0);
         }
         ce0 = ce0->NextSiblingElement();
     }
@@ -1885,6 +1888,9 @@ void getMesh(TiXmlElement* e0,
         // Property: vertexSource (object)
         if (pName == "vertex_source")
         {
+            Ionflux::GeoUtils::Vertex3Set* co0 = 
+                createVertex3Set(ce0, en0);
+            target.setVertexSource(co0);
         }
         // Property: faces (vector[object])
         if ((pName == "faces") 

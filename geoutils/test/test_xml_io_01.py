@@ -33,6 +33,7 @@ print("  XML:")
 print(xml0)
 
 vs1 = cg.Vertex3Set()
+mm.addLocalRef(vs1)
 cg.getVertex3Set(xml0, vs1)
 
 print("  Vertex set (from XML):")
