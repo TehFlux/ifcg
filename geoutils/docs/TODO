@@ -15,17 +15,27 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Testing
-  > Vector2, Vector3, Vector4
-  > XML I/O (polymorphic)
-    . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
+
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Face
-  > test the new face data API
++ BGeoUtils
+  > update to work with BMesh
+  > add operators to import/export Mesh data from GeoUtils XML data.
+  > Blender Object.matrix_basis seems to require M^T as input but 
+    provides M as output. Why is that the case?
+  > test UV texture coordinate and vertex color transfer between Blender 
+    mesh and GeoUtils mesh
+  > create a more readable grid
+
++ Testing
+  > Face
+    . new face data API
+  > Vector2, Vector3, Vector4
+  > XML I/O (polymorphic)
+    . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
 
 + Vertex3Set
   > use extendedCreate and extendedVectorAddFuncs
@@ -53,15 +63,6 @@ Critical stuff
   (necessary because swig does not recognize the vectors returned by such 
   functions as of the correct type)
   > create them automatically using a template
-
-+ BGeoUtils
-  > update to work with BMesh
-  > add operators to import/export Mesh data from GeoUtils XML data.
-  > Blender Object.matrix_basis seems to require M^T as input but 
-    provides M as output. Why is that the case?
-  > test UV texture coordinate and vertex color transfer between Blender 
-    mesh and GeoUtils mesh
-  > create a more readable grid
 
 + extractXMLVertices() adds a vertex to close the path by default, which 
   breaks getBarycenter() for low vertex counts.
@@ -154,6 +155,7 @@ Important stuff
 
 + BGeoUtils
   > Test the UV texture layer generation in Mesh.createBMesh().
+  > create a more readable grid
   > add operator for Mesh::makePlanar()
     . work on selected faces
 
