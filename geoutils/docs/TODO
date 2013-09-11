@@ -30,6 +30,13 @@ Critical stuff
     mesh and GeoUtils mesh
   > create a more readable grid
 
++ Matrix types
+  > add a common base class (see Vector)
+  > enable XML I/O
+
++ Camera
+  > enable XML I/O
+
 + Testing
   > Face
     . new face data API
@@ -39,10 +46,6 @@ Critical stuff
 
 + Vertex3Set
   > use extendedCreate and extendedVectorAddFuncs
-
-+ Matrix types
-  > add a common base class (see Vector)
-  > enable XML I/O
 
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
