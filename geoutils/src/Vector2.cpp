@@ -153,7 +153,7 @@ Ionflux::GeoUtils::Vector2& other) const
 Ionflux::GeoUtils::Vector2 Vector2::operator+(const 
 Ionflux::GeoUtils::Vector2& other) const
 {
-	Vector2 result;
+	Vector2 result(*this);
 	result.addIP(*this);
 	return result;
 }
@@ -161,14 +161,14 @@ Ionflux::GeoUtils::Vector2& other) const
 Ionflux::GeoUtils::Vector2 Vector2::operator-(const 
 Ionflux::GeoUtils::Vector2& other) const
 {
-	Vector2 result;
+	Vector2 result(*this);
 	result.subtractIP(*this);
 	return result;
 }
 
 Ionflux::GeoUtils::Vector2 Vector2::operator*(double c) const
 {
-	Vector2 result;
+	Vector2 result(*this);
 	result.multiplyIP(c);
 	return result;
 }
@@ -181,7 +181,7 @@ double Vector2::operator*(const Ionflux::GeoUtils::Vector2& other) const
 
 Ionflux::GeoUtils::Vector2 Vector2::operator/(double c) const
 {
-	Vector2 result;
+	Vector2 result(*this);
 	result.divideIP(c);
 	return result;
 }

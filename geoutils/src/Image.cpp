@@ -283,7 +283,7 @@ void Image::drawSVG(Ionflux::GeoUtils::SVG& svg, int originX, int originY)
 	// Set up transformations.
 	cairo_translate(context, 0.5 * width + originX, 0.5 * height + originY);
 	// Render the SVG.
-	rsvg_init();
+	g_type_init();
 	RsvgHandle* rsvg0 = 0;
 	std::string source = svg.getSource();
 	if (svg.getType() == SVG::TYPE_DATA)

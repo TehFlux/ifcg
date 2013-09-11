@@ -273,7 +273,7 @@ Ionflux::GeoUtils::AxisTriple Vector3::getAxisOrder() const
 Ionflux::GeoUtils::Vector3 Vector3::operator+(const 
 Ionflux::GeoUtils::Vector3& other) const
 {
-	Vector3 result;
+	Vector3 result(*this);
 	result.addIP(*this);
 	return result;
 }
@@ -281,7 +281,7 @@ Ionflux::GeoUtils::Vector3& other) const
 Ionflux::GeoUtils::Vector3 Vector3::operator-(const 
 Ionflux::GeoUtils::Vector3& other) const
 {
-	Vector3 result;
+	Vector3 result(*this);
 	result.subtractIP(*this);
 	return result;
 }
@@ -294,14 +294,14 @@ double Vector3::operator*(const Ionflux::GeoUtils::Vector3& other) const
 
 Ionflux::GeoUtils::Vector3 Vector3::operator*(double c) const
 {
-	Vector3 result;
+	Vector3 result(*this);
 	result.multiplyIP(c);
 	return result;
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::operator/(double c) const
 {
-	Vector3 result;
+	Vector3 result(*this);
 	result.divideIP(c);
 	return result;
 }

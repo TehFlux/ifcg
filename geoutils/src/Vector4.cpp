@@ -208,7 +208,7 @@ Ionflux::ObjectBase::IntVector& p) const
 Ionflux::GeoUtils::Vector4 Vector4::operator+(const 
 Ionflux::GeoUtils::Vector4& other) const
 {
-	Vector4 result;
+	Vector4 result(*this);
 	result.addIP(*this);
 	return result;
 }
@@ -216,7 +216,7 @@ Ionflux::GeoUtils::Vector4& other) const
 Ionflux::GeoUtils::Vector4 Vector4::operator-(const 
 Ionflux::GeoUtils::Vector4& other) const
 {
-	Vector4 result;
+	Vector4 result(*this);
 	result.subtractIP(*this);
 	return result;
 }
@@ -229,14 +229,14 @@ double Vector4::operator*(const Ionflux::GeoUtils::Vector4& other) const
 
 Ionflux::GeoUtils::Vector4 Vector4::operator*(double c) const
 {
-	Vector4 result;
+	Vector4 result(*this);
 	result.multiplyIP(c);
 	return result;
 }
 
 Ionflux::GeoUtils::Vector4 Vector4::operator/(double c) const
 {
-	Vector4 result;
+	Vector4 result(*this);
 	result.divideIP(c);
 	return result;
 }

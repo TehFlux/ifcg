@@ -102,7 +102,7 @@ Ionflux::GeoUtils::Range3 SVG::getSVGBounds()
 	if (type == TYPE_UNDEFINED)
 	    throw GeoUtilsError("[SVG::getSVGBounds] "
 	        "Cannot determine bounds for undefined SVG source!");
-	rsvg_init();
+	g_type_init();
 	RsvgHandle* rsvg0 = 0;
 	if (type == TYPE_DATA)
 	    rsvg0 = rsvg_handle_new_from_data(
