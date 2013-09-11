@@ -157,7 +157,6 @@ Important stuff
     versions instead of surely and maybe sets.
 
 + BGeoUtils
-  > Test the UV texture layer generation in Mesh.createBMesh().
   > create a more readable grid
   > add operator for Mesh::makePlanar()
     . work on selected faces
@@ -201,6 +200,10 @@ Important stuff
 --------------------------------------------------------------------------------
 Nice to have
 --------------------------------------------------------------------------------
+
++ BGeoUtils
+  > Mesh
+    . support multiple UV/color face data layers
 
 + Transform nodes:
   > Each update call updates all outputs, not just the ones the caller was 

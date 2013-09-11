@@ -323,8 +323,7 @@ unsigned int index)
 	return result;
 }
 
-void Face::getTexCoords(Ionflux::GeoUtils::FaceDataTypeID dataType, 
-Ionflux::GeoUtils::VectorSetSet& target)
+void Face::getTexCoords(Ionflux::GeoUtils::VectorSetSet& target)
 {
 	getFaceDataByType(FaceData::TYPE_TEX_COORD, target);
 }
@@ -335,8 +334,7 @@ Ionflux::GeoUtils::FaceData* Face::getTexCoords0(unsigned int index)
 	return getFaceDataByType0(FaceData::TYPE_TEX_COORD, index);;
 }
 
-void Face::getVertexColors(Ionflux::GeoUtils::FaceDataTypeID dataType, 
-Ionflux::GeoUtils::VectorSetSet& target)
+void Face::getVertexColors(Ionflux::GeoUtils::VectorSetSet& target)
 {
 	getFaceDataByType(FaceData::TYPE_VERTEX_COLOR, target);
 }
@@ -347,8 +345,7 @@ Ionflux::GeoUtils::FaceData* Face::getVertexColors0(unsigned int index)
 	return getFaceDataByType0(FaceData::TYPE_VERTEX_COLOR, index);;
 }
 
-void Face::getVertexNormals(Ionflux::GeoUtils::FaceDataTypeID dataType, 
-Ionflux::GeoUtils::VectorSetSet& target)
+void Face::getVertexNormals(Ionflux::GeoUtils::VectorSetSet& target)
 {
 	getFaceDataByType(FaceData::TYPE_VERTEX_NORMAL, target);
 }

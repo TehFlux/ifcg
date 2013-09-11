@@ -310,11 +310,9 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * Get texture coordinates.
 		 *
-		 * \param dataType Face data type ID.
 		 * \param target Where to store the face data.
 		 */
-		virtual void getTexCoords(Ionflux::GeoUtils::FaceDataTypeID dataType, 
-		Ionflux::GeoUtils::VectorSetSet& target);
+		virtual void getTexCoords(Ionflux::GeoUtils::VectorSetSet& target);
 		
 		/** Get texture coordinates.
 		 *
@@ -331,11 +329,9 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * Get vertex colors.
 		 *
-		 * \param dataType Face data type ID.
 		 * \param target Where to store the face data.
 		 */
-		virtual void getVertexColors(Ionflux::GeoUtils::FaceDataTypeID dataType, 
-		Ionflux::GeoUtils::VectorSetSet& target);
+		virtual void getVertexColors(Ionflux::GeoUtils::VectorSetSet& target);
 		
 		/** Get vertex colors.
 		 *
@@ -352,11 +348,9 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * Get vertex normals.
 		 *
-		 * \param dataType Face data type ID.
 		 * \param target Where to store the face data.
 		 */
-		virtual void getVertexNormals(Ionflux::GeoUtils::FaceDataTypeID dataType,
-		Ionflux::GeoUtils::VectorSetSet& target);
+		virtual void getVertexNormals(Ionflux::GeoUtils::VectorSetSet& target);
 		
 		/** Get vertex normals.
 		 *

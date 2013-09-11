@@ -98,16 +98,15 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::FaceData* 
         getFaceDataByType0(Ionflux::GeoUtils::FaceDataTypeID dataType, 
         unsigned int index = 0);
-        virtual void getTexCoords(Ionflux::GeoUtils::FaceDataTypeID 
-        dataType, Ionflux::GeoUtils::VectorSetSet& target);
+        virtual void getTexCoords(Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::FaceData* getTexCoords0(unsigned int 
         index = 0);
-        virtual void getVertexColors(Ionflux::GeoUtils::FaceDataTypeID 
-        dataType, Ionflux::GeoUtils::VectorSetSet& target);
+        virtual void getVertexColors(Ionflux::GeoUtils::VectorSetSet& 
+        target);
         virtual Ionflux::GeoUtils::FaceData* getVertexColors0(unsigned int 
         index = 0);
-        virtual void getVertexNormals(Ionflux::GeoUtils::FaceDataTypeID 
-        dataType, Ionflux::GeoUtils::VectorSetSet& target);
+        virtual void getVertexNormals(Ionflux::GeoUtils::VectorSetSet& 
+        target);
         virtual Ionflux::GeoUtils::FaceData* getVertexNormals0(unsigned int
         index = 0);
         virtual Ionflux::GeoUtils::Vector3 getTangent();
