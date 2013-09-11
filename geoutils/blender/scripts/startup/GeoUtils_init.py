@@ -5,8 +5,6 @@ import sys, os
 
 GEOUTILS_SVN_DIR = '/home/flux4/svn/ifcg/trunk/geoutils'
 """GeoUtils SVN directory."""
-GEOUTILS_SITE_DIR = '/home/flux4/usr/python3.3/lib/python3.3/site-packages'
-"""GeoUtils site packages directory."""
 
 def registerOperators():
     """Register operators."""
@@ -19,7 +17,7 @@ def register():
     if (not hasattr(bpy, 'geoutils')):
         # Set up Python path.
         sys.path.append(GEOUTILS_SVN_DIR + os.path.sep + 'python')
-        sys.path.append(GEOUTILS_SITE_DIR)
+        sys.path.append(GEOUTILS_SVN_DIR + os.path.sep + 'swig/python')
         ## Create GeoUtils data object.
         #import BGeoUTils.base
         #bpy.geoutils = BGeoUtils.base.Data()

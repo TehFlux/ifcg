@@ -29,21 +29,20 @@ Dependencies
 Altjira depends on the following packages:
 
 + Ionflux Object Base System (http://sf.net/projects/iftools)
-+ Ionflux Tools (http://sf.net/projects/iftools, optional, required for 
-  generating the source files from the class configuration files)
++ Ionflux Template Processor (http://sf.net/projects/iftools)
 + IFMapping - Ionflux Mapping Library 
   (http://xi.ionflux.org/projects/stuff)
 + GDK-PixBuf (http://library.gnome.org/devel/gdk-pixbuf/, available 
   on most Linux distributions)
 
-Make sure you get a recent SVN version of Ionflux Object Base System and 
-Ionflux Tools. Older packages will most likely not work.
+Make sure you get a recent SVN version of Ionflux Object Base System. 
+Older packages will most likely not work.
 
 You can checkout the recent source code from SVN like this:
 
 svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/ifobject ifobject-svn
 
-svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/iftools iftools-svn
+svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/iftemplate iftemplate-svn
 
 Building
 --------------------------------------------------------------------------
@@ -51,11 +50,11 @@ Building
 Build all of the dependencies before you try to build Altjira. There 
 are build instructions included with the individual projects.
 
-Note that all of the code is created using the Ionflux Tools template 
-system and Ionflux Object Base System ifclassgen.
+Note that all of the code is created using the Ionflux Template 
+Processor.
 
 However, the completed build of Altjira will not depend on Ionflux 
-Tools.
+Template Processor.
 
 Altjira uses SCons as the build system (http://www.scons.org/).
 
