@@ -65,8 +65,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
         virtual void update();
         virtual void clear();
-        virtual void addFaces(const Ionflux::GeoUtils::FaceVector& 
-        newFaces);
+        virtual void clearData();
         virtual void setFaceIDs();
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID);
@@ -112,6 +111,7 @@ Ionflux::GeoUtils::TransformableObject
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual std::string getValueString() const;
+        virtual void loadFromXMLFile(const std::string& fileName);
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
         static Ionflux::GeoUtils::Mesh* cylinder(unsigned int subDivs = 10,
@@ -150,7 +150,10 @@ Ionflux::GeoUtils::TransformableObject
 		virtual int findFace(Ionflux::GeoUtils::Face* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Face*>& getFaces();
-        virtual void addFace(Ionflux::GeoUtils::Face* addElement);        
+        virtual void addFace(Ionflux::GeoUtils::Face* addElement);
+		virtual Ionflux::GeoUtils::Face* addFace();
+		virtual void addFaces(std::vector<Ionflux::GeoUtils::Face*>& newFaces);
+		virtual void addFaces(Ionflux::GeoUtils::Mesh* newFaces);        
         virtual void removeFace(Ionflux::GeoUtils::Face* removeElement);
 		virtual void removeFaceIndex(unsigned int removeIndex);
 		virtual void clearFaces();

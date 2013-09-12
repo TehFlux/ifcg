@@ -34,6 +34,7 @@
 #include "geoutils/Vector.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -327,6 +328,13 @@ indentLevel) const
         indentLevel, "pname=\"vectors\"");
     xcFirst = false;
 	target = d0.str();
+}
+
+void VectorSet::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getVectorSet(data, *this);
 }
 
 }

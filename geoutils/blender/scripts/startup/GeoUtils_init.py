@@ -12,6 +12,7 @@ def registerOperators():
     bpy.utils.register_class(bop.ShowPCABase)
     bpy.utils.register_class(bop.GetSelectedFaceIndices)
     bpy.utils.register_class(bop.MakeFacesPlanar)
+    bpy.utils.register_class(bop.SaveMesh)
 
 def register():
     if (not hasattr(bpy, 'geoutils')):
@@ -31,6 +32,7 @@ def unregister():
     bpy.utils.unregister_class(bop.ShowPCABase)
     bpy.utils.unregister_class(bop.GetSelectedFaceIndices)
     bpy.utils.unregister_class(bop.MakeFacesPlanar)
+    bpy.utils.unregister_class(bop.SaveMesh)
 
 if __name__ == "__main__":
     register()

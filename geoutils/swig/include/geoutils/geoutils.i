@@ -1920,11 +1920,6 @@ class Vertex3Set
 		Vertex3Set(const Ionflux::GeoUtils::Vertex3Set& other);
         Vertex3Set(Ionflux::GeoUtils::Vertex3Vector& initVertices);
         virtual ~Vertex3Set();
-        virtual Ionflux::GeoUtils::Vertex3* addVertex();
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& 
-        newVerts);
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vertex3Set& scale(const 
@@ -1949,20 +1944,28 @@ class Vertex3Set
         virtual Ionflux::GeoUtils::Matrix3 getCovariance();
         virtual Ionflux::GeoUtils::Matrix3 getPCABase();
         virtual Ionflux::GeoUtils::Plane3 getPlaneFit();
+        virtual std::string getValueString() const;
         virtual std::string getXMLData_legacy() const;
         virtual std::string getXML_legacy() const;
 		virtual Ionflux::GeoUtils::Vertex3Set* copy() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vertex3Set* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3Set* 
+		create(Ionflux::GeoUtils::Vertex3Vector& initVertices, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);        
         virtual unsigned int getNumVertices() const;
         virtual Ionflux::GeoUtils::Vertex3* getVertex(unsigned int 
         elementIndex = 0) const;
 		virtual int findVertex(Ionflux::GeoUtils::Vertex3* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Vertex3*>& getVertices();
-        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);        
+        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		virtual void addVertices(std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set* newVertices);        
         virtual void removeVertex(Ionflux::GeoUtils::Vertex3* 
         removeElement);
 		virtual void removeVertexIndex(unsigned int removeIndex);
@@ -3934,8 +3937,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
         virtual void update();
         virtual void clear();
-        virtual void addFaces(const Ionflux::GeoUtils::FaceVector& 
-        newFaces);
+        virtual void clearData();
         virtual void setFaceIDs();
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID);
@@ -3981,6 +3983,7 @@ Ionflux::GeoUtils::TransformableObject
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual std::string getValueString() const;
+        virtual void loadFromXMLFile(const std::string& fileName);
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
         static Ionflux::GeoUtils::Mesh* cylinder(unsigned int subDivs = 10,
@@ -4019,7 +4022,10 @@ Ionflux::GeoUtils::TransformableObject
 		virtual int findFace(Ionflux::GeoUtils::Face* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Face*>& getFaces();
-        virtual void addFace(Ionflux::GeoUtils::Face* addElement);        
+        virtual void addFace(Ionflux::GeoUtils::Face* addElement);
+		virtual Ionflux::GeoUtils::Face* addFace();
+		virtual void addFaces(std::vector<Ionflux::GeoUtils::Face*>& newFaces);
+		virtual void addFaces(Ionflux::GeoUtils::Mesh* newFaces);        
         virtual void removeFace(Ionflux::GeoUtils::Face* removeElement);
 		virtual void removeFaceIndex(unsigned int removeIndex);
 		virtual void clearFaces();

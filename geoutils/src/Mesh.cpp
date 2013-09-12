@@ -34,12 +34,15 @@
 #include <fstream>
 #include <algorithm>
 #include "ifmapping/utils.hpp"
+#include "ifobject/utils.hpp"
 #include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex.hpp"
 #include "geoutils/FaceCompareAxis.hpp"
+#include "geoutils/xmlutils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -125,7 +128,8 @@ Mesh::~Mesh()
 void Mesh::recalculateBounds()
 {
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
+	        "recalculateBounds"));
 	TransformableObject::recalculateBounds();
 	if (!useTransform && !useVI)
 	{
@@ -135,13 +139,15 @@ void Mesh::recalculateBounds()
 	}
 	// Adjust for transformation.
 	Mesh* m0 = copy();
+	addLocalRef(m0);
 	m0->applyTransform();
 	if (m0->useTransform)
-	    throw GeoUtilsError("Transform matrix still in use after "
-	        "applying transformations.");
+	    throw GeoUtilsError(getErrorString(
+	        "Transform matrix still in use after "
+	        "applying transformations.", "recalculateBounds"));
 	*boundsCache = m0->getBounds();
 	bounds = *boundsCache;
-	delete m0;
+	removeLocalRef(m0);
 }
 
 Ionflux::GeoUtils::Range3 Mesh::getBounds()
@@ -210,11 +216,12 @@ void Mesh::clear()
 	BoxBoundsItem::clear();
 }
 
-void Mesh::addFaces(const Ionflux::GeoUtils::FaceVector& newFaces)
+void Mesh::clearData()
 {
-	for (FaceVector::const_iterator i = newFaces.begin(); 
-	    i != newFaces.end(); i++)
-	    addFace(*i);
+	if (vertexSource != 0)
+	    vertexSource->clearVertices();
+	clearFaces();
+	BoxBoundsItem::clear();
 }
 
 void Mesh::setFaceIDs()
@@ -671,6 +678,13 @@ std::string Mesh::getValueString() const
 	return status.str();
 }
 
+void Mesh::loadFromXMLFile(const std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getMesh(data, *this);
+}
+
 Ionflux::GeoUtils::Mesh* Mesh::plane()
 {
 	Mesh* m0 = create();
@@ -980,6 +994,27 @@ void Mesh::addFace(Ionflux::GeoUtils::Face* addElement)
 	faces.push_back(addElement);
 }
 
+Ionflux::GeoUtils::Face* Mesh::addFace()
+{
+	Ionflux::GeoUtils::Face* o0 = Face::create();
+	addFace(o0);
+	return o0;
+}
+
+void Mesh::addFaces(const std::vector<Ionflux::GeoUtils::Face*>& newFaces)
+{
+	for (std::vector<Ionflux::GeoUtils::Face*>::const_iterator i = newFaces.begin(); 
+	    i != newFaces.end(); i++)
+	    addFace(*i);
+}
+
+void Mesh::addFaces(Ionflux::GeoUtils::Mesh* newFaces)
+{
+	for (unsigned int i = 0; 
+	    i < newFaces->getNumFaces(); i++)
+	    addFace(newFaces->getFace(i));
+}
+
 void Mesh::removeFace(Ionflux::GeoUtils::Face* removeElement)
 {
     bool found = false;
@@ -1024,16 +1059,14 @@ void Mesh::clearFaces()
 Ionflux::GeoUtils::Mesh& Mesh::operator=(const Ionflux::GeoUtils::Mesh& 
 other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
     setVertexSource(other.vertexSource);
     FaceVector f0;
     for (FaceVector::const_iterator i = other.faces.begin(); 
         i != other.faces.end(); i++)
-    {
-        Face* ft0 = Face::create();
-        *ft0 = *(*i);
-        f0.push_back(ft0);
-    }
+        f0.push_back((*i)->copy());
     clearFaces();
     addFaces(f0);
     BoxBoundsItem::clear();
@@ -1133,6 +1166,13 @@ const
         indentLevel, "pname=\"faces\"");
     xcFirst = false;
 	target = d0.str();
+}
+
+void Mesh::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getMesh(data, *this);
 }
 
 }

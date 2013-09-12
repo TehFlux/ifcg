@@ -34,6 +34,7 @@
 #include "geoutils/utils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -118,7 +119,7 @@ Ionflux::GeoUtils::Vector2 Vector2::flip() const
 Ionflux::GeoUtils::Vector2 Vector2::normalize() const
 {
 	Vector2 result(*this);
-	result.normalize();
+	result.normalizeIP();
 	return result;
 }
 
@@ -154,7 +155,7 @@ Ionflux::GeoUtils::Vector2 Vector2::operator+(const
 Ionflux::GeoUtils::Vector2& other) const
 {
 	Vector2 result(*this);
-	result.addIP(*this);
+	result.addIP(other);
 	return result;
 }
 
@@ -162,7 +163,7 @@ Ionflux::GeoUtils::Vector2 Vector2::operator-(const
 Ionflux::GeoUtils::Vector2& other) const
 {
 	Vector2 result(*this);
-	result.subtractIP(*this);
+	result.subtractIP(other);
 	return result;
 }
 
@@ -313,6 +314,13 @@ indentLevel) const
 	Ionflux::GeoUtils::Vector::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	target = d0.str();
+}
+
+void Vector2::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getVector2(data, *this);
 }
 
 Ionflux::GeoUtils::Vector2 operator*(double c, const 

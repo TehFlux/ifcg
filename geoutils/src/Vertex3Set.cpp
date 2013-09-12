@@ -35,6 +35,7 @@
 #include "geoutils/gslutils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -109,49 +110,6 @@ void Vertex3Set::recalculateBounds()
 	    } else
 	        boundsCache->extend(v0.getVector());
 	}
-}
-
-Ionflux::GeoUtils::Vertex3* Vertex3Set::addVertex()
-{
-	Vertex3* v0 = new Vertex3();
-	if (v0 == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	addVertex(v0);
-	return v0;
-}
-
-void Vertex3Set::addVertices(Ionflux::GeoUtils::Vertex3Vector& newVerts)
-{
-	for (Vertex3Vector::iterator i = newVerts.begin(); 
-	    i != newVerts.end(); i++)
-	    addVertex(*i);
-}
-
-void Vertex3Set::addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts)
-{
-	for (unsigned int i = 0; i < newVerts.getNumVertices(); i++)
-	    addVertex(newVerts.getVertex(i));
-}
-
-std::string Vertex3Set::getValueString() const
-{
-	ostringstream status;
-	bool e0 = true;
-	for (Vertex3Vector::const_iterator i = vertices.begin(); 
-	    i != vertices.end(); i++)
-	{
-	    if (!e0)
-	        status << ", ";
-	    else
-	        e0 = false;
-	    status << "(" << (*i)->getValueString() << ")";
-	}
-	if (!useTransform && !useVI)
-	    return status.str();
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; " << TransformableObject::getValueString();
-	return status.str();
 }
 
 Ionflux::GeoUtils::Vector3 Vertex3Set::getBarycenter()
@@ -294,6 +252,27 @@ Ionflux::GeoUtils::Plane3 Vertex3Set::getPlaneFit()
 	return Plane3::createFromNormal(pcaBase.getC2(), pcaBase.getC1(), bc);
 }
 
+std::string Vertex3Set::getValueString() const
+{
+	ostringstream status;
+	bool e0 = true;
+	for (Vertex3Vector::const_iterator i = vertices.begin(); 
+	    i != vertices.end(); i++)
+	{
+	    if (!e0)
+	        status << ", ";
+	    else
+	        e0 = false;
+	    status << "(" << (*i)->getValueString() << ")";
+	}
+	if (!useTransform && !useVI)
+	    return status.str();
+	if (!useTransform && !useVI)
+	    return status.str();
+	status << "; " << TransformableObject::getValueString();
+	return status.str();
+}
+
 std::string Vertex3Set::getXMLData_legacy() const
 {
 	ostringstream d0;
@@ -365,6 +344,28 @@ void Vertex3Set::addVertex(Ionflux::GeoUtils::Vertex3* addElement)
 	vertices.push_back(addElement);
 }
 
+Ionflux::GeoUtils::Vertex3* Vertex3Set::addVertex()
+{
+	Ionflux::GeoUtils::Vertex3* o0 = Vertex3::create();
+	addVertex(o0);
+	return o0;
+}
+
+void Vertex3Set::addVertices(const 
+std::vector<Ionflux::GeoUtils::Vertex3*>& newVertices)
+{
+	for (std::vector<Ionflux::GeoUtils::Vertex3*>::const_iterator i = newVertices.begin(); 
+	    i != newVertices.end(); i++)
+	    addVertex(*i);
+}
+
+void Vertex3Set::addVertices(Ionflux::GeoUtils::Vertex3Set* newVertices)
+{
+	for (unsigned int i = 0; 
+	    i < newVertices->getNumVertices(); i++)
+	    addVertex(newVertices->getVertex(i));
+}
+
 void Vertex3Set::removeVertex(Ionflux::GeoUtils::Vertex3* removeElement)
 {
     bool found = false;
@@ -409,11 +410,13 @@ void Vertex3Set::clearVertices()
 Ionflux::GeoUtils::Vertex3Set& Vertex3Set::operator=(const 
 Ionflux::GeoUtils::Vertex3Set& other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
     Vertex3Vector v0;
     for (Vertex3Vector::const_iterator i = other.vertices.begin(); 
         i != other.vertices.end(); i++)
-        v0.push_back(&((*i)->duplicate()));
+        v0.push_back((*i)->copy());
     clearVertices();
     addVertices(v0);
 	return *this;
@@ -436,6 +439,20 @@ Ionflux::GeoUtils::Vertex3Set*
 Vertex3Set::create(Ionflux::ObjectBase::IFObject* parentObject)
 {
     Vertex3Set* newObject = new Vertex3Set();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vertex3Set* 
+Vertex3Set::create(Ionflux::GeoUtils::Vertex3Vector& initVertices, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vertex3Set* newObject = new Vertex3Set(initVertices);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object.");
@@ -477,6 +494,13 @@ indentLevel) const
         indentLevel, "pname=\"vertices\"");
     xcFirst = false;
 	target = d0.str();
+}
+
+void Vertex3Set::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getVertex3Set(data, *this);
 }
 
 }

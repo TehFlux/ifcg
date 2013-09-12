@@ -36,6 +36,7 @@
 #include "geoutils/Vector4.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -340,10 +341,8 @@ Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image)
 
 Ionflux::GeoUtils::Vertex3& Vertex3::duplicate()
 {
-	Vertex3* result = new Vertex3(*this);
-	if (result == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	return *result;
+	// TODO: Implementation.
+	return *copy();
 }
 
 std::string Vertex3::getValueString() const
@@ -510,6 +509,13 @@ indentLevel) const
 	Ionflux::GeoUtils::TransformableObject::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	target = d0.str();
+}
+
+void Vertex3::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getVertex3(data, *this);
 }
 
 }

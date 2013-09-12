@@ -53,11 +53,6 @@ class Vertex3Set
 		Vertex3Set(const Ionflux::GeoUtils::Vertex3Set& other);
         Vertex3Set(Ionflux::GeoUtils::Vertex3Vector& initVertices);
         virtual ~Vertex3Set();
-        virtual Ionflux::GeoUtils::Vertex3* addVertex();
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& 
-        newVerts);
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vertex3Set& scale(const 
@@ -82,20 +77,28 @@ class Vertex3Set
         virtual Ionflux::GeoUtils::Matrix3 getCovariance();
         virtual Ionflux::GeoUtils::Matrix3 getPCABase();
         virtual Ionflux::GeoUtils::Plane3 getPlaneFit();
+        virtual std::string getValueString() const;
         virtual std::string getXMLData_legacy() const;
         virtual std::string getXML_legacy() const;
 		virtual Ionflux::GeoUtils::Vertex3Set* copy() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vertex3Set* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3Set* 
+		create(Ionflux::GeoUtils::Vertex3Vector& initVertices, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);        
         virtual unsigned int getNumVertices() const;
         virtual Ionflux::GeoUtils::Vertex3* getVertex(unsigned int 
         elementIndex = 0) const;
 		virtual int findVertex(Ionflux::GeoUtils::Vertex3* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Vertex3*>& getVertices();
-        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);        
+        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		virtual void addVertices(std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set* newVertices);        
         virtual void removeVertex(Ionflux::GeoUtils::Vertex3* 
         removeElement);
 		virtual void removeVertexIndex(unsigned int removeIndex);

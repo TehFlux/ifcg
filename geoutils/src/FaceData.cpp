@@ -34,6 +34,7 @@
 #include "geoutils/VectorSet.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -233,6 +234,13 @@ indentLevel) const
 	Ionflux::GeoUtils::VectorSet::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
 	target = d0.str();
+}
+
+void FaceData::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getFaceData(data, *this);
 }
 
 }

@@ -116,3 +116,29 @@ class MakeFacesPlanar(bpy.types.Operator):
     def invoke(self, context, event):
         return context.window_manager.invoke_props_dialog(self)
 
+class SaveMesh(bpy.types.Operator):
+    """Save mesh."""
+    bl_idname = "geoutils.savemesh"
+    bl_label = "GeoUtils Save mesh"
+    
+    filepath = bpy.props.StringProperty(name = "File path", 
+        subtype="FILE_PATH", default = "mesh.xml")
+    name = bpy.props.StringProperty(name = "Name", 
+        default = "")
+    
+    def execute(self, context):
+        o0 = bpy.context.active_object
+        bm0 = o0.data
+        if (self.name != ""):
+            n0 = str(self.name)
+        else:
+            n0 = o0.name
+        gm0 = bgm.Mesh(n0)
+        gm0.setFromBMesh(bm0)
+        gm0.cgMesh.writeToXMLFile(self.filepath)
+        return {'FINISHED'}
+    
+    def invoke(self, context, event):
+        context.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+

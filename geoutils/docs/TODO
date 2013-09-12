@@ -28,7 +28,6 @@ Critical stuff
     provides M as output. Why is that the case?
   > test UV texture coordinate and vertex color transfer between Blender 
     mesh and GeoUtils mesh
-  > create a more readable grid
 
 + Matrix types
   > add a common base class (see Vector)
@@ -43,9 +42,6 @@ Critical stuff
   > Vector2, Vector3, Vector4
   > XML I/O (polymorphic)
     . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
-
-+ Vertex3Set
-  > use extendedCreate and extendedVectorAddFuncs
 
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 

@@ -109,38 +109,6 @@ class Vertex3Set
 		 */
 		virtual ~Vertex3Set();
 		
-		/** Create vertex.
-		 *
-		 * Create a new vertex which is managed by the vertex set.
-		 *
-		 * \return New vertex.
-		 */
-		virtual Ionflux::GeoUtils::Vertex3* addVertex();
-		
-		/** Add vertices.
-		 *
-		 * Add vertices from a vertex vector.
-		 *
-		 * \param newVerts Vertices.
-		 */
-		virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& newVerts);
-		
-		/** Add vertices.
-		 *
-		 * Add vertices from a vertex set.
-		 *
-		 * \param newVerts Vertices.
-		 */
-		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-		
-		/** Get string representation of value.
-		 *
-		 * Get a string representation of the value of the object.
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getValueString() const;
-		
 		/** Get barycenter.
 		 *
 		 * Get the barycenter vector for the vertices in the set.
@@ -284,6 +252,14 @@ class Vertex3Set
 		 */
 		virtual Ionflux::GeoUtils::Plane3 getPlaneFit();
 		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object.
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
+		
 		/** Get XML data representation.
 		 *
 		 * Get a representation of the object suitable for use in an XML data 
@@ -344,6 +320,17 @@ class Vertex3Set
 		static Ionflux::GeoUtils::Vertex3Set* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
         
+		/** Create instance.
+		 *
+		 * Create a new Vertex3Set object.
+		 *
+		 * \param initVertices Vertices.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex3Set* 
+		create(Ionflux::GeoUtils::Vertex3Vector& initVertices, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
 		/** Get XML element name.
 		 *
 		 * Get the XML element name for the object.
@@ -369,6 +356,14 @@ class Vertex3Set
 		 */
 		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
 		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get number of vertices.
 		 *
@@ -412,6 +407,31 @@ class Vertex3Set
 		 * \param addElement Vertex to be added.
 		 */
 		virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		
+		/** Create vertex.
+		 *
+		 * Create a new vertex which is managed by the vertex set.
+		 *
+		 * \return New vertex.
+		 */
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex vector.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(const std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex set.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set* newVertices);
 		
 		/** Remove vertex.
 		 *

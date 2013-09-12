@@ -53,8 +53,9 @@ class Mesh:
             self.cgMesh = cg.Mesh.create()
             self.mm.addLocalRef(self.cgMesh)
         else:
-            self.cgMesh.clear()
+            self.cgMesh.clearData()
         m = self.cgMesh
+        m.setID(self.name)
         bm0 = bmesh.new()
         bm0.from_mesh(bMesh)
         # Vertices.
@@ -83,14 +84,14 @@ class Mesh:
                 k = 0
                 while (k < len(bf.loops)):
                     l0 = bf.loops[k]
-                    if (tc0 is None):
+                    if (not tc0 is None):
                         # Get texture coordinates.
                         uv0 = l0[uvTex].uv
                         tc0.addVector(cg.Vector2.create(
                             uv0[0], uv0[1]))
-                    if (vc0 is None):
+                    if (not vc0 is None):
                         # Get vertex colors.
-                        c0 = l1[vCol]
+                        c0 = l0[vCol]
                         vc0.addVector(cg.Vector3.create(
                             c0[0], c0[1], c0[2]))
                     k += 1
@@ -126,9 +127,11 @@ class Mesh:
         bm0.faces.index_update()
         # Face data
         uvTex = None
+        fTex = None
         vCol = None
         if (createUVTex):
             uvTex = bm0.loops.layers.uv.new()
+            fTex = bm0.faces.layers.tex.new()
         if (createVertexColors):
             vCol = bm0.loops.layers.color.new()
         if (createUVTex 

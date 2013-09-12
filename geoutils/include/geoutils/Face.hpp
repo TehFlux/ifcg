@@ -789,6 +789,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
 		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get number of vertices.
 		 *

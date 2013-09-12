@@ -176,13 +176,11 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void clear();
 		
-		/** Add faces.
+		/** Clear data.
 		 *
-		 * Add faces from a face vector.
-		 *
-		 * \param newFaces Faces.
+		 * Clears the mesh data but keeps the vertex source.
 		 */
-		virtual void addFaces(const Ionflux::GeoUtils::FaceVector& newFaces);
+		virtual void clearData();
 		
 		/** Set face IDs.
 		 *
@@ -462,6 +460,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual std::string getValueString() const;
 		
+		/** Load object data from file.
+		 *
+		 * Load object data from an XML file.
+		 *
+		 * \param fileName File name.
+		 */
+		virtual void loadFromXMLFile(const std::string& fileName);
+		
 		/** Create mesh: plane.
 		 *
 		 * Create a plane mesh.
@@ -599,6 +605,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
 		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get vertex source.
 		 *
@@ -722,6 +736,31 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param addElement Face to be added.
 		 */
 		virtual void addFace(Ionflux::GeoUtils::Face* addElement);
+		
+		/** Create face.
+		 *
+		 * Create a new face which is managed by the face set.
+		 *
+		 * \return New face.
+		 */
+		virtual Ionflux::GeoUtils::Face* addFace();
+		
+		/** Add faces.
+		 *
+		 * Add faces from a face vector.
+		 *
+		 * \param newFaces faces.
+		 */
+		virtual void addFaces(const std::vector<Ionflux::GeoUtils::Face*>& 
+		newFaces);
+		
+		/** Add faces.
+		 *
+		 * Add faces from a face set.
+		 *
+		 * \param newFaces faces.
+		 */
+		virtual void addFaces(Ionflux::GeoUtils::Mesh* newFaces);
 		
 		/** Remove face.
 		 *
