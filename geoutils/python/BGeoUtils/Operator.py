@@ -10,7 +10,7 @@ import IFObjectBase as ib
 import CGeoUtils as cg
 import BGeoUtils as bg
 import BGeoUtils.Mesh as bgm
-#import BGeoUtils.Object as bgo
+import BGeoUtils.Object as bgo
 #import BGeoUtils.Material as bgMat
 import BGeoUtils.utils as bgu
 import bpy
@@ -136,6 +136,40 @@ class SaveMesh(bpy.types.Operator):
         gm0 = bgm.Mesh(n0)
         gm0.setFromBMesh(bm0)
         gm0.cgMesh.writeToXMLFile(self.filepath)
+        return {'FINISHED'}
+    
+    def invoke(self, context, event):
+        context.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+class LoadMesh(bpy.types.Operator):
+    """Load mesh."""
+    bl_idname = "geoutils.loadmesh"
+    bl_label = "GeoUtils Load mesh"
+    
+    filepath = bpy.props.StringProperty(name = "File path", 
+        subtype="FILE_PATH")
+    name = bpy.props.StringProperty(name = "Name", 
+        default = "")
+    createUVTex = bpy.props.BoolProperty(
+        name = "Create UV texture", default = False)
+    createVertexColors = bpy.props.BoolProperty(
+        name = "Create vertex colors", default = False)
+    
+    def execute(self, context):
+        cgm0 = cg.Mesh.create()
+        cgm0.loadFromXMLFile(self.filepath)
+        if (self.name != ""):
+            n0 = str(self.name)
+        else:
+            n0 = cgm0.getID()
+        if (n0 == ""):
+            n0 = "UnnamedObject"
+        gm0 = bgm.Mesh(n0 + "M", cgm0)
+        gm0.createBMesh(None, self.createUVTex, 
+            self.createVertexColors)
+        o0 = bgo.Object(n0, gm0)
+        o0.createBObject()
         return {'FINISHED'}
     
     def invoke(self, context, event):
