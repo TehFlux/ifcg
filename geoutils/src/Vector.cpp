@@ -137,8 +137,7 @@ double Vector::getElement(unsigned int index) const
 void Vector::setElement(unsigned int index, double value)
 {
 	unsigned int numElements = getNumElements();
-	if ((index < 0) 
-	    || (index >= numElements))
+	if (index >= numElements)
 	{
 	    std::ostringstream status;
 	    status << "Index out of range: " << index;

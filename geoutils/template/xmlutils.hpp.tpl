@@ -104,6 +104,7 @@ $Vector3
 $Vector4
 $VectorSet
 $VectorSetSet
+$Matrix
 $FaceData
 $TransformableObject
 $Vertex3

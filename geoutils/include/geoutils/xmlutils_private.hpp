@@ -316,6 +316,33 @@ Ionflux::GeoUtils::FaceData& target, const std::string& elementName);
 }
 
 
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Matrix;
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix from TiXmlElement.
+void getMatrix(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix& target, const std::string& elementName = 
+Ionflux::GeoUtils::Matrix::XML_ELEMENT_NAME);
+
+/// Create new Matrix from TiXmlElement.
+Ionflux::GeoUtils::Matrix* createMatrix(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Matrix::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
 namespace Ionflux
 {
 
@@ -325,13 +352,10 @@ namespace ObjectBase
 namespace XMLUtils
 {
 
-/// Get object vector for polymorphic type VectorSet.
+/// Initialize Matrix from TiXmlElement.
 template<>
-void getObjVector<Ionflux::GeoUtils::VectorSet,
-    Ionflux::GeoUtils::VectorSet*>(TiXmlElement* e0, 
-    std::vector<Ionflux::GeoUtils::VectorSet*>& target, 
-    const std::string& elementName, 
-    const std::string& childElementName);
+void getObject0<Ionflux::GeoUtils::Matrix>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Matrix& target, const std::string& elementName);
 
 }
 

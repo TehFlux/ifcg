@@ -9,7 +9,11 @@ TODO
 Up next
 --------------------------------------------------------------------------------
 
-
++ Matrix types
+  > derive Matrix2, Matrix3, Matrix4 from Matrix
+  > testing
+    . Matrix functions (permuteRows, permuteColumns, multiply, transpose)
+  > enable XML I/O
 
 --------------------------------------------------------------------------------
 New
@@ -28,10 +32,6 @@ Critical stuff
     provides M as output. Why is that the case?
   > test UV texture coordinate and vertex color transfer between Blender 
     mesh and GeoUtils mesh
-
-+ Matrix types
-  > add a common base class (see Vector)
-  > enable XML I/O
 
 + Camera
   > enable XML I/O

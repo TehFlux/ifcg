@@ -355,6 +355,13 @@ std::string& elementName)
         getVector4(e0, *o1, en0);
         o0 = o1;
     } else
+    if (en0 == Matrix::XML_ELEMENT_NAME)
+    {
+        // Matrix
+        Matrix* o1 = Matrix::create();
+        getMatrix(e0, *o1, en0);
+        o0 = o1;
+    } else
     {
         std::ostringstream status;
         status << "[createVector] "
@@ -470,6 +477,15 @@ void getObjVector<Ionflux::GeoUtils::Vector,
             getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
+        if (en0 == 
+            Matrix::XML_ELEMENT_NAME)
+        {
+            // Matrix
+            Matrix* co0 = 
+                Matrix::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
         {
             std::ostringstream status;
             status << "[getObjVector<Vector>] "
@@ -537,6 +553,15 @@ void getObjMap<Ionflux::GeoUtils::Vector,
                 // Vector4
                 Vector4* co1 = 
                     Vector4::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Matrix::XML_ELEMENT_NAME)
+            {
+                // Matrix
+                Matrix* co1 = 
+                    Matrix::create();
                 getObject0(ce0, *co0, childElementName);
                 co0 = co1;
             } else
@@ -1244,6 +1269,93 @@ elementName)
         Ionflux::GeoUtils::XMLUtils::getVectorSetSet(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getVectorSetSet(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Matrix.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Matrix* createMatrix(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Matrix* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Matrix)
+        o0 = Matrix::create();
+        getMatrix(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createMatrix] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getMatrix(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getMatrix");
+    getVector(e0, target, elementName);
+}
+
+void getMatrix(const std::string& data, Ionflux::GeoUtils::Matrix& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getMatrix] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Matrix::XML_ELEMENT_NAME);
+    getMatrix(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getMatrix(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getMatrix(e0, target, elementName);
 }
 
 }

@@ -33,30 +33,7 @@ $Vector3
 $Vector4
 $VectorSet
 $FaceData
-
-namespace Ionflux
-{
-
-namespace ObjectBase
-{
-
-namespace XMLUtils
-{
-
-/// Get object vector for polymorphic type VectorSet.
-template<>
-void getObjVector<Ionflux::GeoUtils::VectorSet,
-    Ionflux::GeoUtils::VectorSet*>(TiXmlElement* e0, 
-    std::vector<Ionflux::GeoUtils::VectorSet*>& target, 
-    const std::string& elementName, 
-    const std::string& childElementName);
-
-}
-
-}
-
-}
-
+$Matrix
 $VectorSetSet
 $TransformableObject
 $Vertex3

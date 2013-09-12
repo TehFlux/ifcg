@@ -715,24 +715,79 @@ target);
 }
 
 
+%{
+#include "geoutils/Matrix.hpp"
+%}
+
 namespace Ionflux
 {
 
 namespace GeoUtils
 {
 
-%extend Vector2 {
-    double __getitem__(int index)
-    {
-        return $self->getElement(index);
-    }
-    void __setitem__(int index, double value)
-    {
-        return $self->setElement(index, value);
-    }
+class MatrixClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        MatrixClassInfo();
+        virtual ~MatrixClassInfo();
+};
+
+class Matrix
+: public Ionflux::GeoUtils::Vector
+{
+    public:
+		static const unsigned int NUM_ROWS;
+		static const unsigned int NUM_COLS;
+        
+        Matrix();
+		Matrix(const Ionflux::GeoUtils::Matrix& other);
+        virtual ~Matrix();
+        virtual double getElement(unsigned int rowIndex, unsigned int 
+        colIndex) const;
+        virtual void setElement(unsigned int rowIndex, unsigned int 
+        colIndex, double value);
+        virtual void getRow(unsigned int rowIndex, 
+        Ionflux::GeoUtils::Vector& target) const;
+        virtual void getCol(unsigned int colIndex, 
+        Ionflux::GeoUtils::Vector& target) const;
+        virtual void transposeIP();
+        virtual void multiply(const Ionflux::GeoUtils::Matrix& other, 
+        Ionflux::GeoUtils::Matrix& target);
+        virtual void permuteRowsIP(const Ionflux::GeoUtils::Vector& p);
+        virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
+        virtual std::string getValueString() const;
+        virtual unsigned int getNumElements() const;
+        virtual unsigned int getNumRows() const;
+        virtual unsigned int getNumCols() const;
+		virtual Ionflux::GeoUtils::Matrix* copy() const;
+		static Ionflux::GeoUtils::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Matrix* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+};
+
+namespace XMLUtils
+{
+
+void getMatrix(const std::string& data, Ionflux::GeoUtils::Matrix& target);
+
 }
 
-%rename(mult2) operator*(double, const Ionflux::GeoUtils::Vector2&);
+}
+
+}
+
+
+%{
+#include "geoutils/Matrix2.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
 
 class Matrix2ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -757,7 +812,7 @@ class Matrix2
         virtual ~Matrix2();
         virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
         newElements);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
+        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
         const;
         virtual double getElement(int row, int column) const;
         virtual void setElement(int row, int column, double value);
@@ -782,6 +837,7 @@ class Matrix2
         static Ionflux::GeoUtils::Matrix2 scale(double sx = 1., double sy =
         1.);
         static Ionflux::GeoUtils::Matrix2 rotate(double phi = 0.);
+		virtual Ionflux::GeoUtils::Matrix2* copy() const;
         virtual void setR0(const Ionflux::GeoUtils::Vector2& newR0);
         virtual Ionflux::GeoUtils::Vector2 getR0() const;
         virtual void setR1(const Ionflux::GeoUtils::Vector2& newR1);
@@ -792,16 +848,26 @@ class Matrix2
         virtual Ionflux::GeoUtils::Vector2 getC1() const;
 };
 
-%rename(mult2x2) operator*(double, const Ionflux::GeoUtils::Matrix2&);
-
 Ionflux::GeoUtils::Matrix2 operator*(double c, const 
 Ionflux::GeoUtils::Matrix2& m);
 
+}
+
+}
+
+
+%{
+#include "geoutils/Vertex2.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class Interpolator;
-
 class Vertex2;
-
-typedef std::vector<Ionflux::GeoUtils::Vertex2*> Vertex2Vector;
 
 class Vertex2ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -843,22 +909,12 @@ class Vertex2
         virtual bool operator!=(const Ionflux::GeoUtils::Vertex2& other) 
         const;
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::Vertex2* copy() const;
         virtual void setX(double newX);
         virtual double getX() const;
         virtual void setY(double newY);
         virtual double getY() const;
 };
-
-%extend Vertex2 {
-    double __getitem__(int index)
-    {
-        return $self->getCoord(index);
-    }
-    void __setitem__(int index, double value)
-    {
-        return $self->setCoord(index, value);
-    }
-}
 
 }
 
@@ -984,33 +1040,6 @@ void getVector3(const std::string& data, Ionflux::GeoUtils::Vector3&
 target);
 
 }
-
-}
-
-}
-
-
-namespace Ionflux
-{
-
-namespace GeoUtils
-{
-
-%extend Vector3 {
-    double __getitem__(int index)
-    {
-        return $self->getElement(index);
-    }
-    void __setitem__(int index, double value)
-    {
-        return $self->setElement(index, value);
-    }
-}
-
-%rename(mult3) operator*(double, const Ionflux::GeoUtils::Vector3&);
-
-Ionflux::GeoUtils::Vector3 operator*(double c, const 
-Ionflux::GeoUtils::Vector3& v);
 
 }
 
@@ -1220,27 +1249,15 @@ target);
 }
 
 
+%{
+#include "geoutils/Matrix3.hpp"
+%}
+
 namespace Ionflux
 {
 
 namespace GeoUtils
 {
-
-%extend Vector4 {
-    double __getitem__(int index)
-    {
-        return $self->getElement(index);
-    }
-    void __setitem__(int index, double value)
-    {
-        return $self->setElement(index, value);
-    }
-}
-
-%rename(mult4) operator*(double, const Ionflux::GeoUtils::Vector4&);
-
-Ionflux::GeoUtils::Vector4 operator*(double c, const 
-Ionflux::GeoUtils::Vector4& v);
 
 class Matrix3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1266,7 +1283,7 @@ class Matrix3
         virtual ~Matrix3();
         virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
         newElements);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
+        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
         const;
         virtual double getElement(int row, int column) const;
         virtual void setElement(int row, int column, double value);
@@ -1290,6 +1307,9 @@ class Matrix3
         Ionflux::GeoUtils::Vector3& v) const;
         virtual Ionflux::GeoUtils::Matrix3 operator*(double c) const;
         virtual Ionflux::GeoUtils::Matrix3 operator/(double c) const;
+        virtual void svd(Ionflux::GeoUtils::Matrix3& u, 
+        Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) 
+        const;
         virtual std::string getString() const;
         static Ionflux::GeoUtils::Matrix3 scale(double sx = 1., double sy =
         1., double sz = 1.);
@@ -1297,6 +1317,7 @@ class Matrix3
         ty = 0.);
         static Ionflux::GeoUtils::Matrix3 rotate(double phi = 0., 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+		virtual Ionflux::GeoUtils::Matrix3* copy() const;
         virtual void setR0(const Ionflux::GeoUtils::Vector3& newR0);
         virtual Ionflux::GeoUtils::Vector3 getR0() const;
         virtual void setR1(const Ionflux::GeoUtils::Vector3& newR1);
@@ -1311,10 +1332,23 @@ class Matrix3
         virtual Ionflux::GeoUtils::Vector3 getC2() const;
 };
 
-%rename(mult3x3) operator*(double, const Ionflux::GeoUtils::Matrix3&);
-
 Ionflux::GeoUtils::Matrix3 operator*(double c, const 
 Ionflux::GeoUtils::Matrix3& m);
+
+}
+
+}
+
+
+%{
+#include "geoutils/Matrix4.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
 
 class Matrix4ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1432,10 +1466,72 @@ class Matrix4
         virtual Ionflux::GeoUtils::Vector4 getC3() const;
 };
 
-%rename(mult4x4) operator*(double, const Ionflux::GeoUtils::Matrix4&);
-
 Ionflux::GeoUtils::Matrix4 operator*(double c, const 
 Ionflux::GeoUtils::Matrix4& m);
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+%extend Vertex2 {
+    double __getitem__(int index)
+    {
+        return $self->getCoord(index);
+    }
+    void __setitem__(int index, double value)
+    {
+        return $self->setCoord(index, value);
+    }
+}
+
+%extend Vector2 {
+    double __getitem__(int index)
+    {
+        return $self->getElement(index);
+    }
+    void __setitem__(int index, double value)
+    {
+        return $self->setElement(index, value);
+    }
+}
+
+%rename(mult2) operator*(double, const Ionflux::GeoUtils::Vector2&);
+%rename(mult2x2) operator*(double, const Ionflux::GeoUtils::Matrix2&);
+
+%extend Vector3 {
+    double __getitem__(int index)
+    {
+        return $self->getElement(index);
+    }
+    void __setitem__(int index, double value)
+    {
+        return $self->setElement(index, value);
+    }
+}
+
+%rename(mult3) operator*(double, const Ionflux::GeoUtils::Vector3&);
+
+%extend Vector4 {
+    double __getitem__(int index)
+    {
+        return $self->getElement(index);
+    }
+    void __setitem__(int index, double value)
+    {
+        return $self->setElement(index, value);
+    }
+}
+
+%rename(mult4) operator*(double, const Ionflux::GeoUtils::Vector4&);
+%rename(mult3x3) operator*(double, const Ionflux::GeoUtils::Matrix3&);
+%rename(mult4x4) operator*(double, const Ionflux::GeoUtils::Matrix4&);
 
 }
 

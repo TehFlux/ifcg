@@ -237,6 +237,27 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Matrix;
+
+namespace XMLUtils
+{
+
+void getMatrix(const std::string& data, Ionflux::GeoUtils::Matrix& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class FaceData;
 
 namespace XMLUtils

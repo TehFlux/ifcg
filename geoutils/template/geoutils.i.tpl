@@ -447,12 +447,31 @@ $Clock
 $Range
 $Vector
 $Vector2
+$Matrix
+$Matrix2
+$Vertex2
+$Vector3
+$Range3
+$Vector4
+$Matrix3
+$Matrix4
 
 namespace Ionflux
 {
 
 namespace GeoUtils
 {
+
+%extend Vertex2 {
+    double __getitem__(int index)
+    {
+        return $$self->getCoord(index);
+    }
+    void __setitem__(int index, double value)
+    {
+        return $$self->setCoord(index, value);
+    }
+}
 
 %extend Vector2 {
     double __getitem__(int index)
@@ -466,144 +485,7 @@ namespace GeoUtils
 }
 
 %rename(mult2) operator*(double, const Ionflux::GeoUtils::Vector2&);
-
-class Matrix2ClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        Matrix2ClassInfo();
-        virtual ~Matrix2ClassInfo();
-};
-
-class Matrix2
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-		static const Ionflux::GeoUtils::Matrix2 ZERO;
-		static const Ionflux::GeoUtils::Matrix2 UNIT;
-        
-        Matrix2();
-		Matrix2(const Ionflux::GeoUtils::Matrix2& other);
-        Matrix2(double initX00, double initX01, double initX10, double 
-        initX11);
-        Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements);
-        virtual ~Matrix2();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
-        const;
-        virtual double getElement(int row, int column) const;
-        virtual void setElement(int row, int column, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Matrix2& other, double t =
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual Ionflux::GeoUtils::Matrix2 transpose() const;
-        virtual Ionflux::GeoUtils::Matrix2 swapColumns() const;
-        virtual Ionflux::GeoUtils::Vector2 solve(const 
-        Ionflux::GeoUtils::Vector2& v) const;
-        virtual Ionflux::GeoUtils::Matrix2 invert() const;
-        virtual bool operator==(const Ionflux::GeoUtils::Matrix2& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Matrix2& other) 
-        const;
-        virtual Ionflux::GeoUtils::Matrix2 operator*(const 
-        Ionflux::GeoUtils::Matrix2& other) const;
-        virtual Ionflux::GeoUtils::Vector2 operator*(const 
-        Ionflux::GeoUtils::Vector2& v) const;
-        virtual Ionflux::GeoUtils::Matrix2 operator*(double c) const;
-        virtual Ionflux::GeoUtils::Matrix2 operator/(double c) const;
-        virtual std::string getString() const;
-        static Ionflux::GeoUtils::Matrix2 scale(double sx = 1., double sy =
-        1.);
-        static Ionflux::GeoUtils::Matrix2 rotate(double phi = 0.);
-        virtual void setR0(const Ionflux::GeoUtils::Vector2& newR0);
-        virtual Ionflux::GeoUtils::Vector2 getR0() const;
-        virtual void setR1(const Ionflux::GeoUtils::Vector2& newR1);
-        virtual Ionflux::GeoUtils::Vector2 getR1() const;
-        virtual void setC0(const Ionflux::GeoUtils::Vector2& newC0);
-        virtual Ionflux::GeoUtils::Vector2 getC0() const;
-        virtual void setC1(const Ionflux::GeoUtils::Vector2& newC1);
-        virtual Ionflux::GeoUtils::Vector2 getC1() const;
-};
-
 %rename(mult2x2) operator*(double, const Ionflux::GeoUtils::Matrix2&);
-
-Ionflux::GeoUtils::Matrix2 operator*(double c, const 
-Ionflux::GeoUtils::Matrix2& m);
-
-class Interpolator;
-
-class Vertex2;
-
-typedef std::vector<Ionflux::GeoUtils::Vertex2*> Vertex2Vector;
-
-class Vertex2ClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        Vertex2ClassInfo();
-        virtual ~Vertex2ClassInfo();
-};
-
-class Vertex2
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-		static const Ionflux::GeoUtils::Vertex2 ORIGIN;
-        
-        Vertex2();
-		Vertex2(const Ionflux::GeoUtils::Vertex2& other);
-        Vertex2(double initX, double initY);
-        Vertex2(const Ionflux::ObjectBase::DoubleVector& initCoords);
-        Vertex2(const Ionflux::GeoUtils::Vector2& initCoords);
-        virtual ~Vertex2();
-        virtual void setCoords(const Ionflux::ObjectBase::DoubleVector& 
-        newCoords);
-        virtual void setCoords(const Ionflux::GeoUtils::Vector2& 
-        newCoords);
-        virtual void getCoords(Ionflux::ObjectBase::DoubleVector& target) 
-        const;
-        virtual void getCoords(Ionflux::GeoUtils::Vector2& target) const;
-        virtual double getCoord(int index) const;
-        virtual Ionflux::GeoUtils::Vector2 getVector() const;
-        virtual void setCoord(int index, double value);
-        virtual Ionflux::GeoUtils::Vertex2 interpolate(const 
-        Ionflux::GeoUtils::Vertex2& other, double t, 
-        Ionflux::GeoUtils::Interpolator* interpolator = 0) const;
-        virtual bool eq(const Ionflux::GeoUtils::Vertex2& other, double t =
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual bool operator==(const Ionflux::GeoUtils::Vertex2& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Vertex2& other) 
-        const;
-        virtual std::string getString() const;
-        virtual void setX(double newX);
-        virtual double getX() const;
-        virtual void setY(double newY);
-        virtual double getY() const;
-};
-
-%extend Vertex2 {
-    double __getitem__(int index)
-    {
-        return $$self->getCoord(index);
-    }
-    void __setitem__(int index, double value)
-    {
-        return $$self->setCoord(index, value);
-    }
-}
-
-}
-
-}
-
-$Vector3
-
-namespace Ionflux
-{
-
-namespace GeoUtils
-{
 
 %extend Vector3 {
     double __getitem__(int index)
@@ -618,22 +500,6 @@ namespace GeoUtils
 
 %rename(mult3) operator*(double, const Ionflux::GeoUtils::Vector3&);
 
-Ionflux::GeoUtils::Vector3 operator*(double c, const 
-Ionflux::GeoUtils::Vector3& v);
-
-}
-
-}
-
-$Range3
-$Vector4
-
-namespace Ionflux
-{
-
-namespace GeoUtils
-{
-
 %extend Vector4 {
     double __getitem__(int index)
     {
@@ -646,204 +512,8 @@ namespace GeoUtils
 }
 
 %rename(mult4) operator*(double, const Ionflux::GeoUtils::Vector4&);
-
-Ionflux::GeoUtils::Vector4 operator*(double c, const 
-Ionflux::GeoUtils::Vector4& v);
-
-class Matrix3ClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        Matrix3ClassInfo();
-        virtual ~Matrix3ClassInfo();
-};
-
-class Matrix3
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-		static const Ionflux::GeoUtils::Matrix3 ZERO;
-		static const Ionflux::GeoUtils::Matrix3 UNIT;
-        
-        Matrix3();
-		Matrix3(const Ionflux::GeoUtils::Matrix3& other);
-        Matrix3(double initX00, double initX01, double initX02, double 
-        initX10, double initX11, double initX12, double initX20, double 
-        initX21, double initX22);
-        Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements);
-        virtual ~Matrix3();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
-        const;
-        virtual double getElement(int row, int column) const;
-        virtual void setElement(int row, int column, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Matrix3& other, double t =
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual Ionflux::GeoUtils::Matrix3 transpose() const;
-        virtual Ionflux::GeoUtils::Matrix3 permuteColumns(int px, int py, 
-        int pz) const;
-        virtual Ionflux::GeoUtils::Matrix3 permuteColumns(const 
-        Ionflux::ObjectBase::IntVector& p) const;
-        virtual Ionflux::GeoUtils::Vector3 solve(const 
-        Ionflux::GeoUtils::Vector3& v) const;
-        virtual Ionflux::GeoUtils::Matrix3 invert() const;
-        virtual bool operator==(const Ionflux::GeoUtils::Matrix3& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Matrix3& other) 
-        const;
-        virtual Ionflux::GeoUtils::Matrix3 operator*(const 
-        Ionflux::GeoUtils::Matrix3& other) const;
-        virtual Ionflux::GeoUtils::Vector3 operator*(const 
-        Ionflux::GeoUtils::Vector3& v) const;
-        virtual Ionflux::GeoUtils::Matrix3 operator*(double c) const;
-        virtual Ionflux::GeoUtils::Matrix3 operator/(double c) const;
-        virtual std::string getString() const;
-        static Ionflux::GeoUtils::Matrix3 scale(double sx = 1., double sy =
-        1., double sz = 1.);
-        static Ionflux::GeoUtils::Matrix3 translate(double tx = 0., double 
-        ty = 0.);
-        static Ionflux::GeoUtils::Matrix3 rotate(double phi = 0., 
-        Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
-        virtual void setR0(const Ionflux::GeoUtils::Vector3& newR0);
-        virtual Ionflux::GeoUtils::Vector3 getR0() const;
-        virtual void setR1(const Ionflux::GeoUtils::Vector3& newR1);
-        virtual Ionflux::GeoUtils::Vector3 getR1() const;
-        virtual void setR2(const Ionflux::GeoUtils::Vector3& newR2);
-        virtual Ionflux::GeoUtils::Vector3 getR2() const;
-        virtual void setC0(const Ionflux::GeoUtils::Vector3& newC0);
-        virtual Ionflux::GeoUtils::Vector3 getC0() const;
-        virtual void setC1(const Ionflux::GeoUtils::Vector3& newC1);
-        virtual Ionflux::GeoUtils::Vector3 getC1() const;
-        virtual void setC2(const Ionflux::GeoUtils::Vector3& newC2);
-        virtual Ionflux::GeoUtils::Vector3 getC2() const;
-};
-
 %rename(mult3x3) operator*(double, const Ionflux::GeoUtils::Matrix3&);
-
-Ionflux::GeoUtils::Matrix3 operator*(double c, const 
-Ionflux::GeoUtils::Matrix3& m);
-
-class Matrix4ClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        Matrix4ClassInfo();
-        virtual ~Matrix4ClassInfo();
-};
-
-class Matrix4
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-		static const Ionflux::GeoUtils::Matrix4 ZERO;
-		static const Ionflux::GeoUtils::Matrix4 UNIT;
-		static const double COMPARE_TOLERANCE;
-        
-        Matrix4();
-		Matrix4(const Ionflux::GeoUtils::Matrix4& other);
-        Matrix4(double initX00, double initX01, double initX02, double 
-        initX03, double initX10, double initX11, double initX12, double 
-        initX13, double initX20, double initX21, double initX22, double 
-        initX23, double initX30, double initX31, double initX32, double 
-        initX33);
-        Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements);
-        Matrix4(const Ionflux::GeoUtils::Matrix3& initElements);
-        virtual ~Matrix4();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
-        virtual void setElements(const Ionflux::GeoUtils::Matrix3& 
-        newElements);
-        virtual void setM3x3(const Ionflux::GeoUtils::Matrix3& newElements,
-        double newX33 = 1., double newX03 = 0., double newX13 = 0., double 
-        newX23 = 0., double newX30 = 0., double newX31 = 0., double newX32 
-        = 0.);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
-        const;
-        virtual double getElement(int row, int column) const;
-        virtual void setElement(int row, int column, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Matrix4& other, double t =
-        COMPARE_TOLERANCE);
-        virtual Ionflux::GeoUtils::Matrix4 transpose() const;
-        virtual Ionflux::GeoUtils::Matrix4 permuteColumns(int px, int py, 
-        int pz, int pw) const;
-        virtual Ionflux::GeoUtils::Matrix4 permuteColumns(const 
-        Ionflux::ObjectBase::IntVector& p) const;
-        virtual Ionflux::GeoUtils::Matrix4 permuteRows(int px, int py, int 
-        pz, int pw) const;
-        virtual Ionflux::GeoUtils::Matrix4 permuteRows(const 
-        Ionflux::ObjectBase::IntVector& p) const;
-        virtual Ionflux::GeoUtils::Vector4 solve(const 
-        Ionflux::GeoUtils::Vector4& v) const;
-        virtual Ionflux::GeoUtils::Matrix4 invert() const;
-        virtual Ionflux::GeoUtils::Matrix4& multiplyLeft(const 
-        Ionflux::GeoUtils::Matrix4& other);
-        virtual Ionflux::GeoUtils::Matrix4& multiplyRight(const 
-        Ionflux::GeoUtils::Matrix4& other);
-        virtual bool operator==(const Ionflux::GeoUtils::Matrix4& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Matrix4& other) 
-        const;
-        virtual Ionflux::GeoUtils::Matrix4 operator*(const 
-        Ionflux::GeoUtils::Matrix4& other) const;
-        virtual Ionflux::GeoUtils::Vector4 operator*(const 
-        Ionflux::GeoUtils::Vector4& v) const;
-        virtual Ionflux::GeoUtils::Matrix4 operator*(double c) const;
-        virtual Ionflux::GeoUtils::Matrix4 operator/(double c) const;
-        virtual Ionflux::GeoUtils::Matrix3 getM3x3() const;
-        virtual std::string getString() const;
-        static Ionflux::GeoUtils::Matrix4 scale(double sx = 1., double sy =
-        1., double sz = 1., double sw = 1.);
-        static Ionflux::GeoUtils::Matrix4 scale(const 
-        Ionflux::GeoUtils::Vector3& s, double sw = 1.);
-        static Ionflux::GeoUtils::Matrix4 scale(const 
-        Ionflux::GeoUtils::Vector4& s);
-        static Ionflux::GeoUtils::Matrix4 translate(double tx = 0., double 
-        ty = 0., double tz = 0.);
-        static Ionflux::GeoUtils::Matrix4 translate(const 
-        Ionflux::GeoUtils::Vector3& t);
-        static Ionflux::GeoUtils::Matrix4 rotate(double phi = 0., 
-        Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
-        static Ionflux::GeoUtils::Matrix4 
-        swapAxes(Ionflux::GeoUtils::AxisID x = Ionflux::GeoUtils::AXIS_X, 
-        Ionflux::GeoUtils::AxisID y = Ionflux::GeoUtils::AXIS_Y, 
-        Ionflux::GeoUtils::AxisID z = Ionflux::GeoUtils::AXIS_Z, 
-        Ionflux::GeoUtils::AxisID w = Ionflux::GeoUtils::AXIS_W);
-        static Ionflux::GeoUtils::Matrix4 perspective(double d = 1., 
-        Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Y);
-        static Ionflux::GeoUtils::Matrix4 imageTransform(double screenWidth
-        = 1.33, double screenHeight = 1., double imageWidth = 800., double 
-        imageHeight = 600., Ionflux::GeoUtils::AxisID upAxis = 
-        Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID depthAxis = 
-        Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID horizonAxis = 
-        Ionflux::GeoUtils::AXIS_X);
-		virtual Ionflux::GeoUtils::Matrix4* copy() const;
-		static Ionflux::GeoUtils::Matrix4* upcast(Ionflux::ObjectBase::IFObject* 
-		other);
-		static Ionflux::GeoUtils::Matrix4* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);
-        virtual void setR0(const Ionflux::GeoUtils::Vector4& newR0);
-        virtual Ionflux::GeoUtils::Vector4 getR0() const;
-        virtual void setR1(const Ionflux::GeoUtils::Vector4& newR1);
-        virtual Ionflux::GeoUtils::Vector4 getR1() const;
-        virtual void setR2(const Ionflux::GeoUtils::Vector4& newR2);
-        virtual Ionflux::GeoUtils::Vector4 getR2() const;
-        virtual void setR3(const Ionflux::GeoUtils::Vector4& newR3);
-        virtual Ionflux::GeoUtils::Vector4 getR3() const;
-        virtual void setC0(const Ionflux::GeoUtils::Vector4& newC0);
-        virtual Ionflux::GeoUtils::Vector4 getC0() const;
-        virtual void setC1(const Ionflux::GeoUtils::Vector4& newC1);
-        virtual Ionflux::GeoUtils::Vector4 getC1() const;
-        virtual void setC2(const Ionflux::GeoUtils::Vector4& newC2);
-        virtual Ionflux::GeoUtils::Vector4 getC2() const;
-        virtual void setC3(const Ionflux::GeoUtils::Vector4& newC3);
-        virtual Ionflux::GeoUtils::Vector4 getC3() const;
-};
-
 %rename(mult4x4) operator*(double, const Ionflux::GeoUtils::Matrix4&);
-
-Ionflux::GeoUtils::Matrix4 operator*(double c, const 
-Ionflux::GeoUtils::Matrix4& m);
 
 }
 

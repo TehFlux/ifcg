@@ -319,6 +319,7 @@ $Vector4
 $VectorSet
 $FaceData
 $VectorSetSet
+$Matrix
 $TransformableObject
 $Vertex3
 $Vertex3Set
