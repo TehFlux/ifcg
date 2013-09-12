@@ -10,7 +10,7 @@ Up next
 --------------------------------------------------------------------------------
 
 + Matrix types
-  > derive Matrix2, Matrix3, Matrix4 from Matrix
+  > derive Matrix4 from Matrix
   > testing
     . Matrix functions (permuteRows, permuteColumns, multiply, transpose)
   > enable XML I/O
