@@ -19,7 +19,11 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ TransformableObject
+  > serialize the transform matrices to XML
+  > Encapsulate the transform matrices in another object that is referenced 
+    using a pointer (reuse across objects, reduce memory requirements for 
+    vertices)
 
 --------------------------------------------------------------------------------
 Critical stuff

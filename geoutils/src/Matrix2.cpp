@@ -31,9 +31,11 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
-using namespace Ionflux::ObjectBase;
 
 namespace Ionflux
 {
@@ -45,7 +47,6 @@ Matrix2ClassInfo::Matrix2ClassInfo()
 {
 	name = "Matrix2";
 	desc = "Matrix (2x2)";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Matrix2ClassInfo::~Matrix2ClassInfo()
@@ -53,6 +54,9 @@ Matrix2ClassInfo::~Matrix2ClassInfo()
 }
 
 // public member constants
+const unsigned int Matrix2::NUM_ELEMENTS = 4;
+const unsigned int Matrix2::NUM_ROWS = 2;
+const unsigned int Matrix2::NUM_COLS = 2;
 const Ionflux::GeoUtils::Matrix2 Matrix2::ZERO = Ionflux::GeoUtils::Matrix2(0., 0., 0., 0.);
 const Ionflux::GeoUtils::Matrix2 Matrix2::UNIT = Ionflux::GeoUtils::Matrix2(1., 0., 0., 1.);
 
@@ -60,117 +64,45 @@ const Ionflux::GeoUtils::Matrix2 Matrix2::UNIT = Ionflux::GeoUtils::Matrix2(1., 
 const Matrix2ClassInfo Matrix2::matrix2ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Matrix2::CLASS_INFO = &Matrix2::matrix2ClassInfo;
 
+const std::string Matrix2::XML_ELEMENT_NAME = "m2";
+
 Matrix2::Matrix2()
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	*this = ZERO;
+	zero();
 }
 
 Matrix2::Matrix2(const Ionflux::GeoUtils::Matrix2& other)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
 	*this = other;
 }
 
 Matrix2::Matrix2(double initX00, double initX01, double initX10, double 
 initX11)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
+	initElements();
 	elements[0] = initX00;
 	elements[1] = initX01;
 	elements[2] = initX10;
 	elements[3] = initX11;
 }
 
-Matrix2::Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements)
-: elements(0)
+Matrix2::Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[4];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setElements(initElements);
+	initElements();
+	Vector::setElements(initElements0);
 }
 
 Matrix2::~Matrix2()
 {
-	delete[] elements;
-}
-
-void Matrix2::setElements(const Ionflux::ObjectBase::DoubleVector& 
-newElements)
-{
-	unsigned int i = 0;
-	while ((i < 4) && (i < newElements.size()))
-	{
-	    elements[i] = newElements[i];
-	    i++;
-	}
-}
-
-void Matrix2::getElements(Ionflux::ObjectBase::DoubleVector& target) const
-{
-	target.clear();
-	for (unsigned int i = 0; i < 4; i++)
-	    target.push_back(elements[i]);
-}
-
-double Matrix2::getElement(int row, int column) const
-{
-	if ((row < 0) || (row > 1))
-	{
-	    ostringstream message;
-	    message << "Row index out of range: " << row;
-	    throw GeoUtilsError(message.str());
-	}
-	if ((column < 0) || (column > 1))
-	{
-	    ostringstream message;
-	    message << "Column index out of range: " << column;
-	    throw GeoUtilsError(message.str());
-	}
-	return elements[2 * row + column];;
-}
-
-void Matrix2::setElement(int row, int column, double value)
-{
-	if ((row < 0) || (row > 1))
-	{
-	    ostringstream message;
-	    message << "Row index out of range: " << row;
-	    throw GeoUtilsError(message.str());
-	}
-	if ((column < 0) || (column > 1))
-	{
-	    ostringstream message;
-	    message << "Column index out of range: " << column;
-	    throw GeoUtilsError(message.str());
-	}
-	elements[2 * row + column] = value;
-}
-
-bool Matrix2::eq(const Ionflux::GeoUtils::Matrix2& other, double t)
-{
-	for (unsigned int i = 0; i < 4; i++)
-	    if (!Ionflux::GeoUtils::eq(elements[i], other.elements[i], t))
-	        return false;
-	return true;
+	// TODO: Nothing ATM. ;-)
 }
 
 Ionflux::GeoUtils::Matrix2 Matrix2::transpose() const
@@ -225,31 +157,6 @@ Ionflux::GeoUtils::Matrix2 Matrix2::invert() const
 	return result;
 }
 
-bool Matrix2::operator==(const Ionflux::GeoUtils::Matrix2& other) const
-{
-	for (unsigned int i = 0; i < 4; i++)
-	    if (elements[i] != other.elements[i])
-	        return false;
-	return true;
-}
-
-bool Matrix2::operator!=(const Ionflux::GeoUtils::Matrix2& other) const
-{
-	// TODO: Implementation.
-	return !(*this == other);;
-}
-
-Ionflux::GeoUtils::Vector2 Matrix2::operator[](int index) const
-{
-	if ((index < 0) || (index > 1))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	return Vector2(elements[2 * index], elements[2 * index + 1]);
-}
-
 Ionflux::GeoUtils::Matrix2 Matrix2::operator*(const 
 Ionflux::GeoUtils::Matrix2& other) const
 {
@@ -281,27 +188,34 @@ Ionflux::GeoUtils::Vector2& v) const
 
 Ionflux::GeoUtils::Matrix2 Matrix2::operator*(double c) const
 {
-	Matrix2 result;
-	for (unsigned int i = 0; i < 4; i++)
-	    result.elements[i] = elements[i] * c;
+	Matrix2 result(*this);
+	result.multiplyIP(c);
 	return result;
 }
 
 Ionflux::GeoUtils::Matrix2 Matrix2::operator/(double c) const
 {
-	Matrix2 result;
-	for (unsigned int i = 0; i < 4; i++)
-	    result.elements[i] = elements[i] / c;
+	Matrix2 result(*this);
+	result.divideIP(c);
 	return result;
 }
 
-std::string Matrix2::getString() const
+unsigned int Matrix2::getNumElements() const
 {
-	ostringstream state;
-	state << getClassName() << "[[" << elements[0] << ", " 
-	    << elements[1] << "], [" << elements[2] << ", " 
-	    << elements[3] << "]]";
-	return state.str();
+	// TODO: Implementation.
+	return NUM_ELEMENTS;
+}
+
+unsigned int Matrix2::getNumRows() const
+{
+	// TODO: Implementation.
+	return NUM_ROWS;
+}
+
+unsigned int Matrix2::getNumCols() const
+{
+	// TODO: Implementation.
+	return NUM_COLS;
 }
 
 Ionflux::GeoUtils::Matrix2 Matrix2::scale(double sx, double sy)
@@ -363,20 +277,95 @@ Ionflux::GeoUtils::Vector2 Matrix2::getC1() const
 Ionflux::GeoUtils::Matrix2& Matrix2::operator=(const 
 Ionflux::GeoUtils::Matrix2& other)
 {
-    if ((elements == 0) || (other.elements == 0))
+    if (this == &other)
         return *this;
-    for (unsigned int i = 0; i < 4; i++)
-        elements[i] = other.elements[i];
-    return *this;
+    Vector::operator=(other);
 	return *this;
 }
 
 Ionflux::GeoUtils::Matrix2* Matrix2::copy() const
 {
-    Matrix2* newMatrix2 = 
-        new Matrix2();
+    Matrix2* newMatrix2 = create();
     *newMatrix2 = *this;
     return newMatrix2;
+}
+
+Ionflux::GeoUtils::Matrix2* Matrix2::upcast(Ionflux::ObjectBase::IFObject* 
+other)
+{
+    return dynamic_cast<Matrix2*>(other);
+}
+
+Ionflux::GeoUtils::Matrix2* Matrix2::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Matrix2* newObject = new Matrix2();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix2* Matrix2::create(double initX00, double initX01,
+double initX10, double initX11, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Matrix2* newObject = new Matrix2(initX00, initX01, initX10, initX11);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix2* Matrix2::create(const 
+Ionflux::ObjectBase::DoubleVector& initElements0, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix2* newObject = new Matrix2(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Matrix2::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Matrix2::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::GeoUtils::Matrix::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Matrix2::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::GeoUtils::Matrix::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void Matrix2::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getMatrix2(data, *this);
 }
 
 Ionflux::GeoUtils::Matrix2 operator*(double c, const 

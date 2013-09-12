@@ -371,6 +371,102 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Matrix2;
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix2 from TiXmlElement.
+void getMatrix2(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix2& target, const std::string& elementName = 
+Ionflux::GeoUtils::Matrix2::XML_ELEMENT_NAME);
+
+/// Create new Matrix2 from TiXmlElement.
+Ionflux::GeoUtils::Matrix2* createMatrix2(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Matrix2::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix2 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix2>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Matrix2& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Matrix3;
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix3 from TiXmlElement.
+void getMatrix3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Matrix3::XML_ELEMENT_NAME);
+
+/// Create new Matrix3 from TiXmlElement.
+Ionflux::GeoUtils::Matrix3* createMatrix3(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Matrix3::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix3 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix3>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Matrix3& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class VectorSetSet;
 
 namespace XMLUtils

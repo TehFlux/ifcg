@@ -43,9 +43,12 @@ class Matrix2ClassInfo
 };
 
 class Matrix2
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Matrix
 {
     public:
+		static const unsigned int NUM_ELEMENTS;
+		static const unsigned int NUM_ROWS;
+		static const unsigned int NUM_COLS;
 		static const Ionflux::GeoUtils::Matrix2 ZERO;
 		static const Ionflux::GeoUtils::Matrix2 UNIT;
         
@@ -53,36 +56,36 @@ class Matrix2
 		Matrix2(const Ionflux::GeoUtils::Matrix2& other);
         Matrix2(double initX00, double initX01, double initX10, double 
         initX11);
-        Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements);
+        Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements0);
         virtual ~Matrix2();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
-        const;
-        virtual double getElement(int row, int column) const;
-        virtual void setElement(int row, int column, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Matrix2& other, double t =
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Matrix2 transpose() const;
         virtual Ionflux::GeoUtils::Matrix2 swapColumns() const;
         virtual Ionflux::GeoUtils::Vector2 solve(const 
         Ionflux::GeoUtils::Vector2& v) const;
         virtual Ionflux::GeoUtils::Matrix2 invert() const;
-        virtual bool operator==(const Ionflux::GeoUtils::Matrix2& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Matrix2& other) 
-        const;
         virtual Ionflux::GeoUtils::Matrix2 operator*(const 
         Ionflux::GeoUtils::Matrix2& other) const;
         virtual Ionflux::GeoUtils::Vector2 operator*(const 
         Ionflux::GeoUtils::Vector2& v) const;
         virtual Ionflux::GeoUtils::Matrix2 operator*(double c) const;
         virtual Ionflux::GeoUtils::Matrix2 operator/(double c) const;
-        virtual std::string getString() const;
+        virtual unsigned int getNumElements() const;
+        virtual unsigned int getNumRows() const;
+        virtual unsigned int getNumCols() const;
         static Ionflux::GeoUtils::Matrix2 scale(double sx = 1., double sy =
         1.);
         static Ionflux::GeoUtils::Matrix2 rotate(double phi = 0.);
 		virtual Ionflux::GeoUtils::Matrix2* copy() const;
+		static Ionflux::GeoUtils::Matrix2* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Matrix2* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Matrix2* create(double initX00, double initX01,
+		double initX10, double initX11, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Matrix2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setR0(const Ionflux::GeoUtils::Vector2& newR0);
         virtual Ionflux::GeoUtils::Vector2 getR0() const;
         virtual void setR1(const Ionflux::GeoUtils::Vector2& newR1);
@@ -95,6 +98,14 @@ class Matrix2
 
 Ionflux::GeoUtils::Matrix2 operator*(double c, const 
 Ionflux::GeoUtils::Matrix2& m);
+
+namespace XMLUtils
+{
+
+void getMatrix2(const std::string& data, Ionflux::GeoUtils::Matrix2& 
+target);
+
+}
 
 }
 

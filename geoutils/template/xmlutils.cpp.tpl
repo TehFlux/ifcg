@@ -320,6 +320,8 @@ $VectorSet
 $FaceData
 $VectorSetSet
 $Matrix
+$Matrix2
+$Matrix3
 $TransformableObject
 $Vertex3
 $Vertex3Set

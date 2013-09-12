@@ -571,7 +571,7 @@ void getObjMap<Ionflux::GeoUtils::Vector,
                     << "Unexpected child element name: '" << en1 << "'";
                 throw Ionflux::ObjectBase::IFError(status.str());
             }
-            typename std::map<std::string, 
+            std::map<std::string, 
                 Ionflux::GeoUtils::Vector*>::iterator j = target.find(k);
             if (j != target.end())
             {
@@ -1052,7 +1052,7 @@ void getObjMap<Ionflux::GeoUtils::VectorSet,
                     << "Unexpected child element name: '" << en1 << "'";
                 throw Ionflux::ObjectBase::IFError(status.str());
             }
-            typename std::map<std::string, 
+            std::map<std::string, 
                 Ionflux::GeoUtils::VectorSet*>::iterator j = target.find(k);
             if (j != target.end())
             {
@@ -1299,6 +1299,20 @@ std::string& elementName)
         o0 = Matrix::create();
         getMatrix(e0, *o0, en0);
     } else
+    if (en0 == Matrix2::XML_ELEMENT_NAME)
+    {
+        // Matrix2
+        Matrix2* o1 = Matrix2::create();
+        getMatrix2(e0, *o1, en0);
+        o0 = o1;
+    } else
+    if (en0 == Matrix3::XML_ELEMENT_NAME)
+    {
+        // Matrix3
+        Matrix3* o1 = Matrix3::create();
+        getMatrix3(e0, *o1, en0);
+        o0 = o1;
+    } else
     {
         std::ostringstream status;
         status << "[createMatrix] "
@@ -1356,6 +1370,302 @@ void getObject0<Ionflux::GeoUtils::Matrix>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getMatrix(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getMatrix(e0, target, elementName);
+}
+
+template<>
+void getObjVector<Ionflux::GeoUtils::Matrix,
+    Ionflux::GeoUtils::Matrix*>(TiXmlElement* e0, 
+    std::vector<Ionflux::GeoUtils::Matrix*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName)
+{
+    checkElementNameOrError(e0, elementName, 
+        "getObjVector<Matrix>");
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        // Iterate over vector entries.
+        std::string en0(ce0->Value());
+        if (en0 == childElementName)
+        {
+            // default (Matrix)
+            Ionflux::GeoUtils::Matrix* co0 = 
+                Ionflux::GeoUtils::Matrix::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        if (en0 == 
+            Matrix2::XML_ELEMENT_NAME)
+        {
+            // Matrix2
+            Matrix2* co0 = 
+                Matrix2::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        if (en0 == 
+            Matrix3::XML_ELEMENT_NAME)
+        {
+            // Matrix3
+            Matrix3* co0 = 
+                Matrix3::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        {
+            std::ostringstream status;
+            status << "[getObjVector<Matrix>] "
+                << "Unexpected child element name: '" << en0 << "'";
+            throw Ionflux::ObjectBase::IFError(status.str());
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+template<>
+void getObjMap<Ionflux::GeoUtils::Matrix,
+    Ionflux::GeoUtils::Matrix*>(TiXmlElement* e0, 
+    std::map<std::string, Ionflux::GeoUtils::Matrix*>& target, 
+    const std::string& elementName, 
+    const std::string& childElementName)
+{
+    checkElementNameOrError(e0, elementName, "getObjMap<Matrix>");
+    TiXmlElement* ee0 = e0->FirstChildElement();
+    while (ee0 != 0)
+    {
+        // Iterate over map entries.
+        std::string en0(ee0->Value());
+        if (en0 == "entry")
+        {
+            std::string k = getAttributeValue(ee0, "key", false);
+            TiXmlElement* ce0 = ee0->FirstChildElement();
+            if (ce0 == 0)
+            {
+                std::ostringstream status;
+                status << "[getObjMap<Matrix>] "
+                    << "Missing value for key: '" << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            std::string en1(ce0->Value());
+            Ionflux::GeoUtils::Matrix* co0 = 0;
+            // Add an object of the appropriate class. 
+            if (en1 == childElementName)
+            {
+                // default (Matrix)
+                co0 = Ionflux::GeoUtils::Matrix::create();
+                getObject0(ce0, *co0, childElementName);
+            } else
+            if (en1 == 
+                Matrix2::XML_ELEMENT_NAME)
+            {
+                // Matrix2
+                Matrix2* co1 = 
+                    Matrix2::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Matrix3::XML_ELEMENT_NAME)
+            {
+                // Matrix3
+                Matrix3* co1 = 
+                    Matrix3::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            {
+                std::ostringstream status;
+                status << "[getObjMap<Matrix>] "
+                    << "Unexpected child element name: '" << en1 << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            std::map<std::string, 
+                Ionflux::GeoUtils::Matrix*>::iterator j = target.find(k);
+            if (j != target.end())
+            {
+                std::ostringstream status;
+                status << "[getObjMap<Matrix>] Duplicate key: '" 
+                    << k << "'";
+                throw Ionflux::ObjectBase::IFError(status.str());
+            }
+            target[k] = co0;
+        }
+        ee0 = ee0->NextSiblingElement();
+    }
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Matrix2.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Matrix2* createMatrix2(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Matrix2* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Matrix2)
+        o0 = Matrix2::create();
+        getMatrix2(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createMatrix2] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getMatrix2(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix2& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getMatrix2");
+    getMatrix(e0, target, elementName);
+}
+
+void getMatrix2(const std::string& data, Ionflux::GeoUtils::Matrix2& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getMatrix2] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Matrix2::XML_ELEMENT_NAME);
+    getMatrix2(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix2>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix2& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getMatrix2(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getMatrix2(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Matrix3.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Matrix3* createMatrix3(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Matrix3* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Matrix3)
+        o0 = Matrix3::create();
+        getMatrix3(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createMatrix3] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getMatrix3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix3& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getMatrix3");
+    getMatrix(e0, target, elementName);
+}
+
+void getMatrix3(const std::string& data, Ionflux::GeoUtils::Matrix3& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getMatrix3] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Matrix3::XML_ELEMENT_NAME);
+    getMatrix3(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix3>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix3& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getMatrix3(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getMatrix3(e0, target, elementName);
 }
 
 }
@@ -1616,7 +1926,7 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
                     << "Unexpected child element name: '" << en1 << "'";
                 throw Ionflux::ObjectBase::IFError(status.str());
             }
-            typename std::map<std::string, 
+            std::map<std::string, 
                 Ionflux::GeoUtils::TransformableObject*>::iterator j = target.find(k);
             if (j != target.end())
             {

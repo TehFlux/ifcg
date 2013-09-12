@@ -32,9 +32,11 @@
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/gslutils.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
-using namespace Ionflux::ObjectBase;
 
 namespace Ionflux
 {
@@ -46,7 +48,6 @@ Matrix3ClassInfo::Matrix3ClassInfo()
 {
 	name = "Matrix3";
 	desc = "Matrix (3x3)";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Matrix3ClassInfo::~Matrix3ClassInfo()
@@ -54,6 +55,9 @@ Matrix3ClassInfo::~Matrix3ClassInfo()
 }
 
 // public member constants
+const unsigned int Matrix3::NUM_ELEMENTS = 9;
+const unsigned int Matrix3::NUM_ROWS = 3;
+const unsigned int Matrix3::NUM_COLS = 3;
 const Ionflux::GeoUtils::Matrix3 Matrix3::ZERO = Ionflux::GeoUtils::Matrix3(0., 0., 0., 0., 0., 0., 0., 0., 0.);
 const Ionflux::GeoUtils::Matrix3 Matrix3::UNIT = Ionflux::GeoUtils::Matrix3(1., 0., 0., 0., 1., 0., 0., 0., 1.);
 
@@ -61,38 +65,29 @@ const Ionflux::GeoUtils::Matrix3 Matrix3::UNIT = Ionflux::GeoUtils::Matrix3(1., 
 const Matrix3ClassInfo Matrix3::matrix3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Matrix3::CLASS_INFO = &Matrix3::matrix3ClassInfo;
 
+const std::string Matrix3::XML_ELEMENT_NAME = "m3";
+
 Matrix3::Matrix3()
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[9];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	*this = ZERO;
+	zero();
 }
 
 Matrix3::Matrix3(const Ionflux::GeoUtils::Matrix3& other)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[9];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
 	*this = other;
 }
 
 Matrix3::Matrix3(double initX00, double initX01, double initX02, double 
 initX10, double initX11, double initX12, double initX20, double initX21, 
 double initX22)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[9];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
+	initElements();
 	elements[0] = initX00;
 	elements[1] = initX01;
 	elements[2] = initX02;
@@ -104,80 +99,17 @@ double initX22)
 	elements[8] = initX22;
 }
 
-Matrix3::Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements)
-: elements(0)
+Matrix3::Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[9];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setElements(initElements);
+	initElements();
+	Vector::setElements(initElements0);
 }
 
 Matrix3::~Matrix3()
 {
 	delete[] elements;
-}
-
-void Matrix3::setElements(const Ionflux::ObjectBase::DoubleVector& 
-newElements)
-{
-	unsigned int i = 0;
-	while ((i < 9) && (i < newElements.size()))
-	{
-	    elements[i] = newElements[i];
-	    i++;
-	}
-}
-
-void Matrix3::getElements(Ionflux::ObjectBase::DoubleVector& target) const
-{
-	target.clear();
-	for (unsigned int i = 0; i < 9; i++)
-	    target.push_back(elements[i]);
-}
-
-double Matrix3::getElement(int row, int column) const
-{
-	if ((row < 0) || (row > 2))
-	{
-	    ostringstream message;
-	    message << "Row index out of range: " << row;
-	    throw GeoUtilsError(message.str());
-	}
-	if ((column < 0) || (column > 2))
-	{
-	    ostringstream message;
-	    message << "Column index out of range: " << column;
-	    throw GeoUtilsError(message.str());
-	}
-	return elements[3 * row + column];;
-}
-
-void Matrix3::setElement(int row, int column, double value)
-{
-	if ((row < 0) || (row > 2))
-	{
-	    ostringstream message;
-	    message << "Row index out of range: " << row;
-	    throw GeoUtilsError(message.str());
-	}
-	if ((column < 0) || (column > 2))
-	{
-	    ostringstream message;
-	    message << "Column index out of range: " << column;
-	    throw GeoUtilsError(message.str());
-	}
-	elements[3 * row + column] = value;
-}
-
-bool Matrix3::eq(const Ionflux::GeoUtils::Matrix3& other, double t)
-{
-	for (unsigned int i = 0; i < 9; i++)
-	    if (!Ionflux::GeoUtils::eq(elements[i], other.elements[i], t))
-	        return false;
-	return true;
 }
 
 Ionflux::GeoUtils::Matrix3 Matrix3::transpose() const
@@ -201,7 +133,9 @@ Ionflux::GeoUtils::Matrix3 Matrix3::permuteColumns(const
 Ionflux::ObjectBase::IntVector& p) const
 {
 	if (p.size() < 3)
-	    throw GeoUtilsError("Not enough elements in permutation vector.");
+	    throw GeoUtilsError(getErrorString(
+	        "Not enough elements in permutation vector.", 
+	        "permuteColumns"));
 	return permuteColumns(p[0], p[1], p[2]);
 }
 
@@ -241,7 +175,13 @@ v) const
 	if (x13 != 0.0)
 	    result = permuteColumns(2, 1, 0).solve(v).permute(2, 1, 0);
 	else
-	    throw GeoUtilsError("Cannot solve 3x3 matrix equation.");
+	{
+	    std::ostringstream status;
+	    status << "Cannot solve 3x3 matrix equation (M = ["
+	        << getValueString() << "], v = (" << v.getValueString() 
+	        << ")).";
+	    throw GeoUtilsError(getErrorString(status.str(), "solve"));
+	}
 	return result;
 }
 
@@ -255,32 +195,6 @@ Ionflux::GeoUtils::Matrix3 Matrix3::invert() const
 	result.setC1(y);
 	result.setC2(z);
 	return result;
-}
-
-bool Matrix3::operator==(const Ionflux::GeoUtils::Matrix3& other) const
-{
-	for (unsigned int i = 0; i < 9; i++)
-	    if (elements[i] != other.elements[i])
-	        return false;
-	return true;
-}
-
-bool Matrix3::operator!=(const Ionflux::GeoUtils::Matrix3& other) const
-{
-	// TODO: Implementation.
-	return !(*this == other);;
-}
-
-Ionflux::GeoUtils::Vector3 Matrix3::operator[](int index) const
-{
-	if ((index < 0) || (index > 2))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	return Vector3(elements[3 * index], elements[3 * index + 1], 
-    elements[3 * index + 2]);
 }
 
 Ionflux::GeoUtils::Matrix3 Matrix3::operator*(const 
@@ -314,17 +228,15 @@ Ionflux::GeoUtils::Vector3& v) const
 
 Ionflux::GeoUtils::Matrix3 Matrix3::operator*(double c) const
 {
-	Matrix3 result;
-	for (unsigned int i = 0; i < 9; i++)
-	    result.elements[i] = elements[i] * c;
+	Matrix3 result(*this);
+	result.multiplyIP(c);
 	return result;
 }
 
 Ionflux::GeoUtils::Matrix3 Matrix3::operator/(double c) const
 {
-	Matrix3 result;
-	for (unsigned int i = 0; i < 9; i++)
-	    result.elements[i] = elements[i] / c;
+	Matrix3 result(*this);
+	result.divideIP(c);
 	return result;
 }
 
@@ -334,15 +246,22 @@ Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) const
 	Ionflux::GeoUtils::svd(*this, u, s, v);
 }
 
-std::string Matrix3::getString() const
+unsigned int Matrix3::getNumElements() const
 {
-	ostringstream state;
-	state << getClassName() << "[[" << elements[0] << ", " 
-	    << elements[1] << ", " << elements[2] << "], [" 
-	    << elements[3] << ", " << elements[4] << ", " 
-	    << elements[5] << "], [" << elements[6] << ", " 
-	    << elements[7] << ", " << elements[8] << "]]";
-	return state.str();
+	// TODO: Implementation.
+	return NUM_ELEMENTS;
+}
+
+unsigned int Matrix3::getNumRows() const
+{
+	// TODO: Implementation.
+	return NUM_ROWS;
+}
+
+unsigned int Matrix3::getNumCols() const
+{
+	// TODO: Implementation.
+	return NUM_COLS;
 }
 
 Ionflux::GeoUtils::Matrix3 Matrix3::scale(double sx, double sy, double sz)
@@ -376,8 +295,8 @@ Ionflux::GeoUtils::AxisID axis)
 	        0., 0., 1.);
 	else
 	{
-	    ostringstream status;
-	    status << "Invalid axis: " << axis;
+	    std::ostringstream status;
+	    status << "[Matrix3::rotate] Invalid axis: " << axis;
 	    throw GeoUtilsError(status.str());
 	}
 	return ZERO;
@@ -458,20 +377,97 @@ Ionflux::GeoUtils::Vector3 Matrix3::getC2() const
 Ionflux::GeoUtils::Matrix3& Matrix3::operator=(const 
 Ionflux::GeoUtils::Matrix3& other)
 {
-    if ((elements == 0) || (other.elements == 0))
+    if (this == &other)
         return *this;
-    for (unsigned int i = 0; i < 9; i++)
-        elements[i] = other.elements[i];
-    return *this;
+    Vector::operator=(other);
 	return *this;
 }
 
 Ionflux::GeoUtils::Matrix3* Matrix3::copy() const
 {
-    Matrix3* newMatrix3 = 
-        new Matrix3();
+    Matrix3* newMatrix3 = create();
     *newMatrix3 = *this;
     return newMatrix3;
+}
+
+Ionflux::GeoUtils::Matrix3* Matrix3::upcast(Ionflux::ObjectBase::IFObject* 
+other)
+{
+    return dynamic_cast<Matrix3*>(other);
+}
+
+Ionflux::GeoUtils::Matrix3* Matrix3::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Matrix3* newObject = new Matrix3();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix3* Matrix3::create(double initX00, double initX01,
+double initX02, double initX10, double initX11, double initX12, double 
+initX20, double initX21, double initX22, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Matrix3* newObject = new Matrix3(initX00, initX01, initX02, initX10, 
+    initX11, initX12, initX20, initX21, initX22);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix3* Matrix3::create(const 
+Ionflux::ObjectBase::DoubleVector& initElements0, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix3* newObject = new Matrix3(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Matrix3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Matrix3::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::GeoUtils::Matrix::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Matrix3::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::GeoUtils::Matrix::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void Matrix3::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getMatrix3(data, *this);
 }
 
 Ionflux::GeoUtils::Matrix3 operator*(double c, const 

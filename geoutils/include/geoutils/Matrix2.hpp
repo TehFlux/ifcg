@@ -32,7 +32,7 @@
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
 #include "geoutils/Vector2.hpp"
-#include "ifobject/IFObject.hpp"
+#include "geoutils/Matrix.hpp"
 
 namespace Ionflux
 {
@@ -57,15 +57,19 @@ class Matrix2ClassInfo
  * A 2x2 matrix.
  */
 class Matrix2
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Matrix
 {
 	private:
 		
 	protected:
-		/// Elements.
-		double* elements;
 		
 	public:
+		/// Number of elements.
+		static const unsigned int NUM_ELEMENTS;
+		/// Number of rows.
+		static const unsigned int NUM_ROWS;
+		/// Number of columns.
+		static const unsigned int NUM_COLS;
 		/// Zero matrix.
 		static const Ionflux::GeoUtils::Matrix2 ZERO;
 		/// Unit matrix.
@@ -74,6 +78,8 @@ class Matrix2
 		static const Matrix2ClassInfo matrix2ClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -104,69 +110,15 @@ class Matrix2
 		 *
 		 * Construct new Matrix2 object.
 		 *
-		 * \param initElements Element vector.
+		 * \param initElements0 Element vector.
 		 */
-		Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements);
+		Matrix2(const Ionflux::ObjectBase::DoubleVector& initElements0);
 		
 		/** Destructor.
 		 *
 		 * Destruct Matrix2 object.
 		 */
 		virtual ~Matrix2();
-		
-		/** Set elements.
-		 *
-		 * Set elements from a vector of doubles. If the vector contains fewer
-		 * than the required number of elements, the remaining elements will 
-		 * be left alone.
-		 *
-		 * \param newElements Element vector.
-		 */
-		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-		newElements);
-		
-		/** Get elements.
-		 *
-		 * Store the elements of the matrix in a vector of doubles.
-		 *
-		 * \param target Target vector.
-		 */
-		virtual void getElements(Ionflux::ObjectBase::DoubleVector& target) 
-		const;
-		
-		/** Get element.
-		 *
-		 * Get the element at the specified position.
-		 *
-		 * \param row Row index.
-		 * \param column Column index.
-		 *
-		 * \return Element at the specified index.
-		 */
-		virtual double getElement(int row, int column) const;
-		
-		/** Set element.
-		 *
-		 * Set the element at the specified index.
-		 *
-		 * \param row Row index.
-		 * \param column Column index.
-		 * \param value Value.
-		 */
-		virtual void setElement(int row, int column, double value);
-		
-		/** Comparison (with tolerance): equal.
-		 *
-		 * Compare the matrix with another matrix using the specified 
-		 * tolerance.
-		 *
-		 * \param other Matrix.
-		 * \param t Tolerance.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool eq(const Ionflux::GeoUtils::Matrix2& other, double t = 
-		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
 		/** Transpose.
 		 *
@@ -202,36 +154,6 @@ class Matrix2
 		 * \return Result of the calculation.
 		 */
 		virtual Ionflux::GeoUtils::Matrix2 invert() const;
-		
-		/** Comparison operator: equality.
-		 *
-		 * Compare equality.
-		 *
-		 * \param other Matrix.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator==(const Ionflux::GeoUtils::Matrix2& other) const;
-		
-		/** Comparison operator: inequality.
-		 *
-		 * Compare inequality.
-		 *
-		 * \param other Matrix.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator!=(const Ionflux::GeoUtils::Matrix2& other) const;
-		
-		/** Subscript operator.
-		 *
-		 * Subscript operator.
-		 *
-		 * \param index Index.
-		 *
-		 * \return Row vector with specified index.
-		 */
-		virtual Ionflux::GeoUtils::Vector2 operator[](int index) const;
 		
 		/** Multiply matrices.
 		 *
@@ -275,13 +197,29 @@ class Matrix2
 		 */
 		virtual Ionflux::GeoUtils::Matrix2 operator/(double c) const;
 		
-		/** Get string representation.
+		/** Get number of elements.
 		 *
-		 * Get a string representation of the object
+		 * Get the number of elements in the vector
 		 *
-		 * \return String representation.
+		 * \return Number of elements.
 		 */
-		virtual std::string getString() const;
+		virtual unsigned int getNumElements() const;
+		
+		/** Get number of rows.
+		 *
+		 * Get the number of rows in the matrix
+		 *
+		 * \return Number of rows.
+		 */
+		virtual unsigned int getNumRows() const;
+		
+		/** Get number of columns.
+		 *
+		 * Get the number of columns in the matrix
+		 *
+		 * \return Number of columns.
+		 */
+		virtual unsigned int getNumCols() const;
 		
 		/** Create scale matrix.
 		 *
@@ -322,6 +260,89 @@ class Matrix2
 		 * \return Newly allocated copy of the object.
 		 */
 		virtual Ionflux::GeoUtils::Matrix2* copy() const;
+		
+		/** Upcast.
+		 *
+		 * Cast an IFObject to the most specific type.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		static Ionflux::GeoUtils::Matrix2* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::Matrix2* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Matrix2 object.
+		 *
+		 * \param initX00 Element x00.
+		 * \param initX01 Element x01.
+		 * \param initX10 Element x10.
+		 * \param initX11 Element x11.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Matrix2* create(double initX00, double initX01,
+		double initX10, double initX11, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Matrix2 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Matrix2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get row vector (0).
 		 *

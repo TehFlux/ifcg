@@ -195,8 +195,8 @@ Ionflux::GeoUtils::Matrix& target)
 	        << tNumRows << "x" << tNumCols << ").";
 	    throw GeoUtilsError(getErrorString(status.str(), "multiply"));
 	}
-	for (unsigned int i = 0; i < numRows; i++)
-	    for (unsigned int k = 0; k < oNumCols; k++)
+	for (unsigned int i = 0; i < tNumRows; i++)
+	    for (unsigned int k = 0; k < tNumCols; k++)
 	    {
 	        double s = 0.;
 	        for (unsigned int m = 0; m < numCols; m++)
@@ -270,7 +270,7 @@ std::string Matrix::getValueString() const
 	for (unsigned int i = 0; i < numRows; i++)
 	{
 	    if (!e0)
-	        status << ", ";
+	        status << "; ";
 	    else
 	        e0 = false;
 	    status << "(";
