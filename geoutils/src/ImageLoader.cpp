@@ -251,7 +251,7 @@ void ImageLoader::setMappedPrefix(const std::string& newMappedPrefix)
 
 std::string ImageLoader::getMappedPrefix() const
 {
-	return mappedPrefix;
+    return mappedPrefix;
 }
 
 void ImageLoader::setUnmappedPrefix(const std::string& newUnmappedPrefix)
@@ -261,7 +261,7 @@ void ImageLoader::setUnmappedPrefix(const std::string& newUnmappedPrefix)
 
 std::string ImageLoader::getUnmappedPrefix() const
 {
-	return unmappedPrefix;
+    return unmappedPrefix;
 }
 
 void ImageLoader::setCache(Ionflux::ObjectBase::IFCache* newCache)
@@ -277,7 +277,7 @@ void ImageLoader::setCache(Ionflux::ObjectBase::IFCache* newCache)
 
 Ionflux::ObjectBase::IFCache* ImageLoader::getCache() const
 {
-	return cache;
+    return cache;
 }
 
 Ionflux::GeoUtils::ImageLoader& ImageLoader::operator=(const 

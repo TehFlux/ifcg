@@ -693,7 +693,7 @@ newSource)
 Ionflux::GeoUtils::TransformNodes::TransformNode* 
 TransformGraph::getSource() const
 {
-	return source;
+    return source;
 }
 
 void 
@@ -714,7 +714,7 @@ newDrain)
 Ionflux::GeoUtils::TransformNodes::TransformNode* 
 TransformGraph::getDrain() const
 {
-	return drain;
+    return drain;
 }
 
 Ionflux::GeoUtils::TransformNodes::TransformGraph& 

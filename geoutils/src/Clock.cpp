@@ -115,7 +115,7 @@ void Clock::setStartTime(double newStartTime)
 
 double Clock::getStartTime() const
 {
-	return startTime;
+    return startTime;
 }
 
 void Clock::setStopTime(double newStopTime)
@@ -125,12 +125,12 @@ void Clock::setStopTime(double newStopTime)
 
 double Clock::getStopTime() const
 {
-	return stopTime;
+    return stopTime;
 }
 
 double Clock::getElapsedTime() const
 {
-	return elapsedTime;
+    return elapsedTime;
 }
 
 Ionflux::GeoUtils::Clock& Clock::operator=(const Ionflux::GeoUtils::Clock& 

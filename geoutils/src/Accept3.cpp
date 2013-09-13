@@ -140,7 +140,7 @@ void Accept3::setMaxIters(unsigned int newMaxIters)
 
 unsigned int Accept3::getMaxIters() const
 {
-	return maxIters;
+    return maxIters;
 }
 
 void Accept3::setSource(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
@@ -157,7 +157,7 @@ newSource)
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Accept3::getSource() const
 {
-	return source;
+    return source;
 }
 
 Ionflux::GeoUtils::Mapping::Accept3& Accept3::operator=(const 

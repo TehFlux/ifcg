@@ -182,7 +182,7 @@ void WriteSVG::setFileName(const std::string& newFileName)
 
 std::string WriteSVG::getFileName() const
 {
-	return fileName;
+    return fileName;
 }
 
 unsigned int WriteSVG::getNumStyles() const
@@ -271,7 +271,7 @@ void WriteSVG::setElementIDPrefix(const std::string& newElementIDPrefix)
 
 std::string WriteSVG::getElementIDPrefix() const
 {
-	return elementIDPrefix;
+    return elementIDPrefix;
 }
 
 void WriteSVG::setAxis(Ionflux::GeoUtils::AxisID newAxis)
@@ -281,7 +281,7 @@ void WriteSVG::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID WriteSVG::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 void WriteSVG::setShapeType(Ionflux::GeoUtils::SVGShapeType newShapeType)
@@ -291,7 +291,7 @@ void WriteSVG::setShapeType(Ionflux::GeoUtils::SVGShapeType newShapeType)
 
 Ionflux::GeoUtils::SVGShapeType WriteSVG::getShapeType() const
 {
-	return shapeType;
+    return shapeType;
 }
 
 void WriteSVG::setClosePath(bool newClosePath)
@@ -301,7 +301,7 @@ void WriteSVG::setClosePath(bool newClosePath)
 
 bool WriteSVG::getClosePath() const
 {
-	return closePath;
+    return closePath;
 }
 
 void WriteSVG::setWidth(unsigned int newWidth)
@@ -311,7 +311,7 @@ void WriteSVG::setWidth(unsigned int newWidth)
 
 unsigned int WriteSVG::getWidth() const
 {
-	return width;
+    return width;
 }
 
 void WriteSVG::setHeight(unsigned int newHeight)
@@ -321,7 +321,7 @@ void WriteSVG::setHeight(unsigned int newHeight)
 
 unsigned int WriteSVG::getHeight() const
 {
-	return height;
+    return height;
 }
 
 void WriteSVG::setOriginX(unsigned int newOriginX)
@@ -331,7 +331,7 @@ void WriteSVG::setOriginX(unsigned int newOriginX)
 
 unsigned int WriteSVG::getOriginX() const
 {
-	return originX;
+    return originX;
 }
 
 void WriteSVG::setOriginY(unsigned int newOriginY)
@@ -341,7 +341,7 @@ void WriteSVG::setOriginY(unsigned int newOriginY)
 
 unsigned int WriteSVG::getOriginY() const
 {
-	return originY;
+    return originY;
 }
 
 void WriteSVG::setSvgTemplate(const std::string& newSvgTemplate)
@@ -351,7 +351,7 @@ void WriteSVG::setSvgTemplate(const std::string& newSvgTemplate)
 
 std::string WriteSVG::getSvgTemplate() const
 {
-	return svgTemplate;
+    return svgTemplate;
 }
 
 Ionflux::GeoUtils::TransformNodes::WriteSVG& WriteSVG::operator=(const 

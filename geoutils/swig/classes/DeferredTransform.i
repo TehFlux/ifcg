@@ -57,6 +57,11 @@ class DeferredTransform
 		DeferredTransform(const Ionflux::GeoUtils::DeferredTransform& other);
         virtual ~DeferredTransform();
         virtual void clear();
+        virtual Ionflux::GeoUtils::DeferredTransform& transform(const 
+        Ionflux::GeoUtils::Matrix4& matrix);
+        virtual Ionflux::GeoUtils::DeferredTransform& transformVI(const 
+        Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
+        image = 0);
         virtual bool checkTransform(double t = COMPARE_TOLERANCE);
         virtual bool checkVI(double t = COMPARE_TOLERANCE);
         virtual bool eq(const Ionflux::GeoUtils::DeferredTransform& other, 

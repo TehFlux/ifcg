@@ -70,6 +70,7 @@
 #include "geoutils/Polygon3Set.hpp"
 #include "geoutils/Line3.hpp"
 #include "geoutils/Object3.hpp"
+#include "geoutils/Shape3.hpp"
 #include "geoutils/Sphere3.hpp"
 #include "geoutils/SplitSet.hpp"
 #include "geoutils/BoxBoundsItem.hpp"

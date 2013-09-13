@@ -244,7 +244,7 @@ std::string Scatter::getString() const
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Scatter::createLUT(unsigned int
 numEntries, const Ionflux::GeoUtils::Vector3& stdDev, const 
-Ionflux::GeoUtils::Vector3& mean, Ionflux::GeoUtils::Object3* refObject, 
+Ionflux::GeoUtils::Vector3& mean, Ionflux::GeoUtils::Shape3* refObject, 
 Ionflux::Mapping::Mapping* sourceFuncX, Ionflux::Mapping::Mapping* 
 sourceFuncY, Ionflux::Mapping::Mapping* sourceFuncZ)
 {
@@ -298,7 +298,7 @@ void Scatter::setOffset(const Ionflux::GeoUtils::Vector3& newOffset)
 
 Ionflux::GeoUtils::Vector3 Scatter::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 void Scatter::setOffsetFunc(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
@@ -315,7 +315,7 @@ newOffsetFunc)
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Scatter::getOffsetFunc() const
 {
-	return offsetFunc;
+    return offsetFunc;
 }
 
 void Scatter::setOffsetIndexFunc(Ionflux::Mapping::Mapping* 
@@ -332,7 +332,7 @@ newOffsetIndexFunc)
 
 Ionflux::Mapping::Mapping* Scatter::getOffsetIndexFunc() const
 {
-	return offsetIndexFunc;
+    return offsetIndexFunc;
 }
 
 void Scatter::setOffsetScale(const Ionflux::GeoUtils::Vector3& 
@@ -343,7 +343,7 @@ newOffsetScale)
 
 Ionflux::GeoUtils::Vector3 Scatter::getOffsetScale() const
 {
-	return offsetScale;
+    return offsetScale;
 }
 
 void Scatter::setOffsetScaleFactor(Ionflux::Mapping::MappingValue 
@@ -354,7 +354,7 @@ newOffsetScaleFactor)
 
 Ionflux::Mapping::MappingValue Scatter::getOffsetScaleFactor() const
 {
-	return offsetScaleFactor;
+    return offsetScaleFactor;
 }
 
 void Scatter::setOffsetDeltaScaleFactor(Ionflux::Mapping::MappingValue 
@@ -365,7 +365,7 @@ newOffsetDeltaScaleFactor)
 
 Ionflux::Mapping::MappingValue Scatter::getOffsetDeltaScaleFactor() const
 {
-	return offsetDeltaScaleFactor;
+    return offsetDeltaScaleFactor;
 }
 
 void Scatter::setOffsetIndexOffset(Ionflux::Mapping::MappingValue 
@@ -376,7 +376,7 @@ newOffsetIndexOffset)
 
 Ionflux::Mapping::MappingValue Scatter::getOffsetIndexOffset() const
 {
-	return offsetIndexOffset;
+    return offsetIndexOffset;
 }
 
 void Scatter::setOffsetIndexScale(Ionflux::Mapping::MappingValue 
@@ -387,7 +387,7 @@ newOffsetIndexScale)
 
 Ionflux::Mapping::MappingValue Scatter::getOffsetIndexScale() const
 {
-	return offsetIndexScale;
+    return offsetIndexScale;
 }
 
 void Scatter::setElementScale(const Ionflux::GeoUtils::Vector3& 
@@ -398,7 +398,7 @@ newElementScale)
 
 Ionflux::GeoUtils::Vector3 Scatter::getElementScale() const
 {
-	return elementScale;
+    return elementScale;
 }
 
 void Scatter::setElementScaleFactor(Ionflux::Mapping::MappingValue 
@@ -409,7 +409,7 @@ newElementScaleFactor)
 
 Ionflux::Mapping::MappingValue Scatter::getElementScaleFactor() const
 {
-	return elementScaleFactor;
+    return elementScaleFactor;
 }
 
 void Scatter::setElementDeltaScaleFactor(Ionflux::Mapping::MappingValue 
@@ -420,7 +420,7 @@ newElementDeltaScaleFactor)
 
 Ionflux::Mapping::MappingValue Scatter::getElementDeltaScaleFactor() const
 {
-	return elementDeltaScaleFactor;
+    return elementDeltaScaleFactor;
 }
 
 void 
@@ -439,7 +439,7 @@ newElementScaleIndexFunc)
 Ionflux::GeoUtils::Mapping::Vector3Mapping* 
 Scatter::getElementScaleIndexFunc() const
 {
-	return elementScaleIndexFunc;
+    return elementScaleIndexFunc;
 }
 
 void 
@@ -458,7 +458,7 @@ newElementScaleDistanceFunc)
 Ionflux::GeoUtils::Mapping::Vector3Mapping* 
 Scatter::getElementScaleDistanceFunc() const
 {
-	return elementScaleDistanceFunc;
+    return elementScaleDistanceFunc;
 }
 
 void Scatter::setCenteringMethod(Ionflux::GeoUtils::CenteringMethod 
@@ -469,7 +469,7 @@ newCenteringMethod)
 
 Ionflux::GeoUtils::CenteringMethod Scatter::getCenteringMethod() const
 {
-	return centeringMethod;
+    return centeringMethod;
 }
 
 Ionflux::GeoUtils::TransformNodes::Scatter& Scatter::operator=(const 

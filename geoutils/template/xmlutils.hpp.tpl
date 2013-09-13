@@ -115,6 +115,7 @@ $Vertex3
 $Vertex3Set
 $Face
 $Mesh
+$Object3
 
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).

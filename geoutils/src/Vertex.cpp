@@ -217,7 +217,7 @@ void Vertex::setNormal(const Ionflux::GeoUtils::Vector3& newNormal)
 
 Ionflux::GeoUtils::Vector3 Vertex::getNormal() const
 {
-	return normal;
+    return normal;
 }
 
 Ionflux::GeoUtils::Vertex& Vertex::operator=(const 

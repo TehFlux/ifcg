@@ -265,11 +265,10 @@ std::string Vertex3Set::getValueString() const
 	        e0 = false;
 	    status << "(" << (*i)->getValueString() << ")";
 	}
-	if (!useTransform && !useVI)
-	    return status.str();
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; " << TransformableObject::getValueString();
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
 	return status.str();
 }
 

@@ -150,27 +150,27 @@ std::string Sphere3::getValueString() const
 Ionflux::GeoUtils::Sphere3& Sphere3::scale(const 
 Ionflux::GeoUtils::Vector3& s)
 {
-	Object3::scale(s);
+	Shape3::scale(s);
 	return *this;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::translate(const 
 Ionflux::GeoUtils::Vector3& t)
 {
-	Object3::translate(t);
+	Shape3::translate(t);
 	return *this;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::rotate(double phi, 
 Ionflux::GeoUtils::AxisID axis)
 {
-	Object3::rotate(phi, axis);
+	Shape3::rotate(phi, axis);
 	return *this;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::normalize()
 {
-	Object3::normalize();
+	Shape3::normalize();
 	return *this;
 }
 
@@ -178,28 +178,28 @@ Ionflux::GeoUtils::Sphere3&
 Sphere3::center(Ionflux::GeoUtils::CenteringMethod method, 
 Ionflux::GeoUtils::Vector3* origin)
 {
-	Object3::center(method, origin);
+	Shape3::center(method, origin);
 	return *this;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::transform(const 
 Ionflux::GeoUtils::Matrix3& matrix)
 {
-	Object3::transform(matrix);
+	Shape3::transform(matrix);
 	return *this;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::transform(const 
 Ionflux::GeoUtils::Matrix4& matrix)
 {
-	Object3::transform(matrix);
+	Shape3::transform(matrix);
 	return *this;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::transformVI(const 
 Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image)
 {
-	Object3::transformVI(view, image);
+	Shape3::transformVI(view, image);
 	return *this;
 }
 
@@ -222,7 +222,7 @@ void Sphere3::setP(const Ionflux::GeoUtils::Vector3& newP)
 
 Ionflux::GeoUtils::Vector3 Sphere3::getP() const
 {
-	return p;
+    return p;
 }
 
 void Sphere3::setR(double newR)
@@ -232,13 +232,13 @@ void Sphere3::setR(double newR)
 
 double Sphere3::getR() const
 {
-	return r;
+    return r;
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::operator=(const 
 Ionflux::GeoUtils::Sphere3& other)
 {
-    Object3::operator=(other);
+    Shape3::operator=(other);
     p = other.p;
     r = other.r;
 	return *this;

@@ -100,7 +100,7 @@ void BoxBoundsItemCompareAxis::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID BoxBoundsItemCompareAxis::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 Ionflux::GeoUtils::BoxBoundsItemCompareAxis& 

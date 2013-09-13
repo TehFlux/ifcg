@@ -32,7 +32,7 @@
 #include "geoutils/utils.hpp"
 #include "geoutils/Range.hpp"
 #include "geoutils/Accept3.hpp"
-#include "geoutils/Object3.hpp"
+#include "geoutils/Shape3.hpp"
 #include "geoutils/Accept3.hpp"
 
 namespace Ionflux
@@ -68,7 +68,7 @@ class AcceptVolume3
 		
 	protected:
 		/// Reference object.
-		Ionflux::GeoUtils::Object3* refObject;
+		Ionflux::GeoUtils::Shape3* refObject;
 		
 	public:
 		/// Class information instance.
@@ -99,7 +99,7 @@ class AcceptVolume3
 		 * \param initMaxIters Maximum iterations.
 		 */
 		AcceptVolume3(Ionflux::GeoUtils::Mapping::Vector3Mapping* initSource, 
-		Ionflux::GeoUtils::Object3* initRefObject, Ionflux::Mapping::MappingValue
+		Ionflux::GeoUtils::Shape3* initRefObject, Ionflux::Mapping::MappingValue 
 		initMaxIters = Ionflux::Mapping::MAX_ITERATIONS);
 		
 		/** Destructor.
@@ -175,7 +175,7 @@ class AcceptVolume3
 		 *
 		 * \return Current value of reference object.
 		 */
-		virtual Ionflux::GeoUtils::Object3* getRefObject() const;
+		virtual Ionflux::GeoUtils::Shape3* getRefObject() const;
 		
 		/** Set reference object.
 		 *
@@ -183,7 +183,7 @@ class AcceptVolume3
 		 *
 		 * \param newRefObject New value of reference object.
 		 */
-		virtual void setRefObject(Ionflux::GeoUtils::Object3* newRefObject);
+		virtual void setRefObject(Ionflux::GeoUtils::Shape3* newRefObject);
 };
 
 }

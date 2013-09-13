@@ -181,7 +181,7 @@ void Edge::setV0(int newV0)
 
 int Edge::getV0() const
 {
-	return v0;
+    return v0;
 }
 
 void Edge::setV1(int newV1)
@@ -191,7 +191,7 @@ void Edge::setV1(int newV1)
 
 int Edge::getV1() const
 {
-	return v1;
+    return v1;
 }
 
 Ionflux::GeoUtils::Edge& Edge::operator=(const Ionflux::GeoUtils::Edge& 

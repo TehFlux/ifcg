@@ -1606,6 +1606,11 @@ class DeferredTransform
 		DeferredTransform(const Ionflux::GeoUtils::DeferredTransform& other);
         virtual ~DeferredTransform();
         virtual void clear();
+        virtual Ionflux::GeoUtils::DeferredTransform& transform(const 
+        Ionflux::GeoUtils::Matrix4& matrix);
+        virtual Ionflux::GeoUtils::DeferredTransform& transformVI(const 
+        Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
+        image = 0);
         virtual bool checkTransform(double t = COMPARE_TOLERANCE);
         virtual bool checkVI(double t = COMPARE_TOLERANCE);
         virtual bool eq(const Ionflux::GeoUtils::DeferredTransform& other, 
@@ -1723,9 +1728,12 @@ class TransformableObject
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::Range3 getBounds();
-        virtual Ionflux::GeoUtils::TransformableObject& duplicate() = 0;
+        virtual Ionflux::GeoUtils::TransformableObject& duplicate();
+		virtual Ionflux::GeoUtils::TransformableObject* copy() const;
 		static Ionflux::GeoUtils::TransformableObject* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::TransformableObject* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setTransformMatrix(const Ionflux::GeoUtils::Matrix4& 
         newTransformMatrix);
         virtual Ionflux::GeoUtils::Matrix4 getTransformMatrix() const;
@@ -3154,6 +3162,65 @@ class Line3
 
 
 %{
+#include "geoutils/Shape3.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Shape3ClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Shape3ClassInfo();
+        virtual ~Shape3ClassInfo();
+};
+
+class Shape3
+: virtual public Ionflux::GeoUtils::TransformableObject
+{
+    public:
+        
+        Shape3();
+		Shape3(const Ionflux::GeoUtils::Shape3& other);
+        virtual ~Shape3();
+        virtual Ionflux::GeoUtils::Shape3& scale(const 
+        Ionflux::GeoUtils::Vector3& s);
+        virtual Ionflux::GeoUtils::Shape3& translate(const 
+        Ionflux::GeoUtils::Vector3& t);
+        virtual Ionflux::GeoUtils::Shape3& rotate(double phi, 
+        Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+        virtual Ionflux::GeoUtils::Shape3& normalize();
+        virtual Ionflux::GeoUtils::Shape3& 
+        center(Ionflux::GeoUtils::CenteringMethod method = 
+        Ionflux::GeoUtils::CENTER_BARYCENTER, Ionflux::GeoUtils::Vector3* 
+        origin = 0);
+        virtual Ionflux::GeoUtils::Shape3& transform(const 
+        Ionflux::GeoUtils::Matrix3& matrix);
+        virtual Ionflux::GeoUtils::Shape3& transform(const 
+        Ionflux::GeoUtils::Matrix4& matrix);
+        virtual Ionflux::GeoUtils::Shape3& transformVI(const 
+        Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
+        image = 0);
+        virtual bool checkVertex(const Ionflux::GeoUtils::Vertex3& v, 
+        double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual Ionflux::GeoUtils::Shape3& duplicate();
+		virtual Ionflux::GeoUtils::Shape3* copy() const;
+		static Ionflux::GeoUtils::Shape3* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Shape3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+};
+
+}
+
+}
+
+
+%{
 #include "geoutils/Object3.hpp"
 %}
 
@@ -3162,6 +3229,8 @@ namespace Ionflux
 
 namespace GeoUtils
 {
+
+class Mesh;
 
 class Object3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -3178,7 +3247,11 @@ class Object3
         
         Object3();
 		Object3(const Ionflux::GeoUtils::Object3& other);
+        Object3(Ionflux::GeoUtils::Mesh* initMesh);
         virtual ~Object3();
+        virtual void update();
+        virtual void clear();
+        virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Object3& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Object3& translate(const 
@@ -3197,12 +3270,26 @@ class Object3
         virtual Ionflux::GeoUtils::Object3& transformVI(const 
         Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
         image = 0);
-        virtual bool checkVertex(const Ionflux::GeoUtils::Vertex3& v, 
-        double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const = 0;
-        virtual Ionflux::GeoUtils::Object3& duplicate() = 0;
+        virtual std::string getValueString() const;
+        virtual Ionflux::GeoUtils::Object3& duplicate();
+		virtual Ionflux::GeoUtils::Object3* copy() const;
 		static Ionflux::GeoUtils::Object3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
+		static Ionflux::GeoUtils::Object3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Object3* create(Ionflux::GeoUtils::Mesh* 
+		initMesh, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setMesh(Ionflux::GeoUtils::Mesh* newMesh);
+        virtual Ionflux::GeoUtils::Mesh* getMesh() const;
 };
+
+namespace XMLUtils
+{
+
+void getObject3(const std::string& data, Ionflux::GeoUtils::Object3& 
+target);
+
+}
 
 }
 
@@ -3228,7 +3315,7 @@ class Sphere3ClassInfo
 };
 
 class Sphere3
-: public Ionflux::GeoUtils::Object3
+: public Ionflux::GeoUtils::Shape3
 {
     public:
         
@@ -4465,6 +4552,26 @@ class AcceptLength3
         virtual Ionflux::GeoUtils::Range getLengthRange() const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/AcceptVolume3.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace Mapping
+{
+
 class AcceptVolume3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -4481,7 +4588,7 @@ class AcceptVolume3
         AcceptVolume3();
 		AcceptVolume3(const Ionflux::GeoUtils::Mapping::AcceptVolume3& other);
         AcceptVolume3(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
-        initSource, Ionflux::GeoUtils::Object3* initRefObject, 
+        initSource, Ionflux::GeoUtils::Shape3* initRefObject, 
         Ionflux::Mapping::MappingValue initMaxIters = 
         Ionflux::Mapping::MAX_ITERATIONS);
         virtual ~AcceptVolume3();
@@ -4493,10 +4600,25 @@ class AcceptVolume3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptVolume3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
-        virtual void setRefObject(Ionflux::GeoUtils::Object3* 
-        newRefObject);
-        virtual Ionflux::GeoUtils::Object3* getRefObject() const;
+        virtual void setRefObject(Ionflux::GeoUtils::Shape3* newRefObject);
+        virtual Ionflux::GeoUtils::Shape3* getRefObject() const;
 };
+
+}
+
+}
+
+}
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace Mapping
+{
 
 class Lookup3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5785,6 +5907,10 @@ class Batch
 }
 
 
+%{
+#include "geoutils/Scatter.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -5839,7 +5965,7 @@ class Scatter
         Ionflux::GeoUtils::Vector3& stdDev = 
         Ionflux::GeoUtils::Vector3::E_SUM, const 
         Ionflux::GeoUtils::Vector3& mean = 
-        Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Object3* 
+        Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Shape3* 
         refObject = 0, Ionflux::Mapping::Mapping* sourceFuncX = 0, 
         Ionflux::Mapping::Mapping* sourceFuncY = 0, 
         Ionflux::Mapping::Mapping* sourceFuncZ = 0);

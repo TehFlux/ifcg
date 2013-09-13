@@ -225,23 +225,23 @@ unsigned int checkOutputID, unsigned int checkInputID)
 Ionflux::GeoUtils::TransformNodes::TransformNode* Connection::getSource() 
 const
 {
-	return source;
+    return source;
 }
 
 Ionflux::GeoUtils::TransformNodes::TransformNode* Connection::getTarget() 
 const
 {
-	return target;
+    return target;
 }
 
 unsigned int Connection::getOutputID() const
 {
-	return outputID;
+    return outputID;
 }
 
 unsigned int Connection::getInputID() const
 {
-	return inputID;
+    return inputID;
 }
 
 Ionflux::GeoUtils::TransformNodes::Connection& Connection::operator=(const 

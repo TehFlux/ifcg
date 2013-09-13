@@ -106,7 +106,7 @@ Ionflux::GeoUtils::Plane3& newReference)
 Ionflux::GeoUtils::Plane3 
 BoxBoundsItemCompareDistancePlane3::getReference() const
 {
-	return reference;
+    return reference;
 }
 
 Ionflux::GeoUtils::BoxBoundsItemCompareDistancePlane3& 

@@ -121,7 +121,7 @@ void FaceCompare::setInvert(bool newInvert)
 
 bool FaceCompare::getInvert() const
 {
-	return invert;
+    return invert;
 }
 
 void FaceCompare::setTarget(Ionflux::GeoUtils::FaceCompare* newTarget)
@@ -131,7 +131,7 @@ void FaceCompare::setTarget(Ionflux::GeoUtils::FaceCompare* newTarget)
 
 Ionflux::GeoUtils::FaceCompare* FaceCompare::getTarget() const
 {
-	return target;
+    return target;
 }
 
 Ionflux::GeoUtils::FaceCompare& FaceCompare::operator=(const 

@@ -169,7 +169,7 @@ void WritePNG::setFileName(const std::string& newFileName)
 
 std::string WritePNG::getFileName() const
 {
-	return fileName;
+    return fileName;
 }
 
 unsigned int WritePNG::getNumStyles() const
@@ -258,7 +258,7 @@ void WritePNG::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID WritePNG::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 void WritePNG::setClosePath(bool newClosePath)
@@ -268,7 +268,7 @@ void WritePNG::setClosePath(bool newClosePath)
 
 bool WritePNG::getClosePath() const
 {
-	return closePath;
+    return closePath;
 }
 
 void WritePNG::setWidth(unsigned int newWidth)
@@ -278,7 +278,7 @@ void WritePNG::setWidth(unsigned int newWidth)
 
 unsigned int WritePNG::getWidth() const
 {
-	return width;
+    return width;
 }
 
 void WritePNG::setHeight(unsigned int newHeight)
@@ -288,7 +288,7 @@ void WritePNG::setHeight(unsigned int newHeight)
 
 unsigned int WritePNG::getHeight() const
 {
-	return height;
+    return height;
 }
 
 void WritePNG::setOriginX(unsigned int newOriginX)
@@ -298,7 +298,7 @@ void WritePNG::setOriginX(unsigned int newOriginX)
 
 unsigned int WritePNG::getOriginX() const
 {
-	return originX;
+    return originX;
 }
 
 void WritePNG::setOriginY(unsigned int newOriginY)
@@ -308,7 +308,7 @@ void WritePNG::setOriginY(unsigned int newOriginY)
 
 unsigned int WritePNG::getOriginY() const
 {
-	return originY;
+    return originY;
 }
 
 void WritePNG::setBackgroundColor(const Ionflux::Altjira::Color& 
@@ -319,7 +319,7 @@ newBackgroundColor)
 
 Ionflux::Altjira::Color WritePNG::getBackgroundColor() const
 {
-	return backgroundColor;
+    return backgroundColor;
 }
 
 Ionflux::GeoUtils::TransformNodes::WritePNG& WritePNG::operator=(const 

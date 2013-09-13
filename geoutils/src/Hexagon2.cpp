@@ -112,7 +112,7 @@ void Hexagon2::setBaseLength(double newBaseLength)
 
 double Hexagon2::getBaseLength() const
 {
-	return baseLength;
+    return baseLength;
 }
 
 Ionflux::GeoUtils::Hexagon2& Hexagon2::operator=(const 

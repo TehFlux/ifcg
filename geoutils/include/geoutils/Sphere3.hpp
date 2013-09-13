@@ -33,7 +33,7 @@
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/Matrix4.hpp"
-#include "geoutils/Object3.hpp"
+#include "geoutils/Shape3.hpp"
 
 namespace Ionflux
 {
@@ -58,7 +58,7 @@ class Sphere3ClassInfo
  * A sphere in three-dimensional space.
  */
 class Sphere3
-: public Ionflux::GeoUtils::Object3
+: public Ionflux::GeoUtils::Shape3
 {
 	private:
 		

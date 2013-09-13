@@ -80,9 +80,12 @@ class TransformableObject
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::Range3 getBounds();
-        virtual Ionflux::GeoUtils::TransformableObject& duplicate() = 0;
+        virtual Ionflux::GeoUtils::TransformableObject& duplicate();
+		virtual Ionflux::GeoUtils::TransformableObject* copy() const;
 		static Ionflux::GeoUtils::TransformableObject* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::TransformableObject* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setTransformMatrix(const Ionflux::GeoUtils::Matrix4& 
         newTransformMatrix);
         virtual Ionflux::GeoUtils::Matrix4 getTransformMatrix() const;

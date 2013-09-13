@@ -198,7 +198,7 @@ void Interpolator::setV0(double newV0)
 
 double Interpolator::getV0() const
 {
-	return v0;
+    return v0;
 }
 
 void Interpolator::setV1(double newV1)
@@ -208,7 +208,7 @@ void Interpolator::setV1(double newV1)
 
 double Interpolator::getV1() const
 {
-	return v1;
+    return v1;
 }
 
 Ionflux::GeoUtils::Interpolator& Interpolator::operator=(const 

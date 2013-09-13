@@ -352,7 +352,7 @@ void BoxBoundsItem::setCenter(const Ionflux::GeoUtils::Vector3& newCenter)
 
 Ionflux::GeoUtils::Vector3 BoxBoundsItem::getCenter() const
 {
-	return center;
+    return center;
 }
 
 void BoxBoundsItem::setRVec(const Ionflux::GeoUtils::Vector3& newRVec)
@@ -362,7 +362,7 @@ void BoxBoundsItem::setRVec(const Ionflux::GeoUtils::Vector3& newRVec)
 
 Ionflux::GeoUtils::Vector3 BoxBoundsItem::getRVec() const
 {
-	return rVec;
+    return rVec;
 }
 
 void BoxBoundsItem::setItemID(const std::string& newItemID)
@@ -372,7 +372,7 @@ void BoxBoundsItem::setItemID(const std::string& newItemID)
 
 std::string BoxBoundsItem::getItemID() const
 {
-	return itemID;
+    return itemID;
 }
 
 void BoxBoundsItem::setBounds(const Ionflux::GeoUtils::Range3& newBounds)
@@ -382,7 +382,7 @@ void BoxBoundsItem::setBounds(const Ionflux::GeoUtils::Range3& newBounds)
 
 Ionflux::GeoUtils::Range3 BoxBoundsItem::getBounds() const
 {
-	return bounds;
+    return bounds;
 }
 
 void BoxBoundsItem::setRadius(double newRadius)
@@ -392,7 +392,7 @@ void BoxBoundsItem::setRadius(double newRadius)
 
 double BoxBoundsItem::getRadius() const
 {
-	return radius;
+    return radius;
 }
 
 unsigned int BoxBoundsItem::getNumBoxVertices() const

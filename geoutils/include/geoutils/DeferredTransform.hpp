@@ -125,6 +125,31 @@ class DeferredTransform
 		 */
 		virtual void clear();
 		
+		/** Matrix transformation.
+		 *
+		 * Apply a transformation matrix to the object.
+		 *
+		 * \param matrix Transformation matrix.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::DeferredTransform& transform(const 
+		Ionflux::GeoUtils::Matrix4& matrix);
+		
+		/** View/image transformation.
+		 *
+		 * Apply a view transformation matrix and an optional image 
+		 * transformation matrix to the object.
+		 *
+		 * \param view View transformation matrix.
+		 * \param image Image transformation matrix.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::DeferredTransform& transformVI(const 
+		Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image
+		= 0);
+		
 		/** Check transformation matrix status.
 		 *
 		 * Check the transformation matrix. If it is equal to the unit matrix 

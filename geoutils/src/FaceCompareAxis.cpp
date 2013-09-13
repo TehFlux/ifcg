@@ -120,7 +120,7 @@ void FaceCompareAxis::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID FaceCompareAxis::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 Ionflux::GeoUtils::FaceCompareAxis& FaceCompareAxis::operator=(const 

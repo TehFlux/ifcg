@@ -140,7 +140,7 @@ void LoadSVG::setFileName(const std::string& newFileName)
 
 std::string LoadSVG::getFileName() const
 {
-	return fileName;
+    return fileName;
 }
 
 unsigned int LoadSVG::getNumElementIDs() const

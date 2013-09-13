@@ -79,7 +79,7 @@ void GeoUtilsError::setReason(const std::string& newReason)
 
 std::string GeoUtilsError::getReason() const
 {
-	return reason;
+    return reason;
 }
 
 Ionflux::GeoUtils::GeoUtilsError& GeoUtilsError::operator=(const 

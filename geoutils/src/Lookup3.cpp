@@ -256,7 +256,7 @@ newSource)
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Lookup3::getSource() const
 {
-	return source;
+    return source;
 }
 
 Ionflux::GeoUtils::Mapping::Lookup3& Lookup3::operator=(const 

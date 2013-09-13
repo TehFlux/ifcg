@@ -103,7 +103,7 @@ newCurrentStyle)
 
 unsigned int SVGShapeStyleVectorSource::getCurrentStyle() const
 {
-	return currentStyle;
+    return currentStyle;
 }
 
 unsigned int SVGShapeStyleVectorSource::getNumStyles() const

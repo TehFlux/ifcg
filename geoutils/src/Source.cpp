@@ -126,7 +126,7 @@ void Source::setSource(Ionflux::GeoUtils::TransformableGroup* newSource)
 
 Ionflux::GeoUtils::TransformableGroup* Source::getSource() const
 {
-	return source;
+    return source;
 }
 
 Ionflux::GeoUtils::TransformNodes::Source& Source::operator=(const 

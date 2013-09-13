@@ -31,9 +31,12 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/Mesh.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
-using namespace Ionflux::ObjectBase;
 
 namespace Ionflux
 {
@@ -55,7 +58,10 @@ Object3ClassInfo::~Object3ClassInfo()
 const Object3ClassInfo Object3::object3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Object3::CLASS_INFO = &Object3::object3ClassInfo;
 
+const std::string Object3::XML_ELEMENT_NAME = "object";
+
 Object3::Object3()
+: mesh(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -63,15 +69,95 @@ Object3::Object3()
 }
 
 Object3::Object3(const Ionflux::GeoUtils::Object3& other)
+: mesh(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	*this = other;
 }
 
+Object3::Object3(Ionflux::GeoUtils::Mesh* initMesh)
+: mesh(0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	if (initMesh != 0)
+	    setMesh(initMesh);
+	update();
+}
+
 Object3::~Object3()
 {
 	// TODO: Nothing ATM. ;-)
+}
+
+void Object3::recalculateBounds()
+{
+	if (mesh == 0)
+	    return;
+	TransformableObject::recalculateBounds();
+	if (!useTransform && !useVI)
+	{
+	    *boundsCache = mesh->getBounds();
+	    return;
+	}
+	// Adjust for transformation.
+	Object3* o0 = copy();
+	addLocalRef(o0);
+	o0->applyTransform();
+	if (o0->useTransform)
+	    throw GeoUtilsError(getErrorString(
+	        "Transform matrix still in use after "
+	        "applying transformations.", "recalculateBounds"));
+	*boundsCache = o0->getBounds();
+	removeLocalRef(o0);
+}
+
+void Object3::update()
+{
+	if (mesh == 0)
+	    return;
+	// Determine the bounds.
+	recalculateBounds();
+}
+
+void Object3::clear()
+{
+	setMesh(0);
+}
+
+void Object3::applyTransform(bool recursive)
+{
+	if (mesh == 0)
+	{
+	    transformMatrix = Matrix4::UNIT;
+	    viewMatrix = Matrix4::UNIT;
+	    imageMatrix = Matrix4::UNIT;
+	    useTransform = false;
+	    useVI = false;
+	    return;
+	}
+	if (!useTransform && !useVI)
+	{
+	    if (recursive)
+	        mesh->applyTransform(recursive);
+	    return;
+	}
+	if (useTransform)
+	{
+	    mesh->transform(transformMatrix);
+	    mesh->applyTransform(recursive);
+	    transformMatrix = Matrix4::UNIT;
+	    useTransform = false;
+	}
+	if (useVI)
+	{
+	    mesh->transformVI(viewMatrix, &imageMatrix);
+	    mesh->applyTransform();
+	    viewMatrix = Matrix4::UNIT;
+	    imageMatrix = Matrix4::UNIT;
+	    useVI = false;
+	}
 }
 
 Ionflux::GeoUtils::Object3& Object3::scale(const 
@@ -130,17 +216,124 @@ Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image)
 	return *this;
 }
 
+std::string Object3::getValueString() const
+{
+	std::ostringstream status;
+	status << "mesh: ";
+	if (mesh != 0)
+	    status << "[" << mesh->getValueString() << "]";
+	else
+	    status << "<none>";
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
+	return status.str();
+}
+
+Ionflux::GeoUtils::Object3& Object3::duplicate()
+{
+	// TODO: Implementation.
+	return *copy();
+}
+
+void Object3::setMesh(Ionflux::GeoUtils::Mesh* newMesh)
+{
+	if (mesh == newMesh)
+		return;
+    if (newMesh != 0)
+        addLocalRef(newMesh);
+	if (mesh != 0)
+		removeLocalRef(mesh);
+	mesh = newMesh;
+}
+
+Ionflux::GeoUtils::Mesh* Object3::getMesh() const
+{
+    return mesh;
+}
+
 Ionflux::GeoUtils::Object3& Object3::operator=(const 
 Ionflux::GeoUtils::Object3& other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
 	return *this;
+}
+
+Ionflux::GeoUtils::Object3* Object3::copy() const
+{
+    Object3* newObject3 = create();
+    *newObject3 = *this;
+    return newObject3;
 }
 
 Ionflux::GeoUtils::Object3* Object3::upcast(Ionflux::ObjectBase::IFObject* 
 other)
 {
     return dynamic_cast<Object3*>(other);
+}
+
+Ionflux::GeoUtils::Object3* Object3::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Object3* newObject = new Object3();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Object3* Object3::create(Ionflux::GeoUtils::Mesh* 
+initMesh, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Object3* newObject = new Object3(initMesh);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Object3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Object3::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	return d0.str();
+}
+
+void Object3::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	bool xcFirst = true;
+    if (mesh != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << mesh->getXML0(indentLevel, "pname=\"mesh\"");
+	    xcFirst = false;
+    }
+	target = d0.str();
+}
+
+void Object3::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getObject3(data, *this);
 }
 
 }

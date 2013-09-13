@@ -184,7 +184,7 @@ void Plane3::setP(const Ionflux::GeoUtils::Vector3& newP)
 
 Ionflux::GeoUtils::Vector3 Plane3::getP() const
 {
-	return p;
+    return p;
 }
 
 void Plane3::setU(const Ionflux::GeoUtils::Vector3& newU)
@@ -194,7 +194,7 @@ void Plane3::setU(const Ionflux::GeoUtils::Vector3& newU)
 
 Ionflux::GeoUtils::Vector3 Plane3::getU() const
 {
-	return u;
+    return u;
 }
 
 void Plane3::setV(const Ionflux::GeoUtils::Vector3& newV)
@@ -204,7 +204,7 @@ void Plane3::setV(const Ionflux::GeoUtils::Vector3& newV)
 
 Ionflux::GeoUtils::Vector3 Plane3::getV() const
 {
-	return v;
+    return v;
 }
 
 Ionflux::GeoUtils::Plane3& Plane3::operator=(const 

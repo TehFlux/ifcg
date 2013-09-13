@@ -9,11 +9,7 @@ TODO
 Up next
 --------------------------------------------------------------------------------
 
-+ TransformableObject
-  > use DeferredTransform (and get rid of most properties and variables)
-  > onTransformChanged(), onVIChanged() is apparently not used by any 
-    other class. Maybe this feature can be dropped.
-  > XML I/O
+
 
 --------------------------------------------------------------------------------
 New
@@ -24,6 +20,15 @@ New
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ TransformableObject
+  > use DeferredTransform (and get rid of most properties and variables)
+    . requires updating derived classes:
+      Face, Image, Mesh, Object3, Polygon3, Polygon3Set, Shape3, SVG, 
+      TransformableGroup,Vertex3, Vertex3Set 
+  > onTransformChanged(), onVIChanged() is apparently not used by any 
+    other class. Maybe this feature can be dropped.
+  > XML I/O
 
 + BGeoUtils
   > update to work with BMesh
@@ -136,6 +141,9 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ TransformableGroup
+  > XML I/O
 
 + GeoUtils takes long to compile. Maybe break the core library into several 
   libraries.

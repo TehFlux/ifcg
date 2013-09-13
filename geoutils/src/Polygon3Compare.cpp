@@ -121,7 +121,7 @@ void Polygon3Compare::setInvert(bool newInvert)
 
 bool Polygon3Compare::getInvert() const
 {
-	return invert;
+    return invert;
 }
 
 void Polygon3Compare::setTarget(Ionflux::GeoUtils::Polygon3Compare* 
@@ -132,7 +132,7 @@ newTarget)
 
 Ionflux::GeoUtils::Polygon3Compare* Polygon3Compare::getTarget() const
 {
-	return target;
+    return target;
 }
 
 Ionflux::GeoUtils::Polygon3Compare& Polygon3Compare::operator=(const 

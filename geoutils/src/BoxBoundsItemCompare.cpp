@@ -121,7 +121,7 @@ void BoxBoundsItemCompare::setInvert(bool newInvert)
 
 bool BoxBoundsItemCompare::getInvert() const
 {
-	return invert;
+    return invert;
 }
 
 void 
@@ -134,7 +134,7 @@ newTarget)
 Ionflux::GeoUtils::BoxBoundsItemCompare* BoxBoundsItemCompare::getTarget() 
 const
 {
-	return target;
+    return target;
 }
 
 Ionflux::GeoUtils::BoxBoundsItemCompare& 

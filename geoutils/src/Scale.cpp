@@ -217,7 +217,7 @@ void Scale::setScale(const Ionflux::GeoUtils::Vector3& newScale)
 
 Ionflux::GeoUtils::Vector3 Scale::getScale() const
 {
-	return scale;
+    return scale;
 }
 
 void Scale::setIndexFunc(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
@@ -234,7 +234,7 @@ newIndexFunc)
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Scale::getIndexFunc() const
 {
-	return indexFunc;
+    return indexFunc;
 }
 
 void Scale::setDistanceFunc(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
@@ -251,7 +251,7 @@ newDistanceFunc)
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Scale::getDistanceFunc() const
 {
-	return distanceFunc;
+    return distanceFunc;
 }
 
 void Scale::setCenteringMethod(Ionflux::GeoUtils::CenteringMethod 
@@ -262,7 +262,7 @@ newCenteringMethod)
 
 Ionflux::GeoUtils::CenteringMethod Scale::getCenteringMethod() const
 {
-	return centeringMethod;
+    return centeringMethod;
 }
 
 void Scale::setScaleFactor(Ionflux::Mapping::MappingValue newScaleFactor)
@@ -272,7 +272,7 @@ void Scale::setScaleFactor(Ionflux::Mapping::MappingValue newScaleFactor)
 
 Ionflux::Mapping::MappingValue Scale::getScaleFactor() const
 {
-	return scaleFactor;
+    return scaleFactor;
 }
 
 void Scale::setDeltaScaleFactor(Ionflux::Mapping::MappingValue 
@@ -283,7 +283,7 @@ newDeltaScaleFactor)
 
 Ionflux::Mapping::MappingValue Scale::getDeltaScaleFactor() const
 {
-	return deltaScaleFactor;
+    return deltaScaleFactor;
 }
 
 Ionflux::GeoUtils::TransformNodes::Scale& Scale::operator=(const 

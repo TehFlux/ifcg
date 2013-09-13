@@ -104,6 +104,31 @@ void DeferredTransform::clear()
 	setLastImageMatrix(0);
 }
 
+Ionflux::GeoUtils::DeferredTransform& DeferredTransform::transform(const 
+Ionflux::GeoUtils::Matrix4& matrix)
+{
+	setLastTransformMatrix(transformMatrix);
+	if (transformMatrix == 0)
+	    setTransformMatrix(Matrix4::UNIT.copy());
+	transformMatrix->multiplyLeft(matrix);
+	checkTransform();
+	return *this;
+}
+
+Ionflux::GeoUtils::DeferredTransform& DeferredTransform::transformVI(const 
+Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image)
+{
+	setLastViewMatrix(viewMatrix);
+	setViewMatrix(view.copy());
+	if (image != 0)
+	{
+	    setLastImageMatrix(imageMatrix);
+	    setImageMatrix(image->copy());
+	}
+	checkVI();
+	return *this;
+}
+
 bool DeferredTransform::checkTransform(double t)
 {
 	if (transformMatrix != 0) 
@@ -414,6 +439,12 @@ std::string DeferredTransform::getValueString() const
 void DeferredTransform::setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
 newTransformMatrix)
 {
+	if (transformMatrix == newTransformMatrix)
+		return;
+    if (newTransformMatrix != 0)
+        addLocalRef(newTransformMatrix);
+	if (transformMatrix != 0)
+		removeLocalRef(transformMatrix);
 	transformMatrix = newTransformMatrix;
 	checkTransform();
 }
@@ -426,6 +457,12 @@ Ionflux::GeoUtils::Matrix4* DeferredTransform::getTransformMatrix() const
 void DeferredTransform::setViewMatrix(Ionflux::GeoUtils::Matrix4* 
 newViewMatrix)
 {
+	if (viewMatrix == newViewMatrix)
+		return;
+    if (newViewMatrix != 0)
+        addLocalRef(newViewMatrix);
+	if (viewMatrix != 0)
+		removeLocalRef(viewMatrix);
 	viewMatrix = newViewMatrix;
 	checkVI();
 }
@@ -438,6 +475,12 @@ Ionflux::GeoUtils::Matrix4* DeferredTransform::getViewMatrix() const
 void DeferredTransform::setImageMatrix(Ionflux::GeoUtils::Matrix4* 
 newImageMatrix)
 {
+	if (imageMatrix == newImageMatrix)
+		return;
+    if (newImageMatrix != 0)
+        addLocalRef(newImageMatrix);
+	if (imageMatrix != 0)
+		removeLocalRef(imageMatrix);
 	imageMatrix = newImageMatrix;
 	checkVI();
 }
@@ -450,6 +493,12 @@ Ionflux::GeoUtils::Matrix4* DeferredTransform::getImageMatrix() const
 void DeferredTransform::setLastTransformMatrix(Ionflux::GeoUtils::Matrix4* 
 newLastTransformMatrix)
 {
+	if (lastTransformMatrix == newLastTransformMatrix)
+		return;
+    if (newLastTransformMatrix != 0)
+        addLocalRef(newLastTransformMatrix);
+	if (lastTransformMatrix != 0)
+		removeLocalRef(lastTransformMatrix);
 	lastTransformMatrix = newLastTransformMatrix;
 }
 
@@ -462,6 +511,12 @@ const
 void DeferredTransform::setLastViewMatrix(Ionflux::GeoUtils::Matrix4* 
 newLastViewMatrix)
 {
+	if (lastViewMatrix == newLastViewMatrix)
+		return;
+    if (newLastViewMatrix != 0)
+        addLocalRef(newLastViewMatrix);
+	if (lastViewMatrix != 0)
+		removeLocalRef(lastViewMatrix);
 	lastViewMatrix = newLastViewMatrix;
 }
 
@@ -473,6 +528,12 @@ Ionflux::GeoUtils::Matrix4* DeferredTransform::getLastViewMatrix() const
 void DeferredTransform::setLastImageMatrix(Ionflux::GeoUtils::Matrix4* 
 newLastImageMatrix)
 {
+	if (lastImageMatrix == newLastImageMatrix)
+		return;
+    if (newLastImageMatrix != 0)
+        addLocalRef(newLastImageMatrix);
+	if (lastImageMatrix != 0)
+		removeLocalRef(lastImageMatrix);
 	lastImageMatrix = newLastImageMatrix;
 }
 

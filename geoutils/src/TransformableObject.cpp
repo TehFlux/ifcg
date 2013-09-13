@@ -87,7 +87,7 @@ void TransformableObject::recalculateBounds()
 {
 	if (boundsCache == 0)
 	{
-	    boundsCache = new Range3();
+	    boundsCache = Range3::create();
 	    addLocalRef(boundsCache);
 	}
 }
@@ -279,6 +279,12 @@ Ionflux::GeoUtils::Range3 TransformableObject::getBounds()
 	return *boundsCache;
 }
 
+Ionflux::GeoUtils::TransformableObject& TransformableObject::duplicate()
+{
+	// TODO: Implementation.
+	return *copy();
+}
+
 void TransformableObject::setTransformMatrix(const 
 Ionflux::GeoUtils::Matrix4& newTransformMatrix)
 {
@@ -357,10 +363,30 @@ Ionflux::GeoUtils::TransformableObject& other)
 	return *this;
 }
 
+Ionflux::GeoUtils::TransformableObject* TransformableObject::copy() const
+{
+    TransformableObject* newTransformableObject = create();
+    *newTransformableObject = *this;
+    return newTransformableObject;
+}
+
 Ionflux::GeoUtils::TransformableObject* 
 TransformableObject::upcast(Ionflux::ObjectBase::IFObject* other)
 {
     return dynamic_cast<TransformableObject*>(other);
+}
+
+Ionflux::GeoUtils::TransformableObject* 
+TransformableObject::create(Ionflux::ObjectBase::IFObject* parentObject)
+{
+    TransformableObject* newObject = new TransformableObject();
+    if (newObject == 0)
+    {
+        return 0;
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
 }
 
 std::string TransformableObject::getXMLElementName() const

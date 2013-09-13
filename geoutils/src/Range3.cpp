@@ -318,7 +318,7 @@ void Range3::setX(const Ionflux::GeoUtils::Range& newX)
 
 Ionflux::GeoUtils::Range Range3::getX() const
 {
-	return x;
+    return x;
 }
 
 void Range3::setY(const Ionflux::GeoUtils::Range& newY)
@@ -328,7 +328,7 @@ void Range3::setY(const Ionflux::GeoUtils::Range& newY)
 
 Ionflux::GeoUtils::Range Range3::getY() const
 {
-	return y;
+    return y;
 }
 
 void Range3::setZ(const Ionflux::GeoUtils::Range& newZ)
@@ -338,7 +338,7 @@ void Range3::setZ(const Ionflux::GeoUtils::Range& newZ)
 
 Ionflux::GeoUtils::Range Range3::getZ() const
 {
-	return z;
+    return z;
 }
 
 Ionflux::GeoUtils::Range3& Range3::operator=(const 

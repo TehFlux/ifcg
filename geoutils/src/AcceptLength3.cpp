@@ -122,7 +122,7 @@ newLengthRange)
 
 Ionflux::GeoUtils::Range AcceptLength3::getLengthRange() const
 {
-	return lengthRange;
+    return lengthRange;
 }
 
 Ionflux::GeoUtils::Mapping::AcceptLength3& AcceptLength3::operator=(const 

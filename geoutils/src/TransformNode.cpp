@@ -524,7 +524,7 @@ void TransformNode::setLoopMax(unsigned int newLoopMax)
 
 unsigned int TransformNode::getLoopMax() const
 {
-	return loopMax;
+    return loopMax;
 }
 
 void TransformNode::setMaxNumInputs(unsigned int newMaxNumInputs)
@@ -534,7 +534,7 @@ void TransformNode::setMaxNumInputs(unsigned int newMaxNumInputs)
 
 unsigned int TransformNode::getMaxNumInputs() const
 {
-	return maxNumInputs;
+    return maxNumInputs;
 }
 
 void TransformNode::setUpdateCounter(unsigned int newUpdateCounter)
@@ -544,7 +544,7 @@ void TransformNode::setUpdateCounter(unsigned int newUpdateCounter)
 
 unsigned int TransformNode::getUpdateCounter() const
 {
-	return updateCounter;
+    return updateCounter;
 }
 
 Ionflux::GeoUtils::TransformNodes::TransformNode& 

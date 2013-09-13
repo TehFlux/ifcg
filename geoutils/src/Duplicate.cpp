@@ -157,7 +157,7 @@ void Duplicate::setNumDuplicates(unsigned int newNumDuplicates)
 
 unsigned int Duplicate::getNumDuplicates() const
 {
-	return numDuplicates;
+    return numDuplicates;
 }
 
 void Duplicate::setNumDuplicatesParam(Ionflux::Mapping::MappingValue 
@@ -185,7 +185,7 @@ void Duplicate::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* Duplicate::getFunc() const
 {
-	return func;
+    return func;
 }
 
 Ionflux::GeoUtils::TransformNodes::Duplicate& Duplicate::operator=(const 

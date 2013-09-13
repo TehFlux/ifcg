@@ -114,7 +114,7 @@ newStyleSource)
 Ionflux::GeoUtils::SVGShapeStyleSource* 
 SVGImageProperties::getStyleSource() const
 {
-	return styleSource;
+    return styleSource;
 }
 
 void SVGImageProperties::setSvgTemplate(const std::string& newSvgTemplate)
@@ -124,7 +124,7 @@ void SVGImageProperties::setSvgTemplate(const std::string& newSvgTemplate)
 
 std::string SVGImageProperties::getSvgTemplate() const
 {
-	return svgTemplate;
+    return svgTemplate;
 }
 
 Ionflux::GeoUtils::SVGImageProperties& SVGImageProperties::operator=(const 

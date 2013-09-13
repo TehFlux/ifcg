@@ -213,7 +213,7 @@ void ImageItem::setImage(Ionflux::GeoUtils::Image* newImage)
 
 Ionflux::GeoUtils::Image* ImageItem::getImage() const
 {
-	return image;
+    return image;
 }
 
 void ImageItem::setImageID(const std::string& newImageID)
@@ -223,7 +223,7 @@ void ImageItem::setImageID(const std::string& newImageID)
 
 std::string ImageItem::getImageID() const
 {
-	return imageID;
+    return imageID;
 }
 
 void ImageItem::setSourceType(Ionflux::GeoUtils::ImageSourceType 
@@ -234,7 +234,7 @@ newSourceType)
 
 Ionflux::GeoUtils::ImageSourceType ImageItem::getSourceType() const
 {
-	return sourceType;
+    return sourceType;
 }
 
 void ImageItem::setBlender(Ionflux::Altjira::ColorBlender* newBlender)
@@ -250,7 +250,7 @@ void ImageItem::setBlender(Ionflux::Altjira::ColorBlender* newBlender)
 
 Ionflux::Altjira::ColorBlender* ImageItem::getBlender() const
 {
-	return blender;
+    return blender;
 }
 
 void ImageItem::setNumUsers(unsigned int newNumUsers)
@@ -260,7 +260,7 @@ void ImageItem::setNumUsers(unsigned int newNumUsers)
 
 unsigned int ImageItem::getNumUsers() const
 {
-	return numUsers;
+    return numUsers;
 }
 
 void ImageItem::setSource(Ionflux::GeoUtils::ImageSource* newSource)
@@ -276,7 +276,7 @@ void ImageItem::setSource(Ionflux::GeoUtils::ImageSource* newSource)
 
 Ionflux::GeoUtils::ImageSource* ImageItem::getSource() const
 {
-	return source;
+    return source;
 }
 
 void ImageItem::setOffset(Ionflux::GeoUtils::Vector3 newOffset)
@@ -286,7 +286,7 @@ void ImageItem::setOffset(Ionflux::GeoUtils::Vector3 newOffset)
 
 Ionflux::GeoUtils::Vector3 ImageItem::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 Ionflux::GeoUtils::ImageItem& ImageItem::operator=(const 

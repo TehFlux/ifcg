@@ -232,7 +232,7 @@ void Line3::setP(const Ionflux::GeoUtils::Vector3& newP)
 
 Ionflux::GeoUtils::Vector3 Line3::getP() const
 {
-	return p;
+    return p;
 }
 
 void Line3::setU(const Ionflux::GeoUtils::Vector3& newU)
@@ -242,7 +242,7 @@ void Line3::setU(const Ionflux::GeoUtils::Vector3& newU)
 
 Ionflux::GeoUtils::Vector3 Line3::getU() const
 {
-	return u;
+    return u;
 }
 
 Ionflux::GeoUtils::Line3& Line3::operator=(const Ionflux::GeoUtils::Line3& 

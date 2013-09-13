@@ -82,7 +82,7 @@ class Scatter
         Ionflux::GeoUtils::Vector3& stdDev = 
         Ionflux::GeoUtils::Vector3::E_SUM, const 
         Ionflux::GeoUtils::Vector3& mean = 
-        Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Object3* 
+        Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Shape3* 
         refObject = 0, Ionflux::Mapping::Mapping* sourceFuncX = 0, 
         Ionflux::Mapping::Mapping* sourceFuncY = 0, 
         Ionflux::Mapping::Mapping* sourceFuncZ = 0);

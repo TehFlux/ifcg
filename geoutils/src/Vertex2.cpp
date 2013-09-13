@@ -233,7 +233,7 @@ void Vertex2::setX(double newX)
 
 double Vertex2::getX() const
 {
-	return x;
+    return x;
 }
 
 void Vertex2::setY(double newY)
@@ -243,7 +243,7 @@ void Vertex2::setY(double newY)
 
 double Vertex2::getY() const
 {
-	return y;
+    return y;
 }
 
 Ionflux::GeoUtils::Vertex2& Vertex2::operator=(const 

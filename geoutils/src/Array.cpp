@@ -146,7 +146,7 @@ void Array::setOffset(const Ionflux::GeoUtils::Vector3& newOffset)
 
 Ionflux::GeoUtils::Vector3 Array::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 void Array::setNumRows(unsigned int newNumRows)
@@ -156,7 +156,7 @@ void Array::setNumRows(unsigned int newNumRows)
 
 unsigned int Array::getNumRows() const
 {
-	return numRows;
+    return numRows;
 }
 
 void Array::setNumColumns(unsigned int newNumColumns)
@@ -166,7 +166,7 @@ void Array::setNumColumns(unsigned int newNumColumns)
 
 unsigned int Array::getNumColumns() const
 {
-	return numColumns;
+    return numColumns;
 }
 
 void Array::setCellWidth(double newCellWidth)
@@ -176,7 +176,7 @@ void Array::setCellWidth(double newCellWidth)
 
 double Array::getCellWidth() const
 {
-	return cellWidth;
+    return cellWidth;
 }
 
 void Array::setCellHeight(double newCellHeight)
@@ -186,7 +186,7 @@ void Array::setCellHeight(double newCellHeight)
 
 double Array::getCellHeight() const
 {
-	return cellHeight;
+    return cellHeight;
 }
 
 Ionflux::GeoUtils::TransformNodes::Array& Array::operator=(const 

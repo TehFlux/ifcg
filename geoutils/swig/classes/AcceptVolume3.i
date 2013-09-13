@@ -54,7 +54,7 @@ class AcceptVolume3
         AcceptVolume3();
 		AcceptVolume3(const Ionflux::GeoUtils::Mapping::AcceptVolume3& other);
         AcceptVolume3(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
-        initSource, Ionflux::GeoUtils::Object3* initRefObject, 
+        initSource, Ionflux::GeoUtils::Shape3* initRefObject, 
         Ionflux::Mapping::MappingValue initMaxIters = 
         Ionflux::Mapping::MAX_ITERATIONS);
         virtual ~AcceptVolume3();
@@ -66,9 +66,8 @@ class AcceptVolume3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptVolume3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
-        virtual void setRefObject(Ionflux::GeoUtils::Object3* 
-        newRefObject);
-        virtual Ionflux::GeoUtils::Object3* getRefObject() const;
+        virtual void setRefObject(Ionflux::GeoUtils::Shape3* newRefObject);
+        virtual Ionflux::GeoUtils::Shape3* getRefObject() const;
 };
 
 }

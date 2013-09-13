@@ -102,7 +102,7 @@ Ionflux::GeoUtils::SVGShapeStyle& newDefaultStyle)
 Ionflux::GeoUtils::SVGShapeStyle SVGShapeStyleSource::getDefaultStyle() 
 const
 {
-	return defaultStyle;
+    return defaultStyle;
 }
 
 Ionflux::GeoUtils::SVGShapeStyleSource& 

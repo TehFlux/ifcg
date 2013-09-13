@@ -148,7 +148,7 @@ void Center::setOrigin(const Ionflux::GeoUtils::Vector3& newOrigin)
 
 Ionflux::GeoUtils::Vector3 Center::getOrigin() const
 {
-	return origin;
+    return origin;
 }
 
 void Center::setMethod(Ionflux::GeoUtils::CenteringMethod newMethod)
@@ -158,7 +158,7 @@ void Center::setMethod(Ionflux::GeoUtils::CenteringMethod newMethod)
 
 Ionflux::GeoUtils::CenteringMethod Center::getMethod() const
 {
-	return method;
+    return method;
 }
 
 Ionflux::GeoUtils::TransformNodes::Center& Center::operator=(const 

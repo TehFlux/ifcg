@@ -795,7 +795,7 @@ newVertexSource)
 
 Ionflux::GeoUtils::Vertex3Set* Polygon3::getVertexSource() const
 {
-	return vertexSource;
+    return vertexSource;
 }
 
 unsigned int Polygon3::getNumVertices() const

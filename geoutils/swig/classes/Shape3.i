@@ -3,7 +3,7 @@
  * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * Object3.i                       Object (3D) (interface).
+ * Shape3.i                        Shape (3D) (interface).
  * =========================================================================
  * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -25,7 +25,7 @@
  * 
  * ========================================================================== */
 %{
-#include "geoutils/Object3.hpp"
+#include "geoutils/Shape3.hpp"
 %}
 
 namespace Ionflux
@@ -34,66 +34,49 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-class Mesh;
-
-class Object3ClassInfo
+class Shape3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
     public:
-        Object3ClassInfo();
-        virtual ~Object3ClassInfo();
+        Shape3ClassInfo();
+        virtual ~Shape3ClassInfo();
 };
 
-class Object3
-: public Ionflux::GeoUtils::TransformableObject
+class Shape3
+: virtual public Ionflux::GeoUtils::TransformableObject
 {
     public:
         
-        Object3();
-		Object3(const Ionflux::GeoUtils::Object3& other);
-        Object3(Ionflux::GeoUtils::Mesh* initMesh);
-        virtual ~Object3();
-        virtual void update();
-        virtual void clear();
-        virtual void applyTransform(bool recursive = false);
-        virtual Ionflux::GeoUtils::Object3& scale(const 
+        Shape3();
+		Shape3(const Ionflux::GeoUtils::Shape3& other);
+        virtual ~Shape3();
+        virtual Ionflux::GeoUtils::Shape3& scale(const 
         Ionflux::GeoUtils::Vector3& s);
-        virtual Ionflux::GeoUtils::Object3& translate(const 
+        virtual Ionflux::GeoUtils::Shape3& translate(const 
         Ionflux::GeoUtils::Vector3& t);
-        virtual Ionflux::GeoUtils::Object3& rotate(double phi, 
+        virtual Ionflux::GeoUtils::Shape3& rotate(double phi, 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
-        virtual Ionflux::GeoUtils::Object3& normalize();
-        virtual Ionflux::GeoUtils::Object3& 
+        virtual Ionflux::GeoUtils::Shape3& normalize();
+        virtual Ionflux::GeoUtils::Shape3& 
         center(Ionflux::GeoUtils::CenteringMethod method = 
         Ionflux::GeoUtils::CENTER_BARYCENTER, Ionflux::GeoUtils::Vector3* 
         origin = 0);
-        virtual Ionflux::GeoUtils::Object3& transform(const 
+        virtual Ionflux::GeoUtils::Shape3& transform(const 
         Ionflux::GeoUtils::Matrix3& matrix);
-        virtual Ionflux::GeoUtils::Object3& transform(const 
+        virtual Ionflux::GeoUtils::Shape3& transform(const 
         Ionflux::GeoUtils::Matrix4& matrix);
-        virtual Ionflux::GeoUtils::Object3& transformVI(const 
+        virtual Ionflux::GeoUtils::Shape3& transformVI(const 
         Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
         image = 0);
-        virtual std::string getValueString() const;
-        virtual Ionflux::GeoUtils::Object3& duplicate();
-		virtual Ionflux::GeoUtils::Object3* copy() const;
-		static Ionflux::GeoUtils::Object3* upcast(Ionflux::ObjectBase::IFObject* 
+        virtual bool checkVertex(const Ionflux::GeoUtils::Vertex3& v, 
+        double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual Ionflux::GeoUtils::Shape3& duplicate();
+		virtual Ionflux::GeoUtils::Shape3* copy() const;
+		static Ionflux::GeoUtils::Shape3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
-		static Ionflux::GeoUtils::Object3* create(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::GeoUtils::Shape3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
-		static Ionflux::GeoUtils::Object3* create(Ionflux::GeoUtils::Mesh* 
-		initMesh, Ionflux::ObjectBase::IFObject* parentObject = 0);
-        virtual void setMesh(Ionflux::GeoUtils::Mesh* newMesh);
-        virtual Ionflux::GeoUtils::Mesh* getMesh() const;
 };
-
-namespace XMLUtils
-{
-
-void getObject3(const std::string& data, Ionflux::GeoUtils::Object3& 
-target);
-
-}
 
 }
 

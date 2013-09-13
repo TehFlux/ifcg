@@ -166,7 +166,7 @@ void Translate::setOffset(const Ionflux::GeoUtils::Vector3& newOffset)
 
 Ionflux::GeoUtils::Vector3 Translate::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 void Translate::setIndexFunc(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
@@ -183,7 +183,7 @@ newIndexFunc)
 
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Translate::getIndexFunc() const
 {
-	return indexFunc;
+    return indexFunc;
 }
 
 void Translate::setDistanceFunc(Ionflux::GeoUtils::Mapping::Vector3Mapping*
@@ -201,7 +201,7 @@ newDistanceFunc)
 Ionflux::GeoUtils::Mapping::Vector3Mapping* Translate::getDistanceFunc() 
 const
 {
-	return distanceFunc;
+    return distanceFunc;
 }
 
 Ionflux::GeoUtils::TransformNodes::Translate& Translate::operator=(const 

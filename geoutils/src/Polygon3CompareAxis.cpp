@@ -120,7 +120,7 @@ void Polygon3CompareAxis::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID Polygon3CompareAxis::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 Ionflux::GeoUtils::Polygon3CompareAxis& 

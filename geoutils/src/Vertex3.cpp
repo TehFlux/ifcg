@@ -349,17 +349,10 @@ std::string Vertex3::getValueString() const
 {
 	std::ostringstream status;
 	status << x << ", " << y << ", " << z;
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; ";
-	if (useTransform)
-	    status << transformMatrix;
-	if (useVI)
-	{
-	    if (useTransform)
-	        status << ", ";
-	    status << viewMatrix << ", " << imageMatrix;
-	}
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
 	return status.str();
 }
 
@@ -384,7 +377,7 @@ void Vertex3::setX(double newX)
 
 double Vertex3::getX() const
 {
-	return x;
+    return x;
 }
 
 void Vertex3::setY(double newY)
@@ -394,7 +387,7 @@ void Vertex3::setY(double newY)
 
 double Vertex3::getY() const
 {
-	return y;
+    return y;
 }
 
 void Vertex3::setZ(double newZ)
@@ -404,7 +397,7 @@ void Vertex3::setZ(double newZ)
 
 double Vertex3::getZ() const
 {
-	return z;
+    return z;
 }
 
 Ionflux::GeoUtils::Vertex3& Vertex3::operator=(const 

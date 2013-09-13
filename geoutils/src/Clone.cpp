@@ -125,7 +125,7 @@ void Clone::setNumClones(unsigned int newNumClones)
 
 unsigned int Clone::getNumClones() const
 {
-	return numClones;
+    return numClones;
 }
 
 Ionflux::GeoUtils::TransformNodes::Clone& Clone::operator=(const 

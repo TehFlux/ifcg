@@ -97,7 +97,7 @@ void Split::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID Split::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 void Split::setS(double newS)
@@ -107,7 +107,7 @@ void Split::setS(double newS)
 
 double Split::getS() const
 {
-	return s;
+    return s;
 }
 
 Ionflux::GeoUtils::Split& Split::operator=(const Ionflux::GeoUtils::Split& 

@@ -1924,9 +1924,9 @@ createTransformableObject(TiXmlElement* e0, const std::string& elementName)
     TransformableObject* o0 = 0;
     if (en0 == elementName)
     {
-        throw Ionflux::ObjectBase::IFError(
-            "[createTransformableObject] "
-            "Cannot create instance of abstract class.");
+        // default (TransformableObject)
+        o0 = TransformableObject::create();
+        getTransformableObject(e0, *o0, en0);
     } else
     if (en0 == Vertex3::XML_ELEMENT_NAME)
     {
@@ -1954,6 +1954,13 @@ createTransformableObject(TiXmlElement* e0, const std::string& elementName)
         // Mesh
         Mesh* o1 = Mesh::create();
         getMesh(e0, *o1, en0);
+        o0 = o1;
+    } else
+    if (en0 == Object3::XML_ELEMENT_NAME)
+    {
+        // Object3
+        Object3* o1 = Object3::create();
+        getObject3(e0, *o1, en0);
         o0 = o1;
     } else
     {
@@ -2033,9 +2040,11 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
         std::string en0(ce0->Value());
         if (en0 == childElementName)
         {
-            throw Ionflux::ObjectBase::IFError(
-                "[getObjVector<TransformableObject>] "
-                "Cannot create instance of abstract class.");
+            // default (TransformableObject)
+            Ionflux::GeoUtils::TransformableObject* co0 = 
+                Ionflux::GeoUtils::TransformableObject::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
         } else
         if (en0 == 
             Vertex3::XML_ELEMENT_NAME)
@@ -2070,6 +2079,15 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             // Mesh
             Mesh* co0 = 
                 Mesh::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        if (en0 == 
+            Object3::XML_ELEMENT_NAME)
+        {
+            // Object3
+            Object3* co0 = 
+                Object3::create();
             getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
@@ -2112,9 +2130,9 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
             // Add an object of the appropriate class. 
             if (en1 == childElementName)
             {
-                throw Ionflux::ObjectBase::IFError(
-                    "[getObjVector<TransformableObject>] "
-                    "Cannot create instance of abstract class.");
+                // default (TransformableObject)
+                co0 = Ionflux::GeoUtils::TransformableObject::create();
+                getObject0(ce0, *co0, childElementName);
             } else
             if (en1 == 
                 Vertex3::XML_ELEMENT_NAME)
@@ -2149,6 +2167,15 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
                 // Mesh
                 Mesh* co1 = 
                     Mesh::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Object3::XML_ELEMENT_NAME)
+            {
+                // Object3
+                Object3* co1 = 
+                    Object3::create();
                 getObject0(ce0, *co0, childElementName);
                 co0 = co1;
             } else
@@ -2602,6 +2629,109 @@ void getObject0<Ionflux::GeoUtils::Mesh>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getMesh(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getMesh(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Object3.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Object3* createObject3(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Object3* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Object3)
+        o0 = Object3::create();
+        getObject3(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createObject3] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getObject3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Object3& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getObject3");
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: mesh (object)
+        if (pName == "mesh")
+        {
+            Ionflux::GeoUtils::Mesh* co0 = 
+                createMesh(ce0, en0);
+            target.setMesh(co0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getObject3(const std::string& data, Ionflux::GeoUtils::Object3& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getObject3] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Object3::XML_ELEMENT_NAME);
+    getObject3(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Object3>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Object3& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getObject3(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getObject3(e0, target, elementName);
 }
 
 }

@@ -99,7 +99,7 @@ void ImageProperties::setFileName(const std::string& newFileName)
 
 std::string ImageProperties::getFileName() const
 {
-	return fileName;
+    return fileName;
 }
 
 void ImageProperties::setWidth(unsigned int newWidth)
@@ -109,7 +109,7 @@ void ImageProperties::setWidth(unsigned int newWidth)
 
 unsigned int ImageProperties::getWidth() const
 {
-	return width;
+    return width;
 }
 
 void ImageProperties::setHeight(unsigned int newHeight)
@@ -119,7 +119,7 @@ void ImageProperties::setHeight(unsigned int newHeight)
 
 unsigned int ImageProperties::getHeight() const
 {
-	return height;
+    return height;
 }
 
 void ImageProperties::setOrigin(const Ionflux::GeoUtils::Vector2& 
@@ -130,7 +130,7 @@ newOrigin)
 
 Ionflux::GeoUtils::Vector2 ImageProperties::getOrigin() const
 {
-	return origin;
+    return origin;
 }
 
 Ionflux::GeoUtils::ImageProperties& ImageProperties::operator=(const 

@@ -469,6 +469,28 @@ void getMesh(const std::string& data, Ionflux::GeoUtils::Mesh& target);
 }
 
 
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Object3;
+
+namespace XMLUtils
+{
+
+void getObject3(const std::string& data, Ionflux::GeoUtils::Object3& 
+target);
+
+}
+
+}
+
+}
+
+
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).
  */

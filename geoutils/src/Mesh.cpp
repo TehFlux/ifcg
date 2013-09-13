@@ -418,14 +418,14 @@ void Mesh::applyTransform(bool recursive)
 	if (useTransform)
 	{
 	    vertexSource->transform(transformMatrix);
-	    vertexSource->applyTransform();
+	    vertexSource->applyTransform(recursive);
 	    transformMatrix = Matrix4::UNIT;
 	    useTransform = false;
 	}
 	if (useVI)
 	{
 	    vertexSource->transformVI(viewMatrix, &imageMatrix);
-	    vertexSource->applyTransform();
+	    vertexSource->applyTransform(recursive);
 	    viewMatrix = Matrix4::UNIT;
 	    imageMatrix = Matrix4::UNIT;
 	    useVI = false;
@@ -670,11 +670,9 @@ std::string Mesh::getValueString() const
 	} else
 	    status << "<none>";
 	// transformable object data
-	if (!useTransform && !useVI)
-	    return status.str();
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; " << TransformableObject::getValueString();
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
 	return status.str();
 }
 
@@ -886,7 +884,7 @@ void Mesh::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)
 
 Ionflux::GeoUtils::Vertex3Set* Mesh::getVertexSource() const
 {
-	return vertexSource;
+    return vertexSource;
 }
 
 unsigned int Mesh::getNumVertices() const

@@ -850,6 +850,54 @@ Ionflux::GeoUtils::Mesh& target, const std::string& elementName);
 }
 
 
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Object3;
+
+namespace XMLUtils
+{
+
+/// Initialize Object3 from TiXmlElement.
+void getObject3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Object3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Object3::XML_ELEMENT_NAME);
+
+/// Create new Object3 from TiXmlElement.
+Ionflux::GeoUtils::Object3* createObject3(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Object3::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Object3 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Object3>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Object3& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).
  */

@@ -193,7 +193,7 @@ void Render::setImage(Ionflux::GeoUtils::Image* newImage)
 
 Ionflux::GeoUtils::Image* Render::getImage() const
 {
-	return image;
+    return image;
 }
 
 unsigned int Render::getNumStyles() const
@@ -282,7 +282,7 @@ void Render::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID Render::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 void Render::setClosePath(bool newClosePath)
@@ -292,7 +292,7 @@ void Render::setClosePath(bool newClosePath)
 
 bool Render::getClosePath() const
 {
-	return closePath;
+    return closePath;
 }
 
 void Render::setOriginX(unsigned int newOriginX)
@@ -302,7 +302,7 @@ void Render::setOriginX(unsigned int newOriginX)
 
 unsigned int Render::getOriginX() const
 {
-	return originX;
+    return originX;
 }
 
 void Render::setOriginY(unsigned int newOriginY)
@@ -312,7 +312,7 @@ void Render::setOriginY(unsigned int newOriginY)
 
 unsigned int Render::getOriginY() const
 {
-	return originY;
+    return originY;
 }
 
 void Render::setBackgroundColor(const Ionflux::Altjira::Color& 
@@ -323,7 +323,7 @@ newBackgroundColor)
 
 Ionflux::Altjira::Color Render::getBackgroundColor() const
 {
-	return backgroundColor;
+    return backgroundColor;
 }
 
 Ionflux::GeoUtils::TransformNodes::Render& Render::operator=(const 

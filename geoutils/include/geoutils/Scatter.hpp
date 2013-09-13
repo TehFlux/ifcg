@@ -34,7 +34,7 @@
 #include "geoutils/Range.hpp"
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Vector3Mapping.hpp"
-#include "geoutils/Object3.hpp"
+#include "geoutils/Shape3.hpp"
 #include "geoutils/TransformNode.hpp"
 
 namespace Ionflux
@@ -218,7 +218,7 @@ class Scatter
 		numEntries = DEFAULT_NUM_LUT_ENTRIES, const Ionflux::GeoUtils::Vector3& 
 		stdDev = Ionflux::GeoUtils::Vector3::E_SUM, const 
 		Ionflux::GeoUtils::Vector3& mean = Ionflux::GeoUtils::Vector3::ZERO, 
-		Ionflux::GeoUtils::Object3* refObject = 0, Ionflux::Mapping::Mapping* 
+		Ionflux::GeoUtils::Shape3* refObject = 0, Ionflux::Mapping::Mapping* 
 		sourceFuncX = 0, Ionflux::Mapping::Mapping* sourceFuncY = 0, 
 		Ionflux::Mapping::Mapping* sourceFuncZ = 0);
 		

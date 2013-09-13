@@ -145,7 +145,7 @@ void Voxel::setIndex(const Ionflux::GeoUtils::Vector3& newIndex)
 
 Ionflux::GeoUtils::Vector3 Voxel::getIndex() const
 {
-	return index;
+    return index;
 }
 
 void Voxel::setEdgeLength(double newEdgeLength)
@@ -155,7 +155,7 @@ void Voxel::setEdgeLength(double newEdgeLength)
 
 double Voxel::getEdgeLength() const
 {
-	return edgeLength;
+    return edgeLength;
 }
 
 void Voxel::setOffset(const Ionflux::GeoUtils::Vector3& newOffset)
@@ -165,7 +165,7 @@ void Voxel::setOffset(const Ionflux::GeoUtils::Vector3& newOffset)
 
 Ionflux::GeoUtils::Vector3 Voxel::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 Ionflux::GeoUtils::Voxel& Voxel::operator=(const Ionflux::GeoUtils::Voxel& 

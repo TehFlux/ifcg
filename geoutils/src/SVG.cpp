@@ -190,7 +190,7 @@ void SVG::setSource(const std::string& newSource)
 
 std::string SVG::getSource() const
 {
-	return source;
+    return source;
 }
 
 void SVG::setType(Ionflux::GeoUtils::SVGType newType)
@@ -200,7 +200,7 @@ void SVG::setType(Ionflux::GeoUtils::SVGType newType)
 
 Ionflux::GeoUtils::SVGType SVG::getType() const
 {
-	return type;
+    return type;
 }
 
 Ionflux::GeoUtils::SVG& SVG::operator=(const Ionflux::GeoUtils::SVG& other)

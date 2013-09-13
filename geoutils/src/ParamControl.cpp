@@ -130,7 +130,7 @@ newNode)
 Ionflux::GeoUtils::TransformNodes::TransformNode* ParamControl::getNode() 
 const
 {
-	return node;
+    return node;
 }
 
 void ParamControl::setParamID(const Ionflux::ObjectBase::IFParamID& 
@@ -141,7 +141,7 @@ newParamID)
 
 Ionflux::ObjectBase::IFParamID ParamControl::getParamID() const
 {
-	return paramID;
+    return paramID;
 }
 
 void ParamControl::setFunc(Ionflux::Mapping::Mapping* newFunc)
@@ -157,7 +157,7 @@ void ParamControl::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* ParamControl::getFunc() const
 {
-	return func;
+    return func;
 }
 
 void ParamControl::setCoord(unsigned int newCoord)
@@ -167,7 +167,7 @@ void ParamControl::setCoord(unsigned int newCoord)
 
 unsigned int ParamControl::getCoord() const
 {
-	return coord;
+    return coord;
 }
 
 Ionflux::GeoUtils::TransformNodes::ParamControl& 

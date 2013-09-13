@@ -187,7 +187,7 @@ void Range::setRMin(double newRMin)
 
 double Range::getRMin() const
 {
-	return rMin;
+    return rMin;
 }
 
 void Range::setRMax(double newRMax)
@@ -197,7 +197,7 @@ void Range::setRMax(double newRMax)
 
 double Range::getRMax() const
 {
-	return rMax;
+    return rMax;
 }
 
 void Range::setBounds(const Ionflux::ObjectBase::DoubleVector& newBounds)

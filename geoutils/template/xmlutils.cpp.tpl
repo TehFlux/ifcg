@@ -329,6 +329,7 @@ $Vertex3
 $Vertex3Set
 $Face
 $Mesh
+$Object3
 
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).

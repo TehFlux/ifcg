@@ -56,8 +56,8 @@ class TransformableObjectClassInfo
 /** Transformable object.
  * \ingroup geoutils
  *
- * Abstract base class for objects that support basic transformations and 
- * can be part of a group of such objects.
+ * Base class for objects that support basic transformations and can be 
+ * part of a group of such objects.
  */
 class TransformableObject
 : virtual public Ionflux::ObjectBase::IFObject
@@ -313,8 +313,10 @@ class TransformableObject
 		 *
 		 * Create an exact duplicate of the object. The duplicate is a new 
 		 * object which must be managed by the caller.
+		 *
+		 * \return The duplicated object.
 		 */
-		virtual Ionflux::GeoUtils::TransformableObject& duplicate() = 0;
+		virtual Ionflux::GeoUtils::TransformableObject& duplicate();
 		
 		/** Assignment operator.
 		 *
@@ -327,6 +329,14 @@ class TransformableObject
 		virtual Ionflux::GeoUtils::TransformableObject& operator=(const 
 		Ionflux::GeoUtils::TransformableObject& other);
 		
+		/** Copy.
+		 *
+		 * Create a copy of the object.
+		 *
+		 * \return Newly allocated copy of the object.
+		 */
+		virtual Ionflux::GeoUtils::TransformableObject* copy() const;
+		
 		/** Upcast.
 		 *
 		 * Cast an IFObject to the most specific type.
@@ -337,6 +347,19 @@ class TransformableObject
 		 */
 		static Ionflux::GeoUtils::TransformableObject* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::TransformableObject* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.
 		 *

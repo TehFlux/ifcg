@@ -496,7 +496,7 @@ void Camera::setLocation(const Ionflux::GeoUtils::Vector3& newLocation)
 
 Ionflux::GeoUtils::Vector3 Camera::getLocation() const
 {
-	return location;
+    return location;
 }
 
 void Camera::setDirection(const Ionflux::GeoUtils::Vector3& newDirection)
@@ -506,7 +506,7 @@ void Camera::setDirection(const Ionflux::GeoUtils::Vector3& newDirection)
 
 Ionflux::GeoUtils::Vector3 Camera::getDirection() const
 {
-	return direction;
+    return direction;
 }
 
 void Camera::setLookAt(const Ionflux::GeoUtils::Vector3& newLookAt)
@@ -516,7 +516,7 @@ void Camera::setLookAt(const Ionflux::GeoUtils::Vector3& newLookAt)
 
 Ionflux::GeoUtils::Vector3 Camera::getLookAt() const
 {
-	return lookAt;
+    return lookAt;
 }
 
 void Camera::setRight(const Ionflux::GeoUtils::Vector3& newRight)
@@ -526,7 +526,7 @@ void Camera::setRight(const Ionflux::GeoUtils::Vector3& newRight)
 
 Ionflux::GeoUtils::Vector3 Camera::getRight() const
 {
-	return right;
+    return right;
 }
 
 void Camera::setUp(const Ionflux::GeoUtils::Vector3& newUp)
@@ -536,7 +536,7 @@ void Camera::setUp(const Ionflux::GeoUtils::Vector3& newUp)
 
 Ionflux::GeoUtils::Vector3 Camera::getUp() const
 {
-	return up;
+    return up;
 }
 
 void Camera::setSky(const Ionflux::GeoUtils::Vector3& newSky)
@@ -546,7 +546,7 @@ void Camera::setSky(const Ionflux::GeoUtils::Vector3& newSky)
 
 Ionflux::GeoUtils::Vector3 Camera::getSky() const
 {
-	return sky;
+    return sky;
 }
 
 void Camera::setAngle(double newAngle)
@@ -556,7 +556,7 @@ void Camera::setAngle(double newAngle)
 
 double Camera::getAngle() const
 {
-	return angle;
+    return angle;
 }
 
 void Camera::setLens(double newLens)
@@ -566,7 +566,7 @@ void Camera::setLens(double newLens)
 
 double Camera::getLens() const
 {
-	return lens;
+    return lens;
 }
 
 void Camera::setSetupFlags(const Ionflux::GeoUtils::CameraSetupFlags& 
@@ -577,7 +577,7 @@ newSetupFlags)
 
 Ionflux::GeoUtils::CameraSetupFlags Camera::getSetupFlags() const
 {
-	return setupFlags;
+    return setupFlags;
 }
 
 Ionflux::GeoUtils::Camera& Camera::operator=(const 

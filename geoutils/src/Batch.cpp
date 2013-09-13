@@ -255,7 +255,7 @@ newProcessor)
 Ionflux::GeoUtils::TransformNodes::TransformNode* Batch::getProcessor() 
 const
 {
-	return processor;
+    return processor;
 }
 
 unsigned int Batch::getNumControls() const
@@ -357,7 +357,7 @@ void Batch::setProcessorInputID(unsigned int newProcessorInputID)
 
 unsigned int Batch::getProcessorInputID() const
 {
-	return processorInputID;
+    return processorInputID;
 }
 
 unsigned int Batch::getNumDimensions() const

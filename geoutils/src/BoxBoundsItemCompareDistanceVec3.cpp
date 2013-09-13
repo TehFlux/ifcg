@@ -106,7 +106,7 @@ Ionflux::GeoUtils::Vector3& newReference)
 Ionflux::GeoUtils::Vector3 BoxBoundsItemCompareDistanceVec3::getReference()
 const
 {
-	return reference;
+    return reference;
 }
 
 Ionflux::GeoUtils::BoxBoundsItemCompareDistanceVec3& 

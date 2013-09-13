@@ -44,6 +44,7 @@ $Vertex3
 $Vertex3Set
 $Face
 $Mesh
+$Object3
 
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).

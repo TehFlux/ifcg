@@ -43,7 +43,7 @@ class Sphere3ClassInfo
 };
 
 class Sphere3
-: public Ionflux::GeoUtils::Object3
+: public Ionflux::GeoUtils::Shape3
 {
     public:
         

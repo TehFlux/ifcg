@@ -896,11 +896,9 @@ std::string Face::getValueString() const
 	        << faceData->getValueString() << "]";
 	}
 	// transformable object data
-	if (!useTransform && !useVI)
-	    return status.str();
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; " << TransformableObject::getValueString();
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
 	return status.str();
 }
 
@@ -1009,7 +1007,7 @@ void Face::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)
 
 Ionflux::GeoUtils::Vertex3Set* Face::getVertexSource() const
 {
-	return vertexSource;
+    return vertexSource;
 }
 
 void Face::setFaceData(Ionflux::GeoUtils::VectorSetSet* newFaceData)
@@ -1019,7 +1017,7 @@ void Face::setFaceData(Ionflux::GeoUtils::VectorSetSet* newFaceData)
 
 Ionflux::GeoUtils::VectorSetSet* Face::getFaceData() const
 {
-	return faceData;
+    return faceData;
 }
 
 Ionflux::GeoUtils::Face& Face::operator=(const Ionflux::GeoUtils::Face& 

@@ -78,7 +78,7 @@ AcceptVolume3::AcceptVolume3(const Ionflux::GeoUtils::Mapping::AcceptVolume3& ot
 }
 
 AcceptVolume3::AcceptVolume3(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
-initSource, Ionflux::GeoUtils::Object3* initRefObject, 
+initSource, Ionflux::GeoUtils::Shape3* initRefObject, 
 Ionflux::Mapping::MappingValue initMaxIters)
 : Accept3(initSource, initMaxIters), refObject(0)
 {
@@ -118,7 +118,7 @@ const
 	return refObject->checkVertex(v0);
 }
 
-void AcceptVolume3::setRefObject(Ionflux::GeoUtils::Object3* newRefObject)
+void AcceptVolume3::setRefObject(Ionflux::GeoUtils::Shape3* newRefObject)
 {
 	if (refObject == newRefObject)
 		return;
@@ -129,9 +129,9 @@ void AcceptVolume3::setRefObject(Ionflux::GeoUtils::Object3* newRefObject)
 	refObject = newRefObject;
 }
 
-Ionflux::GeoUtils::Object3* AcceptVolume3::getRefObject() const
+Ionflux::GeoUtils::Shape3* AcceptVolume3::getRefObject() const
 {
-	return refObject;
+    return refObject;
 }
 
 Ionflux::GeoUtils::Mapping::AcceptVolume3& AcceptVolume3::operator=(const 

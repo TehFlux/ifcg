@@ -122,7 +122,7 @@ newMatrix)
 
 Ionflux::GeoUtils::Matrix4 MatrixTransform::getMatrix() const
 {
-	return matrix;
+    return matrix;
 }
 
 Ionflux::GeoUtils::TransformNodes::MatrixTransform& 

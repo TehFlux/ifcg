@@ -30,7 +30,6 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
-#include "geoutils/Vertex3.hpp"
 #include "geoutils/TransformableObject.hpp"
 
 namespace Ionflux
@@ -38,6 +37,8 @@ namespace Ionflux
 
 namespace GeoUtils
 {
+
+class Mesh;
 
 /// Class information for class Object3.
 class Object3ClassInfo
@@ -53,7 +54,8 @@ class Object3ClassInfo
 /** Object (3D).
  * \ingroup geoutils
  *
- * An object in three-dimensional space.
+ * An object in three-dimensional space that can be visualized using a 
+ * mesh.
  */
 class Object3
 : public Ionflux::GeoUtils::TransformableObject
@@ -61,12 +63,22 @@ class Object3
 	private:
 		
 	protected:
+		/// Mesh.
+		Ionflux::GeoUtils::Mesh* mesh;
+		
+		/** Recalculate bounds.
+		 *
+		 * Recalculate the bounds for the object.
+		 */
+		virtual void recalculateBounds();
 		
 	public:
 		/// Class information instance.
 		static const Object3ClassInfo object3ClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -82,11 +94,40 @@ class Object3
 		 */
 		Object3(const Ionflux::GeoUtils::Object3& other);
 		
+		/** Constructor.
+		 *
+		 * Construct new Object3 object.
+		 *
+		 * \param initMesh Mesh.
+		 */
+		Object3(Ionflux::GeoUtils::Mesh* initMesh);
+		
 		/** Destructor.
 		 *
 		 * Destruct Object3 object.
 		 */
 		virtual ~Object3();
+		
+		/** Update.
+		 *
+		 * Update all state.
+		 */
+		virtual void update();
+		
+		/** Clear.
+		 *
+		 * Removes all items and resets state.
+		 */
+		virtual void clear();
+		
+		/** Apply transformations.
+		 *
+		 * Apply transformations that have been accumulated in the 
+		 * transformation matrices.
+		 *
+		 * \param recursive Apply transformations recursively.
+		 */
+		virtual void applyTransform(bool recursive = false);
 		
 		/** Scale.
 		 *
@@ -180,24 +221,22 @@ class Object3
 		Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image
 		= 0);
 		
-		/** Check vertex.
+		/** Get string representation of value.
 		 *
-		 * Check whether the specified vertex lies within the object.
+		 * Get a string representation of the value of the object
 		 *
-		 * \param v Vertex.
-		 * \param t Tolerance.
-		 *
-		 * \return Result of the check.
+		 * \return String representation.
 		 */
-		virtual bool checkVertex(const Ionflux::GeoUtils::Vertex3& v, double t = 
-		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const = 0;
+		virtual std::string getValueString() const;
 		
 		/** Duplicate.
 		 *
 		 * Create an exact duplicate of the object. The duplicate is a new 
 		 * object which must be managed by the caller.
+		 *
+		 * \return The duplicated object.
 		 */
-		virtual Ionflux::GeoUtils::Object3& duplicate() = 0;
+		virtual Ionflux::GeoUtils::Object3& duplicate();
 		
 		/** Assignment operator.
 		 *
@@ -210,6 +249,14 @@ class Object3
 		virtual Ionflux::GeoUtils::Object3& operator=(const 
 		Ionflux::GeoUtils::Object3& other);
 		
+		/** Copy.
+		 *
+		 * Create a copy of the object.
+		 *
+		 * \return Newly allocated copy of the object.
+		 */
+		virtual Ionflux::GeoUtils::Object3* copy() const;
+		
 		/** Upcast.
 		 *
 		 * Cast an IFObject to the most specific type.
@@ -220,6 +267,77 @@ class Object3
 		 */
 		static Ionflux::GeoUtils::Object3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::Object3* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Object3 object.
+		 *
+		 * \param initMesh Mesh.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Object3* create(Ionflux::GeoUtils::Mesh* 
+		initMesh, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
+		
+		/** Get mesh.
+		 *
+		 * \return Current value of mesh.
+		 */
+		virtual Ionflux::GeoUtils::Mesh* getMesh() const;
+		
+		/** Set mesh.
+		 *
+		 * Set new value of mesh.
+		 *
+		 * \param newMesh New value of mesh.
+		 */
+		virtual void setMesh(Ionflux::GeoUtils::Mesh* newMesh);
 };
 
 }

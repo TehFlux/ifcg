@@ -1091,7 +1091,7 @@ void BoundingBox::setLevel(int newLevel)
 
 int BoundingBox::getLevel() const
 {
-	return level;
+    return level;
 }
 
 void BoundingBox::setParent(Ionflux::GeoUtils::BoundingBox* newParent)
@@ -1101,7 +1101,7 @@ void BoundingBox::setParent(Ionflux::GeoUtils::BoundingBox* newParent)
 
 Ionflux::GeoUtils::BoundingBox* BoundingBox::getParent() const
 {
-	return parent;
+    return parent;
 }
 
 Ionflux::GeoUtils::BoundingBox& BoundingBox::operator=(const 

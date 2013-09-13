@@ -156,7 +156,7 @@ void Compose3::setFuncX0(Ionflux::Mapping::Mapping* newFuncX0)
 
 Ionflux::Mapping::Mapping* Compose3::getFuncX0() const
 {
-	return funcX0;
+    return funcX0;
 }
 
 void Compose3::setFuncX1(Ionflux::Mapping::Mapping* newFuncX1)
@@ -172,7 +172,7 @@ void Compose3::setFuncX1(Ionflux::Mapping::Mapping* newFuncX1)
 
 Ionflux::Mapping::Mapping* Compose3::getFuncX1() const
 {
-	return funcX1;
+    return funcX1;
 }
 
 void Compose3::setFuncX2(Ionflux::Mapping::Mapping* newFuncX2)
@@ -188,7 +188,7 @@ void Compose3::setFuncX2(Ionflux::Mapping::Mapping* newFuncX2)
 
 Ionflux::Mapping::Mapping* Compose3::getFuncX2() const
 {
-	return funcX2;
+    return funcX2;
 }
 
 Ionflux::GeoUtils::Mapping::Compose3& Compose3::operator=(const 

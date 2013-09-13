@@ -194,7 +194,7 @@ void Rotate::setAxis(Ionflux::GeoUtils::AxisID newAxis)
 
 Ionflux::GeoUtils::AxisID Rotate::getAxis() const
 {
-	return axis;
+    return axis;
 }
 
 void Rotate::setAngle(Ionflux::Mapping::MappingValue newAngle)
@@ -204,7 +204,7 @@ void Rotate::setAngle(Ionflux::Mapping::MappingValue newAngle)
 
 Ionflux::Mapping::MappingValue Rotate::getAngle() const
 {
-	return angle;
+    return angle;
 }
 
 void Rotate::setDeltaAngle(Ionflux::Mapping::MappingValue newDeltaAngle)
@@ -214,7 +214,7 @@ void Rotate::setDeltaAngle(Ionflux::Mapping::MappingValue newDeltaAngle)
 
 Ionflux::Mapping::MappingValue Rotate::getDeltaAngle() const
 {
-	return deltaAngle;
+    return deltaAngle;
 }
 
 void Rotate::setIndexFunc(Ionflux::Mapping::Mapping* newIndexFunc)
@@ -230,7 +230,7 @@ void Rotate::setIndexFunc(Ionflux::Mapping::Mapping* newIndexFunc)
 
 Ionflux::Mapping::Mapping* Rotate::getIndexFunc() const
 {
-	return indexFunc;
+    return indexFunc;
 }
 
 void Rotate::setDistanceFunc(Ionflux::Mapping::Mapping* newDistanceFunc)
@@ -246,7 +246,7 @@ void Rotate::setDistanceFunc(Ionflux::Mapping::Mapping* newDistanceFunc)
 
 Ionflux::Mapping::Mapping* Rotate::getDistanceFunc() const
 {
-	return distanceFunc;
+    return distanceFunc;
 }
 
 void Rotate::setIndexRange(const Ionflux::GeoUtils::Range& newIndexRange)
@@ -256,7 +256,7 @@ void Rotate::setIndexRange(const Ionflux::GeoUtils::Range& newIndexRange)
 
 Ionflux::GeoUtils::Range Rotate::getIndexRange() const
 {
-	return indexRange;
+    return indexRange;
 }
 
 void Rotate::setDistanceRange(const Ionflux::GeoUtils::Range& 
@@ -267,7 +267,7 @@ newDistanceRange)
 
 Ionflux::GeoUtils::Range Rotate::getDistanceRange() const
 {
-	return distanceRange;
+    return distanceRange;
 }
 
 void Rotate::setCenteringMethod(Ionflux::GeoUtils::CenteringMethod 
@@ -278,7 +278,7 @@ newCenteringMethod)
 
 Ionflux::GeoUtils::CenteringMethod Rotate::getCenteringMethod() const
 {
-	return centeringMethod;
+    return centeringMethod;
 }
 
 Ionflux::GeoUtils::TransformNodes::Rotate& Rotate::operator=(const 

@@ -143,7 +143,7 @@ void FaceData::setDataType(Ionflux::GeoUtils::FaceDataTypeID newDataType)
 
 Ionflux::GeoUtils::FaceDataTypeID FaceData::getDataType() const
 {
-	return dataType;
+    return dataType;
 }
 
 Ionflux::GeoUtils::FaceData& FaceData::operator=(const 

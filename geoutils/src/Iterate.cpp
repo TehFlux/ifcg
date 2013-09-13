@@ -171,7 +171,7 @@ void Iterate::setNumIterations(unsigned int newNumIterations)
 
 unsigned int Iterate::getNumIterations() const
 {
-	return numIterations;
+    return numIterations;
 }
 
 Ionflux::GeoUtils::TransformNodes::Iterate& Iterate::operator=(const 

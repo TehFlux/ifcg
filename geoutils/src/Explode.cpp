@@ -154,7 +154,7 @@ void Explode::setElementsPerGroup(unsigned int newElementsPerGroup)
 
 unsigned int Explode::getElementsPerGroup() const
 {
-	return elementsPerGroup;
+    return elementsPerGroup;
 }
 
 Ionflux::GeoUtils::TransformNodes::Explode& Explode::operator=(const 
