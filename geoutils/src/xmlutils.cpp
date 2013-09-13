@@ -1313,6 +1313,13 @@ std::string& elementName)
         getMatrix3(e0, *o1, en0);
         o0 = o1;
     } else
+    if (en0 == Matrix4::XML_ELEMENT_NAME)
+    {
+        // Matrix4
+        Matrix4* o1 = Matrix4::create();
+        getMatrix4(e0, *o1, en0);
+        o0 = o1;
+    } else
     {
         std::ostringstream status;
         status << "[createMatrix] "
@@ -1412,6 +1419,15 @@ void getObjVector<Ionflux::GeoUtils::Matrix,
             getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
+        if (en0 == 
+            Matrix4::XML_ELEMENT_NAME)
+        {
+            // Matrix4
+            Matrix4* co0 = 
+                Matrix4::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
         {
             std::ostringstream status;
             status << "[getObjVector<Matrix>] "
@@ -1470,6 +1486,15 @@ void getObjMap<Ionflux::GeoUtils::Matrix,
                 // Matrix3
                 Matrix3* co1 = 
                     Matrix3::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Matrix4::XML_ELEMENT_NAME)
+            {
+                // Matrix4
+                Matrix4* co1 = 
+                    Matrix4::create();
                 getObject0(ce0, *co0, childElementName);
                 co0 = co1;
             } else
@@ -1666,6 +1691,213 @@ void getObject0<Ionflux::GeoUtils::Matrix3>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getMatrix3(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getMatrix3(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Matrix4.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Matrix4* createMatrix4(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Matrix4* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Matrix4)
+        o0 = Matrix4::create();
+        getMatrix4(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createMatrix4] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getMatrix4(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix4& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getMatrix4");
+    getMatrix(e0, target, elementName);
+}
+
+void getMatrix4(const std::string& data, Ionflux::GeoUtils::Matrix4& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getMatrix4] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Matrix4::XML_ELEMENT_NAME);
+    getMatrix4(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix4>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix4& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getMatrix4(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getMatrix4(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/DeferredTransform.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::DeferredTransform* createDeferredTransform(TiXmlElement*
+e0, const std::string& elementName)
+{
+    std::string en0(e0->Value());
+    DeferredTransform* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (DeferredTransform)
+        o0 = DeferredTransform::create();
+        getDeferredTransform(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createDeferredTransform] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getDeferredTransform(TiXmlElement* e0, 
+    Ionflux::GeoUtils::DeferredTransform& target, const std::string& 
+elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getDeferredTransform");
+    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: transformMatrix (object)
+        if (pName == "transform_matrix")
+        {
+            Ionflux::GeoUtils::Matrix4* co0 = 
+                createMatrix4(ce0, en0);
+            target.setTransformMatrix(co0);
+        }
+        // Property: viewMatrix (object)
+        if (pName == "view_matrix")
+        {
+            Ionflux::GeoUtils::Matrix4* co0 = 
+                createMatrix4(ce0, en0);
+            target.setViewMatrix(co0);
+        }
+        // Property: imageMatrix (object)
+        if (pName == "image_matrix")
+        {
+            Ionflux::GeoUtils::Matrix4* co0 = 
+                createMatrix4(ce0, en0);
+            target.setImageMatrix(co0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getDeferredTransform(const std::string& data, Ionflux::GeoUtils::DeferredTransform& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getDeferredTransform] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::DeferredTransform::XML_ELEMENT_NAME);
+    getDeferredTransform(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::DeferredTransform>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::DeferredTransform& target, const std::string& 
+elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getDeferredTransform(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getDeferredTransform(e0, target, elementName);
 }
 
 }

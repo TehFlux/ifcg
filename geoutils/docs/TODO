@@ -9,21 +9,17 @@ TODO
 Up next
 --------------------------------------------------------------------------------
 
-+ Matrix types
-  > derive Matrix4 from Matrix
-  > testing
-    . Matrix functions (permuteRows, permuteColumns, multiply, transpose)
-  > enable XML I/O
++ TransformableObject
+  > use DeferredTransform (and get rid of most properties and variables)
+  > onTransformChanged(), onVIChanged() is apparently not used by any 
+    other class. Maybe this feature can be dropped.
+  > XML I/O
 
 --------------------------------------------------------------------------------
 New
 --------------------------------------------------------------------------------
 
-+ TransformableObject
-  > serialize the transform matrices to XML
-  > Encapsulate the transform matrices in another object that is referenced 
-    using a pointer (reuse across objects, reduce memory requirements for 
-    vertices)
+
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -38,9 +34,13 @@ Critical stuff
     mesh and GeoUtils mesh
 
 + Camera
+  > allocate member objects on the heap
   > enable XML I/O
 
 + Testing
+  > Matrix
+    . permuteRows, permuteColumns, multiply, transpose
+    . XML I/O
   > Face
     . new face data API
   > Vector2, Vector3, Vector4

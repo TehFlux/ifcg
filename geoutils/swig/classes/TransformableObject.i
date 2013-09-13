@@ -56,9 +56,9 @@ class TransformableObject
         virtual void onTransformChanged();
         virtual void onVIChanged();
         virtual bool checkTransform(double t = 
-        Ionflux::GeoUtils::Matrix4::COMPARE_TOLERANCE);
+        Ionflux::GeoUtils::DeferredTransform::COMPARE_TOLERANCE);
         virtual bool checkVI(double t = 
-        Ionflux::GeoUtils::Matrix4::COMPARE_TOLERANCE);
+        Ionflux::GeoUtils::DeferredTransform::COMPARE_TOLERANCE);
         virtual Ionflux::GeoUtils::TransformableObject& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::TransformableObject& translate(const 

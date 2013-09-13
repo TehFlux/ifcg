@@ -31,9 +31,11 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
-using namespace Ionflux::ObjectBase;
 
 namespace Ionflux
 {
@@ -45,7 +47,6 @@ Matrix4ClassInfo::Matrix4ClassInfo()
 {
 	name = "Matrix4";
 	desc = "Matrix (4x4)";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Matrix4ClassInfo::~Matrix4ClassInfo()
@@ -53,33 +54,29 @@ Matrix4ClassInfo::~Matrix4ClassInfo()
 }
 
 // public member constants
+const unsigned int Matrix4::NUM_ELEMENTS = 16;
+const unsigned int Matrix4::NUM_ROWS = 4;
+const unsigned int Matrix4::NUM_COLS = 4;
 const Ionflux::GeoUtils::Matrix4 Matrix4::ZERO = Ionflux::GeoUtils::Matrix4(0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.);
 const Ionflux::GeoUtils::Matrix4 Matrix4::UNIT = Ionflux::GeoUtils::Matrix4(1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1.);
-const double Matrix4::COMPARE_TOLERANCE = 1e-6;
 
 // run-time type information instance constants
 const Matrix4ClassInfo Matrix4::matrix4ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Matrix4::CLASS_INFO = &Matrix4::matrix4ClassInfo;
 
+const std::string Matrix4::XML_ELEMENT_NAME = "m4";
+
 Matrix4::Matrix4()
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[16];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	*this = ZERO;
+	zero();
 }
 
 Matrix4::Matrix4(const Ionflux::GeoUtils::Matrix4& other)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[16];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
 	*this = other;
 }
 
@@ -87,13 +84,10 @@ Matrix4::Matrix4(double initX00, double initX01, double initX02, double
 initX03, double initX10, double initX11, double initX12, double initX13, 
 double initX20, double initX21, double initX22, double initX23, double 
 initX30, double initX31, double initX32, double initX33)
-: elements(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[16];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
+	initElements();
 	elements[0] = initX00;
 	elements[1] = initX01;
 	elements[2] = initX02;
@@ -112,52 +106,32 @@ initX30, double initX31, double initX32, double initX33)
 	elements[15] = initX33;
 }
 
-Matrix4::Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements)
-: elements(0)
+Matrix4::Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[16];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	setElements(initElements);
+	initElements();
+	Vector::setElements(initElements0);
 }
 
-Matrix4::Matrix4(const Ionflux::GeoUtils::Matrix3& initElements)
-: elements(0)
+Matrix4::Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	elements = new double[16];
-	if (elements == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	*this = ZERO;
-	setM3x3(initElements);
+	initElements();
+	setM3x3(initElements0);
 }
 
 Matrix4::~Matrix4()
 {
-	delete[] elements;
-}
-
-void Matrix4::setElements(const Ionflux::ObjectBase::DoubleVector& 
-newElements)
-{
-	unsigned int i = 0;
-	while ((i < 16) && (i < newElements.size()))
-	{
-	    elements[i] = newElements[i];
-	    i++;
-	}
+	// TODO: Nothing ATM. ;-)
 }
 
 void Matrix4::setElements(const Ionflux::GeoUtils::Matrix3& newElements)
 {
-	DoubleVector e0;
+	Ionflux::ObjectBase::DoubleVector e0;
 	newElements.getElements(e0);
-	for (unsigned int i = 0; i < 3; i++)
-	    for (unsigned int k = 0; k < 3; k++)
-	        elements[4 * i + k] = e0[3 * i + k];
+	Vector::setElements(e0);
 }
 
 void Matrix4::setM3x3(const Ionflux::GeoUtils::Matrix3& newElements, double
@@ -172,55 +146,6 @@ newX31, double newX32)
 	elements[13] = newX31;
 	elements[14] = newX32;
 	elements[15] = newX33;
-}
-
-void Matrix4::getElements(Ionflux::ObjectBase::DoubleVector& target) const
-{
-	target.clear();
-	for (unsigned int i = 0; i < 16; i++)
-	    target.push_back(elements[i]);
-}
-
-double Matrix4::getElement(int row, int column) const
-{
-	if ((row < 0) || (row > 3))
-	{
-	    ostringstream message;
-	    message << "Row index out of range: " << row;
-	    throw GeoUtilsError(message.str());
-	}
-	if ((column < 0) || (column > 3))
-	{
-	    ostringstream message;
-	    message << "Column index out of range: " << column;
-	    throw GeoUtilsError(message.str());
-	}
-	return elements[4 * row + column];;
-}
-
-void Matrix4::setElement(int row, int column, double value)
-{
-	if ((row < 0) || (row > 3))
-	{
-	    ostringstream message;
-	    message << "Row index out of range: " << row;
-	    throw GeoUtilsError(message.str());
-	}
-	if ((column < 0) || (column > 3))
-	{
-	    ostringstream message;
-	    message << "Column index out of range: " << column;
-	    throw GeoUtilsError(message.str());
-	}
-	elements[4 * row + column] = value;
-}
-
-bool Matrix4::eq(const Ionflux::GeoUtils::Matrix4& other, double t)
-{
-	for (unsigned int i = 0; i < 16; i++)
-	    if (!Ionflux::GeoUtils::eq(elements[i], other.elements[i], t))
-	        return false;
-	return true;
 }
 
 Ionflux::GeoUtils::Matrix4 Matrix4::transpose() const
@@ -323,7 +248,13 @@ v) const
 	if (x14 != 0.0)
 	    result = permuteColumns(3, 1, 2, 0).solve(v).permute(3, 1, 2, 0);
 	else
-	    throw GeoUtilsError("Cannot solve 4x4 matrix equation.");
+	{
+	    std::ostringstream status;
+	    status << "Cannot solve 4x4 matrix equation (M = ["
+	        << getValueString() << "], v = (" << v.getValueString() 
+	        << ")).";
+	    throw GeoUtilsError(getErrorString(status.str(), "solve"));
+	}
 	return result;
 }
 
@@ -353,31 +284,6 @@ Ionflux::GeoUtils::Matrix4& other)
 {
 	*this = (*this) * other;
 	return *this;
-}
-
-bool Matrix4::operator==(const Ionflux::GeoUtils::Matrix4& other) const
-{
-	for (unsigned int i = 0; i < 16; i++)
-	    if (elements[i] != other.elements[i])
-	        return false;
-	return true;
-}
-
-bool Matrix4::operator!=(const Ionflux::GeoUtils::Matrix4& other) const
-{
-	// TODO: Implementation.
-	return !(*this == other);;
-}
-
-Ionflux::GeoUtils::Vector4 Matrix4::operator[](int index) const
-{
-	if ((index < 0) || (index > 2))
-	{
-	    ostringstream message;
-	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
-	}
-	return Vector4(elements[4 * index], elements[4 * index + 1], elements[4 * index + 2], elements[4 * index + 3]);
 }
 
 Ionflux::GeoUtils::Matrix4 Matrix4::operator*(const 
@@ -411,17 +317,15 @@ Ionflux::GeoUtils::Vector4& v) const
 
 Ionflux::GeoUtils::Matrix4 Matrix4::operator*(double c) const
 {
-	Matrix4 result;
-	for (unsigned int i = 0; i < 16; i++)
-	    result.elements[i] = elements[i] * c;
+	Matrix4 result(*this);
+	result.multiplyIP(c);
 	return result;
 }
 
 Ionflux::GeoUtils::Matrix4 Matrix4::operator/(double c) const
 {
-	Matrix4 result;
-	for (unsigned int i = 0; i < 16; i++)
-	    result.elements[i] = elements[i] / c;
+	Matrix4 result(*this);
+	result.divideIP(c);
 	return result;
 }
 
@@ -431,20 +335,22 @@ Ionflux::GeoUtils::Matrix3 Matrix4::getM3x3() const
 	return Matrix3(elements[0], elements[1], elements[2], elements[4], elements[5], elements[6], elements[8], elements[9], elements[10]);
 }
 
-std::string Matrix4::getString() const
+unsigned int Matrix4::getNumElements() const
 {
-	ostringstream state;
-	state << getClassName() << "[[" << elements[0] << ", " 
-	    << elements[1] << ", " << elements[2] << ", " << elements[3] << "], ["
-	
-    << elements[4] << ", " << elements[5] << ", " << elements[6] << ", " 
-	    << elements[7] << "], [" << elements[8] << ", " << elements[9] << ", "
-	
-    << elements[10] << ", " << elements[11] << "], [" << elements[12] << 
-	", " 
-	    << elements[13] << ", " << elements[14] << ", " << elements[15] << 
-	"]]";
-	return state.str();
+	// TODO: Implementation.
+	return NUM_ELEMENTS;
+}
+
+unsigned int Matrix4::getNumRows() const
+{
+	// TODO: Implementation.
+	return NUM_ROWS;
+}
+
+unsigned int Matrix4::getNumCols() const
+{
+	// TODO: Implementation.
+	return NUM_COLS;
 }
 
 Ionflux::GeoUtils::Matrix4 Matrix4::scale(double sx, double sy, double sz, 
@@ -657,11 +563,9 @@ Ionflux::GeoUtils::Vector4 Matrix4::getC3() const
 Ionflux::GeoUtils::Matrix4& Matrix4::operator=(const 
 Ionflux::GeoUtils::Matrix4& other)
 {
-    if ((elements == 0) || (other.elements == 0))
+    if (this == &other)
         return *this;
-    for (unsigned int i = 0; i < 16; i++)
-        elements[i] = other.elements[i];
-    return *this;
+    Vector::operator=(other);
 	return *this;
 }
 
@@ -689,6 +593,83 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+Ionflux::GeoUtils::Matrix4* Matrix4::create(double initX00, double initX01,
+double initX02, double initX03, double initX10, double initX11, double 
+initX12, double initX13, double initX20, double initX21, double initX22, 
+double initX23, double initX30, double initX31, double initX32, double 
+initX33, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix4* newObject = new Matrix4(initX00, initX01, initX02, initX03, 
+    initX10, initX11, initX12, initX13, initX20, initX21, initX22, initX23,
+    initX30, initX31, initX32, initX33);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix4* Matrix4::create(const 
+Ionflux::ObjectBase::DoubleVector& initElements0, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix4* newObject = new Matrix4(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix4* Matrix4::create(const 
+Ionflux::GeoUtils::Matrix3& initElements0, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Matrix4* newObject = new Matrix4(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Matrix4::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Matrix4::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::GeoUtils::Matrix::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void Matrix4::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::GeoUtils::Matrix::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void Matrix4::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getMatrix4(data, *this);
 }
 
 Ionflux::GeoUtils::Matrix4 operator*(double c, const 

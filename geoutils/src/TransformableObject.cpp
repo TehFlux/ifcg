@@ -288,7 +288,7 @@ Ionflux::GeoUtils::Matrix4& newTransformMatrix)
 
 Ionflux::GeoUtils::Matrix4 TransformableObject::getTransformMatrix() const
 {
-	return transformMatrix;
+    return transformMatrix;
 }
 
 void TransformableObject::setViewMatrix(const Ionflux::GeoUtils::Matrix4& 
@@ -300,7 +300,7 @@ newViewMatrix)
 
 Ionflux::GeoUtils::Matrix4 TransformableObject::getViewMatrix() const
 {
-	return viewMatrix;
+    return viewMatrix;
 }
 
 void TransformableObject::setImageMatrix(const Ionflux::GeoUtils::Matrix4& 
@@ -312,7 +312,7 @@ newImageMatrix)
 
 Ionflux::GeoUtils::Matrix4 TransformableObject::getImageMatrix() const
 {
-	return imageMatrix;
+    return imageMatrix;
 }
 
 void TransformableObject::setLastTransformMatrix(const 
@@ -324,7 +324,7 @@ Ionflux::GeoUtils::Matrix4& newLastTransformMatrix)
 Ionflux::GeoUtils::Matrix4 TransformableObject::getLastTransformMatrix() 
 const
 {
-	return lastTransformMatrix;
+    return lastTransformMatrix;
 }
 
 void TransformableObject::setLastViewMatrix(const 
@@ -335,7 +335,7 @@ Ionflux::GeoUtils::Matrix4& newLastViewMatrix)
 
 Ionflux::GeoUtils::Matrix4 TransformableObject::getLastViewMatrix() const
 {
-	return lastViewMatrix;
+    return lastViewMatrix;
 }
 
 void TransformableObject::setLastImageMatrix(const 
@@ -346,7 +346,7 @@ Ionflux::GeoUtils::Matrix4& newLastImageMatrix)
 
 Ionflux::GeoUtils::Matrix4 TransformableObject::getLastImageMatrix() const
 {
-	return lastImageMatrix;
+    return lastImageMatrix;
 }
 
 Ionflux::GeoUtils::TransformableObject& 

@@ -33,6 +33,7 @@
 #include "geoutils/Range3.hpp"
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Matrix4.hpp"
+#include "geoutils/DeferredTransform.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -172,7 +173,7 @@ class TransformableObject
 		 * \return The result of the check.
 		 */
 		virtual bool checkTransform(double t = 
-		Ionflux::GeoUtils::Matrix4::COMPARE_TOLERANCE);
+		Ionflux::GeoUtils::DeferredTransform::COMPARE_TOLERANCE);
 		
 		/** Check view/image transform status.
 		 *
@@ -187,7 +188,7 @@ class TransformableObject
 		 * \return The result of the check.
 		 */
 		virtual bool checkVI(double t = 
-		Ionflux::GeoUtils::Matrix4::COMPARE_TOLERANCE);
+		Ionflux::GeoUtils::DeferredTransform::COMPARE_TOLERANCE);
 		
 		/** Scale.
 		 *

@@ -302,6 +302,28 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Matrix4;
+
+namespace XMLUtils
+{
+
+void getMatrix4(const std::string& data, Ionflux::GeoUtils::Matrix4& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class FaceData;
 
 namespace XMLUtils
@@ -309,6 +331,28 @@ namespace XMLUtils
 
 void getFaceData(const std::string& data, Ionflux::GeoUtils::FaceData& 
 target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class DeferredTransform;
+
+namespace XMLUtils
+{
+
+void getDeferredTransform(const std::string& data, 
+Ionflux::GeoUtils::DeferredTransform& target);
 
 }
 

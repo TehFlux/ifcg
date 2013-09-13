@@ -109,7 +109,7 @@ Matrix3::Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements0)
 
 Matrix3::~Matrix3()
 {
-	delete[] elements;
+	// TODO: Nothing ATM. ;-)
 }
 
 Ionflux::GeoUtils::Matrix3 Matrix3::transpose() const

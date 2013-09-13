@@ -467,6 +467,54 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Matrix4;
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix4 from TiXmlElement.
+void getMatrix4(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Matrix4& target, const std::string& elementName = 
+Ionflux::GeoUtils::Matrix4::XML_ELEMENT_NAME);
+
+/// Create new Matrix4 from TiXmlElement.
+Ionflux::GeoUtils::Matrix4* createMatrix4(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Matrix4::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Matrix4 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Matrix4>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Matrix4& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class VectorSetSet;
 
 namespace XMLUtils
@@ -501,6 +549,56 @@ namespace XMLUtils
 template<>
 void getObject0<Ionflux::GeoUtils::VectorSetSet>(TiXmlElement* e0, 
 Ionflux::GeoUtils::VectorSetSet& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class DeferredTransform;
+
+namespace XMLUtils
+{
+
+/// Initialize DeferredTransform from TiXmlElement.
+void getDeferredTransform(TiXmlElement* e0, 
+    Ionflux::GeoUtils::DeferredTransform& target, const std::string& 
+elementName = Ionflux::GeoUtils::DeferredTransform::XML_ELEMENT_NAME);
+
+/// Create new DeferredTransform from TiXmlElement.
+Ionflux::GeoUtils::DeferredTransform* createDeferredTransform(TiXmlElement*
+e0, const std::string& elementName = 
+Ionflux::GeoUtils::DeferredTransform::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize DeferredTransform from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::DeferredTransform>(TiXmlElement* e0, 
+Ionflux::GeoUtils::DeferredTransform& target, const std::string& 
+elementName);
 
 }
 

@@ -46,6 +46,7 @@
 #include "geoutils/VectorSet.hpp"
 #include "geoutils/FaceData.hpp"
 #include "geoutils/VectorSetSet.hpp"
+#include "geoutils/DeferredTransform.hpp"
 #include "geoutils/TransformableObject.hpp"
 #include "geoutils/TransformableGroup.hpp"
 #include "geoutils/Edge.hpp"

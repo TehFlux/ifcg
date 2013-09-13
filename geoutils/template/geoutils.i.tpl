@@ -519,6 +519,7 @@ namespace GeoUtils
 
 }
 
+$DeferredTransform
 $TransformableObject
 $TransformableGroup
 $Edge

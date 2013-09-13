@@ -36,7 +36,9 @@ $FaceData
 $Matrix
 $Matrix2
 $Matrix3
+$Matrix4
 $VectorSetSet
+$DeferredTransform
 $TransformableObject
 $Vertex3
 $Vertex3Set

@@ -168,6 +168,43 @@ void Matrix::transposeIP()
 	    }
 }
 
+void Matrix::transform(const Ionflux::GeoUtils::Vector& v, 
+Ionflux::GeoUtils::Vector& target)
+{
+	unsigned int numRows = getNumRows();
+	unsigned int numCols = getNumCols();
+	unsigned int oNumElements = v.getNumElements();
+	unsigned int tNumElements = target.getNumElements();
+	if (numCols != oNumElements)
+	{
+	    std::ostringstream status;
+	    status << "Matrix and vector have incompatible dimensions (this: " 
+	        << numRows << "x" << numCols << ", other: " 
+	        << oNumElements << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "transform"));
+	}
+	if ((oNumElements != tNumElements) 
+	    || (numRows != tNumElements))
+	{
+	    std::ostringstream status;
+	    status << "Matrix and vectors have incompatible dimensions (this: " 
+	        << numRows << "x" << numCols << ", other: " 
+	        << oNumElements << ", target: "
+	        << tNumElements << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "transform"));
+	}
+	for (unsigned int i = 0; i < tNumElements; i++)
+	{
+	    double s = 0.;
+	    for (unsigned int k = 0; k < numCols; k++)
+	    {
+	        unsigned int i0 = i * numCols + k;
+	        s += (elements[i0] * v.getElement(k));
+	    }
+	    target.setElement(i, s);
+	}
+}
+
 void Matrix::multiply(const Ionflux::GeoUtils::Matrix& other, 
 Ionflux::GeoUtils::Matrix& target)
 {

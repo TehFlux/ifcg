@@ -322,6 +322,8 @@ $VectorSetSet
 $Matrix
 $Matrix2
 $Matrix3
+$Matrix4
+$DeferredTransform
 $TransformableObject
 $Vertex3
 $Vertex3Set

@@ -142,6 +142,16 @@ class Matrix
 		 */
 		virtual void transposeIP();
 		
+		/** Transform.
+		 *
+		 * Transform a column vector by multiplying the matrix from the left.
+		 *
+		 * \param v vector.
+		 * \param target Where to store the result.
+		 */
+		virtual void transform(const Ionflux::GeoUtils::Vector& v, 
+		Ionflux::GeoUtils::Vector& target);
+		
 		/** Multiply.
 		 *
 		 * Multiply the matrix with another matrix.

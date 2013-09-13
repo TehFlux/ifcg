@@ -43,12 +43,14 @@ class Matrix4ClassInfo
 };
 
 class Matrix4
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::GeoUtils::Matrix
 {
     public:
+		static const unsigned int NUM_ELEMENTS;
+		static const unsigned int NUM_ROWS;
+		static const unsigned int NUM_COLS;
 		static const Ionflux::GeoUtils::Matrix4 ZERO;
 		static const Ionflux::GeoUtils::Matrix4 UNIT;
-		static const double COMPARE_TOLERANCE;
         
         Matrix4();
 		Matrix4(const Ionflux::GeoUtils::Matrix4& other);
@@ -57,23 +59,15 @@ class Matrix4
         initX13, double initX20, double initX21, double initX22, double 
         initX23, double initX30, double initX31, double initX32, double 
         initX33);
-        Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements);
-        Matrix4(const Ionflux::GeoUtils::Matrix3& initElements);
+        Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0);
         virtual ~Matrix4();
-        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
-        newElements);
         virtual void setElements(const Ionflux::GeoUtils::Matrix3& 
         newElements);
         virtual void setM3x3(const Ionflux::GeoUtils::Matrix3& newElements,
         double newX33 = 1., double newX03 = 0., double newX13 = 0., double 
         newX23 = 0., double newX30 = 0., double newX31 = 0., double newX32 
         = 0.);
-        virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
-        const;
-        virtual double getElement(int row, int column) const;
-        virtual void setElement(int row, int column, double value);
-        virtual bool eq(const Ionflux::GeoUtils::Matrix4& other, double t =
-        COMPARE_TOLERANCE);
         virtual Ionflux::GeoUtils::Matrix4 transpose() const;
         virtual Ionflux::GeoUtils::Matrix4 permuteColumns(int px, int py, 
         int pz, int pw) const;
@@ -90,10 +84,6 @@ class Matrix4
         Ionflux::GeoUtils::Matrix4& other);
         virtual Ionflux::GeoUtils::Matrix4& multiplyRight(const 
         Ionflux::GeoUtils::Matrix4& other);
-        virtual bool operator==(const Ionflux::GeoUtils::Matrix4& other) 
-        const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Matrix4& other) 
-        const;
         virtual Ionflux::GeoUtils::Matrix4 operator*(const 
         Ionflux::GeoUtils::Matrix4& other) const;
         virtual Ionflux::GeoUtils::Vector4 operator*(const 
@@ -101,7 +91,9 @@ class Matrix4
         virtual Ionflux::GeoUtils::Matrix4 operator*(double c) const;
         virtual Ionflux::GeoUtils::Matrix4 operator/(double c) const;
         virtual Ionflux::GeoUtils::Matrix3 getM3x3() const;
-        virtual std::string getString() const;
+        virtual unsigned int getNumElements() const;
+        virtual unsigned int getNumRows() const;
+        virtual unsigned int getNumCols() const;
         static Ionflux::GeoUtils::Matrix4 scale(double sx = 1., double sy =
         1., double sz = 1., double sw = 1.);
         static Ionflux::GeoUtils::Matrix4 scale(const 
@@ -132,6 +124,17 @@ class Matrix4
 		other);
 		static Ionflux::GeoUtils::Matrix4* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Matrix4* create(double initX00, double initX01,
+		double initX02, double initX03, double initX10, double initX11, double 
+		initX12, double initX13, double initX20, double initX21, double initX22, 
+		double initX23, double initX30, double initX31, double initX32, double 
+		initX33, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Matrix4* create(const 
+		Ionflux::ObjectBase::DoubleVector& initElements0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Matrix4* create(const 
+		Ionflux::GeoUtils::Matrix3& initElements0, Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
         virtual void setR0(const Ionflux::GeoUtils::Vector4& newR0);
         virtual Ionflux::GeoUtils::Vector4 getR0() const;
         virtual void setR1(const Ionflux::GeoUtils::Vector4& newR1);
@@ -152,6 +155,14 @@ class Matrix4
 
 Ionflux::GeoUtils::Matrix4 operator*(double c, const 
 Ionflux::GeoUtils::Matrix4& m);
+
+namespace XMLUtils
+{
+
+void getMatrix4(const std::string& data, Ionflux::GeoUtils::Matrix4& 
+target);
+
+}
 
 }
 
