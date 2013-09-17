@@ -32,6 +32,7 @@
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3.hpp"
+#include "geoutils/DeferredTransform.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"

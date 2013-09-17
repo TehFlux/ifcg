@@ -33,7 +33,6 @@
 #include "geoutils/Range3.hpp"
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Matrix4.hpp"
-#include "geoutils/DeferredTransform.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -41,6 +40,8 @@ namespace Ionflux
 
 namespace GeoUtils
 {
+
+class DeferredTransform;
 
 /// Class information for class TransformableObject.
 class TransformableObjectClassInfo

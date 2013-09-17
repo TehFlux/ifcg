@@ -1682,6 +1682,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class DeferredTransform;
+
 class TransformableObjectClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
