@@ -25,7 +25,7 @@ Critical stuff
   > use DeferredTransform (and get rid of most properties and variables)
     . requires updating derived classes:
       (Face), (Mesh), (TransformableGroup), (Object3), (Vertex3), 
-      Vertex3Set, Polygon3, Polygon3Set, Shape3, SVG, Image
+      (Vertex3Set), Polygon3, Polygon3Set, Shape3, SVG, Image
       (mainly getBarycenter(), recalculateBounds(), applyTransform())
     . features used by derived classes:
       boundsCache, useTransform, useVI, transformMatrix, viewMatrix, 
