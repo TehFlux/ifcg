@@ -24,14 +24,15 @@ Critical stuff
 + TransformableObject
   > use DeferredTransform (and get rid of most properties and variables)
     . requires updating derived classes:
-      (Face), Image, (Mesh), Object3, Polygon3, Polygon3Set, Shape3, SVG, 
-      TransformableGroup,Vertex3, Vertex3Set 
-      mainly getBarycenter(), applyTransform()
+      (Face), (Mesh), (TransformableGroup), (Object3), (Vertex3), 
+      Vertex3Set, Polygon3, Polygon3Set, Shape3, SVG, Image
+      (mainly getBarycenter(), recalculateBounds(), applyTransform())
     . features used by derived classes:
       boundsCache, useTransform, useVI, transformMatrix, viewMatrix, 
       imageMatrix
-    . after applying a transformation, discard the DeferredTransform 
-      (instead of clearing it)
+    . applyTransform() needs to call TransformableObject::clear() in 
+      derived classes
+    . only call applyTransform() once on child objects
   > onTransformChanged(), onVIChanged() is apparently not used by any 
     other class. Maybe this feature can be dropped.
   > XML I/O
