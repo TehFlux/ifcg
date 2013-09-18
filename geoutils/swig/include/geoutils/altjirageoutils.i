@@ -104,7 +104,7 @@ class SVG
         virtual ~SVG();
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::SVG& duplicate();
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::SVG* copy() const;
 		static Ionflux::GeoUtils::SVG* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

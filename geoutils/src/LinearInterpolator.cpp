@@ -107,10 +107,55 @@ Ionflux::GeoUtils::LinearInterpolator& other)
 
 Ionflux::GeoUtils::LinearInterpolator* LinearInterpolator::copy() const
 {
-    LinearInterpolator* newLinearInterpolator = 
-        new LinearInterpolator();
+    LinearInterpolator* newLinearInterpolator = create();
     *newLinearInterpolator = *this;
     return newLinearInterpolator;
+}
+
+Ionflux::GeoUtils::LinearInterpolator* 
+LinearInterpolator::upcast(Ionflux::ObjectBase::IFObject* other)
+{
+    return dynamic_cast<LinearInterpolator*>(other);
+}
+
+Ionflux::GeoUtils::LinearInterpolator* 
+LinearInterpolator::create(Ionflux::ObjectBase::IFObject* parentObject)
+{
+    LinearInterpolator* newObject = new LinearInterpolator();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::LinearInterpolator* LinearInterpolator::create(double 
+initV0, double initV1, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    LinearInterpolator* newObject = new LinearInterpolator(initV0, initV1);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::LinearInterpolator* LinearInterpolator::create(const 
+Ionflux::ObjectBase::DoubleVector& initValues, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    LinearInterpolator* newObject = new LinearInterpolator(initValues);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
 }
 
 }

@@ -35,6 +35,9 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/utils.hpp"
 #include "geoutils/Line3.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -61,6 +64,8 @@ const Ionflux::GeoUtils::Range Polygon3::UV_RANGE = Ionflux::GeoUtils::Range(0.,
 // run-time type information instance constants
 const Polygon3ClassInfo Polygon3::polygon3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Polygon3::CLASS_INFO = &Polygon3::polygon3ClassInfo;
+
+const std::string Polygon3::XML_ELEMENT_NAME = "polygon3";
 
 Polygon3::Polygon3()
 : vertexSource(0)
@@ -149,77 +154,37 @@ Polygon3::~Polygon3()
 
 void Polygon3::recalculateBounds()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "recalculateBounds", "Vertex source");
 	TransformableObject::recalculateBounds();
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	{
 	    *boundsCache = vertexSource->getBounds();
 	    return;
 	}
 	// Adjust for transformation.
 	Polygon3* p0 = copy();
+	addLocalRef(p0);
 	p0->applyTransform();
-	if (p0->useTransform)
-	    throw GeoUtilsError("Transform matrix still in use after "
-	        "applying transformations.");
+	if (p0->useTransform())
+	    throw GeoUtilsError(getErrorString(
+	        "Transform matrix still in use after "
+	        "applying transformations.", "recalculateBounds"));
 	*boundsCache = p0->getBounds();
-	delete p0;
+	removeLocalRef(p0);
 }
 
 void Polygon3::copyVertices()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	setVertexSource(&(vertexSource->duplicate()));
-}
-
-Ionflux::GeoUtils::Vertex3* Polygon3::addVertex()
-{
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	return vertexSource->addVertex();
-}
-
-void Polygon3::addVertices(Ionflux::GeoUtils::Vertex3Vector& newVerts)
-{
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	for (Vertex3Vector::iterator i = newVerts.begin(); 
-	    i != newVerts.end(); i++)
-	    vertexSource->addVertex(*i);
-}
-
-void Polygon3::addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts)
-{
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	for (unsigned int i = 0; i < newVerts.getNumVertices(); i++)
-	    vertexSource->addVertex(newVerts.getVertex(i));
-}
-
-Ionflux::GeoUtils::Edge* Polygon3::addEdge()
-{
-	Edge* e0 = new Edge();
-	if (e0 == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	addEdge(e0);
-	return e0;
-}
-
-void Polygon3::addEdges(Ionflux::GeoUtils::EdgeVector& newEdges)
-{
-	if (newEdges.size() == 0)
-	    return;
-	for (Ionflux::GeoUtils::EdgeVector::iterator i = newEdges.begin(); 
-	    i != newEdges.end(); i++)
-	    addEdge(*i);
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "copyVertices", "Vertex source");
+	setVertexSource(vertexSource->copy());
 }
 
 int Polygon3::createEdges()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "createEdges", "Vertex source");
 	clearEdges();
 	unsigned int numVerts = getNumVertices();
 	if (numVerts < 2)
@@ -254,26 +219,23 @@ Ionflux::GeoUtils::Plane3 Polygon3::getPlane(int v0, int v1, int v2) const
 	if ((v0 < 0) || (static_cast<unsigned int>(v0) >= numVerts))
 	{
 	    std::ostringstream status;
-	    status << "[Polygon3::getPlane] "
-	        "Vertex index v0 out of range (numVerts = " << numVerts 
-	        << ", v0 = " << v0 << ").";
-	    throw GeoUtilsError(status.str());
+	    status << "Vertex index v0 out of range (numVerts = " 
+	        << numVerts << ", v0 = " << v0 << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "getPlane"));
 	}
 	if ((v1 < 0) || (static_cast<unsigned int>(v1) >= numVerts))
 	{
 	    std::ostringstream status;
-	    status << "[Polygon3::getPlane] "
-	        "Vertex index v1 out of range (numVerts = " << numVerts 
-	        << ", v1 = " << v1 << ").";
-	    throw GeoUtilsError(status.str());
+	    status << "Vertex index v1 out of range (numVerts = " 
+	        << numVerts << ", v1 = " << v1 << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "getPlane"));
 	}
 	if ((v2 < 0) || (static_cast<unsigned int>(v2) >= numVerts))
 	{
 	    std::ostringstream status;
-	    status << "[Polygon3::getPlane] "
-	        "Vertex index v2 out of range (numVerts = " << numVerts 
-	        << ", v2 = " << v2 << ").";
-	    throw GeoUtilsError(status.str());
+	    status << "Vertex index v2 out of range (numVerts = " 
+	        << numVerts << ", v2 = " << v2 << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "getPlane"));
 	}
 	Vector3 a = getVertex(v0)->getVector();
 	Vector3 b = getVertex(v1)->getVector();
@@ -311,9 +273,10 @@ std::string Polygon3::getValueString() const
 	    }
 	    status << "]";
 	}
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; " << TransformableObject::getValueString();
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
 	return status.str();
 }
 
@@ -321,7 +284,7 @@ std::string Polygon3::getSVG(const std::string& attrs, const std::string&
 elementID, Ionflux::GeoUtils::AxisID axis, Ionflux::GeoUtils::SVGShapeType 
 shapeType, bool closePath)
 {
-	ostringstream svg;
+	std::ostringstream svg;
 	AxisID oa[2];
 	if (axis == AXIS_Y)
 	{
@@ -406,43 +369,41 @@ Ionflux::GeoUtils::SVGShapeType shapeType, bool closePath)
 
 Ionflux::GeoUtils::Vector3 Polygon3::getBarycenter()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	if (!useTransform && !useVI)
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getBarycenter", "Vertex source");
+	if (!useTransform() && !useVI())
 	    return vertexSource->getBarycenter();
 	// Adjust for transformation.
 	Vertex3 v0(vertexSource->getBarycenter());
-	if (useTransform)
-	    v0.transform(transformMatrix);
-	if (useVI)
-	    v0.transformVI(viewMatrix, &imageMatrix);
+	if (useTransform())
+	    v0.transform(*getTransformMatrix());
+	if (useVI())
+	    v0.transformVI(*getViewMatrix(), getImageMatrix());
 	return v0.getVector();
 }
 
 void Polygon3::applyTransform(bool recursive)
 {
-	if (!useTransform && !useVI)
+	if (vertexSource == 0)
+	{
+	    clearTransformations();
+	    return;
+	}
+	if (!useTransform() && !useVI())
 	{
 	    if (recursive)
 	        vertexSource->applyTransform(recursive);
+	    clearTransformations();
 	    return;
 	}
 	copyVertices();
-	if (useTransform)
-	{
-	    vertexSource->transform(transformMatrix);
+	if (useTransform())
+	    vertexSource->transform(*getTransformMatrix());
+	if (useVI())
+	    vertexSource->transformVI(*getViewMatrix(), getImageMatrix());
+	if (useTransform() || useVI())
 	    vertexSource->applyTransform(recursive);
-	    transformMatrix = Matrix4::UNIT;
-	    useTransform = false;
-	}
-	if (useVI)
-	{
-	    vertexSource->transformVI(viewMatrix, &imageMatrix);
-	    vertexSource->applyTransform(recursive);
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	    useVI = false;
-	}
+	clearTransformations();
 }
 
 Ionflux::GeoUtils::Polygon3& Polygon3::scale(const 
@@ -516,11 +477,16 @@ void Polygon3::getPolygon2(Ionflux::GeoUtils::Polygon2& target)
 {
 	for (unsigned int i = 0; i < getNumVertices(); i++)
 	{
-	    Vertex3* v0 = getVertex(i);
-	    target.addVertex(new Vertex2(v0->getX(), v0->getY()));
+	    Vertex3* vt0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(i), this, "getPolygon2", "Vertex");
+	    target.addVertex(Vertex2::create(vt0->getX(), vt0->getY()));
 	}
 	for (unsigned int i = 0; i < getNumEdges(); i++)
-	    target.addEdge(new Edge(*getEdge(i)));\
+	{
+	    Edge* et0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getEdge(i), this, "getPolygon2", "Edge");
+	    target.addEdge(et0->copy());
+	}
 }
 
 Ionflux::GeoUtils::Polygon3* Polygon3::square()
@@ -835,6 +801,28 @@ void Polygon3::addVertex(Ionflux::GeoUtils::Vertex3* addElement)
     return vertexSource->addVertex(addElement);
 }
 
+Ionflux::GeoUtils::Vertex3* Polygon3::addVertex()
+{
+    if (vertexSource == 0)
+        throw GeoUtilsError("Vertex source not set.");
+    return vertexSource->addVertex();
+}
+
+void Polygon3::addVertices(const std::vector<Ionflux::GeoUtils::Vertex3*>& 
+newVertices)
+{
+    if (vertexSource == 0)
+        throw GeoUtilsError("Vertex source not set.");
+    return vertexSource->addVertices(newVertices);
+}
+
+void Polygon3::addVertices(Ionflux::GeoUtils::Polygon3* newVertices)
+{
+    if (vertexSource == 0)
+        throw GeoUtilsError("Vertex source not set.");
+    return vertexSource->addVertices(newVertices->vertexSource);
+}
+
 void Polygon3::removeVertex(Ionflux::GeoUtils::Vertex3* removeElement)
 {
     if (vertexSource == 0)
@@ -903,6 +891,28 @@ void Polygon3::addEdge(Ionflux::GeoUtils::Edge* addElement)
 	edges.push_back(addElement);
 }
 
+Ionflux::GeoUtils::Edge* Polygon3::addEdge()
+{
+	Ionflux::GeoUtils::Edge* o0 = Edge::create();
+	addEdge(o0);
+	return o0;
+}
+
+void Polygon3::addEdges(const std::vector<Ionflux::GeoUtils::Edge*>& 
+newEdges)
+{
+	for (std::vector<Ionflux::GeoUtils::Edge*>::const_iterator i = newEdges.begin(); 
+	    i != newEdges.end(); i++)
+	    addEdge(*i);
+}
+
+void Polygon3::addEdges(Ionflux::GeoUtils::Polygon3* newEdges)
+{
+	for (unsigned int i = 0; 
+	    i < newEdges->getNumEdges(); i++)
+	    addEdge(newEdges->getEdge(i));
+}
+
 void Polygon3::removeEdge(Ionflux::GeoUtils::Edge* removeElement)
 {
     bool found = false;
@@ -947,15 +957,17 @@ void Polygon3::clearEdges()
 Ionflux::GeoUtils::Polygon3& Polygon3::operator=(const 
 Ionflux::GeoUtils::Polygon3& other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
     setVertexSource(other.vertexSource);
     EdgeVector e0;
     for (EdgeVector::const_iterator i = other.edges.begin(); 
         i != other.edges.end(); i++)
     {
-        Edge* et0 = Edge::create();
-        *et0 = *(*i);
-        e0.push_back(et0);
+        Edge* et0 = Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+            "operator=", "Edge");
+        e0.push_back(et0->copy());
     }
     clearEdges();
     addEdges(e0);
@@ -986,6 +998,91 @@ Polygon3::create(Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+Ionflux::GeoUtils::Polygon3* 
+Polygon3::create(Ionflux::GeoUtils::Vertex3Vector* initVertices, 
+Ionflux::GeoUtils::EdgeVector* initEdges, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Polygon3* newObject = new Polygon3(initVertices, initEdges);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Polygon3* 
+Polygon3::create(Ionflux::GeoUtils::Vertex3Set* initVertexSource, 
+Ionflux::GeoUtils::EdgeVector* initEdges, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Polygon3* newObject = new Polygon3(initVertexSource, initEdges);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Polygon3* Polygon3::create(const 
+Ionflux::GeoUtils::Vertex3* v0, const Ionflux::GeoUtils::Vertex3* v1, const
+Ionflux::GeoUtils::Vertex3* v2, const Ionflux::GeoUtils::Vertex3* v3, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Polygon3* newObject = new Polygon3(v0, v1, v2, v3);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Polygon3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Polygon3::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	return d0.str();
+}
+
+void Polygon3::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	bool xcFirst = true;
+    if (vertexSource != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << vertexSource->getXML0(indentLevel, "pname=\"vertex_source\"");
+	    xcFirst = false;
+    }
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(edges, "vec", "", 
+        indentLevel, "pname=\"edges\"");
+    xcFirst = false;
+	target = d0.str();
+}
+
+void Polygon3::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getPolygon3(data, *this);
 }
 
 }

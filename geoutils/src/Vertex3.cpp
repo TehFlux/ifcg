@@ -169,13 +169,16 @@ void Vertex3::setCoord(int index, double value)
 	{
 	    ostringstream message;
 	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
+	    throw GeoUtilsError(getErrorString(message.str(), "setCoord"));
 	}
 	if (index == 0)
 	    x = value;
 	else 
 	if (index == 1)
 	    y = value;
+	else 
+	if (index == 2)
+	    z = value;
 }
 
 Ionflux::GeoUtils::Vertex3 Vertex3::interpolate(const 
@@ -186,9 +189,8 @@ Ionflux::GeoUtils::Interpolator* interpolator) const
 	Interpolator* i0 = 0;
 	if (interpolator == 0)
 	{
-	    i0 = new LinearInterpolator();
-	    if (i0 == 0)
-	        throw GeoUtilsError("Could not allocate object.");
+	    i0 = LinearInterpolator::create();
+	    addLocalRef(i0);
 	    interpolator = i0;
 	}
 	interpolator->setValues(x, other.x);
@@ -198,7 +200,7 @@ Ionflux::GeoUtils::Interpolator* interpolator) const
 	interpolator->setValues(z, other.z);
 	result.setZ((*interpolator)(t));
 	if (i0 != 0)
-	    delete i0;
+	    removeLocalRef(i0);
 	return result;
 }
 
@@ -235,9 +237,10 @@ double Vertex3::operator[](int index) const
 {
 	if ((index < 0) || (index > 3))
 	{
-	    ostringstream message;
+	    std::ostringstream message;
 	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
+	    throw GeoUtilsError(getErrorString(message.str(), 
+	        "operator[]"));
 	}
 	double result = 0.;
 	if (index == 0)
@@ -305,17 +308,11 @@ Ionflux::GeoUtils::Range3 Vertex3::getBounds()
 
 void Vertex3::applyTransform(bool recursive)
 {
-	if (useTransform)
-	{
-	    transform(transformMatrix);
-	    transformMatrix = Matrix4::UNIT;
-	}
-	if (useVI)
-	{
-	    transformVI(viewMatrix, &imageMatrix);
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	}
+	if (useTransform())
+	    transform(*getTransformMatrix());
+	if (useVI())
+	    transformVI(*getViewMatrix(), getImageMatrix());
+	clearTransformations();
 }
 
 Ionflux::GeoUtils::Vertex3& Vertex3::transform(const 

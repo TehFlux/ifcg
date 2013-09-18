@@ -151,12 +151,12 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::Face& transform(const 
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Face& duplicate();
+        virtual std::string getValueString() const;
         virtual std::string getXMLDataVertices_legacy() const;
         virtual std::string getXMLDataTexCoords_legacy() const;
         virtual std::string getXML_legacy() const;
         virtual void setFromXMLData_legacy(const std::string& vertexData, 
         const std::string& texCoordData);
-        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Face* copy() const;
 		static Ionflux::GeoUtils::Face* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

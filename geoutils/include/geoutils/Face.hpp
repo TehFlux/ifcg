@@ -641,6 +641,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual Ionflux::GeoUtils::Face& duplicate();
 		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
+		
 		/** Get XML data representation for vertex indices.
 		 *
 		 * Get a representation of the vertex indices suitable for use in an 
@@ -676,14 +684,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void setFromXMLData_legacy(const std::string& vertexData, const 
 		std::string& texCoordData);
-		
-		/** Get string representation of value.
-		 *
-		 * Get a string representation of the value of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *

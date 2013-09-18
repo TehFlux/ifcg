@@ -34,8 +34,6 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-class DeferredTransform;
-
 class TransformableObjectClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -52,7 +50,8 @@ class TransformableObject
         TransformableObject();
 		TransformableObject(const Ionflux::GeoUtils::TransformableObject& other);
         virtual ~TransformableObject();
-        virtual std::string getValueString() const;
+        virtual void clearTransformations();
+        virtual void clear();
         virtual void copyTransform(const 
         Ionflux::GeoUtils::TransformableObject& other);
         virtual void onTransformChanged();
@@ -82,30 +81,25 @@ class TransformableObject
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::Range3 getBounds();
+        virtual bool useTransform() const;
+        virtual bool useVI() const;
+        virtual bool transformChanged() const;
+        virtual bool viChanged() const;
         virtual Ionflux::GeoUtils::TransformableObject& duplicate();
+        virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;
+        virtual Ionflux::GeoUtils::Matrix4* getViewMatrix() const;
+        virtual Ionflux::GeoUtils::Matrix4* getImageMatrix() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::TransformableObject* copy() const;
 		static Ionflux::GeoUtils::TransformableObject* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformableObject* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
-        virtual void setTransformMatrix(const Ionflux::GeoUtils::Matrix4& 
-        newTransformMatrix);
-        virtual Ionflux::GeoUtils::Matrix4 getTransformMatrix() const;
-        virtual void setViewMatrix(const Ionflux::GeoUtils::Matrix4& 
-        newViewMatrix);
-        virtual Ionflux::GeoUtils::Matrix4 getViewMatrix() const;
-        virtual void setImageMatrix(const Ionflux::GeoUtils::Matrix4& 
-        newImageMatrix);
-        virtual Ionflux::GeoUtils::Matrix4 getImageMatrix() const;
-        virtual void setLastTransformMatrix(const 
-        Ionflux::GeoUtils::Matrix4& newLastTransformMatrix);
-        virtual Ionflux::GeoUtils::Matrix4 getLastTransformMatrix() const;
-        virtual void setLastViewMatrix(const Ionflux::GeoUtils::Matrix4& 
-        newLastViewMatrix);
-        virtual Ionflux::GeoUtils::Matrix4 getLastViewMatrix() const;
-        virtual void setLastImageMatrix(const Ionflux::GeoUtils::Matrix4& 
-        newLastImageMatrix);
-        virtual Ionflux::GeoUtils::Matrix4 getLastImageMatrix() const;
+        virtual void 
+        setDeferredTransform(Ionflux::GeoUtils::DeferredTransform* 
+        newDeferredTransform);
+        virtual Ionflux::GeoUtils::DeferredTransform* 
+        getDeferredTransform() const;
 };
 
 namespace XMLUtils

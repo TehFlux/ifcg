@@ -79,6 +79,8 @@ ItemSource::~ItemSource()
 Ionflux::GeoUtils::ItemSource& ItemSource::operator=(const 
 Ionflux::GeoUtils::ItemSource& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

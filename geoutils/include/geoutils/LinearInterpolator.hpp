@@ -133,6 +133,52 @@ class LinearInterpolator
 		 * \return Newly allocated copy of the object.
 		 */
 		virtual Ionflux::GeoUtils::LinearInterpolator* copy() const;
+		
+		/** Upcast.
+		 *
+		 * Cast an IFObject to the most specific type.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		static Ionflux::GeoUtils::LinearInterpolator* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::LinearInterpolator* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new LinearInterpolator object.
+		 *
+		 * \param initV0 First value.
+		 * \param initV1 Second value.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::LinearInterpolator* create(double initV0, 
+		double initV1, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new LinearInterpolator object.
+		 *
+		 * \param initValues Value vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::LinearInterpolator* create(const 
+		Ionflux::ObjectBase::DoubleVector& initValues, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
 
 }

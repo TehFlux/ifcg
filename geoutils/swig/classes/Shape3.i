@@ -78,6 +78,13 @@ class Shape3
 		parentObject = 0);
 };
 
+namespace XMLUtils
+{
+
+void getShape3(const std::string& data, Ionflux::GeoUtils::Shape3& target);
+
+}
+
 }
 
 }

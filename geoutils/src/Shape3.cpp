@@ -31,6 +31,9 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 
@@ -53,6 +56,8 @@ Shape3ClassInfo::~Shape3ClassInfo()
 // run-time type information instance constants
 const Shape3ClassInfo Shape3::shape3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Shape3::CLASS_INFO = &Shape3::shape3ClassInfo;
+
+const std::string Shape3::XML_ELEMENT_NAME = "shape3";
 
 Shape3::Shape3()
 {
@@ -173,6 +178,31 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string Shape3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Shape3::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	return d0.str();
+}
+
+void Shape3::getXMLChildData(std::string& target, unsigned int indentLevel)
+const
+{
+	std::ostringstream d0;
+	target = d0.str();
+}
+
+void Shape3::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getShape3(data, *this);
 }
 
 }

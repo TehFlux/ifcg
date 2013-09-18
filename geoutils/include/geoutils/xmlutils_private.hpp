@@ -664,6 +664,54 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Vertex2;
+
+namespace XMLUtils
+{
+
+/// Initialize Vertex2 from TiXmlElement.
+void getVertex2(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex2& target, const std::string& elementName = 
+Ionflux::GeoUtils::Vertex2::XML_ELEMENT_NAME);
+
+/// Create new Vertex2 from TiXmlElement.
+Ionflux::GeoUtils::Vertex2* createVertex2(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Vertex2::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Vertex2 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Vertex2>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Vertex2& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class Vertex3;
 
 namespace XMLUtils
@@ -809,6 +857,54 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Edge;
+
+namespace XMLUtils
+{
+
+/// Initialize Edge from TiXmlElement.
+void getEdge(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Edge& target, const std::string& elementName = 
+Ionflux::GeoUtils::Edge::XML_ELEMENT_NAME);
+
+/// Create new Edge from TiXmlElement.
+Ionflux::GeoUtils::Edge* createEdge(TiXmlElement* e0, const std::string& 
+elementName = Ionflux::GeoUtils::Edge::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Edge from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Edge>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Edge& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class Mesh;
 
 namespace XMLUtils
@@ -890,6 +986,201 @@ namespace XMLUtils
 template<>
 void getObject0<Ionflux::GeoUtils::Object3>(TiXmlElement* e0, 
 Ionflux::GeoUtils::Object3& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class TransformableGroup;
+
+namespace XMLUtils
+{
+
+/// Initialize TransformableGroup from TiXmlElement.
+void getTransformableGroup(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableGroup& target, const std::string& 
+elementName = Ionflux::GeoUtils::TransformableGroup::XML_ELEMENT_NAME);
+
+/// Create new TransformableGroup from TiXmlElement.
+Ionflux::GeoUtils::TransformableGroup* 
+createTransformableGroup(TiXmlElement* e0, const std::string& elementName =
+Ionflux::GeoUtils::TransformableGroup::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize TransformableGroup from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::TransformableGroup>(TiXmlElement* e0, 
+Ionflux::GeoUtils::TransformableGroup& target, const std::string& 
+elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Polygon3;
+
+namespace XMLUtils
+{
+
+/// Initialize Polygon3 from TiXmlElement.
+void getPolygon3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Polygon3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Polygon3::XML_ELEMENT_NAME);
+
+/// Create new Polygon3 from TiXmlElement.
+Ionflux::GeoUtils::Polygon3* createPolygon3(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Polygon3::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Polygon3 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Polygon3>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Polygon3& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Polygon3Set;
+
+namespace XMLUtils
+{
+
+/// Initialize Polygon3Set from TiXmlElement.
+void getPolygon3Set(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Polygon3Set& target, const std::string& elementName 
+= Ionflux::GeoUtils::Polygon3Set::XML_ELEMENT_NAME);
+
+/// Create new Polygon3Set from TiXmlElement.
+Ionflux::GeoUtils::Polygon3Set* createPolygon3Set(TiXmlElement* e0, const 
+std::string& elementName = 
+Ionflux::GeoUtils::Polygon3Set::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Polygon3Set from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Polygon3Set>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Polygon3Set& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Shape3;
+
+namespace XMLUtils
+{
+
+/// Initialize Shape3 from TiXmlElement.
+void getShape3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Shape3& target, const std::string& elementName = 
+Ionflux::GeoUtils::Shape3::XML_ELEMENT_NAME);
+
+/// Create new Shape3 from TiXmlElement.
+Ionflux::GeoUtils::Shape3* createShape3(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Shape3::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Shape3 from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Shape3>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Shape3& target, const std::string& elementName);
 
 }
 

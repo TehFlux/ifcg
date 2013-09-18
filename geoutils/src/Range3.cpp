@@ -344,6 +344,8 @@ Ionflux::GeoUtils::Range Range3::getZ() const
 Ionflux::GeoUtils::Range3& Range3::operator=(const 
 Ionflux::GeoUtils::Range3& other)
 {
+if (this == &other)
+    return *this;
 setX(other.getX());
 setY(other.getY());
 setZ(other.getZ());

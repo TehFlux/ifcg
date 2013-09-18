@@ -30,7 +30,6 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
-#include "geoutils/Matrix4.hpp"
 #include "geoutils/Range3.hpp"
 #include "geoutils/Polygon3CompareAxis.hpp"
 #include "geoutils/SVGImageProperties.hpp"
@@ -86,6 +85,8 @@ class Polygon3Set
 		static const Polygon3SetClassInfo polygon3SetClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -101,45 +102,36 @@ class Polygon3Set
 		 */
 		Polygon3Set(const Ionflux::GeoUtils::Polygon3Set& other);
 		
+		/** Constructor.
+		 *
+		 * Construct new Polygon3Set object.
+		 *
+		 * \param initPolygons Polygons.
+		 */
+		Polygon3Set(Ionflux::GeoUtils::Polygon3Vector& initPolygons);
+		
 		/** Destructor.
 		 *
 		 * Destruct Polygon3Set object.
 		 */
 		virtual ~Polygon3Set();
 		
-		/** Create polygon.
+		/** Get barycenter.
 		 *
-		 * Create a new polygon which is managed by the polygon set.
+		 * Get the barycenter vector for all polygons.
 		 *
-		 * \return New polygon.
+		 * \return Barycenter vector.
 		 */
-		virtual Ionflux::GeoUtils::Polygon3* addPolygon();
+		virtual Ionflux::GeoUtils::Vector3 getBarycenter();
 		
-		/** Add polygons.
+		/** Apply transformations.
 		 *
-		 * Add polygons from a polygon vector.
+		 * Apply transformations that have been accumulated in the 
+		 * transformation matrices.
 		 *
-		 * \param newPolygons Polygons.
+		 * \param recursive Apply transformations recursively.
 		 */
-		virtual void addPolygons(const Ionflux::GeoUtils::Polygon3Vector& 
-		newPolygons);
-		
-		/** Add polygons.
-		 *
-		 * Add polygons from a polygon set.
-		 *
-		 * \param newPolygons Polygons.
-		 */
-		virtual void addPolygons(const Ionflux::GeoUtils::Polygon3Set& 
-		newPolygons);
-		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
+		virtual void applyTransform(bool recursive = false);
 		
 		/** Get SVG representation.
 		 *
@@ -235,14 +227,6 @@ class Polygon3Set
 		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::SVGShapeType shapeType = 
 		Ionflux::GeoUtils::DEFAULT_SHAPE_TYPE, bool closePath = true);
 		
-		/** Get barycenter.
-		 *
-		 * Get the barycenter vector for all polygons.
-		 *
-		 * \return Barycenter vector.
-		 */
-		virtual Ionflux::GeoUtils::Vector3 getBarycenter();
-		
 		/** Write SVG representation to file.
 		 *
 		 * Create a Scalable Vector Graphics (XML) representation of the 
@@ -255,15 +239,6 @@ class Polygon3Set
 		virtual void writeSVG(Ionflux::GeoUtils::SVGImageProperties& 
 		imageProperties, const std::string& elementIDPrefix = "polygon", 
 		Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Y);
-		
-		/** Apply transformations.
-		 *
-		 * Apply transformations that have been accumulated in the 
-		 * transformation matrices.
-		 *
-		 * \param recursive Apply transformations recursively.
-		 */
-		virtual void applyTransform(bool recursive = false);
 		
 		/** Scale.
 		 *
@@ -378,6 +353,14 @@ class Polygon3Set
 		 */
 		virtual void sort(Ionflux::GeoUtils::Polygon3Compare* compFunc = 0);
 		
+		/** Get string representation.
+		 *
+		 * Get a string representation of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
+		
 		/** Assignment operator.
 		 *
 		 * Assign an object.
@@ -420,6 +403,51 @@ class Polygon3Set
 		 */
 		static Ionflux::GeoUtils::Polygon3Set* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Polygon3Set object.
+		 *
+		 * \param initPolygons Polygons.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Polygon3Set* 
+		create(Ionflux::GeoUtils::Polygon3Vector& initPolygons, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get number of polygons.
 		 *
@@ -463,6 +491,31 @@ class Polygon3Set
 		 * \param addElement Polygon to be added.
 		 */
 		virtual void addPolygon(Ionflux::GeoUtils::Polygon3* addElement);
+		
+		/** Create polygon.
+		 *
+		 * Create a new polygon which is managed by the polygon set.
+		 *
+		 * \return New polygon.
+		 */
+		virtual Ionflux::GeoUtils::Polygon3* addPolygon();
+		
+		/** Add polygons.
+		 *
+		 * Add polygons from a polygon vector.
+		 *
+		 * \param newPolygons polygons.
+		 */
+		virtual void addPolygons(const std::vector<Ionflux::GeoUtils::Polygon3*>&
+		newPolygons);
+		
+		/** Add polygons.
+		 *
+		 * Add polygons from a polygon set.
+		 *
+		 * \param newPolygons polygons.
+		 */
+		virtual void addPolygons(Ionflux::GeoUtils::Polygon3Set* newPolygons);
 		
 		/** Remove polygon.
 		 *

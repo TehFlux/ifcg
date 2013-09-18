@@ -59,10 +59,6 @@ Ionflux::GeoUtils::TransformableObject
         virtual ~Mesh();
         virtual Ionflux::GeoUtils::Range3 getBounds();
         virtual void copyVertices();
-        virtual Ionflux::GeoUtils::Vertex3* addVertex();
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& 
-        newVerts);
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
         virtual void update();
         virtual void clear();
         virtual void clearData();
@@ -100,8 +96,6 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Mesh& duplicate();
         virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
-        virtual std::string getXML_legacy() const;
-        virtual void writeToFile(const std::string& fileName) const;
         virtual void removeBackfaces(const Ionflux::GeoUtils::Vector3& 
         front);
         virtual void sortFaces(Ionflux::GeoUtils::FaceCompare* compFunc = 
@@ -111,7 +105,6 @@ Ionflux::GeoUtils::TransformableObject
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual std::string getValueString() const;
-        virtual void loadFromXMLFile(const std::string& fileName);
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
         static Ionflux::GeoUtils::Mesh* cylinder(unsigned int subDivs = 10,
@@ -119,6 +112,8 @@ Ionflux::GeoUtils::TransformableObject
         static Ionflux::GeoUtils::Mesh* arrow(unsigned int subDivs = 10, 
         double length = 1., double radius = 0.005, double headLength = 0.1,
         double headRadius = 4.);
+        virtual std::string getXML_legacy() const;
+        virtual void writeToFile_legacy(const std::string& fileName) const;
 		virtual Ionflux::GeoUtils::Mesh* copy() const;
 		static Ionflux::GeoUtils::Mesh* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -139,7 +134,11 @@ Ionflux::GeoUtils::TransformableObject
 		virtual int findVertex(Ionflux::GeoUtils::Vertex3* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Vertex3*>& getVertices();
-        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);        
+        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		virtual void addVertices(std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		virtual void addVertices(Ionflux::GeoUtils::Mesh* newVertices);        
         virtual void removeVertex(Ionflux::GeoUtils::Vertex3* 
         removeElement);
 		virtual void removeVertexIndex(unsigned int removeIndex);

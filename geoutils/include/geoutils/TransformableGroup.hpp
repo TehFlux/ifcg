@@ -67,11 +67,19 @@ class TransformableGroup
 		/// Item vector.
 		std::vector<Ionflux::GeoUtils::TransformableObject*> items;
 		
+		/** Recalculate bounds.
+		 *
+		 * Recalculate the bounds for the group.
+		 */
+		virtual void recalculateBounds();
+		
 	public:
 		/// Class information instance.
 		static const TransformableGroupClassInfo transformableGroupClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -93,28 +101,11 @@ class TransformableGroup
 		 */
 		virtual ~TransformableGroup();
 		
-		/** Recalculate bounds.
+		/** Clear.
 		 *
-		 * Recalculate the bounds for the group.
+		 * Removes all items and resets state.
 		 */
-		virtual void recalculateBounds();
-		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
-		
-		/** Add items.
-		 *
-		 * Add items from a transformable object vector.
-		 *
-		 * \param newItems Items.
-		 */
-		virtual void addItems(const Ionflux::GeoUtils::TransformableObjectVector&
-		newItems);
+		virtual void clear();
 		
 		/** Apply transformations.
 		 *
@@ -270,6 +261,14 @@ class TransformableGroup
 		virtual std::string getDebugInfo(bool expand = true, unsigned int level =
 		0);
 		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
+		
 		/** Assignment operator.
 		 *
 		 * Assign an object.
@@ -312,6 +311,40 @@ class TransformableGroup
 		 */
 		static Ionflux::GeoUtils::TransformableGroup* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get number of items.
 		 *
@@ -355,6 +388,31 @@ class TransformableGroup
 		 * \param addElement Item to be added.
 		 */
 		virtual void addItem(Ionflux::GeoUtils::TransformableObject* addElement);
+		
+		/** Create item.
+		 *
+		 * Create a new item which is managed by the item set.
+		 *
+		 * \return New item.
+		 */
+		virtual Ionflux::GeoUtils::TransformableObject* addItem();
+		
+		/** Add items.
+		 *
+		 * Add items from a item vector.
+		 *
+		 * \param newItems items.
+		 */
+		virtual void addItems(const 
+		std::vector<Ionflux::GeoUtils::TransformableObject*>& newItems);
+		
+		/** Add items.
+		 *
+		 * Add items from a item set.
+		 *
+		 * \param newItems items.
+		 */
+		virtual void addItems(Ionflux::GeoUtils::TransformableGroup* newItems);
 		
 		/** Remove item.
 		 *

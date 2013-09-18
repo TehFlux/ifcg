@@ -85,6 +85,8 @@ std::string GeoUtilsError::getReason() const
 Ionflux::GeoUtils::GeoUtilsError& GeoUtilsError::operator=(const 
 Ionflux::GeoUtils::GeoUtilsError& other)
 {
+if (this == &other)
+    return *this;
 setReason(other.getReason());
 	return *this;
 }

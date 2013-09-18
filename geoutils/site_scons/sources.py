@@ -300,10 +300,16 @@ geoutilsLibXMLClasses = [
     'FaceData', 
     'DeferredTransform', 
     'TransformableObject', 
+    'Vertex2', 
     'Vertex3', 
     'Vertex3Set', 
     'Face', 
-    'Mesh'
+    'Edge', 
+    'Mesh', 
+    'TransformableGroup', 
+    'Polygon3', 
+    'Polygon3Set', 
+    'Shape3'
 ]
 
 # Altjira/GeoUtils library

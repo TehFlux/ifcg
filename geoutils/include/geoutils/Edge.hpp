@@ -75,6 +75,8 @@ class Edge
 		static const EdgeClassInfo edgeClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -239,6 +241,62 @@ class Edge
 		 */
 		static Ionflux::GeoUtils::Edge* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Edge object.
+		 *
+		 * \param initV0 First vertex index.
+		 * \param initV1 Second vertex index.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Edge* create(int initV0, int initV1, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Edge object.
+		 *
+		 * \param initVertices Vertex index vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Edge* create(const 
+		Ionflux::ObjectBase::IntVector& initVertices, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get first vertex index.
 		 *

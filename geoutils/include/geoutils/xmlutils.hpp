@@ -390,6 +390,28 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Vertex2;
+
+namespace XMLUtils
+{
+
+void getVertex2(const std::string& data, Ionflux::GeoUtils::Vertex2& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class Vertex3;
 
 namespace XMLUtils
@@ -455,6 +477,27 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Edge;
+
+namespace XMLUtils
+{
+
+void getEdge(const std::string& data, Ionflux::GeoUtils::Edge& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 class Mesh;
 
 namespace XMLUtils
@@ -483,6 +526,93 @@ namespace XMLUtils
 
 void getObject3(const std::string& data, Ionflux::GeoUtils::Object3& 
 target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class TransformableGroup;
+
+namespace XMLUtils
+{
+
+void getTransformableGroup(const std::string& data, 
+Ionflux::GeoUtils::TransformableGroup& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Polygon3;
+
+namespace XMLUtils
+{
+
+void getPolygon3(const std::string& data, Ionflux::GeoUtils::Polygon3& 
+target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Polygon3Set;
+
+namespace XMLUtils
+{
+
+void getPolygon3Set(const std::string& data, 
+Ionflux::GeoUtils::Polygon3Set& target);
+
+}
+
+}
+
+}
+
+
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Shape3;
+
+namespace XMLUtils
+{
+
+void getShape3(const std::string& data, Ionflux::GeoUtils::Shape3& target);
 
 }
 

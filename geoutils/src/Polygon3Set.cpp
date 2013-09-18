@@ -32,8 +32,13 @@
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Polygon3.hpp"
+#include "geoutils/transformutils.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -63,6 +68,8 @@ const Ionflux::GeoUtils::Polygon3CompareAxis Polygon3Set::COMPARE_AXIS_Z = Ionfl
 const Polygon3SetClassInfo Polygon3Set::polygon3SetClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Polygon3Set::CLASS_INFO = &Polygon3Set::polygon3SetClassInfo;
 
+const std::string Polygon3Set::XML_ELEMENT_NAME = "poly3set";
+
 Polygon3Set::Polygon3Set()
 {
 	// NOTE: The following line is required for run-time type information.
@@ -77,6 +84,13 @@ Polygon3Set::Polygon3Set(const Ionflux::GeoUtils::Polygon3Set& other)
 	*this = other;
 }
 
+Polygon3Set::Polygon3Set(Ionflux::GeoUtils::Polygon3Vector& initPolygons)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	addPolygons(initPolygons);
+}
+
 Polygon3Set::~Polygon3Set()
 {
 	clearPolygons();
@@ -87,10 +101,12 @@ void Polygon3Set::recalculateBounds()
 {
 	TransformableObject::recalculateBounds();
 	const Polygon3Set* ps0 = this;
-	if (useTransform || useVI)
+	Polygon3Set* ps1 = 0;
+	if (useTransform() || useVI())
 	{
 	    // Adjust for transformation.
 	    Polygon3Set* ps1 = copy();
+	    addLocalRef(ps1);
 	    ps1->applyTransform();
 	    ps0 = ps1;
 	}
@@ -106,52 +122,30 @@ void Polygon3Set::recalculateBounds()
 	    } else
 	        boundsCache->extend(r0);
 	}
-	if (useTransform || useVI)
-	    delete ps0;
+	if (ps1 != 0)
+	    removeLocalRef(ps1);
 }
 
-Ionflux::GeoUtils::Polygon3* Polygon3Set::addPolygon()
+Ionflux::GeoUtils::Vector3 Polygon3Set::getBarycenter()
 {
-	Polygon3* p0 = new Polygon3();
-	if (p0 == 0)
-	    throw GeoUtilsError("Could not allocate object.");
-	addPolygon(p0);
-	return p0;
+	Vector3 vSum;
+	Ionflux::GeoUtils::Polygon3Vector::const_iterator i;
+	for (i = polys.begin(); i < polys.end(); i++)
+	    vSum = vSum + (*i)->getBarycenter();
+	vSum = vSum / polys.size();
+	// Adjust for transformation.
+	Vertex3 v0(vSum);
+	if (useTransform())
+	    v0.transform(*getTransformMatrix());
+	if (useVI())
+	    v0.transformVI(*getViewMatrix(), getImageMatrix());
+	return v0.getVector();
 }
 
-void Polygon3Set::addPolygons(const Ionflux::GeoUtils::Polygon3Vector& 
-newPolygons)
+void Polygon3Set::applyTransform(bool recursive)
 {
-	for (Polygon3Vector::const_iterator i = newPolygons.begin(); 
-	    i != newPolygons.end(); i++)
-	    addPolygon(*i);
-}
-
-void Polygon3Set::addPolygons(const Ionflux::GeoUtils::Polygon3Set& 
-newPolygons)
-{
-	for (Polygon3Vector::const_iterator i = 
-	    newPolygons.polys.begin(); i != newPolygons.polys.end(); i++)
-	    addPolygon(*i);
-}
-
-std::string Polygon3Set::getString() const
-{
-	ostringstream status;
-	status << getClassName();
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "[";
-	if (useTransform)
-	    status << transformMatrix;
-	if (useVI)
-	{
-	    if (useTransform)
-	        status << ", ";
-	    status << viewMatrix << ", " << imageMatrix;
-	}
-	status << "]";
-	return status.str();
+	Ionflux::GeoUtils::applyTransform(*this, polys, 
+	    recursive, "Polygon");
 }
 
 std::string Polygon3Set::getSVG(const std::string& attrs, const 
@@ -246,69 +240,23 @@ Ionflux::GeoUtils::SVGShapeStyleVector& styles, const std::string&
 elementIDPrefix, Ionflux::GeoUtils::AxisID axis, 
 Ionflux::GeoUtils::SVGShapeType shapeType, bool closePath)
 {
-	ofstream f0;
+	std::ofstream f0;
 	f0.open(fileName.c_str(), ios_base::out);
 	f0 << SVG_DEFAULT_HEADER << getSVG(styles, elementIDPrefix, axis, 
 	    shapeType, closePath) << SVG_DEFAULT_FOOTER;
-}
-
-Ionflux::GeoUtils::Vector3 Polygon3Set::getBarycenter()
-{
-	Vector3 vSum;
-	Ionflux::GeoUtils::Polygon3Vector::const_iterator i;
-	for (i = polys.begin(); i < polys.end(); i++)
-	    vSum = vSum + (*i)->getBarycenter();
-	vSum = vSum / polys.size();
-	// Adjust for transformation.
-	Vertex3 v0(vSum);
-	if (useTransform)
-	    v0.transform(transformMatrix);
-	if (useVI)
-	    v0.transformVI(viewMatrix, &imageMatrix);
-	return v0.getVector();
 }
 
 void Polygon3Set::writeSVG(Ionflux::GeoUtils::SVGImageProperties& 
 imageProperties, const std::string& elementIDPrefix, 
 Ionflux::GeoUtils::AxisID axis)
 {
-	ofstream f0;
+	std::ofstream f0;
 	f0.open(imageProperties.getFileName().c_str(), ios_base::out);
 	Vector2 o0 = imageProperties.getOrigin();
 	std::string d0 = getSVG(imageProperties, elementIDPrefix, axis);
 	f0 << getSVGImage(d0, imageProperties.getWidth(), 
 	    imageProperties.getHeight(), static_cast<int>(o0.getX0()), 
 	    static_cast<int>(o0.getX1()));
-}
-
-void Polygon3Set::applyTransform(bool recursive)
-{
-	if (!recursive 
-	    && !useTransform 
-	    && !useVI)
-	    // Nothing to be done.
-	    return;
-	for (Polygon3Vector::iterator i = polys.begin(); 
-	    i != polys.end(); i++)
-	{
-	    if (useTransform)
-	        (*i)->transform(transformMatrix);
-	    if (useVI)
-	        (*i)->transformVI(viewMatrix, &imageMatrix);
-	    if (recursive)
-	        (*i)->applyTransform(recursive);
-	}
-	if (useTransform)
-	{
-	    transformMatrix = Matrix4::UNIT;
-	    useTransform = false;
-	}
-	if (useVI)
-	{
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	    useVI = false;
-	}
 }
 
 Ionflux::GeoUtils::Polygon3Set& Polygon3Set::scale(const 
@@ -383,6 +331,26 @@ void Polygon3Set::sort(Ionflux::GeoUtils::Polygon3Compare* compFunc)
 	::sort(polys.begin(), polys.end(), wrap0);
 }
 
+std::string Polygon3Set::getValueString() const
+{
+	std::ostringstream status;
+	bool e0 = true;
+	for (Polygon3Vector::const_iterator i = polys.begin(); 
+	    i != polys.end(); i++)
+	{
+	    if (!e0)
+	        status << ", ";
+	    else
+	        e0 = false;
+	    status << "[" << (*i)->getValueString() << "]";
+	}
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
+	return status.str();
+}
+
 unsigned int Polygon3Set::getNumPolygons() const
 {
     return polys.size();
@@ -431,6 +399,28 @@ void Polygon3Set::addPolygon(Ionflux::GeoUtils::Polygon3* addElement)
 	polys.push_back(addElement);
 }
 
+Ionflux::GeoUtils::Polygon3* Polygon3Set::addPolygon()
+{
+	Ionflux::GeoUtils::Polygon3* o0 = Polygon3::create();
+	addPolygon(o0);
+	return o0;
+}
+
+void Polygon3Set::addPolygons(const 
+std::vector<Ionflux::GeoUtils::Polygon3*>& newPolygons)
+{
+	for (std::vector<Ionflux::GeoUtils::Polygon3*>::const_iterator i = newPolygons.begin(); 
+	    i != newPolygons.end(); i++)
+	    addPolygon(*i);
+}
+
+void Polygon3Set::addPolygons(Ionflux::GeoUtils::Polygon3Set* newPolygons)
+{
+	for (unsigned int i = 0; 
+	    i < newPolygons->getNumPolygons(); i++)
+	    addPolygon(newPolygons->getPolygon(i));
+}
+
 void Polygon3Set::removePolygon(Ionflux::GeoUtils::Polygon3* removeElement)
 {
     bool found = false;
@@ -475,11 +465,17 @@ void Polygon3Set::clearPolygons()
 Ionflux::GeoUtils::Polygon3Set& Polygon3Set::operator=(const 
 Ionflux::GeoUtils::Polygon3Set& other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
     Polygon3Vector pv0;
     for (Polygon3Vector::const_iterator i = other.polys.begin(); 
         i != other.polys.end(); i++)
-        pv0.push_back(new Polygon3(*(*i)));
+    {
+        Polygon3* pt0 = Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+            "operator=", "Polygon");
+        pv0.push_back(pt0->copy());
+    }
     clearPolygons();
     addPolygons(pv0);
 	return *this;
@@ -509,6 +505,53 @@ Polygon3Set::create(Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+Ionflux::GeoUtils::Polygon3Set* 
+Polygon3Set::create(Ionflux::GeoUtils::Polygon3Vector& initPolygons, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Polygon3Set* newObject = new Polygon3Set(initPolygons);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Polygon3Set::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Polygon3Set::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	return d0.str();
+}
+
+void Polygon3Set::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(polys, "poly3vec", "", 
+        indentLevel, "pname=\"polygons\"");
+    xcFirst = false;
+	target = d0.str();
+}
+
+void Polygon3Set::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getPolygon3Set(data, *this);
 }
 
 }

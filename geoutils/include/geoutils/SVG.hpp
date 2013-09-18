@@ -139,13 +139,13 @@ class SVG
 		 */
 		virtual Ionflux::GeoUtils::SVG& duplicate();
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *

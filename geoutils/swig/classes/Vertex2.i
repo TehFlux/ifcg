@@ -78,11 +78,31 @@ class Vertex2
         const;
         virtual std::string getString() const;
 		virtual Ionflux::GeoUtils::Vertex2* copy() const;
+		static Ionflux::GeoUtils::Vertex2* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Vertex2* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Vertex2* create(double initX, double initY, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vertex2* create(const 
+		Ionflux::GeoUtils::Vector2& initCoords, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setX(double newX);
         virtual double getX() const;
         virtual void setY(double newY);
         virtual double getY() const;
 };
+
+namespace XMLUtils
+{
+
+void getVertex2(const std::string& data, Ionflux::GeoUtils::Vertex2& 
+target);
+
+}
 
 }
 

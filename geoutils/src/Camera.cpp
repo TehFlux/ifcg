@@ -583,6 +583,8 @@ Ionflux::GeoUtils::CameraSetupFlags Camera::getSetupFlags() const
 Ionflux::GeoUtils::Camera& Camera::operator=(const 
 Ionflux::GeoUtils::Camera& other)
 {
+if (this == &other)
+    return *this;
 setLocation(other.getLocation());
 setDirection(other.getDirection());
 setLookAt(other.getLookAt());

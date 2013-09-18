@@ -31,6 +31,9 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -55,6 +58,8 @@ EdgeClassInfo::~EdgeClassInfo()
 // run-time type information instance constants
 const EdgeClassInfo Edge::edgeClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Edge::CLASS_INFO = &Edge::edgeClassInfo;
+
+const std::string Edge::XML_ELEMENT_NAME = "edge";
 
 Edge::Edge()
 : v0(0), v1(0)
@@ -197,8 +202,10 @@ int Edge::getV1() const
 Ionflux::GeoUtils::Edge& Edge::operator=(const Ionflux::GeoUtils::Edge& 
 other)
 {
-setV0(other.getV0());
-setV1(other.getV1());
+    if (this == &other)
+        return *this;
+    v0 = other.v0;
+    v1 = other.v1;
 	return *this;
 }
 
@@ -225,6 +232,65 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+Ionflux::GeoUtils::Edge* Edge::create(int initV0, int initV1, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Edge* newObject = new Edge(initV0, initV1);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Edge* Edge::create(const Ionflux::ObjectBase::IntVector&
+initVertices, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Edge* newObject = new Edge(initVertices);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string Edge::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Edge::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0 << " ";
+	d0 << "v0=\"" << v0 << "\"";
+	d0 << " " << "v1=\"" << v1 << "\"";
+	return d0.str();
+}
+
+void Edge::getXMLChildData(std::string& target, unsigned int indentLevel) 
+const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void Edge::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getEdge(data, *this);
 }
 
 }

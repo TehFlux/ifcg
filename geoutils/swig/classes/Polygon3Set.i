@@ -54,13 +54,10 @@ class Polygon3Set
         
         Polygon3Set();
 		Polygon3Set(const Ionflux::GeoUtils::Polygon3Set& other);
+        Polygon3Set(Ionflux::GeoUtils::Polygon3Vector& initPolygons);
         virtual ~Polygon3Set();
-        virtual Ionflux::GeoUtils::Polygon3* addPolygon();
-        virtual void addPolygons(const Ionflux::GeoUtils::Polygon3Vector& 
-        newPolygons);
-        virtual void addPolygons(const Ionflux::GeoUtils::Polygon3Set& 
-        newPolygons);
-        virtual std::string getString() const;
+        virtual Ionflux::GeoUtils::Vector3 getBarycenter();
+        virtual void applyTransform(bool recursive = false);
         virtual std::string getSVG(const std::string& attrs = 
         SVG_DEFAULT_POLY_STYLE, const std::string& elementIDPrefix = 
         "polygon", Ionflux::GeoUtils::AxisID axis = 
@@ -88,11 +85,9 @@ class Polygon3Set
         Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::SVGShapeType 
         shapeType = Ionflux::GeoUtils::DEFAULT_SHAPE_TYPE, bool closePath =
         true);
-        virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void writeSVG(Ionflux::GeoUtils::SVGImageProperties& 
         imageProperties, const std::string& elementIDPrefix = "polygon", 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Y);
-        virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Polygon3Set& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Polygon3Set& translate(const 
@@ -114,23 +109,39 @@ class Polygon3Set
         virtual Ionflux::GeoUtils::Polygon3Set& duplicate();
         virtual void sort(Ionflux::GeoUtils::Polygon3Compare* compFunc = 
         0);
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Polygon3Set* copy() const;
 		static Ionflux::GeoUtils::Polygon3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3Set* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Polygon3Set* 
+		create(Ionflux::GeoUtils::Polygon3Vector& initPolygons, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);        
         virtual unsigned int getNumPolygons() const;
         virtual Ionflux::GeoUtils::Polygon3* getPolygon(unsigned int 
         elementIndex = 0) const;
 		virtual int findPolygon(Ionflux::GeoUtils::Polygon3* needle, unsigned int
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Polygon3*>& getPolygons();
-        virtual void addPolygon(Ionflux::GeoUtils::Polygon3* addElement);        
+        virtual void addPolygon(Ionflux::GeoUtils::Polygon3* addElement);
+		virtual Ionflux::GeoUtils::Polygon3* addPolygon();
+		virtual void addPolygons(std::vector<Ionflux::GeoUtils::Polygon3*>& 
+		newPolygons);
+		virtual void addPolygons(Ionflux::GeoUtils::Polygon3Set* newPolygons);        
         virtual void removePolygon(Ionflux::GeoUtils::Polygon3* 
         removeElement);
 		virtual void removePolygonIndex(unsigned int removeIndex);
 		virtual void clearPolygons();
 };
+
+namespace XMLUtils
+{
+
+void getPolygon3Set(const std::string& data, 
+Ionflux::GeoUtils::Polygon3Set& target);
+
+}
 
 }
 

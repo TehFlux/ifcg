@@ -30,9 +30,9 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3.hpp"
-#include "geoutils/DeferredTransform.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
@@ -64,7 +64,7 @@ const Ionflux::ObjectBase::IFClassInfo* TransformableObject::CLASS_INFO = &Trans
 const std::string TransformableObject::XML_ELEMENT_NAME = "transformable_object";
 
 TransformableObject::TransformableObject()
-: useTransform(false), useVI(false), transformChanged(false), viChanged(false), boundsCache(0), transformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), viewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), imageMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastTransformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastViewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastImageMatrix(Ionflux::GeoUtils::Matrix4::UNIT)
+: boundsCache(0), deferredTransform(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -72,7 +72,7 @@ TransformableObject::TransformableObject()
 }
 
 TransformableObject::TransformableObject(const Ionflux::GeoUtils::TransformableObject& other)
-: useTransform(false), useVI(false), transformChanged(false), viChanged(false), boundsCache(0), transformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), viewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), imageMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastTransformMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastViewMatrix(Ionflux::GeoUtils::Matrix4::UNIT), lastImageMatrix(Ionflux::GeoUtils::Matrix4::UNIT)
+: boundsCache(0), deferredTransform(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -96,75 +96,57 @@ void TransformableObject::recalculateBounds()
 void TransformableObject::processTransformChange()
 {
 	recalculateBounds();
-	transformChanged = false;
-	viChanged = false;
+	if (deferredTransform != 0)
+	    deferredTransform->reset();
 }
 
-std::string TransformableObject::getValueString() const
+void TransformableObject::clearTransformations()
 {
-	if (!useTransform && !useVI)
-	    return "";
-	ostringstream status;
-	if (useTransform)
-	    status << transformMatrix;
-	if (useVI)
-	{
-	    if (useTransform)
-	        status << ", ";
-	    status << viewMatrix << ", " << imageMatrix;
-	}
-	return status.str();
+	setDeferredTransform(0);
+}
+
+void TransformableObject::clear()
+{
+	clearTransformations();
 }
 
 void TransformableObject::copyTransform(const 
 Ionflux::GeoUtils::TransformableObject& other)
 {
-	lastTransformMatrix = transformMatrix;
-	lastViewMatrix = viewMatrix;
-	lastImageMatrix = imageMatrix;
-	transformMatrix = other.transformMatrix;
-	viewMatrix = other.viewMatrix;
-	imageMatrix = other.imageMatrix;
-	checkTransform();
-	checkVI();
+	if (other.deferredTransform != 0)
+	    setDeferredTransform(other.deferredTransform->copy());
+	else
+	    setDeferredTransform(0);
 }
 
 void TransformableObject::onTransformChanged()
 {
-	transformChanged = true;
+	// TODO: Implementation.
 }
 
 void TransformableObject::onVIChanged()
 {
-	viChanged = true;
+	// TODO: Implementation.
 }
 
 bool TransformableObject::checkTransform(double t)
 {
-	if (transformMatrix.eq(Matrix4::UNIT, t))
-	    useTransform = false;
-	else
-	{
-	    useTransform = true;
-	    if (!transformMatrix.eq(lastTransformMatrix, t))
-	        onTransformChanged();
-	}
-	return useTransform;
+	if (deferredTransform == 0)
+	    return false;
+	bool result = deferredTransform->checkTransform();
+	if (result)
+	    onTransformChanged();
+	return result;
 }
 
 bool TransformableObject::checkVI(double t)
 {
-	if (viewMatrix.eq(Matrix4::UNIT, t) 
-	    && (imageMatrix.eq(Matrix4::UNIT, t)))
-	    useVI = false;
-	else
-	{
-	    useVI = true;
-	    if (!(viewMatrix.eq(lastViewMatrix, t) 
-	        && imageMatrix.eq(lastImageMatrix, t)))
-	        onVIChanged();
-	}
-	return useTransform;
+	if (deferredTransform == 0)
+	    return false;
+	bool result = deferredTransform->checkVI();
+	if (result)
+	    onVIChanged();
+	return result;
 }
 
 Ionflux::GeoUtils::TransformableObject& TransformableObject::scale(const 
@@ -235,8 +217,9 @@ TransformableObject::transform(const Ionflux::GeoUtils::Matrix3& matrix)
 Ionflux::GeoUtils::TransformableObject& 
 TransformableObject::transform(const Ionflux::GeoUtils::Matrix4& matrix)
 {
-	lastTransformMatrix = transformMatrix;
-	transformMatrix.multiplyLeft(matrix);
+	if (deferredTransform == 0)
+	    setDeferredTransform(DeferredTransform::create());
+	deferredTransform->transform(matrix);
 	checkTransform();
 	return *this;
 }
@@ -245,39 +228,76 @@ Ionflux::GeoUtils::TransformableObject&
 TransformableObject::transformVI(const Ionflux::GeoUtils::Matrix4& view, 
 const Ionflux::GeoUtils::Matrix4* image)
 {
-	lastViewMatrix = viewMatrix;
-	lastImageMatrix = imageMatrix;
-	viewMatrix = view;
-	if (image != 0)
-	    imageMatrix = *image;
+	if (deferredTransform == 0)
+	    setDeferredTransform(DeferredTransform::create());
+	deferredTransform->transformVI(view, image);
 	checkVI();
 	return *this;
 }
 
 void TransformableObject::applyTransform(bool recursive)
 {
-	// TODO: Implementation.
+	clearTransformations();
 }
 
 Ionflux::GeoUtils::Vector3 TransformableObject::getBarycenter()
 {
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	    return Vector3::ZERO;
 	Vertex3 v0;
-	if (useTransform)
-	    v0.transform(transformMatrix);
-	if (useVI)
-	    v0.transformVI(viewMatrix, &imageMatrix);
+	if (useTransform())
+	{
+	    Matrix4* transformMatrix = Ionflux::ObjectBase::nullPointerCheck(
+	        deferredTransform->getTransformMatrix(), this, 
+	        "getBarycenter", "Transformation matrix");
+	    v0.transform(*transformMatrix);
+	}
+	if (useVI())
+	{
+	    Matrix4* viewMatrix = Ionflux::ObjectBase::nullPointerCheck(
+	        deferredTransform->getViewMatrix(), this, 
+	        "getBarycenter", "View matrix");
+	    Matrix4* imageMatrix = deferredTransform->getImageMatrix();
+	    v0.transformVI(*viewMatrix, imageMatrix);
+	}
 	return v0.getVector();;
 }
 
 Ionflux::GeoUtils::Range3 TransformableObject::getBounds()
 {
 	if ((boundsCache == 0) 
-	    || transformChanged 
-	    || viChanged)
+	    || transformChanged() 
+	    || viChanged())
 	    processTransformChange();
 	return *boundsCache;
+}
+
+bool TransformableObject::useTransform() const
+{
+	if (deferredTransform == 0)
+	    return false;
+	return deferredTransform->useTransform();
+}
+
+bool TransformableObject::useVI() const
+{
+	if (deferredTransform == 0)
+	    return false;
+	return deferredTransform->useVI();
+}
+
+bool TransformableObject::transformChanged() const
+{
+	if (deferredTransform == 0)
+	    return false;
+	return deferredTransform->transformChanged();
+}
+
+bool TransformableObject::viChanged() const
+{
+	if (deferredTransform == 0)
+	    return false;
+	return deferredTransform->viChanged();
 }
 
 Ionflux::GeoUtils::TransformableObject& TransformableObject::duplicate()
@@ -286,80 +306,84 @@ Ionflux::GeoUtils::TransformableObject& TransformableObject::duplicate()
 	return *copy();
 }
 
-void TransformableObject::setTransformMatrix(const 
-Ionflux::GeoUtils::Matrix4& newTransformMatrix)
+Ionflux::GeoUtils::Matrix4* TransformableObject::getTransformMatrix() const
 {
-	transformMatrix = newTransformMatrix;
-	checkTransform();
+	Ionflux::ObjectBase::nullPointerCheck(
+	    deferredTransform, this, "getTransformMatrix", 
+	    "Deferred transformation");
+	Matrix4* m0 = Ionflux::ObjectBase::nullPointerCheck(
+	    deferredTransform->getTransformMatrix(), this, 
+	    "getTransformMatrix", "Transformation matrix");
+	return m0;
 }
 
-Ionflux::GeoUtils::Matrix4 TransformableObject::getTransformMatrix() const
+Ionflux::GeoUtils::Matrix4* TransformableObject::getViewMatrix() const
 {
-    return transformMatrix;
+	Ionflux::ObjectBase::nullPointerCheck(
+	    deferredTransform, this, "getViewMatrix", 
+	    "Deferred transformation");
+	Matrix4* m0 = Ionflux::ObjectBase::nullPointerCheck(
+	    deferredTransform->getViewMatrix(), this, 
+	    "getViewMatrix", "View transformation matrix");
+	return m0;
 }
 
-void TransformableObject::setViewMatrix(const Ionflux::GeoUtils::Matrix4& 
-newViewMatrix)
+Ionflux::GeoUtils::Matrix4* TransformableObject::getImageMatrix() const
 {
-	viewMatrix = newViewMatrix;
-	checkVI();
+	Ionflux::ObjectBase::nullPointerCheck(
+	    deferredTransform, this, "getImageMatrix", 
+	    "Deferred transformation");
+	Matrix4* m0 = deferredTransform->getImageMatrix();
+	return m0;
 }
 
-Ionflux::GeoUtils::Matrix4 TransformableObject::getViewMatrix() const
+std::string TransformableObject::getValueString() const
 {
-    return viewMatrix;
+	if (!useTransform() && !useVI())
+	    return "";
+	ostringstream status;
+	if (useTransform())
+	    status << "T: [" << getTransformMatrix()->getValueString() 
+	        << "]";
+	if (useVI())
+	{
+	    if (useTransform())
+	        status << ", ";
+	    status << "V: [" << getViewMatrix()->getValueString() << "], ";
+	    Matrix4* im0 = getImageMatrix();
+	    if (im0 != 0)
+	        status << "[" << im0->getValueString() << "]";
+	    else
+	        status << "<none>";
+	}
+	return status.str();
 }
 
-void TransformableObject::setImageMatrix(const Ionflux::GeoUtils::Matrix4& 
-newImageMatrix)
+void 
+TransformableObject::setDeferredTransform(Ionflux::GeoUtils::DeferredTransform*
+newDeferredTransform)
 {
-	imageMatrix = newImageMatrix;
-	checkVI();
+	if (deferredTransform == newDeferredTransform)
+		return;
+    if (newDeferredTransform != 0)
+        addLocalRef(newDeferredTransform);
+	if (deferredTransform != 0)
+		removeLocalRef(deferredTransform);
+	deferredTransform = newDeferredTransform;
 }
 
-Ionflux::GeoUtils::Matrix4 TransformableObject::getImageMatrix() const
+Ionflux::GeoUtils::DeferredTransform* 
+TransformableObject::getDeferredTransform() const
 {
-    return imageMatrix;
-}
-
-void TransformableObject::setLastTransformMatrix(const 
-Ionflux::GeoUtils::Matrix4& newLastTransformMatrix)
-{
-	lastTransformMatrix = newLastTransformMatrix;
-}
-
-Ionflux::GeoUtils::Matrix4 TransformableObject::getLastTransformMatrix() 
-const
-{
-    return lastTransformMatrix;
-}
-
-void TransformableObject::setLastViewMatrix(const 
-Ionflux::GeoUtils::Matrix4& newLastViewMatrix)
-{
-	lastViewMatrix = newLastViewMatrix;
-}
-
-Ionflux::GeoUtils::Matrix4 TransformableObject::getLastViewMatrix() const
-{
-    return lastViewMatrix;
-}
-
-void TransformableObject::setLastImageMatrix(const 
-Ionflux::GeoUtils::Matrix4& newLastImageMatrix)
-{
-	lastImageMatrix = newLastImageMatrix;
-}
-
-Ionflux::GeoUtils::Matrix4 TransformableObject::getLastImageMatrix() const
-{
-    return lastImageMatrix;
+    return deferredTransform;
 }
 
 Ionflux::GeoUtils::TransformableObject& 
 TransformableObject::operator=(const 
 Ionflux::GeoUtils::TransformableObject& other)
 {
+    if (this == &other)
+        return *this;
     copyTransform(other);
 	return *this;
 }
@@ -411,6 +435,18 @@ indentLevel) const
 	std::string bc0;
 	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+    if (deferredTransform != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << deferredTransform->getXML0(indentLevel, "pname=\"deferred_transform\"");
+	    xcFirst = false;
+    }
 	target = d0.str();
 }
 

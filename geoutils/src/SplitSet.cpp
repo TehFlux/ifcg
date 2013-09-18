@@ -193,6 +193,8 @@ void SplitSet::clearSplits()
 Ionflux::GeoUtils::SplitSet& SplitSet::operator=(const 
 Ionflux::GeoUtils::SplitSet& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

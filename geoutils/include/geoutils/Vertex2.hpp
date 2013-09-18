@@ -77,6 +77,8 @@ class Vertex2
 		static const Vertex2ClassInfo vertex2ClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -269,6 +271,97 @@ class Vertex2
 		 * \return Newly allocated copy of the object.
 		 */
 		virtual Ionflux::GeoUtils::Vertex2* copy() const;
+		
+		/** Upcast.
+		 *
+		 * Cast an IFObject to the most specific type.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		static Ionflux::GeoUtils::Vertex2* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::Vertex2* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex2 object.
+		 *
+		 * \param initX Element (X).
+		 * \param initY Element (Y).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex2* create(double initX, double initY, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex2 object.
+		 *
+		 * \param initCoords Coordinate vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex2* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex2 object.
+		 *
+		 * \param initCoords Coordinate vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex2* create(const 
+		Ionflux::GeoUtils::Vector2& initCoords, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get x coordinate.
 		 *

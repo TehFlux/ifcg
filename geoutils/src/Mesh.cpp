@@ -127,11 +127,10 @@ Mesh::~Mesh()
 
 void Mesh::recalculateBounds()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
-	        "recalculateBounds"));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "recalculateBounds", "Vertex source");
 	TransformableObject::recalculateBounds();
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	{
 	    *boundsCache = vertexSource->getBounds();
 	    bounds = *boundsCache;
@@ -141,7 +140,7 @@ void Mesh::recalculateBounds()
 	Mesh* m0 = copy();
 	addLocalRef(m0);
 	m0->applyTransform();
-	if (m0->useTransform)
+	if (m0->useTransform())
 	    throw GeoUtilsError(getErrorString(
 	        "Transform matrix still in use after "
 	        "applying transformations.", "recalculateBounds"));
@@ -158,39 +157,15 @@ Ionflux::GeoUtils::Range3 Mesh::getBounds()
 
 void Mesh::copyVertices()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	setVertexSource(&(vertexSource->duplicate()));
-}
-
-Ionflux::GeoUtils::Vertex3* Mesh::addVertex()
-{
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	return vertexSource->addVertex();
-}
-
-void Mesh::addVertices(Ionflux::GeoUtils::Vertex3Vector& newVerts)
-{
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	for (Vertex3Vector::iterator i = newVerts.begin(); 
-	    i != newVerts.end(); i++)
-	    vertexSource->addVertex(*i);
-}
-
-void Mesh::addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts)
-{
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	for (unsigned int i = 0; i < newVerts.getNumVertices(); i++)
-	    vertexSource->addVertex(newVerts.getVertex(i));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "copyVertices", "Vertex source");
+	setVertexSource(vertexSource->copy());
 }
 
 void Mesh::update()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "update", "Vertex source");
 	// Determine the bounds.
 	recalculateBounds();
 	// Update the faces.
@@ -214,6 +189,7 @@ void Mesh::clear()
 	setVertexSource(0);
 	clearFaces();
 	BoxBoundsItem::clear();
+	TransformableObject::clear();
 }
 
 void Mesh::clearData()
@@ -222,11 +198,12 @@ void Mesh::clearData()
 	    vertexSource->clearVertices();
 	clearFaces();
 	BoxBoundsItem::clear();
+	TransformableObject::clear();
 }
 
 void Mesh::setFaceIDs()
 {
-	ostringstream fid;
+	std::ostringstream fid;
 	unsigned int k = 0;
 	for (FaceVector::const_iterator i = faces.begin(); 
 	    i != faces.end(); i++)
@@ -240,12 +217,12 @@ void Mesh::setFaceIDs()
 
 Ionflux::GeoUtils::BoxBoundsItem* Mesh::getItem(const std::string& itemID)
 {
-	ostringstream message;
+	std::ostringstream message;
 	if ((itemID.size() < 12) 
 	    || (itemID.substr(0, 4) != "face"))
 	{
 	    message << "Bad item ID for mesh: '" << itemID << "'";
-	    throw GeoUtilsError(message.str());
+	    throw GeoUtilsError(getErrorString(message.str(), "getItem"));
 	}
 	size_t i0 = itemID.find_first_not_of("0", 4);
 	unsigned int fi = 0;
@@ -254,7 +231,7 @@ Ionflux::GeoUtils::BoxBoundsItem* Mesh::getItem(const std::string& itemID)
 	if (fi >= faces.size())
 	{
 	    message << "Invalid face index: '" << itemID << "'";
-	    throw GeoUtilsError(message.str());
+	    throw GeoUtilsError(getErrorString(message.str(), "getItem"));
 	}
 	return faces[fi];
 }
@@ -391,45 +368,39 @@ bool Mesh::operator!=(const Ionflux::GeoUtils::Mesh& other) const
 
 Ionflux::GeoUtils::Vector3 Mesh::getBarycenter()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source not set.");
-	if (!useTransform)
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getBarycenter", "Vertex source");
+	if (!useTransform())
 	    return vertexSource->getBarycenter();
 	// Adjust for transformation.
 	Vertex3 v0(vertexSource->getBarycenter());
-	if (useTransform)
-	    v0.transform(transformMatrix);
-	if (useVI)
-	    v0.transformVI(viewMatrix, &imageMatrix);
+	if (useTransform())
+	    v0.transform(*getTransformMatrix());
+	if (useVI())
+	    v0.transformVI(*getViewMatrix(), getImageMatrix());
 	return v0.getVector();
 }
 
 void Mesh::applyTransform(bool recursive)
 {
-	if (!useTransform && !useVI)
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "applyTransform", "Vertex source");
+	if (!useTransform() && !useVI())
 	{
 	    if (recursive)
 	        vertexSource->applyTransform(recursive);
+	    clearTransformations();
 	    return;
 	}
 	Vertex3Set* vs0 = vertexSource;
 	addLocalRef(vs0);
 	copyVertices();
-	if (useTransform)
-	{
-	    vertexSource->transform(transformMatrix);
+	if (useTransform())
+	    vertexSource->transform(*getTransformMatrix());
+	if (useVI())
+	    vertexSource->transformVI(*getViewMatrix(), getImageMatrix());
+	if (useTransform() || useVI())
 	    vertexSource->applyTransform(recursive);
-	    transformMatrix = Matrix4::UNIT;
-	    useTransform = false;
-	}
-	if (useVI)
-	{
-	    vertexSource->transformVI(viewMatrix, &imageMatrix);
-	    vertexSource->applyTransform(recursive);
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	    useVI = false;
-	}
 	// Update faces.
 	for (FaceVector::iterator i = faces.begin(); i != faces.end(); i++)
 	{
@@ -442,6 +413,7 @@ void Mesh::applyTransform(bool recursive)
 	    f0->clearPolygon();
 	}
 	removeLocalRef(vs0);
+	clearTransformations();
 }
 
 Ionflux::GeoUtils::Mesh& Mesh::scale(const Ionflux::GeoUtils::Vector3& s)
@@ -499,9 +471,9 @@ Ionflux::GeoUtils::Mesh& Mesh::duplicate()
 
 void Mesh::getPolygons(Ionflux::GeoUtils::Polygon3Set& target)
 {
-	Polygon3Set* ps0;
+	Polygon3Set* ps0 = 0;
 	bool t0 = false;
-	if (useTransform || useVI)
+	if (useTransform() || useVI())
 	{
 	    /* Use a temporary polygon set to transform the polygons 
 	       according to the mesh transformations. */
@@ -522,34 +494,9 @@ void Mesh::getPolygons(Ionflux::GeoUtils::Polygon3Set& target)
 	    /* Transform polygons in the temporary set, then add them to 
 	       the target set. */
 	    ps0->applyTransform();
-	    target.addPolygons(*ps0);
+	    target.addPolygons(ps0);
 	    delete ps0;
 	}
-}
-
-std::string Mesh::getXML_legacy() const
-{
-	ostringstream d0;
-	std::string mID = getID();
-	if (mID.size() == 0)
-	    mID = DEFAULT_ID;
-	d0 << "<mesh id=\"" << mID << "\"><vertices>";
-	// Vertices.
-	d0 << vertexSource->getXML_legacy();
-	// Faces.
-	d0 << "</vertices><faces>";
-	for (FaceVector::const_iterator i = faces.begin(); 
-	    i != faces.end(); i++)
-	    d0 << (*i)->getXML_legacy();
-	d0 << "</faces></mesh>";
-	return d0.str();
-}
-
-void Mesh::writeToFile(const std::string& fileName) const
-{
-	ofstream f0;
-	f0.open(fileName.c_str(), ios_base::out);
-	f0 << XML_HEADER << getXML_legacy();
 }
 
 void Mesh::removeBackfaces(const Ionflux::GeoUtils::Vector3& front)
@@ -674,13 +621,6 @@ std::string Mesh::getValueString() const
 	if (ts0.size() > 0)
 	    status << "; " << ts0;
 	return status.str();
-}
-
-void Mesh::loadFromXMLFile(const std::string& fileName)
-{
-	std::string data;
-	Ionflux::ObjectBase::readFile(fileName, data);
-	Ionflux::GeoUtils::XMLUtils::getMesh(data, *this);
 }
 
 Ionflux::GeoUtils::Mesh* Mesh::plane()
@@ -871,6 +811,31 @@ double radius, double headLength, double headRadius)
 	return m0;
 }
 
+std::string Mesh::getXML_legacy() const
+{
+	ostringstream d0;
+	std::string mID = getID();
+	if (mID.size() == 0)
+	    mID = DEFAULT_ID;
+	d0 << "<mesh id=\"" << mID << "\"><vertices>";
+	// Vertices.
+	d0 << vertexSource->getXML_legacy();
+	// Faces.
+	d0 << "</vertices><faces>";
+	for (FaceVector::const_iterator i = faces.begin(); 
+	    i != faces.end(); i++)
+	    d0 << (*i)->getXML_legacy();
+	d0 << "</faces></mesh>";
+	return d0.str();
+}
+
+void Mesh::writeToFile_legacy(const std::string& fileName) const
+{
+	ofstream f0;
+	f0.open(fileName.c_str(), ios_base::out);
+	f0 << XML_HEADER << getXML_legacy();
+}
+
 void Mesh::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)
 {
 	if (vertexSource == newVertexSource)
@@ -922,6 +887,28 @@ void Mesh::addVertex(Ionflux::GeoUtils::Vertex3* addElement)
     if (vertexSource == 0)
         throw GeoUtilsError("Vertex source not set.");
     return vertexSource->addVertex(addElement);
+}
+
+Ionflux::GeoUtils::Vertex3* Mesh::addVertex()
+{
+    if (vertexSource == 0)
+        throw GeoUtilsError("Vertex source not set.");
+    return vertexSource->addVertex();
+}
+
+void Mesh::addVertices(const std::vector<Ionflux::GeoUtils::Vertex3*>& 
+newVertices)
+{
+    if (vertexSource == 0)
+        throw GeoUtilsError("Vertex source not set.");
+    return vertexSource->addVertices(newVertices);
+}
+
+void Mesh::addVertices(Ionflux::GeoUtils::Mesh* newVertices)
+{
+    if (vertexSource == 0)
+        throw GeoUtilsError("Vertex source not set.");
+    return vertexSource->addVertices(newVertices->vertexSource);
 }
 
 void Mesh::removeVertex(Ionflux::GeoUtils::Vertex3* removeElement)
@@ -1064,10 +1051,15 @@ other)
     FaceVector f0;
     for (FaceVector::const_iterator i = other.faces.begin(); 
         i != other.faces.end(); i++)
-        f0.push_back((*i)->copy());
+    {
+        Face* ft0 = Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+            "operator=", "Face");
+        f0.push_back(ft0->copy());
+    }
     clearFaces();
     addFaces(f0);
     BoxBoundsItem::clear();
+    TransformableObject::clear();
     update();
 	return *this;
 }

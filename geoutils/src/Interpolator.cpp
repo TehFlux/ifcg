@@ -214,6 +214,8 @@ double Interpolator::getV1() const
 Ionflux::GeoUtils::Interpolator& Interpolator::operator=(const 
 Ionflux::GeoUtils::Interpolator& other)
 {
+if (this == &other)
+    return *this;
 setV0(other.getV0());
 setV1(other.getV1());
 	return *this;

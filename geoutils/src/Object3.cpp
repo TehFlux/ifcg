@@ -96,7 +96,7 @@ void Object3::recalculateBounds()
 	if (mesh == 0)
 	    return;
 	TransformableObject::recalculateBounds();
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	{
 	    *boundsCache = mesh->getBounds();
 	    return;
@@ -105,7 +105,7 @@ void Object3::recalculateBounds()
 	Object3* o0 = copy();
 	addLocalRef(o0);
 	o0->applyTransform();
-	if (o0->useTransform)
+	if (o0->useTransform())
 	    throw GeoUtilsError(getErrorString(
 	        "Transform matrix still in use after "
 	        "applying transformations.", "recalculateBounds"));
@@ -124,40 +124,29 @@ void Object3::update()
 void Object3::clear()
 {
 	setMesh(0);
+	TransformableObject::clear();
 }
 
 void Object3::applyTransform(bool recursive)
 {
 	if (mesh == 0)
 	{
-	    transformMatrix = Matrix4::UNIT;
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	    useTransform = false;
-	    useVI = false;
+	    clearTransformations();
 	    return;
 	}
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	{
 	    if (recursive)
 	        mesh->applyTransform(recursive);
 	    return;
 	}
-	if (useTransform)
-	{
-	    mesh->transform(transformMatrix);
+	if (useTransform())
+	    mesh->transform(*getTransformMatrix());
+	if (useVI())
+	    mesh->transformVI(*getViewMatrix(), getImageMatrix());
+	if (useTransform() || useVI())
 	    mesh->applyTransform(recursive);
-	    transformMatrix = Matrix4::UNIT;
-	    useTransform = false;
-	}
-	if (useVI)
-	{
-	    mesh->transformVI(viewMatrix, &imageMatrix);
-	    mesh->applyTransform();
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	    useVI = false;
-	}
+	clearTransformations();
 }
 
 Ionflux::GeoUtils::Object3& Object3::scale(const 

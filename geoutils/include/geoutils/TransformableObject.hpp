@@ -33,6 +33,7 @@
 #include "geoutils/Range3.hpp"
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Matrix4.hpp"
+#include "geoutils/DeferredTransform.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -40,8 +41,6 @@ namespace Ionflux
 
 namespace GeoUtils
 {
-
-class DeferredTransform;
 
 /// Class information for class TransformableObject.
 class TransformableObjectClassInfo
@@ -66,28 +65,10 @@ class TransformableObject
 	private:
 		
 	protected:
-		/// Use transform matrix.
-		bool useTransform;
-		/// Use view/image transform matrix.
-		bool useVI;
-		/// Transform changed flag.
-		bool transformChanged;
-		/// View/image transform changed flag.
-		bool viChanged;
 		/// Bounds cache.
 		Ionflux::GeoUtils::Range3* boundsCache;
-		/// Transformation matrix.
-		Ionflux::GeoUtils::Matrix4 transformMatrix;
-		/// View matrix.
-		Ionflux::GeoUtils::Matrix4 viewMatrix;
-		/// Image transformation matrix.
-		Ionflux::GeoUtils::Matrix4 imageMatrix;
-		/// Transformation matrix before last change.
-		Ionflux::GeoUtils::Matrix4 lastTransformMatrix;
-		/// View matrix before last change.
-		Ionflux::GeoUtils::Matrix4 lastViewMatrix;
-		/// Image transformation matrix before last change.
-		Ionflux::GeoUtils::Matrix4 lastImageMatrix;
+		/// Deferred transformation.
+		Ionflux::GeoUtils::DeferredTransform* deferredTransform;
 		
 		/** recalculate bounds.
 		 *
@@ -129,13 +110,17 @@ class TransformableObject
 		 */
 		virtual ~TransformableObject();
 		
-		/** Get string representation.
+		/** Clear transformations.
 		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
+		 * Clear the transformation matrices of the transformable object.
 		 */
-		virtual std::string getValueString() const;
+		virtual void clearTransformations();
+		
+		/** Clear.
+		 *
+		 * Clear the internal state of the transformable object.
+		 */
+		virtual void clear();
 		
 		/** copy transform.
 		 *
@@ -148,16 +133,14 @@ class TransformableObject
 		
 		/** Transform changed handler.
 		 *
-		 * This event handler is invoked when the transform matrix changes. 
-		 * The default implementation sets the 'transform changed' flag.
+		 * This event handler is invoked when the transform matrix changes.
 		 */
 		virtual void onTransformChanged();
 		
 		/** Transform changed handler.
 		 *
 		 * This event handler is invoked when the view/image transform matrix 
-		 * changes. The default implementation sets the 'view/image transform 
-		 * changed' flag.
+		 * changes.
 		 */
 		virtual void onVIChanged();
 		
@@ -310,6 +293,41 @@ class TransformableObject
 		 */
 		virtual Ionflux::GeoUtils::Range3 getBounds();
 		
+		/** Get use transformation matrix flag.
+		 *
+		 * Check whether the transformation matrix should be used.
+		 *
+		 * \return Value of the use transformation matrix flag.
+		 */
+		virtual bool useTransform() const;
+		
+		/** Get use view/image matrices flag.
+		 *
+		 * Check whether the view/image transformation matrices should be 
+		 * used.
+		 *
+		 * \return Value of the use view/image transformation matrices flag.
+		 */
+		virtual bool useVI() const;
+		
+		/** Get transformation matrix changed flag.
+		 *
+		 * Check whether the transformation matrix has changed since the last 
+		 * check.
+		 *
+		 * \return Value of the use transformation matrix flag.
+		 */
+		virtual bool transformChanged() const;
+		
+		/** Get view/image transformation matrix changed flag.
+		 *
+		 * Check whether the view/image transformation matrices have changed 
+		 * since the last check.
+		 *
+		 * \return Value of the use view/image transformation matrices flag.
+		 */
+		virtual bool viChanged() const;
+		
 		/** Duplicate.
 		 *
 		 * Create an exact duplicate of the object. The duplicate is a new 
@@ -318,6 +336,45 @@ class TransformableObject
 		 * \return The duplicated object.
 		 */
 		virtual Ionflux::GeoUtils::TransformableObject& duplicate();
+		
+		/** Get transformation matrix.
+		 *
+		 * Get the current transformation matrix. If the deferred 
+		 * transformation object is not set or the transformation matrix is 
+		 * null, an exception is thrown.
+		 *
+		 * \return The current transformation matrix.
+		 */
+		virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;
+		
+		/** Get view transformation matrix.
+		 *
+		 * Get the current view transformation matrix. If the deferred 
+		 * transformation object is not set or the view transformation matrix 
+		 * is null, an exception is thrown.
+		 *
+		 * \return The current view transformation matrix.
+		 */
+		virtual Ionflux::GeoUtils::Matrix4* getViewMatrix() const;
+		
+		/** Get image transformation matrix.
+		 *
+		 * Get the current image transformation matrix. If the deferred 
+		 * transformation object is not set, an exception is thrown. Since the
+		 * image matrix is allowed to be zero, no exception is thrown if this 
+		 * is the case.
+		 *
+		 * \return The current view transformation matrix.
+		 */
+		virtual Ionflux::GeoUtils::Matrix4* getImageMatrix() const;
+		
+		/** Get string representation.
+		 *
+		 * Get a string representation of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *
@@ -396,98 +453,21 @@ class TransformableObject
 		 */
 		void loadFromXMLFile(std::string& FileName);
 		
-		/** Get transformation matrix.
+		/** Get deferred transformation.
 		 *
-		 * \return Current value of transformation matrix.
+		 * \return Current value of deferred transformation.
 		 */
-		virtual Ionflux::GeoUtils::Matrix4 getTransformMatrix() const;
+		virtual Ionflux::GeoUtils::DeferredTransform* getDeferredTransform() 
+		const;
 		
-		/** Set transformation matrix.
+		/** Set deferred transformation.
 		 *
-		 * Set new value of transformation matrix.
+		 * Set new value of deferred transformation.
 		 *
-		 * \param newTransformMatrix New value of transformation matrix.
+		 * \param newDeferredTransform New value of deferred transformation.
 		 */
-		virtual void setTransformMatrix(const Ionflux::GeoUtils::Matrix4& 
-		newTransformMatrix);
-		
-		/** Get view matrix.
-		 *
-		 * \return Current value of view matrix.
-		 */
-		virtual Ionflux::GeoUtils::Matrix4 getViewMatrix() const;
-		
-		/** Set view matrix.
-		 *
-		 * Set new value of view matrix.
-		 *
-		 * \param newViewMatrix New value of view matrix.
-		 */
-		virtual void setViewMatrix(const Ionflux::GeoUtils::Matrix4& 
-		newViewMatrix);
-		
-		/** Get image transformation matrix.
-		 *
-		 * \return Current value of image transformation matrix.
-		 */
-		virtual Ionflux::GeoUtils::Matrix4 getImageMatrix() const;
-		
-		/** Set image transformation matrix.
-		 *
-		 * Set new value of image transformation matrix.
-		 *
-		 * \param newImageMatrix New value of image transformation matrix.
-		 */
-		virtual void setImageMatrix(const Ionflux::GeoUtils::Matrix4& 
-		newImageMatrix);
-		
-		/** Get transformation matrix before last change.
-		 *
-		 * \return Current value of transformation matrix before last change.
-		 */
-		virtual Ionflux::GeoUtils::Matrix4 getLastTransformMatrix() const;
-		
-		/** Set transformation matrix before last change.
-		 *
-		 * Set new value of transformation matrix before last change.
-		 *
-		 * \param newLastTransformMatrix New value of transformation matrix 
-		 * before last change.
-		 */
-		virtual void setLastTransformMatrix(const Ionflux::GeoUtils::Matrix4& 
-		newLastTransformMatrix);
-		
-		/** Get view matrix before last change.
-		 *
-		 * \return Current value of view matrix before last change.
-		 */
-		virtual Ionflux::GeoUtils::Matrix4 getLastViewMatrix() const;
-		
-		/** Set view matrix before last change.
-		 *
-		 * Set new value of view matrix before last change.
-		 *
-		 * \param newLastViewMatrix New value of view matrix before last change.
-		 */
-		virtual void setLastViewMatrix(const Ionflux::GeoUtils::Matrix4& 
-		newLastViewMatrix);
-		
-		/** Get image transformation matrix before last change.
-		 *
-		 * \return Current value of image transformation matrix before last 
-		 * change.
-		 */
-		virtual Ionflux::GeoUtils::Matrix4 getLastImageMatrix() const;
-		
-		/** Set image transformation matrix before last change.
-		 *
-		 * Set new value of image transformation matrix before last change.
-		 *
-		 * \param newLastImageMatrix New value of image transformation matrix 
-		 * before last change.
-		 */
-		virtual void setLastImageMatrix(const Ionflux::GeoUtils::Matrix4& 
-		newLastImageMatrix);
+		virtual void setDeferredTransform(Ionflux::GeoUtils::DeferredTransform* 
+		newDeferredTransform);
 };
 
 }

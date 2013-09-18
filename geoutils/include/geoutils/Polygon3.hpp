@@ -88,6 +88,8 @@ class Polygon3
 		static const Polygon3ClassInfo polygon3ClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -148,46 +150,6 @@ class Polygon3
 		 * makes the polygon the (current) single owner of its vertices.
 		 */
 		virtual void copyVertices();
-		
-		/** Create vertex.
-		 *
-		 * Create a new vertex which is managed by the vertex source.
-		 *
-		 * \return New vertex.
-		 */
-		virtual Ionflux::GeoUtils::Vertex3* addVertex();
-		
-		/** Add vertices.
-		 *
-		 * Add vertices from a vertex vector.
-		 *
-		 * \param newVerts Vertices.
-		 */
-		virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& newVerts);
-		
-		/** Add vertices.
-		 *
-		 * Add vertices from a vertex set.
-		 *
-		 * \param newVerts Vertices.
-		 */
-		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-		
-		/** Add edge.
-		 *
-		 * Add a new edges which will be managed by this polygon.
-		 *
-		 * \return New edge.
-		 */
-		virtual Ionflux::GeoUtils::Edge* addEdge();
-		
-		/** Add edges.
-		 *
-		 * Add edges from a vector of edges.
-		 *
-		 * \param newEdges Edge vector.
-		 */
-		virtual void addEdges(Ionflux::GeoUtils::EdgeVector& newEdges);
 		
 		/** Create edges.
 		 *
@@ -524,6 +486,80 @@ class Polygon3
 		 */
 		static Ionflux::GeoUtils::Polygon3* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Polygon3 object.
+		 *
+		 * \param initVertices Vertices.
+		 * \param initEdges Edges.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Polygon3* 
+		create(Ionflux::GeoUtils::Vertex3Vector* initVertices, 
+		Ionflux::GeoUtils::EdgeVector* initEdges = 0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Polygon3 object.
+		 *
+		 * \param initVertexSource Vertex source.
+		 * \param initEdges Edges.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Polygon3* create(Ionflux::GeoUtils::Vertex3Set*
+		initVertexSource, Ionflux::GeoUtils::EdgeVector* initEdges = 0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Polygon3 object.
+		 *
+		 * \param v0 Vertex (0).
+		 * \param v1 Vertex (1).
+		 * \param v2 Vertex (2).
+		 * \param v3 Vertex (3).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Polygon3* create(const 
+		Ionflux::GeoUtils::Vertex3* v0, const Ionflux::GeoUtils::Vertex3* v1, 
+		const Ionflux::GeoUtils::Vertex3* v2, const Ionflux::GeoUtils::Vertex3* 
+		v3 = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
 		
 		/** Get vertex source.
 		 *
@@ -582,6 +618,31 @@ class Polygon3
 		 * \param addElement Vertex to be added.
 		 */
 		virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		
+		/** Create vertex.
+		 *
+		 * Create a new vertex which is managed by the vertex set.
+		 *
+		 * \return New vertex.
+		 */
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex vector.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(const std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex set.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(Ionflux::GeoUtils::Polygon3* newVertices);
 		
 		/** Remove vertex.
 		 *
@@ -647,6 +708,31 @@ class Polygon3
 		 * \param addElement Edge to be added.
 		 */
 		virtual void addEdge(Ionflux::GeoUtils::Edge* addElement);
+		
+		/** Create edge.
+		 *
+		 * Create a new edge which is managed by the edge set.
+		 *
+		 * \return New edge.
+		 */
+		virtual Ionflux::GeoUtils::Edge* addEdge();
+		
+		/** Add edges.
+		 *
+		 * Add edges from a edge vector.
+		 *
+		 * \param newEdges edges.
+		 */
+		virtual void addEdges(const std::vector<Ionflux::GeoUtils::Edge*>& 
+		newEdges);
+		
+		/** Add edges.
+		 *
+		 * Add edges from a edge set.
+		 *
+		 * \param newEdges edges.
+		 */
+		virtual void addEdges(Ionflux::GeoUtils::Polygon3* newEdges);
 		
 		/** Remove edge.
 		 *

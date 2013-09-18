@@ -59,7 +59,6 @@ class Sphere3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Sphere3& other) 
         const;
-        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Sphere3& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Sphere3& translate(const 
@@ -78,6 +77,7 @@ class Sphere3
         virtual Ionflux::GeoUtils::Sphere3& transformVI(const 
         Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4*
         image = 0);
+        virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Sphere3& duplicate();
         static const Ionflux::GeoUtils::Sphere3& unit();
 		virtual Ionflux::GeoUtils::Sphere3* copy() const;

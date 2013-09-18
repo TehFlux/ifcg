@@ -55,6 +55,15 @@ class LinearInterpolator
         virtual ~LinearInterpolator();
         virtual double interpolate(double t = 0.5) const;
 		virtual Ionflux::GeoUtils::LinearInterpolator* copy() const;
+		static Ionflux::GeoUtils::LinearInterpolator* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::LinearInterpolator* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::LinearInterpolator* create(double initV0, 
+		double initV1, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::LinearInterpolator* create(const 
+		Ionflux::ObjectBase::DoubleVector& initValues, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
 
 }

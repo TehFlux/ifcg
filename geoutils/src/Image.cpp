@@ -152,7 +152,7 @@ Ionflux::GeoUtils::Range3 Image::getImageBounds()
 void Image::recalculateBounds()
 {
 	TransformableObject::recalculateBounds();
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	{
 	    *boundsCache = getImageBounds();
 	    return;
@@ -163,6 +163,7 @@ void Image::recalculateBounds()
 	          a box polygon and apply the transformation. \) */
 	Range3 b0 = getImageBounds();
 	Polygon3* p0 = Polygon3::square();
+	addLocalRef(p0);
 	/* The polygon is created in the XZ-plane by default, but we need it 
 	   to be in the XY-plane. */
 	p0->rotate(0.5 * M_PI, AXIS_X);
@@ -171,12 +172,12 @@ void Image::recalculateBounds()
 	    2. * b0.getY().getRadius(), 1.));
 	p0->translate(b0.getCenter());
 	// Apply the transformations.
-	if (useTransform)
-	    p0->transform(transformMatrix);
+	if (useTransform())
+	    p0->transform(*getTransformMatrix());
 	// NOTE: VI transform is not supported for SVG objects.
 	p0->applyTransform();
 	*boundsCache = p0->getBounds();
-	delete p0;
+	removeLocalRef(p0);
 }
 
 void Image::drawPolygons(Ionflux::GeoUtils::Polygon3Set& polygons, const 
@@ -309,12 +310,12 @@ void Image::drawSVG(Ionflux::GeoUtils::SVG& svg, int originX, int originY)
 	if (svg.checkTransform())
 	{
 	    // Apply the transformation of the SVG object.
-	    Matrix4 t0 = svg.getTransformMatrix();
+	    const Matrix4* t0 = svg.getTransformMatrix();
 	    cairo_matrix_t ct0;
 	    cairo_matrix_init(&ct0, 
-	        t0.getElement(0, 0), t0.getElement(1, 0), 
-	        t0.getElement(0, 1), t0.getElement(1, 1), 
-	        t0.getElement(0, 3), t0.getElement(1, 3));
+	        t0->getElement(0, 0), t0->getElement(1, 0), 
+	        t0->getElement(0, 1), t0->getElement(1, 1), 
+	        t0->getElement(0, 3), t0->getElement(1, 3));
 	    cairo_transform(context, &ct0);
 	}
 	if (!rsvg_handle_render_cairo(rsvg0, context))
@@ -342,12 +343,12 @@ originY)
 	if (image->checkTransform())
 	{
 	    // Apply the transformation of the image object.
-	    Matrix4 t0 = image->getTransformMatrix();
+	    const Matrix4* t0 = image->getTransformMatrix();
 	    cairo_matrix_t ct0;
 	    cairo_matrix_init(&ct0, 
-	        t0.getElement(0, 0), t0.getElement(1, 0), 
-	        t0.getElement(0, 1), t0.getElement(1, 1), 
-	        t0.getElement(0, 3), t0.getElement(1, 3));
+	        t0->getElement(0, 0), t0->getElement(1, 0), 
+	        t0->getElement(0, 1), t0->getElement(1, 1), 
+	        t0->getElement(0, 3), t0->getElement(1, 3));
 	    cairo_transform(context, &ct0);
 	    /* NOTE: If the source is set at this point, no transformation 
 	             is required for the pattern at all. */

@@ -90,6 +90,25 @@ DeferredTransform::~DeferredTransform()
 	// TODO: Nothing ATM. ;-)
 }
 
+void DeferredTransform::resetTransform()
+{
+	setLastTransformMatrix(transformMatrix);
+	transformChangedFlag = false;
+}
+
+void DeferredTransform::resetVI()
+{
+	setLastViewMatrix(viewMatrix);
+	setLastImageMatrix(imageMatrix);
+	viChangedFlag = false;
+}
+
+void DeferredTransform::reset()
+{
+	resetTransform();
+	resetVI();
+}
+
 void DeferredTransform::clear()
 {
 	useTransformFlag = false;

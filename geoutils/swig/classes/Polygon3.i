@@ -61,12 +61,6 @@ class Polygon3
         v2, const Ionflux::GeoUtils::Vertex3* v3 = 0);
         virtual ~Polygon3();
         virtual void copyVertices();
-        virtual Ionflux::GeoUtils::Vertex3* addVertex();
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& 
-        newVerts);
-        virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-        virtual Ionflux::GeoUtils::Edge* addEdge();
-        virtual void addEdges(Ionflux::GeoUtils::EdgeVector& newEdges);
         virtual int createEdges();
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;
@@ -124,6 +118,17 @@ class Polygon3
 		other);
 		static Ionflux::GeoUtils::Polygon3* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		static Ionflux::GeoUtils::Polygon3* 
+		create(Ionflux::GeoUtils::Vertex3Vector* initVertices, 
+		Ionflux::GeoUtils::EdgeVector* initEdges = 0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Polygon3* create(Ionflux::GeoUtils::Vertex3Set*
+		initVertexSource, Ionflux::GeoUtils::EdgeVector* initEdges = 0, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Polygon3* create(const 
+		Ionflux::GeoUtils::Vertex3* v0, const Ionflux::GeoUtils::Vertex3* v1, 
+		const Ionflux::GeoUtils::Vertex3* v2, const Ionflux::GeoUtils::Vertex3* 
+		v3 = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
         newVertexSource);
         virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;        
@@ -133,7 +138,11 @@ class Polygon3
 		virtual int findVertex(Ionflux::GeoUtils::Vertex3* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Vertex3*>& getVertices();
-        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);        
+        virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		virtual void addVertices(std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		virtual void addVertices(Ionflux::GeoUtils::Polygon3* newVertices);        
         virtual void removeVertex(Ionflux::GeoUtils::Vertex3* 
         removeElement);
 		virtual void removeVertexIndex(unsigned int removeIndex);
@@ -144,11 +153,22 @@ class Polygon3
 		virtual int findEdge(Ionflux::GeoUtils::Edge* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::GeoUtils::Edge*>& getEdges();
-        virtual void addEdge(Ionflux::GeoUtils::Edge* addElement);        
+        virtual void addEdge(Ionflux::GeoUtils::Edge* addElement);
+		virtual Ionflux::GeoUtils::Edge* addEdge();
+		virtual void addEdges(std::vector<Ionflux::GeoUtils::Edge*>& newEdges);
+		virtual void addEdges(Ionflux::GeoUtils::Polygon3* newEdges);        
         virtual void removeEdge(Ionflux::GeoUtils::Edge* removeElement);
 		virtual void removeEdgeIndex(unsigned int removeIndex);
 		virtual void clearEdges();
 };
+
+namespace XMLUtils
+{
+
+void getPolygon3(const std::string& data, Ionflux::GeoUtils::Polygon3& 
+target);
+
+}
 
 }
 

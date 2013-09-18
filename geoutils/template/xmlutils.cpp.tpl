@@ -325,11 +325,17 @@ $Matrix3
 $Matrix4
 $DeferredTransform
 $TransformableObject
+$Vertex2
 $Vertex3
 $Vertex3Set
 $Face
+$Edge
 $Mesh
 $Object3
+$TransformableGroup
+$Polygon3
+$Polygon3Set
+$Shape3
 
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).

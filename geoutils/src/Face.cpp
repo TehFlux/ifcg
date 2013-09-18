@@ -133,9 +133,8 @@ Face::~Face()
 
 void Face::recalculateBounds()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
-	        "recalculateBounds"));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "recalculateBounds", "Vertex source");
 	TransformableObject::recalculateBounds();
 	Polygon3* p0 = getPolygon();
 	*boundsCache = p0->getBounds();
@@ -144,9 +143,8 @@ void Face::recalculateBounds()
 
 void Face::copyVertices()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
-	        "copyVertices"));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "copyVertices", "Vertex source");
 	setVertexSource(&(vertexSource->duplicate()));
 }
 
@@ -189,6 +187,7 @@ void Face::clear()
 	clearTangentSpace();
 	clearPolygon();
 	BoxBoundsItem::clear();
+	TransformableObject::clear();
 }
 
 void Face::addVertices(unsigned int v0, unsigned int v1, unsigned int v2, 
@@ -361,9 +360,8 @@ Ionflux::GeoUtils::Vector3 Face::getTangent()
 {
 	if (tangent != 0)
 	    return *tangent;
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
-	        "getTangent"));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getTangent", "Vertex source");
 	if (vertices.size() < 3)
 	    throw GeoUtilsError(getErrorString(
 	        "Face does not have enough vertices.", "getTangent"));
@@ -398,8 +396,8 @@ Ionflux::GeoUtils::Vector3 Face::getBinormal()
 {
 	if (binormal != 0)
 	    return *binormal;
-	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source is not set.");
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getBinormal", "Vertex source");
 	if (vertices.size() < 3)
 	    throw GeoUtilsError("Face does not have enough vertices.");
 	binormal = Vector3::create();
@@ -442,10 +440,7 @@ Ionflux::GeoUtils::Vector3 Face::getNormal()
 	    return *normal;
 	Vector3 t = getTangent();
 	Vector3 b = getBinormal();
-	normal = new Vector3();
-	if (normal == 0)
-	    throw GeoUtilsError(getErrorString("Could not allocate object.", 
-	        "getNormal"));
+	normal = Vector3::create();
 	addLocalRef(normal);
 	*normal = t.cross(b).normalize();
 	return *normal;
@@ -462,9 +457,8 @@ Ionflux::GeoUtils::Matrix3 Face::getTangentBase()
 
 Ionflux::GeoUtils::Polygon3* Face::getPolygon()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
-	        "getPolygon"));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getPolygon", "Vertex source");
 	if (polygon != 0)
 	    return polygon;
 	polygon = Polygon3::create();
@@ -473,10 +467,10 @@ Ionflux::GeoUtils::Polygon3* Face::getPolygon()
 	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
 	    polygon->addVertex(vertexSource->getVertex(*i)->copy());
 	polygon->createEdges();
-	if (useTransform);
-	    polygon->transform(transformMatrix);
-	if (useVI);
-	    polygon->transformVI(viewMatrix, &imageMatrix);
+	if (useTransform());
+	    polygon->transform(*getTransformMatrix());
+	if (useVI());
+	    polygon->transformVI(*getViewMatrix(), getImageMatrix());
 	return polygon;
 }
 
@@ -751,9 +745,8 @@ bool Face::isBackface(const Ionflux::GeoUtils::Vector3& front)
 
 Ionflux::GeoUtils::Vector3 Face::getBarycenter()
 {
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source not set.", 
-	        "getBarycenter"));
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getBarycenter", "Vertex source");
 	Polygon3* p0 = getPolygon();
 	Vector3 b0 = p0->getBarycenter();
 	return b0;
@@ -767,9 +760,10 @@ Ionflux::GeoUtils::Range3 Face::getBounds()
 
 void Face::applyTransform(bool recursive)
 {
-	log(IFLogMessage("Cannot apply transform to face. "
-	    "(Should be applied to vertex source instead.)", VL_WARNING, this, 
-	    "applyTransform"));
+	log(IFLogMessage("Cannot apply transform to face "
+	    "(should be applied to vertex source instead).", VL_WARNING, 
+	    this, "applyTransform"));
+	clearTransformations();
 }
 
 Ionflux::GeoUtils::Face& Face::scale(const Ionflux::GeoUtils::Vector3& s)
@@ -827,6 +821,41 @@ Ionflux::GeoUtils::Face& Face::duplicate()
 	return *copy();
 }
 
+std::string Face::getValueString() const
+{
+	std::ostringstream status;
+	bool e0 = true;
+	// vertices
+	status << "verts: ";
+	unsigned int numVerts = vertices.size();
+	if (numVerts > 0)
+	{
+	    status << "(";
+	    for (UIntVector::const_iterator i = vertices.begin(); 
+	        i != vertices.end(); i++)
+	    {
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << *i;
+	    }
+	    status << ")";
+	} else
+	    status << "<none>";
+	// face data
+	if (faceData != 0)
+	{
+	    status << "; faceData: [" 
+	        << faceData->getValueString() << "]";
+	}
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
+	return status.str();
+}
+
 std::string Face::getXMLDataVertices_legacy() const
 {
 	ostringstream d0;
@@ -865,41 +894,6 @@ std::string& texCoordData)
 	for (Ionflux::ObjectBase::StringVector::const_iterator i = 
 	    parts0.begin(); i != parts0.end(); i++)
 	    addVertex(strtol((*i).c_str(), 0, 10));
-}
-
-std::string Face::getValueString() const
-{
-	std::ostringstream status;
-	bool e0 = true;
-	// vertices
-	status << "verts: ";
-	unsigned int numVerts = vertices.size();
-	if (numVerts > 0)
-	{
-	    status << "(";
-	    for (UIntVector::const_iterator i = vertices.begin(); 
-	        i != vertices.end(); i++)
-	    {
-	        if (!e0)
-	            status << ", ";
-	        else
-	            e0 = false;
-	        status << *i;
-	    }
-	    status << ")";
-	} else
-	    status << "<none>";
-	// face data
-	if (faceData != 0)
-	{
-	    status << "; faceData: [" 
-	        << faceData->getValueString() << "]";
-	}
-	// transformable object data
-	std::string ts0(TransformableObject::getValueString());
-	if (ts0.size() > 0)
-	    status << "; " << ts0;
-	return status.str();
 }
 
 unsigned int Face::getNumVertices() const
@@ -1028,6 +1022,7 @@ other)
         i != other.vertices.end(); i++)
         vertices.push_back(*i);
     setFaceData(other.faceData->copy());
+    TransformableObject::operator=(other);
     update();
 	return *this;
 }

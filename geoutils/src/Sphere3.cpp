@@ -101,7 +101,7 @@ bool Sphere3::checkVertex(const Ionflux::GeoUtils::Vertex3& v, double t)
 const
 {
 	double d0 = 0.;
-	if (!useTransform)
+	if (!useTransform())
 	{
 	    Vector3 v0(v.getVector());
 	    d0 = (v0 - p).norm();
@@ -110,7 +110,7 @@ const
 	    /* Transform the vertex into the transformed sphere coordinate 
 	       system. */
 	    Vertex3 v1(v);
-	    v1.transform(transformMatrix.invert());
+	    v1.transform(getTransformMatrix()->invert());
 	    d0 = (v1.getVector() - p).norm();
 	}
 	return ltOrEq(d0, r, t);
@@ -127,24 +127,6 @@ bool Sphere3::operator!=(const Ionflux::GeoUtils::Sphere3& other) const
 {
 	// TODO: Implementation.
 	return !(*this == other);;
-}
-
-std::string Sphere3::getValueString() const
-{
-	ostringstream status;
-	status << "p = (" << p.getValueString() << "), " << r;
-	if (!useTransform && !useVI)
-	    return status.str();
-	status << "; ";
-	if (useTransform)
-	    status << transformMatrix;
-	if (useVI)
-	{
-	    if (useTransform)
-	        status << ", ";
-	    status << viewMatrix << ", " << imageMatrix;
-	}
-	return status.str();
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::scale(const 
@@ -201,6 +183,17 @@ Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image)
 {
 	Shape3::transformVI(view, image);
 	return *this;
+}
+
+std::string Sphere3::getValueString() const
+{
+	ostringstream status;
+	status << "p = (" << p.getValueString() << "), " << r;
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
+	return status.str();
 }
 
 Ionflux::GeoUtils::Sphere3& Sphere3::duplicate()

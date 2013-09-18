@@ -50,10 +50,7 @@ class TransformableGroup
         TransformableGroup();
 		TransformableGroup(const Ionflux::GeoUtils::TransformableGroup& other);
         virtual ~TransformableGroup();
-        virtual void recalculateBounds();
-        virtual std::string getString() const;
-        virtual void addItems(const 
-        Ionflux::GeoUtils::TransformableObjectVector& newItems);
+        virtual void clear();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter() const;
         virtual Ionflux::GeoUtils::TransformableGroup& scale(const 
@@ -80,6 +77,7 @@ class TransformableGroup
         target, unsigned int level = 0);
         virtual std::string getDebugInfo(bool expand = true, unsigned int 
         level = 0);
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::TransformableGroup* copy() const;
 		static Ionflux::GeoUtils::TransformableGroup* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -93,12 +91,24 @@ class TransformableGroup
         virtual std::vector<Ionflux::GeoUtils::TransformableObject*>& 
         getItems();
         virtual void addItem(Ionflux::GeoUtils::TransformableObject* 
-        addElement);        
+        addElement);
+		virtual Ionflux::GeoUtils::TransformableObject* addItem();
+		virtual void 
+		addItems(std::vector<Ionflux::GeoUtils::TransformableObject*>& newItems);
+		virtual void addItems(Ionflux::GeoUtils::TransformableGroup* newItems);        
         virtual void removeItem(Ionflux::GeoUtils::TransformableObject* 
         removeElement);
 		virtual void removeItemIndex(unsigned int removeIndex);
 		virtual void clearItems();
 };
+
+namespace XMLUtils
+{
+
+void getTransformableGroup(const std::string& data, 
+Ionflux::GeoUtils::TransformableGroup& target);
+
+}
 
 }
 

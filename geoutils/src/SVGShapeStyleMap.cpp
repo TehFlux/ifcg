@@ -130,6 +130,8 @@ void SVGShapeStyleMap::clearStyles()
 Ionflux::GeoUtils::SVGShapeStyleMap& SVGShapeStyleMap::operator=(const 
 Ionflux::GeoUtils::SVGShapeStyleMap& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

@@ -113,6 +113,8 @@ double Split::getS() const
 Ionflux::GeoUtils::Split& Split::operator=(const Ionflux::GeoUtils::Split& 
 other)
 {
+if (this == &other)
+    return *this;
 setAxis(other.getAxis());
 setS(other.getS());
 	return *this;

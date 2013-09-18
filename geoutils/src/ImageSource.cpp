@@ -86,6 +86,8 @@ std::string ImageSource::getString() const
 Ionflux::GeoUtils::ImageSource& ImageSource::operator=(const 
 Ionflux::GeoUtils::ImageSource& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

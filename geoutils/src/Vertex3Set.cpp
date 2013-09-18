@@ -30,9 +30,11 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/gslutils.hpp"
+#include "geoutils/transformutils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
@@ -92,17 +94,27 @@ Vertex3Set::~Vertex3Set()
 void Vertex3Set::recalculateBounds()
 {
 	TransformableObject::recalculateBounds();
-	Ionflux::GeoUtils::Vertex3Vector::const_iterator i;
+	Matrix4* tm0 = 0;
+	Matrix4* vm0 = 0;
+	Matrix4* im0 = 0;
+	if (useTransform())
+	    tm0 = getTransformMatrix();
+	if (useVI())
+	{
+	    vm0 = getViewMatrix();
+	    im0 = getImageMatrix();
+	}
 	bool e0 = true;
+	Ionflux::GeoUtils::Vertex3Vector::const_iterator i;
 	for (i = vertices.begin(); i < vertices.end(); i++)
 	{
 	    Vertex3 v0(*(*i));
-	    if (useTransform)
+	    if (useTransform())
 	        // Adjust for transformation.
-	        v0.transform(transformMatrix);
-	    if (useVI)
+	        v0.transform(*tm0);
+	    if (useVI())
 	        // Adjust for view/image matrix.
-	        v0.transformVI(viewMatrix, &imageMatrix);
+	        v0.transformVI(*vm0, im0);
 	    if (e0)
 	    {
 	        boundsCache->setBounds(v0.getVector());
@@ -121,10 +133,10 @@ Ionflux::GeoUtils::Vector3 Vertex3Set::getBarycenter()
 	vSum = vSum / vertices.size();
 	// Adjust for transformation.
 	Vertex3 v0(vSum);
-	if (useTransform)
-	    v0.transform(transformMatrix);
-	if (useVI)
-	    v0.transformVI(viewMatrix, &imageMatrix);
+	if (useTransform())
+	    v0.transform(*getTransformMatrix());
+	if (useVI())
+	    v0.transformVI(*getViewMatrix(), getImageMatrix());
 	/* <---- DEBUG ----- //
 	std::ostringstream message;
 	message << "barycenter = " << v0;
@@ -135,31 +147,8 @@ Ionflux::GeoUtils::Vector3 Vertex3Set::getBarycenter()
 
 void Vertex3Set::applyTransform(bool recursive)
 {
-	if (!useTransform 
-	    && !useVI)
-	    // Nothing to be done.
-	    return;
-	for (Vertex3Vector::iterator i = vertices.begin(); 
-	    i != vertices.end(); i++)
-	{
-	    if (useTransform)
-	        (*i)->transform(transformMatrix);
-	    if (useVI)
-	        (*i)->transformVI(viewMatrix, &imageMatrix);
-	    if (recursive)
-	        (*i)->applyTransform(recursive);
-	}
-	if (useTransform)
-	{
-	    transformMatrix = Matrix4::UNIT;
-	    useTransform = false;
-	}
-	if (useVI)
-	{
-	    viewMatrix = Matrix4::UNIT;
-	    imageMatrix = Matrix4::UNIT;
-	    useVI = false;
-	}
+	Ionflux::GeoUtils::applyTransform(*this, vertices, 
+	    recursive, "Vertex");
 }
 
 Ionflux::GeoUtils::Vertex3Set& Vertex3Set::scale(const 
@@ -234,6 +223,7 @@ Ionflux::GeoUtils::Matrix3 Vertex3Set::getCovariance()
 Ionflux::GeoUtils::Matrix3 Vertex3Set::getPCABase()
 {
 	Vertex3Set* vs = copy();
+	addLocalRef(vs);
 	vs->center(CENTER_BARYCENTER);
 	vs->applyTransform();
 	Matrix3 cov = vs->getCovariance();
@@ -241,7 +231,7 @@ Ionflux::GeoUtils::Matrix3 Vertex3Set::getPCABase()
 	Vector3 s;
 	Matrix3 v;
 	cov.svd(u, s, v);
-	delete vs;
+	removeLocalRef(vs);
 	return v;
 }
 
@@ -254,7 +244,7 @@ Ionflux::GeoUtils::Plane3 Vertex3Set::getPlaneFit()
 
 std::string Vertex3Set::getValueString() const
 {
-	ostringstream status;
+	std::ostringstream status;
 	bool e0 = true;
 	for (Vertex3Vector::const_iterator i = vertices.begin(); 
 	    i != vertices.end(); i++)
@@ -415,7 +405,11 @@ Ionflux::GeoUtils::Vertex3Set& other)
     Vertex3Vector v0;
     for (Vertex3Vector::const_iterator i = other.vertices.begin(); 
         i != other.vertices.end(); i++)
-        v0.push_back((*i)->copy());
+    {
+        Vertex3* vt0 = Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+            "operator=", "Vertex");
+        v0.push_back(vt0->copy());
+    }
     clearVertices();
     addVertices(v0);
 	return *this;

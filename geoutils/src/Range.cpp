@@ -219,6 +219,8 @@ Ionflux::ObjectBase::DoubleVector Range::getBounds() const
 Ionflux::GeoUtils::Range& Range::operator=(const Ionflux::GeoUtils::Range& 
 other)
 {
+if (this == &other)
+    return *this;
 setRMin(other.getRMin());
 setRMax(other.getRMax());
 	return *this;

@@ -1928,6 +1928,13 @@ createTransformableObject(TiXmlElement* e0, const std::string& elementName)
         o0 = TransformableObject::create();
         getTransformableObject(e0, *o0, en0);
     } else
+    if (en0 == TransformableGroup::XML_ELEMENT_NAME)
+    {
+        // TransformableGroup
+        TransformableGroup* o1 = TransformableGroup::create();
+        getTransformableGroup(e0, *o1, en0);
+        o0 = o1;
+    } else
     if (en0 == Vertex3::XML_ELEMENT_NAME)
     {
         // Vertex3
@@ -1963,6 +1970,20 @@ createTransformableObject(TiXmlElement* e0, const std::string& elementName)
         getObject3(e0, *o1, en0);
         o0 = o1;
     } else
+    if (en0 == Polygon3::XML_ELEMENT_NAME)
+    {
+        // Polygon3
+        Polygon3* o1 = Polygon3::create();
+        getPolygon3(e0, *o1, en0);
+        o0 = o1;
+    } else
+    if (en0 == Polygon3Set::XML_ELEMENT_NAME)
+    {
+        // Polygon3Set
+        Polygon3Set* o1 = Polygon3Set::create();
+        getPolygon3Set(e0, *o1, en0);
+        o0 = o1;
+    } else
     {
         std::ostringstream status;
         status << "[createTransformableObject] "
@@ -1979,6 +2000,23 @@ elementName)
     Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
         elementName, "getTransformableObject");
     Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: deferredTransform (object)
+        if (pName == "deferred_transform")
+        {
+            Ionflux::GeoUtils::DeferredTransform* co0 = 
+                createDeferredTransform(ce0, en0);
+            target.setDeferredTransform(co0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
 }
 
 void getTransformableObject(const std::string& data, Ionflux::GeoUtils::TransformableObject& target)
@@ -2047,6 +2085,15 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             target.push_back(co0);
         } else
         if (en0 == 
+            TransformableGroup::XML_ELEMENT_NAME)
+        {
+            // TransformableGroup
+            TransformableGroup* co0 = 
+                TransformableGroup::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        if (en0 == 
             Vertex3::XML_ELEMENT_NAME)
         {
             // Vertex3
@@ -2088,6 +2135,24 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             // Object3
             Object3* co0 = 
                 Object3::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        if (en0 == 
+            Polygon3::XML_ELEMENT_NAME)
+        {
+            // Polygon3
+            Polygon3* co0 = 
+                Polygon3::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
+        if (en0 == 
+            Polygon3Set::XML_ELEMENT_NAME)
+        {
+            // Polygon3Set
+            Polygon3Set* co0 = 
+                Polygon3Set::create();
             getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
@@ -2135,6 +2200,15 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
                 getObject0(ce0, *co0, childElementName);
             } else
             if (en1 == 
+                TransformableGroup::XML_ELEMENT_NAME)
+            {
+                // TransformableGroup
+                TransformableGroup* co1 = 
+                    TransformableGroup::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
                 Vertex3::XML_ELEMENT_NAME)
             {
                 // Vertex3
@@ -2179,6 +2253,24 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
                 getObject0(ce0, *co0, childElementName);
                 co0 = co1;
             } else
+            if (en1 == 
+                Polygon3::XML_ELEMENT_NAME)
+            {
+                // Polygon3
+                Polygon3* co1 = 
+                    Polygon3::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Polygon3Set::XML_ELEMENT_NAME)
+            {
+                // Polygon3Set
+                Polygon3Set* co1 = 
+                    Polygon3Set::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
             {
                 std::ostringstream status;
                 status << "[getObjMap<TransformableObject>] "
@@ -2198,6 +2290,103 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
         }
         ee0 = ee0->NextSiblingElement();
     }
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Vertex2.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Vertex2* createVertex2(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Vertex2* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Vertex2)
+        o0 = Vertex2::create();
+        getVertex2(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createVertex2] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getVertex2(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex2& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getVertex2");
+    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    // Get attribute data.
+    std::string a0;
+    // Property: x (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "x", true);
+    target.setX(::strtod(a0.c_str(), 0));
+    // Property: y (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "y", true);
+    target.setY(::strtod(a0.c_str(), 0));
+}
+
+void getVertex2(const std::string& data, Ionflux::GeoUtils::Vertex2& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getVertex2] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Vertex2::XML_ELEMENT_NAME);
+    getVertex2(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Vertex2>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Vertex2& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getVertex2(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getVertex2(e0, target, elementName);
 }
 
 }
@@ -2521,6 +2710,103 @@ void getObject0<Ionflux::GeoUtils::Face>(TiXmlElement* e0,
 
 }
 
+#include "geoutils/Edge.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Edge* createEdge(TiXmlElement* e0, const std::string& 
+elementName)
+{
+    std::string en0(e0->Value());
+    Edge* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Edge)
+        o0 = Edge::create();
+        getEdge(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createEdge] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getEdge(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Edge& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getEdge");
+    Ionflux::ObjectBase::XMLUtils::getObject(e0, target);
+    // Get attribute data.
+    std::string a0;
+    // Property: v0 (integer)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "v0", true);
+    target.setV0(::strtol(a0.c_str(), 0, 10));
+    // Property: v1 (integer)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "v1", true);
+    target.setV1(::strtol(a0.c_str(), 0, 10));
+}
+
+void getEdge(const std::string& data, Ionflux::GeoUtils::Edge& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getEdge] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Edge::XML_ELEMENT_NAME);
+    getEdge(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Edge>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Edge& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getEdge(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getEdge(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
 #include "geoutils/Mesh.hpp"
 
 namespace Ionflux
@@ -2732,6 +3018,425 @@ void getObject0<Ionflux::GeoUtils::Object3>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getObject3(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getObject3(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/TransformableGroup.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::TransformableGroup* 
+createTransformableGroup(TiXmlElement* e0, const std::string& elementName)
+{
+    std::string en0(e0->Value());
+    TransformableGroup* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (TransformableGroup)
+        o0 = TransformableGroup::create();
+        getTransformableGroup(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createTransformableGroup] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getTransformableGroup(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableGroup& target, const std::string& 
+elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getTransformableGroup");
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: items (vector[object])
+        if ((pName == "items") 
+            && (en0 == "vec"))
+        {
+            std::vector<Ionflux::GeoUtils::TransformableObject*> pv0;
+            Ionflux::ObjectBase::XMLUtils::getObjVector<
+                    Ionflux::GeoUtils::TransformableObject, 
+                    Ionflux::GeoUtils::TransformableObject*>(ce0, pv0, 
+                "vec", 
+                Ionflux::GeoUtils::TransformableObject::XML_ELEMENT_NAME);
+            target.addItems(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getTransformableGroup(const std::string& data, Ionflux::GeoUtils::TransformableGroup& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getTransformableGroup] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::TransformableGroup::XML_ELEMENT_NAME);
+    getTransformableGroup(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::TransformableGroup>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::TransformableGroup& target, const std::string& 
+elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getTransformableGroup(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getTransformableGroup(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Polygon3.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Polygon3* createPolygon3(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Polygon3* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Polygon3)
+        o0 = Polygon3::create();
+        getPolygon3(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createPolygon3] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getPolygon3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Polygon3& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getPolygon3");
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: vertexSource (object)
+        if (pName == "vertex_source")
+        {
+            Ionflux::GeoUtils::Vertex3Set* co0 = 
+                createVertex3Set(ce0, en0);
+            target.setVertexSource(co0);
+        }
+        // Property: edges (vector[object])
+        if ((pName == "edges") 
+            && (en0 == "vec"))
+        {
+            std::vector<Ionflux::GeoUtils::Edge*> pv0;
+            Ionflux::ObjectBase::XMLUtils::getObjVector<
+                    Ionflux::GeoUtils::Edge, 
+                    Ionflux::GeoUtils::Edge*>(ce0, pv0, 
+                "vec", 
+                Ionflux::GeoUtils::Edge::XML_ELEMENT_NAME);
+            target.addEdges(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getPolygon3(const std::string& data, Ionflux::GeoUtils::Polygon3& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getPolygon3] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Polygon3::XML_ELEMENT_NAME);
+    getPolygon3(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Polygon3>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Polygon3& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getPolygon3(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getPolygon3(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Polygon3Set.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Polygon3Set* createPolygon3Set(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Polygon3Set* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Polygon3Set)
+        o0 = Polygon3Set::create();
+        getPolygon3Set(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createPolygon3Set] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getPolygon3Set(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Polygon3Set& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getPolygon3Set");
+    // Get child data.
+    TiXmlElement* ce0 = e0->FirstChildElement();
+    while (ce0 != 0)
+    {
+        std::string en0(ce0->Value());
+        std::string pName = 
+            Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+                ce0, "pname", true);
+        // Property: polys (vector[object])
+        if ((pName == "polygons") 
+            && (en0 == "poly3vec"))
+        {
+            std::vector<Ionflux::GeoUtils::Polygon3*> pv0;
+            Ionflux::ObjectBase::XMLUtils::getObjVector<
+                    Ionflux::GeoUtils::Polygon3, 
+                    Ionflux::GeoUtils::Polygon3*>(ce0, pv0, 
+                "poly3vec", 
+                Ionflux::GeoUtils::Polygon3::XML_ELEMENT_NAME);
+            target.addPolygons(pv0);
+        }
+        ce0 = ce0->NextSiblingElement();
+    }
+}
+
+void getPolygon3Set(const std::string& data, Ionflux::GeoUtils::Polygon3Set& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getPolygon3Set] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Polygon3Set::XML_ELEMENT_NAME);
+    getPolygon3Set(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Polygon3Set>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Polygon3Set& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getPolygon3Set(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getPolygon3Set(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Shape3.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Shape3* createShape3(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Shape3* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Shape3)
+        o0 = Shape3::create();
+        getShape3(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createShape3] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getShape3(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Shape3& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getShape3");
+}
+
+void getShape3(const std::string& data, Ionflux::GeoUtils::Shape3& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getShape3] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Shape3::XML_ELEMENT_NAME);
+    getShape3(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Shape3>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Shape3& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getShape3(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getShape3(e0, target, elementName);
 }
 
 }

@@ -58,6 +58,7 @@
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/Plane3.hpp"
 #include "geoutils/Polygon3.hpp"
+#include "geoutils/Polygon3Set.hpp"
 #include "geoutils/Polygon3Compare.hpp"
 #include "geoutils/Polygon3CompareAxis.hpp"
 #include "geoutils/FaceCompare.hpp"

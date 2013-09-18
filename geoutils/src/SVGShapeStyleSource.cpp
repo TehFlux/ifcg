@@ -109,6 +109,8 @@ Ionflux::GeoUtils::SVGShapeStyleSource&
 SVGShapeStyleSource::operator=(const 
 Ionflux::GeoUtils::SVGShapeStyleSource& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

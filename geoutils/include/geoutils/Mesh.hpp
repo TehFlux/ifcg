@@ -140,30 +140,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void copyVertices();
 		
-		/** Create vertex.
-		 *
-		 * Create a new vertex which is managed by the vertex source.
-		 *
-		 * \return New vertex.
-		 */
-		virtual Ionflux::GeoUtils::Vertex3* addVertex();
-		
-		/** Add vertices.
-		 *
-		 * Add vertices from a vertex vector.
-		 *
-		 * \param newVerts Vertices.
-		 */
-		virtual void addVertices(Ionflux::GeoUtils::Vertex3Vector& newVerts);
-		
-		/** Add vertices.
-		 *
-		 * Add vertices from a vertex set.
-		 *
-		 * \param newVerts Vertices.
-		 */
-		virtual void addVertices(Ionflux::GeoUtils::Vertex3Set& newVerts);
-		
 		/** Update.
 		 *
 		 * Update all state according to the faces of the mesh.
@@ -398,22 +374,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
 		
-		/** Get XML representation.
-		 *
-		 * Get an XML representation of the object.
-		 *
-		 * \return XML representation.
-		 */
-		virtual std::string getXML_legacy() const;
-		
-		/** Write to file.
-		 *
-		 * Write mesh data to a (XML) file.
-		 *
-		 * \param fileName .
-		 */
-		virtual void writeToFile(const std::string& fileName) const;
-		
 		/** Remove backfaces.
 		 *
 		 * Remove faces that face backward relative to the specified front 
@@ -460,14 +420,6 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual std::string getValueString() const;
 		
-		/** Load object data from file.
-		 *
-		 * Load object data from an XML file.
-		 *
-		 * \param fileName File name.
-		 */
-		virtual void loadFromXMLFile(const std::string& fileName);
-		
 		/** Create mesh: plane.
 		 *
 		 * Create a plane mesh.
@@ -512,6 +464,22 @@ Ionflux::GeoUtils::TransformableObject
 		static Ionflux::GeoUtils::Mesh* arrow(unsigned int subDivs = 10, double 
 		length = 1., double radius = 0.005, double headLength = 0.1, double 
 		headRadius = 4.);
+		
+		/** Get XML representation.
+		 *
+		 * Get an XML representation of the object.
+		 *
+		 * \return XML representation.
+		 */
+		virtual std::string getXML_legacy() const;
+		
+		/** Write to file.
+		 *
+		 * Write mesh data to a (XML) file.
+		 *
+		 * \param fileName .
+		 */
+		virtual void writeToFile_legacy(const std::string& fileName) const;
 		
 		/** Assignment operator.
 		 *
@@ -671,6 +639,31 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param addElement Vertex to be added.
 		 */
 		virtual void addVertex(Ionflux::GeoUtils::Vertex3* addElement);
+		
+		/** Create vertex.
+		 *
+		 * Create a new vertex which is managed by the vertex set.
+		 *
+		 * \return New vertex.
+		 */
+		virtual Ionflux::GeoUtils::Vertex3* addVertex();
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex vector.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(const std::vector<Ionflux::GeoUtils::Vertex3*>& 
+		newVertices);
+		
+		/** Add vertices.
+		 *
+		 * Add vertices from a vertex set.
+		 *
+		 * \param newVertices vertices.
+		 */
+		virtual void addVertices(Ionflux::GeoUtils::Mesh* newVertices);
 		
 		/** Remove vertex.
 		 *

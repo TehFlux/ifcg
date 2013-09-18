@@ -31,8 +31,13 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex3.hpp"
+#include "geoutils/transformutils.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "geoutils/xmlutils.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -56,6 +61,8 @@ TransformableGroupClassInfo::~TransformableGroupClassInfo()
 // run-time type information instance constants
 const TransformableGroupClassInfo TransformableGroup::transformableGroupClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* TransformableGroup::CLASS_INFO = &TransformableGroup::transformableGroupClassInfo;
+
+const std::string TransformableGroup::XML_ELEMENT_NAME = "transformable_group";
 
 TransformableGroup::TransformableGroup()
 {
@@ -81,10 +88,12 @@ void TransformableGroup::recalculateBounds()
 {
 	TransformableObject::recalculateBounds();
 	const TransformableGroup* g0 = this;
-	if (useTransform || useVI)
+	TransformableGroup* g1 = 0;
+	if (useTransform() || useVI())
 	{
 	    // Adjust for transformation.
-	    TransformableGroup* g1 = copy();
+	    g1 = copy();
+	    addLocalRef(g1);
 	    g1->applyTransform();
 	    g0 = g1;
 	}
@@ -92,7 +101,10 @@ void TransformableGroup::recalculateBounds()
 	bool e0 = true;
 	for (i = g0->items.begin(); i != g0->items.end(); i++)
 	{
-	    Range3 r0((*i)->getBounds());
+	    TransformableObject* to0 = 
+	        Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+	            "recalculateBounds", "Transformable object");
+	    Range3 r0(to0->getBounds());
 	    if (e0)
 	    {
 	        boundsCache->setBounds(r0);
@@ -100,57 +112,20 @@ void TransformableGroup::recalculateBounds()
 	    } else
 	        boundsCache->extend(r0);
 	}
-	if (useTransform)
-	    delete g0;
+	if (g1 != 0)
+	    removeLocalRef(g1);
 }
 
-std::string TransformableGroup::getString() const
+void TransformableGroup::clear()
 {
-	ostringstream result;
-	result << getClassName();
-	return result.str();
-}
-
-void TransformableGroup::addItems(const 
-Ionflux::GeoUtils::TransformableObjectVector& newItems)
-{
-	for (TransformableObjectVector::const_iterator i = 
-	    newItems.begin(); i != newItems.end(); i++)
-	    addItem(*i);
+	clearItems();
+	TransformableObject::clear();
 }
 
 void TransformableGroup::applyTransform(bool recursive)
 {
-	if (!recursive 
-	    && !useTransform 
-	    && !useVI)
-	    // Nothing to be done.
-	    return;
-	for (TransformableObjectVector::iterator i = 
-	    items.begin(); i != items.end(); i++)
-	{
-	    TransformableObject* it0 = *i;
-	    if (it0 == 0)
-	        throw GeoUtilsError("Item is null.");
-	    if (useTransform)
-	        it0->transform(transformMatrix);
-	    if (useVI)
-	        it0->transformVI(viewMatrix, &imageMatrix);
-	    if (recursive)
-	        it0->applyTransform(recursive);
-	}
-	// Reset transform matrices.
-	if (useTransform)
-	{
-	    transformMatrix = Ionflux::GeoUtils::Matrix4::UNIT;
-	    useTransform = false;
-	}
-	if (useVI)
-	{
-	    viewMatrix = Ionflux::GeoUtils::Matrix4::UNIT;
-	    imageMatrix = Ionflux::GeoUtils::Matrix4::UNIT;
-	    useVI = false;
-	}
+	Ionflux::GeoUtils::applyTransform(*this, items, 
+	    recursive, "Transformable object");
 }
 
 Ionflux::GeoUtils::Vector3 TransformableGroup::getBarycenter() const
@@ -162,10 +137,10 @@ Ionflux::GeoUtils::Vector3 TransformableGroup::getBarycenter() const
 	vSum = vSum / items.size();
 	// Adjust for transformation.
 	Vertex3 v0(vSum);
-	if (useTransform)
-	    v0.transform(transformMatrix);
-	if (useVI)
-	    v0.transformVI(viewMatrix, &imageMatrix);
+	if (useTransform())
+	    v0.transform(*getTransformMatrix());
+	if (useVI())
+	    v0.transformVI(*getViewMatrix(), getImageMatrix());
 	return v0.getVector();
 }
 
@@ -265,20 +240,23 @@ target, unsigned int level)
 std::string TransformableGroup::getDebugInfo(bool expand, unsigned int 
 level)
 {
-	ostringstream result;
-	ostringstream prefix;
+	std::ostringstream result;
+	std::ostringstream prefix;
 	for (unsigned int i = 0; i < (2 * level); i++)
 	    prefix << " ";
 	result << prefix.str() << getClassName() << ": bounds = " << getBounds() 
 	    << ", barycenter = " << getBarycenter() << ", numItems = " 
 	    << items.size()<< "\n";
-	if (useTransform)
-	    result << prefix.str() << "transformMatrix = " 
-	        << transformMatrix<< "\n";
-	if (useVI)
+	if (useTransform())
+	    result << prefix.str() << "transformMatrix = [" 
+	        << getTransformMatrix()->getValueString() << "]\n";
+	if (useVI())
 	{
-	    result << prefix.str() << "viewMatrix = " << imageMatrix<< "\n";
-	    result << prefix.str() << "imageMatrix = " << imageMatrix<< "\n";
+	    result << prefix.str() << "viewMatrix = [" 
+	        << getViewMatrix()->getValueString() << "]\n";
+	    if (getImageMatrix() != 0)
+	        result << prefix.str() << "imageMatrix = [" 
+	            << getImageMatrix()->getValueString() << "]\n";
 	}
 	if (items.size() == 0)
 	{
@@ -315,6 +293,35 @@ level)
 	    && (notShown > 0))
 	    result << prefix.str() << "  (" << notShown << " items not shown)";
 	return result.str();
+}
+
+std::string TransformableGroup::getValueString() const
+{
+	std::ostringstream status;
+	if (items.size() > 0)
+	{
+	    // items
+	    status << "items: ";
+	    bool e0 = true;
+	    for (TransformableObjectVector::const_iterator i = 
+	        items.begin(); i != items.end(); i++)
+	    {
+	        TransformableObject* to0 = *i;
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        if (to0 != 0)
+	            status << to0->getString();
+	        else
+	            status << "<null>";
+	    }
+	}
+	// transformable object data
+	std::string ts0(TransformableObject::getValueString());
+	if (ts0.size() > 0)
+	    status << "; " << ts0;
+	return status.str();
 }
 
 unsigned int TransformableGroup::getNumItems() const
@@ -367,6 +374,29 @@ addElement)
 	items.push_back(addElement);
 }
 
+Ionflux::GeoUtils::TransformableObject* TransformableGroup::addItem()
+{
+	Ionflux::GeoUtils::TransformableObject* o0 = TransformableObject::create();
+	addItem(o0);
+	return o0;
+}
+
+void TransformableGroup::addItems(const 
+std::vector<Ionflux::GeoUtils::TransformableObject*>& newItems)
+{
+	for (std::vector<Ionflux::GeoUtils::TransformableObject*>::const_iterator i = newItems.begin(); 
+	    i != newItems.end(); i++)
+	    addItem(*i);
+}
+
+void TransformableGroup::addItems(Ionflux::GeoUtils::TransformableGroup* 
+newItems)
+{
+	for (unsigned int i = 0; 
+	    i < newItems->getNumItems(); i++)
+	    addItem(newItems->getItem(i));
+}
+
 void TransformableGroup::removeItem(Ionflux::GeoUtils::TransformableObject*
 removeElement)
 {
@@ -412,11 +442,18 @@ void TransformableGroup::clearItems()
 Ionflux::GeoUtils::TransformableGroup& TransformableGroup::operator=(const 
 Ionflux::GeoUtils::TransformableGroup& other)
 {
+    if (this == &other)
+        return *this;
     TransformableObject::operator=(other);
     TransformableObjectVector v0;
     for (TransformableObjectVector::const_iterator i = 
         other.items.begin(); i != other.items.end(); i++)
-        v0.push_back(&((*i)->duplicate()));
+    {
+        TransformableObject* ot0 = 
+            Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+                "operator=", "Transformable object");
+        v0.push_back(ot0->copy());
+    }
     clearItems();
     addItems(v0);
 	return *this;
@@ -446,6 +483,39 @@ TransformableGroup::create(Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string TransformableGroup::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string TransformableGroup::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	return d0.str();
+}
+
+void TransformableGroup::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(items, "vec", "", 
+        indentLevel, "pname=\"items\"");
+    xcFirst = false;
+	target = d0.str();
+}
+
+void TransformableGroup::loadFromXMLFile(std::string& fileName)
+{
+	std::string data;
+	Ionflux::ObjectBase::readFile(fileName, data);
+	Ionflux::GeoUtils::XMLUtils::getTransformableGroup(data, *this);
 }
 
 }

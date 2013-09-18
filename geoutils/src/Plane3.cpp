@@ -210,6 +210,8 @@ Ionflux::GeoUtils::Vector3 Plane3::getV() const
 Ionflux::GeoUtils::Plane3& Plane3::operator=(const 
 Ionflux::GeoUtils::Plane3& other)
 {
+if (this == &other)
+    return *this;
 setP(other.getP());
 setU(other.getU());
 setV(other.getV());

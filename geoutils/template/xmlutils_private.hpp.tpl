@@ -40,11 +40,17 @@ $Matrix4
 $VectorSetSet
 $DeferredTransform
 $TransformableObject
+$Vertex2
 $Vertex3
 $Vertex3Set
 $Face
+$Edge
 $Mesh
 $Object3
+$TransformableGroup
+$Polygon3
+$Polygon3Set
+$Shape3
 
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).

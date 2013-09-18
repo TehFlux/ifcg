@@ -73,11 +73,23 @@ class Edge
 		other);
 		static Ionflux::GeoUtils::Edge* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Edge* create(int initV0, int initV1, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Edge* create(const 
+		Ionflux::ObjectBase::IntVector& initVertices, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setV0(int newV0);
         virtual int getV0() const;
         virtual void setV1(int newV1);
         virtual int getV1() const;
 };
+
+namespace XMLUtils
+{
+
+void getEdge(const std::string& data, Ionflux::GeoUtils::Edge& target);
+
+}
 
 }
 

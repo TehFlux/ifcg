@@ -119,6 +119,27 @@ class DeferredTransform
 		 */
 		virtual ~DeferredTransform();
 		
+		/** Reset transformation matrices.
+		 *
+		 * Make the current transformation matrix the last transformation 
+		 * matrix and reset the changed flags.
+		 */
+		virtual void resetTransform();
+		
+		/** Reset transformation matrices.
+		 *
+		 * Make the current view/image transformation matrices the last 
+		 * view/image transformation matrices and reset the changed flags.
+		 */
+		virtual void resetVI();
+		
+		/** Reset transformation matrices.
+		 *
+		 * Make the current transformation matrices the last transformation 
+		 * matrices and reset the changed flags.
+		 */
+		virtual void reset();
+		
 		/** Clear.
 		 *
 		 * Clear the transformation matrices and flags.
@@ -152,11 +173,10 @@ class DeferredTransform
 		
 		/** Check transformation matrix status.
 		 *
-		 * Check the transformation matrix. If it is equal to the unit matrix 
+		 * Checks the transformation matrix. If it is equal to the unit matrix
 		 * within the tolerance, use of the matrix for object transformations 
 		 * will be disabled. If it is not equal to the unit matrix, check if 
-		 * the transform has changed. If it has changed, call the 
-		 * onTransformChanged() handler.
+		 * the transform has changed.
 		 *
 		 * \param t Tolerance.
 		 *
@@ -169,8 +189,7 @@ class DeferredTransform
 		 * Check the view/image transform matrices. If both are equal to the 
 		 * unit matrix within the tolerance, use of the matrices for object 
 		 * transformations will be disabled. If the matrices are not equal to 
-		 * the unit matrix, check if the matrices have changed. If either 
-		 * matrix has changed, call the onVIChanged() handler.
+		 * the unit matrix, check if the matrices have changed.
 		 *
 		 * \param t Tolerance.
 		 *

@@ -134,7 +134,7 @@ Ionflux::GeoUtils::Range3 SVG::getSVGBounds()
 void SVG::recalculateBounds()
 {
 	TransformableObject::recalculateBounds();
-	if (!useTransform && !useVI)
+	if (!useTransform() && !useVI())
 	{
 	    *boundsCache = getSVGBounds();
 	    return;
@@ -145,6 +145,7 @@ void SVG::recalculateBounds()
 	          a box polygon and apply the transformation. \) */
 	Range3 b0 = getSVGBounds();
 	Polygon3* p0 = Polygon3::square();
+	addLocalRef(p0);
 	/* The polygon is created in the XZ-plane by default, but we need it 
 	   to be in the XY-plane. */
 	p0->rotate(0.5 * M_PI, AXIS_X);
@@ -153,12 +154,12 @@ void SVG::recalculateBounds()
 	    2. * b0.getY().getRadius(), 1.));
 	p0->translate(b0.getCenter());
 	// Apply the transformations.
-	if (useTransform)
-	    p0->transform(transformMatrix);
+	if (useTransform())
+	    p0->transform(*getTransformMatrix());
 	// NOTE: VI transform is not supported for SVG objects.
 	p0->applyTransform();
 	*boundsCache = p0->getBounds();
-	delete p0;
+	removeLocalRef(p0);
 }
 
 Ionflux::GeoUtils::Vector3 SVG::getBarycenter()
@@ -174,7 +175,7 @@ Ionflux::GeoUtils::SVG& SVG::duplicate()
 	return *copy();
 }
 
-std::string SVG::getString() const
+std::string SVG::getValueString() const
 {
 	ostringstream status;
 	status << getClassName();

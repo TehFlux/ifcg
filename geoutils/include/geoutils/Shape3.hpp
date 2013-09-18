@@ -1,11 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_SPHERE3
-#define IONFLUX_GEOUTILS_SPHERE3
+#ifndef IONFLUX_GEOUTILS_SHAPE3
+#define IONFLUX_GEOUTILS_SHAPE3
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * Sphere3.hpp                     Sphere (3D) (header).
+ * Shape3.hpp                      Shape (3D) (header).
  * =========================================================================
  * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -30,10 +30,8 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
-#include "geoutils/Vector3.hpp"
 #include "geoutils/Vertex3.hpp"
-#include "geoutils/Matrix4.hpp"
-#include "geoutils/Shape3.hpp"
+#include "geoutils/TransformableObject.hpp"
 
 namespace Ionflux
 {
@@ -41,87 +39,152 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-/// Class information for class Sphere3.
-class Sphere3ClassInfo
+/// Class information for class Shape3.
+class Shape3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
 	public:
 		/// Constructor.
-		Sphere3ClassInfo();
+		Shape3ClassInfo();
 		/// Destructor.
-		virtual ~Sphere3ClassInfo();
+		virtual ~Shape3ClassInfo();
 };
 
-/** Sphere (3D).
+/** Shape (3D).
  * \ingroup geoutils
  *
- * A sphere in three-dimensional space.
+ * A shape in three-dimensional space.
  */
-class Sphere3
-: public Ionflux::GeoUtils::Shape3
+class Shape3
+: virtual public Ionflux::GeoUtils::TransformableObject
 {
 	private:
 		
 	protected:
-		/// Position vector.
-		Ionflux::GeoUtils::Vector3 p;
-		/// Radius.
-		double r;
 		
 	public:
 		/// Class information instance.
-		static const Sphere3ClassInfo sphere3ClassInfo;
+		static const Shape3ClassInfo shape3ClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
-		 * Construct new Sphere3 object.
+		 * Construct new Shape3 object.
 		 */
-		Sphere3();
+		Shape3();
 		
 		/** Constructor.
 		 *
-		 * Construct new Sphere3 object.
+		 * Construct new Shape3 object.
 		 *
 		 * \param other Other object.
 		 */
-		Sphere3(const Ionflux::GeoUtils::Sphere3& other);
-		
-		/** Constructor.
-		 *
-		 * Construct new Sphere3 object.
-		 *
-		 * \param initP Position vector.
-		 * \param initR Radius.
-		 */
-		Sphere3(const Ionflux::GeoUtils::Vector3& initP, double initR);
+		Shape3(const Ionflux::GeoUtils::Shape3& other);
 		
 		/** Destructor.
 		 *
-		 * Destruct Sphere3 object.
+		 * Destruct Shape3 object.
 		 */
-		virtual ~Sphere3();
+		virtual ~Shape3();
 		
-		/** Get barycenter.
+		/** Scale.
 		 *
-		 * Get the barycenter vector for the sphere.
+		 * Scale the shape by the specified scale factors.
 		 *
-		 * \return Barycenter vector.
+		 * \param s Vector of scale factors.
+		 *
+		 * \return The transformed object.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getBarycenter() const;
+		virtual Ionflux::GeoUtils::Shape3& scale(const 
+		Ionflux::GeoUtils::Vector3& s);
 		
-		/** Get bounds.
+		/** Translate.
 		 *
-		 * Get the bounds for the sphere.
+		 * Translate the shape by the specified vector.
 		 *
-		 * \return Bounds.
+		 * \param t Translation vector.
+		 *
+		 * \return The transformed object.
 		 */
-		virtual Ionflux::GeoUtils::Range3 getBounds() const;
+		virtual Ionflux::GeoUtils::Shape3& translate(const 
+		Ionflux::GeoUtils::Vector3& t);
+		
+		/** Rotate.
+		 *
+		 * Rotate the shape by the specified angle around the specified axis.
+		 *
+		 * \param phi Angle.
+		 * \param axis Axis.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Shape3& rotate(double phi, 
+		Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+		
+		/** Normalize.
+		 *
+		 * Normalize the shape, i.e. scale to unit size.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Shape3& normalize();
+		
+		/** Center.
+		 *
+		 * Center the shape using the specified method and origin vector.
+		 *
+		 * \param method Centering method.
+		 * \param origin Origin or offset vector.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Shape3& 
+		center(Ionflux::GeoUtils::CenteringMethod method = 
+		Ionflux::GeoUtils::CENTER_BARYCENTER, Ionflux::GeoUtils::Vector3* origin 
+		= 0);
+		
+		/** Matrix transformation.
+		 *
+		 * Apply a transformation matrix to the shape.
+		 *
+		 * \param matrix Transformation matrix.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Shape3& transform(const 
+		Ionflux::GeoUtils::Matrix3& matrix);
+		
+		/** Matrix transformation.
+		 *
+		 * Apply a transformation matrix to the shape.
+		 *
+		 * \param matrix Transformation matrix.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Shape3& transform(const 
+		Ionflux::GeoUtils::Matrix4& matrix);
+		
+		/** View/image transformation.
+		 *
+		 * Apply a view transformation matrix and an optional image 
+		 * transformation matrix to the shape.
+		 *
+		 * \param view View transformation matrix.
+		 * \param image Image transformation matrix.
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Shape3& transformVI(const 
+		Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image
+		= 0);
 		
 		/** Check vertex.
 		 *
-		 * Check whether the specified vertex lies within the sphere.
+		 * Check whether the specified vertex lies within the shape.
 		 *
 		 * \param v Vertex.
 		 * \param t Tolerance.
@@ -131,142 +194,14 @@ class Sphere3
 		virtual bool checkVertex(const Ionflux::GeoUtils::Vertex3& v, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
 		
-		/** Comparison operator: equality.
-		 *
-		 * Compare equality.
-		 *
-		 * \param other Sphere.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator==(const Ionflux::GeoUtils::Sphere3& other) const;
-		
-		/** Comparison operator: inequality.
-		 *
-		 * Compare inequality.
-		 *
-		 * \param other Sphere.
-		 *
-		 * \return Result of the comparison.
-		 */
-		virtual bool operator!=(const Ionflux::GeoUtils::Sphere3& other) const;
-		
-		/** Scale.
-		 *
-		 * Scale the object by the specified scale factors.
-		 *
-		 * \param s Vector of scale factors.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& scale(const 
-		Ionflux::GeoUtils::Vector3& s);
-		
-		/** Translate.
-		 *
-		 * Translate the object by the specified vector.
-		 *
-		 * \param t Translation vector.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& translate(const 
-		Ionflux::GeoUtils::Vector3& t);
-		
-		/** Rotate.
-		 *
-		 * Rotate the object by the specified angle around the specified axis.
-		 *
-		 * \param phi Angle.
-		 * \param axis Axis.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& rotate(double phi, 
-		Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
-		
-		/** Normalize.
-		 *
-		 * Normalize the object, i.e. scale to unit size.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& normalize();
-		
-		/** Center.
-		 *
-		 * Center the object using the specified method and origin vector.
-		 *
-		 * \param method Centering method.
-		 * \param origin Origin or offset vector.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& 
-		center(Ionflux::GeoUtils::CenteringMethod method = 
-		Ionflux::GeoUtils::CENTER_BARYCENTER, Ionflux::GeoUtils::Vector3* origin 
-		= 0);
-		
-		/** Matrix transformation.
-		 *
-		 * Apply a transformation matrix to the object.
-		 *
-		 * \param matrix Transformation matrix.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& transform(const 
-		Ionflux::GeoUtils::Matrix3& matrix);
-		
-		/** Matrix transformation.
-		 *
-		 * Apply a transformation matrix to the object.
-		 *
-		 * \param matrix Transformation matrix.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& transform(const 
-		Ionflux::GeoUtils::Matrix4& matrix);
-		
-		/** View/image transformation.
-		 *
-		 * Apply a view transformation matrix and an optional image 
-		 * transformation matrix to the object.
-		 *
-		 * \param view View transformation matrix.
-		 * \param image Image transformation matrix.
-		 *
-		 * \return The transformed object.
-		 */
-		virtual Ionflux::GeoUtils::Sphere3& transformVI(const 
-		Ionflux::GeoUtils::Matrix4& view, const Ionflux::GeoUtils::Matrix4* image
-		= 0);
-		
-		/** Get string representation of value.
-		 *
-		 * Get a string representation of the value of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getValueString() const;
-		
 		/** Duplicate.
 		 *
-		 * Create an exact duplicate of the object. The duplicate is a new 
+		 * Create an exact duplicate of the shape. The duplicate is a new 
 		 * object which must be managed by the caller.
 		 *
 		 * \return The duplicated object.
 		 */
-		virtual Ionflux::GeoUtils::Sphere3& duplicate();
-		
-		/** Get unit sphere.
-		 *
-		 * Get a sphere corresponding to the unit sphere.
-		 *
-		 * \return Line.
-		 */
-		static const Ionflux::GeoUtils::Sphere3& unit();
+		virtual Ionflux::GeoUtils::Shape3& duplicate();
 		
 		/** Assignment operator.
 		 *
@@ -276,8 +211,8 @@ class Sphere3
 		 *
 		 * \return The object itself.
 		 */
-		virtual Ionflux::GeoUtils::Sphere3& operator=(const 
-		Ionflux::GeoUtils::Sphere3& other);
+		virtual Ionflux::GeoUtils::Shape3& operator=(const 
+		Ionflux::GeoUtils::Shape3& other);
 		
 		/** Copy.
 		 *
@@ -285,7 +220,7 @@ class Sphere3
 		 *
 		 * \return Newly allocated copy of the object.
 		 */
-		virtual Ionflux::GeoUtils::Sphere3* copy() const;
+		virtual Ionflux::GeoUtils::Shape3* copy() const;
 		
 		/** Upcast.
 		 *
@@ -295,7 +230,7 @@ class Sphere3
 		 *
 		 * \return The more specific object, or 0 if the cast failed.
 		 */
-		static Ionflux::GeoUtils::Sphere3* upcast(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::GeoUtils::Shape3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		
 		/** Create instance.
@@ -308,43 +243,49 @@ class Sphere3
 		 *
 		 * \return Pointer to the new instance.
 		 */
-		static Ionflux::GeoUtils::Sphere3* create(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::GeoUtils::Shape3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
-		
-		/** Get position vector.
+        
+		/** Get XML element name.
 		 *
-		 * \return Current value of position vector.
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getP() const;
-		
-		/** Set position vector.
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
 		 *
-		 * Set new value of position vector.
+		 * Get a string containing the XML attributes of the object.
 		 *
-		 * \param newP New value of position vector.
+		 * \return XML attribute data
 		 */
-		virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
-		
-		/** Get radius.
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
 		 *
-		 * \return Current value of radius.
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
 		 */
-		virtual double getR() const;
-		
-		/** Set radius.
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
 		 *
-		 * Set new value of radius.
+		 * Initialize the object from an XML file.
 		 *
-		 * \param newR New value of radius.
+		 * \param fileName file name
 		 */
-		virtual void setR(double newR);
+		void loadFromXMLFile(std::string& FileName);
 };
 
 }
 
 }
 
-/** \file Sphere3.hpp
- * \brief Sphere (3D) (header).
+/** \file Shape3.hpp
+ * \brief Shape (3D) (header).
  */
 #endif

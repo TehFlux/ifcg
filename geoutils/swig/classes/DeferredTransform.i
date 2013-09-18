@@ -56,6 +56,9 @@ class DeferredTransform
         DeferredTransform();
 		DeferredTransform(const Ionflux::GeoUtils::DeferredTransform& other);
         virtual ~DeferredTransform();
+        virtual void resetTransform();
+        virtual void resetVI();
+        virtual void reset();
         virtual void clear();
         virtual Ionflux::GeoUtils::DeferredTransform& transform(const 
         Ionflux::GeoUtils::Matrix4& matrix);

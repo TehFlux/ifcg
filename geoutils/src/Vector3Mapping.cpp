@@ -97,6 +97,8 @@ std::string Vector3Mapping::getString() const
 Ionflux::GeoUtils::Mapping::Vector3Mapping& Vector3Mapping::operator=(const
 Ionflux::GeoUtils::Mapping::Vector3Mapping& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

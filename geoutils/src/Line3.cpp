@@ -248,6 +248,8 @@ Ionflux::GeoUtils::Vector3 Line3::getU() const
 Ionflux::GeoUtils::Line3& Line3::operator=(const Ionflux::GeoUtils::Line3& 
 other)
 {
+if (this == &other)
+    return *this;
 setP(other.getP());
 setU(other.getU());
 	return *this;
