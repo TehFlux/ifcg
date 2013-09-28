@@ -51,6 +51,7 @@ $TransformableGroup
 $Polygon3
 $Polygon3Set
 $Shape3
+$Camera
 
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).

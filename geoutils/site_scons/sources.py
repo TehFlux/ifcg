@@ -309,7 +309,8 @@ geoutilsLibXMLClasses = [
     'TransformableGroup', 
     'Polygon3', 
     'Polygon3Set', 
-    'Shape3'
+    'Shape3', 
+    'Camera'
 ]
 
 # Altjira/GeoUtils library

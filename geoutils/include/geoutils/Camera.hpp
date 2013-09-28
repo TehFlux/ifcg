@@ -33,7 +33,7 @@
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Vector4.hpp"
 #include "geoutils/Matrix4.hpp"
-#include "ifobject/IFObject.hpp"
+#include "geoutils/TransformableObject.hpp"
 
 namespace Ionflux
 {
@@ -77,29 +77,35 @@ class CameraClassInfo
  * vector.
  */
 class Camera
-: public Ionflux::ObjectBase::IFObject
+: virtual public Ionflux::GeoUtils::TransformableObject
 {
 	private:
 		
 	protected:
 		/// Location vector.
-		Ionflux::GeoUtils::Vector3 location;
+		Ionflux::GeoUtils::Vector3* location;
 		/// Direction vector.
-		Ionflux::GeoUtils::Vector3 direction;
+		Ionflux::GeoUtils::Vector3* direction;
 		/// Look-at vector.
-		Ionflux::GeoUtils::Vector3 lookAt;
+		Ionflux::GeoUtils::Vector3* lookAt;
 		/// Right vector.
-		Ionflux::GeoUtils::Vector3 right;
+		Ionflux::GeoUtils::Vector3* right;
 		/// Up vector.
-		Ionflux::GeoUtils::Vector3 up;
+		Ionflux::GeoUtils::Vector3* up;
 		/// Sky vector.
-		Ionflux::GeoUtils::Vector3 sky;
+		Ionflux::GeoUtils::Vector3* sky;
 		/// Angle.
 		double angle;
 		/// Lens.
 		double lens;
 		/// Setup flags.
 		Ionflux::GeoUtils::CameraSetupFlags setupFlags;
+		
+		/** Check vectors.
+		 *
+		 * Check that all camera configuration vectors are set.
+		 */
+		virtual void checkVectors();
 		
 	public:
 		/// Default right vector.
@@ -116,6 +122,8 @@ class Camera
 		static const CameraClassInfo cameraClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -160,6 +168,49 @@ class Camera
 		 * Destruct Camera object.
 		 */
 		virtual ~Camera();
+		
+		/** Get barycenter.
+		 *
+		 * Get the barycenter vector.
+		 *
+		 * \return Barycenter vector.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 getBarycenter();
+		
+		/** Apply transformations.
+		 *
+		 * Apply transformations that have been accumulated in the 
+		 * transformation matrices.
+		 *
+		 * \param recursive Apply transformations recursively.
+		 */
+		virtual void applyTransform(bool recursive = false);
+		
+		/** Initialize vectors.
+		 *
+		 * Initializes the camera configuration vectors.
+		 */
+		virtual void initVectors();
+		
+		/** Set configuration vectors.
+		 *
+		 * Set the camera configuration vectors.
+		 *
+		 * \param initLocation Location vector.
+		 * \param initDirection Direction vector.
+		 * \param initLookAt Look-at vector.
+		 * \param initRight Right vector.
+		 * \param initUp Up vector.
+		 * \param initSky Sky vector.
+		 */
+		virtual void setVectors(Ionflux::GeoUtils::Vector3 initLocation = 
+		Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3 
+		initDirection = Ionflux::GeoUtils::Vector3::E_Z, 
+		Ionflux::GeoUtils::Vector3 initLookAt = Ionflux::GeoUtils::Vector3::E_Z, 
+		Ionflux::GeoUtils::Vector3 initRight = 
+		Ionflux::GeoUtils::Camera::DEFAULT_RIGHT, Ionflux::GeoUtils::Vector3 
+		initUp = Ionflux::GeoUtils::Vector3::E_Y, Ionflux::GeoUtils::Vector3 
+		initSky = Ionflux::GeoUtils::Vector3::E_Y);
 		
 		/** Use default settings.
 		 *
@@ -240,13 +291,14 @@ class Camera
 		getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis = 
 		Ionflux::GeoUtils::AXIS_Y);
 		
-		/** Get view matrix.
+		/** Get model view matrix.
 		 *
-		 * Get the view matrix which can be applied to object coordinates to
-		 * create the camera view. mode can be either MODE_PERSPECTIVE (the 
-		 * default) for perspective projection, or MODE_ORTHO for orthogonal 
-		 * projection. If adjustLocation is set to True, the location of the 
-		 * camera will be offset by the direction vector.
+		 * Get the model view matrix which can be applied to object 
+		 * coordinates to         create the camera view. mode can be either 
+		 * MODE_PERSPECTIVE (the default) for perspective projection, or 
+		 * MODE_ORTHO for orthogonal projection. If adjustLocation is set to 
+		 * True, the location of the camera will be offset by the direction 
+		 * vector.
 		 *
 		 * \param mode Camera mode.
 		 * \param adjustLocation Offset camera location by direction vector.
@@ -258,7 +310,7 @@ class Camera
 		 * \return View matrix.
 		 */
 		virtual Ionflux::GeoUtils::Matrix4 
-		getViewMatrix(Ionflux::GeoUtils::CameraMode mode = 
+		getModelViewMatrix(Ionflux::GeoUtils::CameraMode mode = 
 		Ionflux::GeoUtils::Camera::MODE_PERSPECTIVE, bool adjustLocation = 
 		Ionflux::GeoUtils::Camera::DEFAULT_ADJUST_LOCATION, 
 		Ionflux::GeoUtils::HandednessID handedness = 
@@ -273,21 +325,21 @@ class Camera
 		 * created at the specified distance in negative Y-direction and 
 		 * rotated around the global coordinate axes as specified.
 		 *
-		 * \param distance Distance to origin.
+		 * \param distance0 Distance to origin.
 		 * \param rotX Rotation around X axis (in degrees).
 		 * \param rotY Rotation around Y axis (in degrees).
 		 * \param rotZ Rotation around Z axis (in degrees).
 		 */
-		virtual void setOriginCam(double distance = 10., double rotX = -30., 
+		virtual void setOriginCam(double distance0 = 10., double rotX = -30., 
 		double rotY = 0., double rotZ = 30.);
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *
@@ -308,11 +360,95 @@ class Camera
 		 */
 		virtual Ionflux::GeoUtils::Camera* copy() const;
 		
+		/** Upcast.
+		 *
+		 * Cast an IFObject to the most specific type.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		static Ionflux::GeoUtils::Camera* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::GeoUtils::Camera* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Camera object.
+		 *
+		 * \param initLocation Location vector.
+		 * \param initDirection Direction vector.
+		 * \param initLookAt Look-at vector.
+		 * \param initRight Right vector.
+		 * \param initUp Up vector.
+		 * \param initSky Sky vector.
+		 * \param initAngle Angle.
+		 * \param initLens Lens.
+		 * \param initSetupFlags Setup flags.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Camera* create(Ionflux::GeoUtils::Vector3 
+		initLocation, Ionflux::GeoUtils::Vector3 initDirection = 
+		Ionflux::GeoUtils::Vector3::E_Z, Ionflux::GeoUtils::Vector3 initLookAt = 
+		Ionflux::GeoUtils::Vector3::E_Z, Ionflux::GeoUtils::Vector3 initRight = 
+		Ionflux::GeoUtils::Camera::DEFAULT_RIGHT, Ionflux::GeoUtils::Vector3 
+		initUp = Ionflux::GeoUtils::Vector3::E_Y, Ionflux::GeoUtils::Vector3 
+		initSky = Ionflux::GeoUtils::Vector3::E_Y, double initAngle = 1., double 
+		initLens = 24., Ionflux::GeoUtils::CameraSetupFlags initSetupFlags = 
+		Ionflux::GeoUtils::Camera::DEFAULT_SETUP_FLAGS, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
+		const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		void loadFromXMLFile(std::string& FileName);
+		
 		/** Get location vector.
 		 *
 		 * \return Current value of location vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getLocation() const;
+		virtual Ionflux::GeoUtils::Vector3* getLocation() const;
 		
 		/** Set location vector.
 		 *
@@ -320,13 +456,13 @@ class Camera
 		 *
 		 * \param newLocation New value of location vector.
 		 */
-		virtual void setLocation(const Ionflux::GeoUtils::Vector3& newLocation);
+		virtual void setLocation(Ionflux::GeoUtils::Vector3* newLocation);
 		
 		/** Get direction vector.
 		 *
 		 * \return Current value of direction vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getDirection() const;
+		virtual Ionflux::GeoUtils::Vector3* getDirection() const;
 		
 		/** Set direction vector.
 		 *
@@ -334,14 +470,13 @@ class Camera
 		 *
 		 * \param newDirection New value of direction vector.
 		 */
-		virtual void setDirection(const Ionflux::GeoUtils::Vector3& 
-		newDirection);
+		virtual void setDirection(Ionflux::GeoUtils::Vector3* newDirection);
 		
 		/** Get look-at vector.
 		 *
 		 * \return Current value of look-at vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getLookAt() const;
+		virtual Ionflux::GeoUtils::Vector3* getLookAt() const;
 		
 		/** Set look-at vector.
 		 *
@@ -349,13 +484,13 @@ class Camera
 		 *
 		 * \param newLookAt New value of look-at vector.
 		 */
-		virtual void setLookAt(const Ionflux::GeoUtils::Vector3& newLookAt);
+		virtual void setLookAt(Ionflux::GeoUtils::Vector3* newLookAt);
 		
 		/** Get right vector.
 		 *
 		 * \return Current value of right vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getRight() const;
+		virtual Ionflux::GeoUtils::Vector3* getRight() const;
 		
 		/** Set right vector.
 		 *
@@ -363,13 +498,13 @@ class Camera
 		 *
 		 * \param newRight New value of right vector.
 		 */
-		virtual void setRight(const Ionflux::GeoUtils::Vector3& newRight);
+		virtual void setRight(Ionflux::GeoUtils::Vector3* newRight);
 		
 		/** Get up vector.
 		 *
 		 * \return Current value of up vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getUp() const;
+		virtual Ionflux::GeoUtils::Vector3* getUp() const;
 		
 		/** Set up vector.
 		 *
@@ -377,13 +512,13 @@ class Camera
 		 *
 		 * \param newUp New value of up vector.
 		 */
-		virtual void setUp(const Ionflux::GeoUtils::Vector3& newUp);
+		virtual void setUp(Ionflux::GeoUtils::Vector3* newUp);
 		
 		/** Get sky vector.
 		 *
 		 * \return Current value of sky vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector3 getSky() const;
+		virtual Ionflux::GeoUtils::Vector3* getSky() const;
 		
 		/** Set sky vector.
 		 *
@@ -391,7 +526,7 @@ class Camera
 		 *
 		 * \param newSky New value of sky vector.
 		 */
-		virtual void setSky(const Ionflux::GeoUtils::Vector3& newSky);
+		virtual void setSky(Ionflux::GeoUtils::Vector3* newSky);
 		
 		/** Get angle.
 		 *

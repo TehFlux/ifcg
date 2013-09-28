@@ -621,6 +621,27 @@ void getShape3(const std::string& data, Ionflux::GeoUtils::Shape3& target);
 }
 
 
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Camera;
+
+namespace XMLUtils
+{
+
+void getCamera(const std::string& data, Ionflux::GeoUtils::Camera& target);
+
+}
+
+}
+
+}
+
+
 /** \file xmlutils.hpp
  * \brief XML utility functions (header).
  */

@@ -336,6 +336,7 @@ $TransformableGroup
 $Polygon3
 $Polygon3Set
 $Shape3
+$Camera
 
 /** \file xmlutils.cpp
  * \brief XML utility functions (implementation).

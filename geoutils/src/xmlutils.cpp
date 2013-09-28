@@ -1984,6 +1984,13 @@ createTransformableObject(TiXmlElement* e0, const std::string& elementName)
         getPolygon3Set(e0, *o1, en0);
         o0 = o1;
     } else
+    if (en0 == Camera::XML_ELEMENT_NAME)
+    {
+        // Camera
+        Camera* o1 = Camera::create();
+        getCamera(e0, *o1, en0);
+        o0 = o1;
+    } else
     {
         std::ostringstream status;
         status << "[createTransformableObject] "
@@ -2156,6 +2163,15 @@ void getObjVector<Ionflux::GeoUtils::TransformableObject,
             getObject0(ce0, *co0, en0);
             target.push_back(co0);
         } else
+        if (en0 == 
+            Camera::XML_ELEMENT_NAME)
+        {
+            // Camera
+            Camera* co0 = 
+                Camera::create();
+            getObject0(ce0, *co0, en0);
+            target.push_back(co0);
+        } else
         {
             std::ostringstream status;
             status << "[getObjVector<TransformableObject>] "
@@ -2268,6 +2284,15 @@ void getObjMap<Ionflux::GeoUtils::TransformableObject,
                 // Polygon3Set
                 Polygon3Set* co1 = 
                     Polygon3Set::create();
+                getObject0(ce0, *co0, childElementName);
+                co0 = co1;
+            } else
+            if (en1 == 
+                Camera::XML_ELEMENT_NAME)
+            {
+                // Camera
+                Camera* co1 = 
+                    Camera::create();
                 getObject0(ce0, *co0, childElementName);
                 co0 = co1;
             } else
@@ -3437,6 +3462,103 @@ void getObject0<Ionflux::GeoUtils::Shape3>(TiXmlElement* e0,
         Ionflux::GeoUtils::XMLUtils::getShape3(e0, target);
     else
         Ionflux::GeoUtils::XMLUtils::getShape3(e0, target, elementName);
+}
+
+}
+
+}
+
+}
+
+#include "geoutils/Camera.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+Ionflux::GeoUtils::Camera* createCamera(TiXmlElement* e0, const 
+std::string& elementName)
+{
+    std::string en0(e0->Value());
+    Camera* o0 = 0;
+    if (en0 == elementName)
+    {
+        // default (Camera)
+        o0 = Camera::create();
+        getCamera(e0, *o0, en0);
+    } else
+    {
+        std::ostringstream status;
+        status << "[createCamera] "
+            << "Unexpected child element name: '" << en0 << "'";
+        throw Ionflux::ObjectBase::IFError(status.str());
+    }
+    return o0;
+}
+
+void getCamera(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Camera& target, const std::string& elementName)
+{
+    Ionflux::ObjectBase::XMLUtils::checkElementNameOrError(e0, 
+        elementName, "getCamera");
+    getTransformableObject(e0, target, elementName);
+    // Get attribute data.
+    std::string a0;
+    // Property: angle (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "angle", true);
+    target.setAngle(::strtod(a0.c_str(), 0));
+    // Property: lens (float)
+    a0 = Ionflux::ObjectBase::XMLUtils::getAttributeValue(
+        e0, "lens", true);
+    target.setLens(::strtod(a0.c_str(), 0));
+}
+
+void getCamera(const std::string& data, Ionflux::GeoUtils::Camera& target)
+{
+    TiXmlDocument d0;
+    
+    std::string d1(data);
+    d1.append(1, ' ');
+    if (!d0.Parse(d1.c_str(), 0, TIXML_ENCODING_UTF8))
+        throw ("[getCamera] "
+            "Unable to parse XML data.");
+    TiXmlElement* m0 = 
+        Ionflux::ObjectBase::XMLUtils::findElementByNameOrError(
+            d0.RootElement(), 
+            Ionflux::GeoUtils::Camera::XML_ELEMENT_NAME);
+    getCamera(m0, target);
+}
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+template<>
+void getObject0<Ionflux::GeoUtils::Camera>(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Camera& target, const std::string& elementName)
+{
+    
+    if (elementName.size() == 0)
+        Ionflux::GeoUtils::XMLUtils::getCamera(e0, target);
+    else
+        Ionflux::GeoUtils::XMLUtils::getCamera(e0, target, elementName);
 }
 
 }

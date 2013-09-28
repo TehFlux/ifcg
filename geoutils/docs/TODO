@@ -22,6 +22,7 @@ Critical stuff
 --------------------------------------------------------------------------------
 
 + BGeoUtils
+  > export a scene (TransformableGroup containing Camera and Objects)
   > add an operator to export/import an object (Object3 XML I/O)
   > update to work with BMesh
   > Blender Object.matrix_basis seems to require M^T as input but 
@@ -29,11 +30,8 @@ Critical stuff
   > test UV texture coordinate and vertex color transfer between Blender 
     mesh and GeoUtils mesh
 
-+ Camera
-  > allocate member objects on the heap
-  > XML I/O
-
 + Testing
+  > Camera
   > TransformableObject and derived classes
     . Face, Mesh, TransformableGroup, Object3, Vertex3, 
       Vertex3Set, Polygon3, Polygon3Set, Shape3, SVG, Image

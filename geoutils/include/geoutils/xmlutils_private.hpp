@@ -1189,6 +1189,54 @@ Ionflux::GeoUtils::Shape3& target, const std::string& elementName);
 }
 
 
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Camera;
+
+namespace XMLUtils
+{
+
+/// Initialize Camera from TiXmlElement.
+void getCamera(TiXmlElement* e0, 
+    Ionflux::GeoUtils::Camera& target, const std::string& elementName = 
+Ionflux::GeoUtils::Camera::XML_ELEMENT_NAME);
+
+/// Create new Camera from TiXmlElement.
+Ionflux::GeoUtils::Camera* createCamera(TiXmlElement* e0, const 
+std::string& elementName = Ionflux::GeoUtils::Camera::XML_ELEMENT_NAME);
+
+}
+
+}
+
+}
+
+namespace Ionflux
+{
+
+namespace ObjectBase
+{
+
+namespace XMLUtils
+{
+
+/// Initialize Camera from TiXmlElement.
+template<>
+void getObject0<Ionflux::GeoUtils::Camera>(TiXmlElement* e0, 
+Ionflux::GeoUtils::Camera& target, const std::string& elementName);
+
+}
+
+}
+
+}
+
+
 /** \file xmlutils_private.hpp
  * \brief XML utility functions (header).
  */

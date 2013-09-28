@@ -3961,7 +3961,7 @@ class CameraClassInfo
 };
 
 class Camera
-: public Ionflux::ObjectBase::IFObject
+: virtual public Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const Ionflux::GeoUtils::Vector3 DEFAULT_RIGHT;
@@ -3984,6 +3984,18 @@ class Camera
         initLens = 24., Ionflux::GeoUtils::CameraSetupFlags initSetupFlags 
         = Ionflux::GeoUtils::Camera::DEFAULT_SETUP_FLAGS);
         virtual ~Camera();
+        virtual Ionflux::GeoUtils::Vector3 getBarycenter();
+        virtual void applyTransform(bool recursive = false);
+        virtual void initVectors();
+        virtual void setVectors(Ionflux::GeoUtils::Vector3 initLocation = 
+        Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3 
+        initDirection = Ionflux::GeoUtils::Vector3::E_Z, 
+        Ionflux::GeoUtils::Vector3 initLookAt = 
+        Ionflux::GeoUtils::Vector3::E_Z, Ionflux::GeoUtils::Vector3 
+        initRight = Ionflux::GeoUtils::Camera::DEFAULT_RIGHT, 
+        Ionflux::GeoUtils::Vector3 initUp = 
+        Ionflux::GeoUtils::Vector3::E_Y, Ionflux::GeoUtils::Vector3 initSky
+        = Ionflux::GeoUtils::Vector3::E_Y);
         virtual void setDefault();
         virtual void validate(const Ionflux::GeoUtils::CameraSetupFlags* 
         newSetupFlags = 0, double t = 
@@ -4001,7 +4013,7 @@ class Camera
         getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis = 
         Ionflux::GeoUtils::AXIS_Y);
         virtual Ionflux::GeoUtils::Matrix4 
-        getViewMatrix(Ionflux::GeoUtils::CameraMode mode = 
+        getModelViewMatrix(Ionflux::GeoUtils::CameraMode mode = 
         Ionflux::GeoUtils::Camera::MODE_PERSPECTIVE, bool adjustLocation = 
         Ionflux::GeoUtils::Camera::DEFAULT_ADJUST_LOCATION, 
         Ionflux::GeoUtils::HandednessID handedness = 
@@ -4009,25 +4021,37 @@ class Camera
         upAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
         depthAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
         horizonAxis = Ionflux::GeoUtils::AXIS_X);
-        virtual void setOriginCam(double distance = 10., double rotX = 
+        virtual void setOriginCam(double distance0 = 10., double rotX = 
         -30., double rotY = 0., double rotZ = 30.);
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Camera* copy() const;
-        virtual void setLocation(const Ionflux::GeoUtils::Vector3& 
-        newLocation);
-        virtual Ionflux::GeoUtils::Vector3 getLocation() const;
-        virtual void setDirection(const Ionflux::GeoUtils::Vector3& 
+		static Ionflux::GeoUtils::Camera* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::Camera* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Camera* create(Ionflux::GeoUtils::Vector3 
+		initLocation, Ionflux::GeoUtils::Vector3 initDirection = 
+		Ionflux::GeoUtils::Vector3::E_Z, Ionflux::GeoUtils::Vector3 initLookAt = 
+		Ionflux::GeoUtils::Vector3::E_Z, Ionflux::GeoUtils::Vector3 initRight = 
+		Ionflux::GeoUtils::Camera::DEFAULT_RIGHT, Ionflux::GeoUtils::Vector3 
+		initUp = Ionflux::GeoUtils::Vector3::E_Y, Ionflux::GeoUtils::Vector3 
+		initSky = Ionflux::GeoUtils::Vector3::E_Y, double initAngle = 1., double 
+		initLens = 24., Ionflux::GeoUtils::CameraSetupFlags initSetupFlags = 
+		Ionflux::GeoUtils::Camera::DEFAULT_SETUP_FLAGS, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setLocation(Ionflux::GeoUtils::Vector3* newLocation);
+        virtual Ionflux::GeoUtils::Vector3* getLocation() const;
+        virtual void setDirection(Ionflux::GeoUtils::Vector3* 
         newDirection);
-        virtual Ionflux::GeoUtils::Vector3 getDirection() const;
-        virtual void setLookAt(const Ionflux::GeoUtils::Vector3& 
-        newLookAt);
-        virtual Ionflux::GeoUtils::Vector3 getLookAt() const;
-        virtual void setRight(const Ionflux::GeoUtils::Vector3& newRight);
-        virtual Ionflux::GeoUtils::Vector3 getRight() const;
-        virtual void setUp(const Ionflux::GeoUtils::Vector3& newUp);
-        virtual Ionflux::GeoUtils::Vector3 getUp() const;
-        virtual void setSky(const Ionflux::GeoUtils::Vector3& newSky);
-        virtual Ionflux::GeoUtils::Vector3 getSky() const;
+        virtual Ionflux::GeoUtils::Vector3* getDirection() const;
+        virtual void setLookAt(Ionflux::GeoUtils::Vector3* newLookAt);
+        virtual Ionflux::GeoUtils::Vector3* getLookAt() const;
+        virtual void setRight(Ionflux::GeoUtils::Vector3* newRight);
+        virtual Ionflux::GeoUtils::Vector3* getRight() const;
+        virtual void setUp(Ionflux::GeoUtils::Vector3* newUp);
+        virtual Ionflux::GeoUtils::Vector3* getUp() const;
+        virtual void setSky(Ionflux::GeoUtils::Vector3* newSky);
+        virtual Ionflux::GeoUtils::Vector3* getSky() const;
         virtual void setAngle(double newAngle);
         virtual double getAngle() const;
         virtual void setLens(double newLens);
@@ -4036,6 +4060,13 @@ class Camera
         Ionflux::GeoUtils::CameraSetupFlags& newSetupFlags);
         virtual Ionflux::GeoUtils::CameraSetupFlags getSetupFlags() const;
 };
+
+namespace XMLUtils
+{
+
+void getCamera(const std::string& data, Ionflux::GeoUtils::Camera& target);
+
+}
 
 }
 
