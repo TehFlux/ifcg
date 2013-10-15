@@ -243,6 +243,11 @@ newSetupFlags, double t)
 	        }
 	        *direction = direction->normalize() * 0.5 * right->norm() 
 	            / ::tan(0.5 * angle);
+	        // <---- DEBUG ----- //
+	        std::cerr << "[Camera::validate] DEBUG: "
+	             "Adjusted direction vector: (" 
+	            << direction->getValueString() << ")" << std::endl;
+	        // ----- DEBUG ----> */
 	        /* <---- DEBUG ----- //
 	        status.str("");
 	        status << "direction = " << direction.getString();
@@ -268,6 +273,11 @@ newSetupFlags, double t)
 	if (!sf.useLookAt)
 	{
 	    *lookAt = *direction;
+	    // <---- DEBUG ----- //
+	    std::cerr << "[Camera::validate] DEBUG: "
+	         "Adjusted lookAt vector: (" 
+	        << lookAt->getValueString() << ")" << std::endl;
+	    // ----- DEBUG ----> */
 	    /* <---- DEBUG ----- //
 	    status.str("");
 	    status << "lookAt = " << lookAt.getString();
@@ -288,6 +298,11 @@ newSetupFlags, double t)
 	                Ionflux::ObjectBase::VL_WARNING, this, "validate"));
 	        }
 	        *direction = lookAtDirection.normalize() * direction->norm();
+	        // <---- DEBUG ----- //
+	        std::cerr << "[Camera::validate] DEBUG: "
+	             "Adjusted direction vector: (" 
+	            << direction->getValueString() << ")" << std::endl;
+	        // ----- DEBUG ----> */
 	        /* <---- DEBUG ----- //
 	        status.str("");
 	        status << "direction = " << direction.getString();
@@ -317,6 +332,11 @@ newSetupFlags, double t)
 	Ionflux::ObjectBase::VL_DEBUG, this, "validate"));
 	            // ----- DEBUG ----> */
 	            *up = right->ortho(*up);
+	            // <---- DEBUG ----- //
+	            std::cerr << "[Camera::validate] DEBUG: "
+	                 "Adjusted up vector: (" 
+	                << up->getValueString() << ")" << std::endl;
+	            // ----- DEBUG ----> */
 	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "up = " << up.getString();
@@ -334,6 +354,11 @@ newSetupFlags, double t)
 	Ionflux::ObjectBase::VL_DEBUG, this, "validate"));
 	            // ----- DEBUG ----> */
 	            *right = up->ortho(*right);
+	            // <---- DEBUG ----- //
+	            std::cerr << "[Camera::validate] DEBUG: "
+	                 "Adjusted right vector: (" 
+	                << right->getValueString() << ")" << std::endl;
+	            // ----- DEBUG ----> */
 	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "right = " << right.getString();
@@ -347,6 +372,11 @@ newSetupFlags, double t)
 	        // Recalculate direction based on right and up vectors.
 	        double directionLength = direction->norm();
 	        *direction = right->cross(*up).normalize() * directionLength;
+	        // <---- DEBUG ----- //
+	        std::cerr << "[Camera::validate] DEBUG: "
+	             "Adjusted direction vector: (" 
+	            << direction->getValueString() << ")" << std::endl;
+	        // ----- DEBUG ----> */
 	        /* <---- DEBUG ----- //
 	        status.str("");
 	        status << "direction = " << direction.getString();
@@ -371,6 +401,11 @@ newSetupFlags, double t)
 	                // ----- DEBUG ----> */
 	            }
 	            *right = direction->ortho(*right);
+	            // <---- DEBUG ----- //
+	            std::cerr << "[Camera::validate] DEBUG: "
+	                 "Adjusted right vector: (" 
+	                << direction->getValueString() << ")" << std::endl;
+	            // ----- DEBUG ----> */
 	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "right = " << right.getString();
@@ -393,6 +428,11 @@ newSetupFlags, double t)
 	                // ----- DEBUG ----> */
 	            }
 	            *up = direction->ortho(*up);
+	            // <---- DEBUG ----- //
+	            std::cerr << "[Camera::validate] DEBUG: "
+	                 "Adjusted up vector: (" 
+	                << up->getValueString() << ")" << std::endl;
+	            // ----- DEBUG ----> */
 	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "up = " << up.getString();
@@ -418,6 +458,11 @@ newSetupFlags, double t)
 	{
 	    // Orthogonalize sky vector.
 	    *sky = direction->ortho(*sky);
+	    // <---- DEBUG ----- //
+	    std::cerr << "[Camera::validate] DEBUG: "
+	         "Adjusted sky vector: (" 
+	        << sky->getValueString() << ")" << std::endl;
+	    // ----- DEBUG ----> */
 	    /* <---- DEBUG ----- //
 	    status.str("");
 	    status << "sky = " << sky.getString();
@@ -501,9 +546,9 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	    roll *= c[1];
 	Matrix3 R(Matrix3::rotate(roll, depthAxis));
 	Matrix4 YPR(YP * R);
-	/* <---- DEBUG ----- //
+	// <---- DEBUG ----- //
 	status.str("");
-	Vector4 zDir4(Vector3::E_Z * direction.norm());
+	Vector4 zDir4(Vector3::E_Z * direction->norm());
 	status << "upAxis = " << axisToString(upAxis) 
 	    << ", depthAxis = " << axisToString(depthAxis) 
 	    << ", horizonAxis = " << axisToString(horizonAxis) 
@@ -605,23 +650,23 @@ std::string Camera::getValueString() const
 	else
 	    status << "<none>";
 	if (direction != 0)
-	    status << "dir: (" << direction->getValueString() << ")";
+	    status << ", dir: (" << direction->getValueString() << ")";
 	else
 	    status << "<none>";
 	if (lookAt != 0)
-	    status << "lookAt: (" << lookAt->getValueString() << ")";
+	    status << ", lookAt: (" << lookAt->getValueString() << ")";
 	else
 	    status << "<none>";
 	if (up != 0)
-	    status << "up: (" << up->getValueString() << ")";
+	    status << ", up: (" << up->getValueString() << ")";
 	else
 	    status << "<none>";
 	if (right != 0)
-	    status << "right: (" << right->getValueString() << ")";
+	    status << ", right: (" << right->getValueString() << ")";
 	else
 	    status << "<none>";
 	if (sky != 0)
-	    status << "sky: (" << sky->getValueString() << ")";
+	    status << ", sky: (" << sky->getValueString() << ")";
 	else
 	    status << "<none>";
 	status << ", angle: " << angle << ", lens: " << lens;

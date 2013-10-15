@@ -15,7 +15,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ cgeoutilstest31: getRotationMatrix() does not yield the local Camera 
+  vectors.
 
 --------------------------------------------------------------------------------
 Critical stuff

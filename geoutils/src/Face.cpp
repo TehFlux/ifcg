@@ -467,9 +467,9 @@ Ionflux::GeoUtils::Polygon3* Face::getPolygon()
 	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
 	    polygon->addVertex(vertexSource->getVertex(*i)->copy());
 	polygon->createEdges();
-	if (useTransform());
+	if (useTransform())
 	    polygon->transform(*getTransformMatrix());
-	if (useVI());
+	if (useVI())
 	    polygon->transformVI(*getViewMatrix(), getImageMatrix());
 	return polygon;
 }

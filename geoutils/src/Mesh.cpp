@@ -658,6 +658,10 @@ Ionflux::GeoUtils::Mesh* Mesh::cube()
 	verts0.push_back(Vertex::create(-s, -s, s));
 	m0->addVertices(verts0);
 	// Faces.
+	/* <---- DEBUG ----- //
+	std::cerr << "[Mesh::cube] DEBUG: "
+	    << "Adding faces..." << std::endl;
+	// <---- DEBUG ----- */
 	FaceVector faces0;
 	faces0.push_back(Face::create(0, 3, 4, 7, m0->getVertexSource()));
 	faces0.push_back(Face::create(3, 2, 5, 4, m0->getVertexSource()));
@@ -666,6 +670,10 @@ Ionflux::GeoUtils::Mesh* Mesh::cube()
 	faces0.push_back(Face::create(4, 5, 6, 7, m0->getVertexSource()));
 	faces0.push_back(Face::create(0, 1, 2, 3, m0->getVertexSource()));
 	m0->addFaces(faces0);
+	/* <---- DEBUG ----- //
+	std::cerr << "[Mesh::cube] DEBUG: "
+	    << "Updating mesh..." << std::endl;
+	// <---- DEBUG ----- */
 	m0->update();
 	return m0;
 }

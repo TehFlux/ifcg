@@ -5,7 +5,9 @@ import math, os
 import CGeoUtils as cg
 import Altjira as ai
 
-print("Testing GeoUtils...")
+testName = "Camera (#29)"
+
+print("CGeoUtils test: %s" % testName)
 
 inFile0 = 'test' + os.path.sep + 'meshes' + os.path.sep + 'icosphere01.mesh'
 outFile0 = 'temp' + os.path.sep + 'icosphere01.svg'

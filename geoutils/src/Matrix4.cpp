@@ -291,6 +291,7 @@ Ionflux::GeoUtils::Matrix4& other) const
 {
 	Matrix4 result;
 	for (unsigned int i = 0; i < 4; i++)
+	{
 	    for (unsigned int j = 0; j < 4; j++)
 	    {
 	        double s = 0.0;
@@ -298,6 +299,7 @@ Ionflux::GeoUtils::Matrix4& other) const
 	            s += elements[4 * i + k] * other.elements[4 * k + j];
 	        result.elements[4 * i + j] = s;
 	    }
+	}
 	return result;
 }
 

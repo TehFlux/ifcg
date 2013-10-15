@@ -25,6 +25,7 @@
 # 02111-1307 USA
 # 
 # ==========================================================================
+import IFObjectBase as ib
 import CGeoUtils as cg
 from BGeoUtils import BGeoUtilsError
 import bpy
@@ -35,18 +36,24 @@ class Camera:
     A wrapper around a CGeoUtils.Camera for use with Blender."""
     
     def __init__(self, cgCam = None):
+        # memory management
+        self.mm = ib.IFObject()
         self.cgCam = cgCam
+        if (not self.cgCam is None):
+            self.mm.addLocalRef(cgCam)
     
     def setFromBCamera(self, bCam):
         """Initialize from Blender mesh."""
         if (self.cgCam is None):
-            self.cgCam = cg.Camera()
+            self.cgCam = cg.Camera.create()
+            self.mm.addLocalRef(cgCam)
         c = self.cgCam
         m = bCam.matrix_world
-        right = cg.Vector3(*m[0][0:3])
-        up = cg.Vector3(*m[1][0:3])
-        direction = cg.Vector3(*m[2][0:3]).flip()
-        location = cg.Vector3(*m[3][0:3])
+        right = cg.Vector3.create(*m[0][0:3])
+        up = cg.Vector3.create(*m[1][0:3])
+        direction = cg.Vector3.create(*m[2][0:3])
+        direction.flipIP()
+        location = cg.Vector3.create(*m[3][0:3])
         lens = bCam.data.lens
         cs0 = cg.CameraSetupFlags()
         cs0.useDirection = True
@@ -56,12 +63,13 @@ class Camera:
         cs0.useSky = False
         cs0.useAngle = False
         cs0.useLens = True
-        self.cgCam.setRight(right)
-        self.cgCam.setUp(up)
-        self.cgCam.setDirection(direction)
-        self.cgCam.setLocation(location)
-        self.cgCam.setLens(lens)
-        self.cgCam.validate(cs0)
+        c.setLocation(location)
+        c.setRight(right)
+        c.setUp(up)
+        c.setDirection(direction)
+        c.setLens(lens)
+        c.initVectors()
+        c.validate(cs0)
     
     def createBCamera(self, camName = None):
         """Create Blender camera.
