@@ -1078,10 +1078,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void Polygon3::loadFromXMLFile(std::string& fileName)
+void Polygon3::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Polygon3::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getPolygon3(data, *this);
 }
 

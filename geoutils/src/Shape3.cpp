@@ -198,10 +198,14 @@ const
 	target = d0.str();
 }
 
-void Shape3::loadFromXMLFile(std::string& fileName)
+void Shape3::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Shape3::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getShape3(data, *this);
 }
 

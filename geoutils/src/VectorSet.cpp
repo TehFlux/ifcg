@@ -330,10 +330,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void VectorSet::loadFromXMLFile(std::string& fileName)
+void VectorSet::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[VectorSet::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVectorSet(data, *this);
 }
 

@@ -354,10 +354,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void Vertex2::loadFromXMLFile(std::string& fileName)
+void Vertex2::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Vertex2::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVertex2(data, *this);
 }
 

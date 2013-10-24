@@ -236,10 +236,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void FaceData::loadFromXMLFile(std::string& fileName)
+void FaceData::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[FaceData::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getFaceData(data, *this);
 }
 

@@ -526,10 +526,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void Vector3::loadFromXMLFile(std::string& fileName)
+void Vector3::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Vector3::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVector3(data, *this);
 }
 

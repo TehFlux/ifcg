@@ -316,7 +316,7 @@ class Matrix2
 		 *
 		 * \return XML element name
 		 */
-		std::string getXMLElementName() const;
+		virtual std::string getXMLElementName() const;
         
 		/** Get XML attribute data.
 		 *
@@ -324,7 +324,7 @@ class Matrix2
 		 *
 		 * \return XML attribute data
 		 */
-		std::string getXMLAttributeData() const;
+		virtual std::string getXMLAttributeData() const;
         
         /** Get XML child data.
 		 *
@@ -333,8 +333,8 @@ class Matrix2
 		 * \param target Where to store the XML data.
 		 * \param indentLevel Indentation level.
 		 */
-		void getXMLChildData(std::string& target, unsigned int indentLevel = 0) 
-		const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
         
         /** Load from XML file.
 		 *
@@ -342,7 +342,7 @@ class Matrix2
 		 *
 		 * \param fileName file name
 		 */
-		void loadFromXMLFile(std::string& FileName);
+		virtual void loadFromXMLFile(const std::string& FileName);
 		
 		/** Get row vector (0).
 		 *

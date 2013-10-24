@@ -1166,10 +1166,14 @@ const
 	target = d0.str();
 }
 
-void Mesh::loadFromXMLFile(std::string& fileName)
+void Mesh::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Mesh::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getMesh(data, *this);
 }
 

@@ -1127,10 +1127,14 @@ const
 	target = d0.str();
 }
 
-void Face::loadFromXMLFile(std::string& fileName)
+void Face::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Face::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getFace(data, *this);
 }
 

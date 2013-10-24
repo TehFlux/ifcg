@@ -361,10 +361,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void Matrix2::loadFromXMLFile(std::string& fileName)
+void Matrix2::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
+	// <---- DEBUG ----- //
+	std:cerr << "[Matrix2::loadFromXMLFile] data = " << data 
+	    << std::endl;
+	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getMatrix2(data, *this);
 }
 
