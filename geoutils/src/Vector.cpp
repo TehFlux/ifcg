@@ -82,7 +82,8 @@ Vector::Vector(const Ionflux::GeoUtils::Vector& other)
 
 Vector::~Vector()
 {
-	delete[] elements;
+	if (elements != 0)
+	    delete[] elements;
 	elements = 0;
 }
 

@@ -49,6 +49,7 @@ Vector2ClassInfo::Vector2ClassInfo()
 {
 	name = "Vector2";
 	desc = "Vector (2 elements)";
+	baseClassInfo.push_back(Ionflux::GeoUtils::Vector::CLASS_INFO);
 }
 
 Vector2ClassInfo::~Vector2ClassInfo()

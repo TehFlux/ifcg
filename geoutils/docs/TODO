@@ -16,7 +16,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ add 'hasClassInfo = true' for parent classes that have class information.
 
 --------------------------------------------------------------------------------
 Critical stuff
