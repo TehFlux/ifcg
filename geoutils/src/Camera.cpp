@@ -911,8 +911,8 @@ void Camera::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
-	// <---- DEBUG ----- //
-	std:cerr << "[Camera::loadFromXMLFile] data = " << data 
+	/* <---- DEBUG ----- //
+	std::cerr << "[Camera::loadFromXMLFile] data = " << data 
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getCamera(data, *this);

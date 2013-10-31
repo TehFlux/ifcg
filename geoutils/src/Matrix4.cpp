@@ -671,8 +671,8 @@ void Matrix4::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
-	// <---- DEBUG ----- //
-	std:cerr << "[Matrix4::loadFromXMLFile] data = " << data 
+	/* <---- DEBUG ----- //
+	std::cerr << "[Matrix4::loadFromXMLFile] data = " << data 
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getMatrix4(data, *this);

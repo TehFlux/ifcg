@@ -321,8 +321,8 @@ void Vector2::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
-	// <---- DEBUG ----- //
-	std:cerr << "[Vector2::loadFromXMLFile] data = " << data 
+	/* <---- DEBUG ----- //
+	std::cerr << "[Vector2::loadFromXMLFile] data = " << data 
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVector2(data, *this);

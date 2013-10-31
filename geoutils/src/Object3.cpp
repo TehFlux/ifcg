@@ -322,8 +322,8 @@ void Object3::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
-	// <---- DEBUG ----- //
-	std:cerr << "[Object3::loadFromXMLFile] data = " << data 
+	/* <---- DEBUG ----- //
+	std::cerr << "[Object3::loadFromXMLFile] data = " << data 
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getObject3(data, *this);

@@ -57,6 +57,9 @@ MeshClassInfo::MeshClassInfo()
 {
 	name = "Mesh";
 	desc = "Mesh";
+	baseClassInfo.push_back(Ionflux::GeoUtils::BoxBoundsItem::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::GeoUtils::ItemSource::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::GeoUtils::TransformableObject::CLASS_INFO);
 }
 
 MeshClassInfo::~MeshClassInfo()
@@ -1170,8 +1173,8 @@ void Mesh::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
-	// <---- DEBUG ----- //
-	std:cerr << "[Mesh::loadFromXMLFile] data = " << data 
+	/* <---- DEBUG ----- //
+	std::cerr << "[Mesh::loadFromXMLFile] data = " << data 
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getMesh(data, *this);

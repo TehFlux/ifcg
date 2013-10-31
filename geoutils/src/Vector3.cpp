@@ -51,6 +51,7 @@ Vector3ClassInfo::Vector3ClassInfo()
 {
 	name = "Vector3";
 	desc = "Vector (3 elements)";
+	baseClassInfo.push_back(Ionflux::GeoUtils::Vector::CLASS_INFO);
 }
 
 Vector3ClassInfo::~Vector3ClassInfo()
@@ -530,8 +531,8 @@ void Vector3::loadFromXMLFile(const std::string& fileName)
 {
 	std::string data;
 	Ionflux::ObjectBase::readFile(fileName, data);
-	// <---- DEBUG ----- //
-	std:cerr << "[Vector3::loadFromXMLFile] data = " << data 
+	/* <---- DEBUG ----- //
+	std::cerr << "[Vector3::loadFromXMLFile] data = " << data 
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVector3(data, *this);
