@@ -91,8 +91,12 @@ void Vector::initElements()
 {
 	if (elements == 0)
 	{
-	    unsigned int numElements = getNumElements();
-	    elements = new double[numElements];
+	    unsigned int tNumElements = getNumElements();
+	    /* <---- DEBUG ----- //
+	    std::cerr << "[Vector::initElements] "
+	        "Allocating " << tNumElements << " elements." << std::endl;
+	    // ----- DEBUG ----> */
+	    elements = new double[tNumElements];
 	    if (elements == 0)
 	        throw GeoUtilsError(getErrorString(
 	            "Could not allocate element vector.", "initElements"));
@@ -326,11 +330,16 @@ Ionflux::GeoUtils::Vector& other)
 {
     if (this == &other)
         return *this;
-    unsigned int numElements = getNumElements();
+    unsigned int tNumElements = getNumElements();
     unsigned int oNumElements = other.getNumElements();
+    /* <---- DEBUG ----- //
+    std::cerr << "[Vector::operator=] "
+        "tNumElements = " << tNumElements << ", oNumElements = " 
+        << oNumElements << std::endl;
+    // ----- DEBUG ----> */
     initElements();
     unsigned int i = 0;
-    while (i < numElements)
+    while (i < tNumElements)
     {
         if (i < oNumElements)
             elements[i] = other.elements[i];
