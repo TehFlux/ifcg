@@ -9,27 +9,39 @@ import math as m
 # memory management
 mm = ib.IFObject()
 
-subDivsX = 100
-subDivsY = 100
+subDivsX = 200
+subDivsY = 200
+scale = [10., 10., 4.]
 name = "Grid01"
 c0 = ai.Color.RED
 c1 = ai.Color.BLUE
 c2 = ai.Color.GREEN
 c3 = ai.Color.MAGENTA
 
+def f(x, y, sigma = 0.25):
+    return m.exp(-(x*x + y*y) / sigma**2)
+
 cgm0 = cg.Mesh.grid(subDivsX, subDivsY)
-S = cg.Matrix4.scale(10., 10., 10.)
+mm.addLocalRef(cgm0)
+
+for i in range(0, subDivsY + 1):
+    for j in range(0, subDivsX + 1):
+        v = cgm0.getVertex(j + i * (subDivsX + 1))
+        v.setZ(f(v.getX(), v.getY()))
+
+S = cg.Matrix4.scale(*scale)
 cgm0.transform(S)
 cgm0.applyTransform()
-mm.addLocalRef(cgm0)
+
+cb0 = ai.ColorBand.heat()
+mm.addLocalRef(cb0)
 
 vs0 = cg.VectorSet.create()
 mm.addLocalRef(vs0)
 for i in range(0, subDivsY + 1):
-    cy0 = ai.Color.interpolate(c0, c1, i / subDivsY)
-    cy1 = ai.Color.interpolate(c2, c3, i / subDivsY)
     for j in range(0, subDivsX + 1):
-        c = ai.Color.interpolate(cy0, cy1, j / subDivsX)
+        v = cgm0.getVertex(j + i * (subDivsX + 1))
+        c = cb0(v.getZ() / scale[2])
         #print("  Adding color: (%d, %d) (%s)" 
         #    % (i, j, c.getValueString()))
         vs0.addVector(cg.Vector3.create(
