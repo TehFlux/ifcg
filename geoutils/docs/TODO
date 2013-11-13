@@ -16,11 +16,17 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ add 'hasClassInfo = true' for parent classes that have class information.
++ Mesh
+  > Generator functions
+    . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
+    . fiber(): like cylinder, but with a number of subdivisions so cross 
+      sections can be transformed individually
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ add 'hasClassInfo = true' for parent classes that have class information.
 
 + BGeoUtils
   > export a scene (TransformableGroup containing Camera and Objects)
