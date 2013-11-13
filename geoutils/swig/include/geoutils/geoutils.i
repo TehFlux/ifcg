@@ -4415,6 +4415,8 @@ Ionflux::GeoUtils::TransformableObject
         static Ionflux::GeoUtils::Mesh* arrow(unsigned int subDivs = 10, 
         double length = 1., double radius = 0.005, double headLength = 0.1,
         double headRadius = 4.);
+        static Ionflux::GeoUtils::Mesh* grid(unsigned int subDivsX = 10, 
+        unsigned int subDivsY = 10);
         virtual std::string getXML_legacy() const;
         virtual void writeToFile_legacy(const std::string& fileName) const;
 		virtual Ionflux::GeoUtils::Mesh* copy() const;

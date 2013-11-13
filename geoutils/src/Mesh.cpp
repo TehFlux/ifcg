@@ -822,6 +822,63 @@ double radius, double headLength, double headRadius)
 	return m0;
 }
 
+Ionflux::GeoUtils::Mesh* Mesh::grid(unsigned int subDivsX, unsigned int 
+subDivsY)
+{
+	if (subDivsX < 1)
+	{
+	    std::ostringstream status;
+	    status << "[Mesh::grid] "
+	        "Subdivisions (X) must be at least 1.";
+	    throw GeoUtilsError(status.str());
+	}
+	if (subDivsY < 1)
+	{
+	    std::ostringstream status;
+	    status << "[Mesh::grid] "
+	        "Subdivisions (Y) must be at least 1.";
+	    throw GeoUtilsError(status.str());
+	}
+	Mesh* m0 = create();
+	double s = 0.5;
+	// Vertices.
+	Vertex3Vector verts0;
+	double dx = 2. * s / subDivsX;
+	double dy = 2. * s / subDivsY;
+	for (unsigned int i = 0; i <= subDivsY; i++)
+	{
+	    for (unsigned int j = 0; j <= subDivsX; j++)
+	    {
+	        verts0.push_back(Vertex::create(-s + j * dx, 
+	            -s + i * dy, 0));
+	    }
+	}
+	m0->addVertices(verts0);
+	// Faces.
+	FaceVector faces0;
+	for (unsigned int i = 0; i < subDivsY; i++)
+	{
+	    for (unsigned int j = 0; j < subDivsX; j++)
+	    {
+	        faces0.push_back(Face::create(
+	            (j + 1) + i * (subDivsX + 1), 
+	            (j + 1) + (i + 1) * (subDivsX + 1), 
+	            j + (i + 1) * (subDivsX + 1), 
+	            j + i * (subDivsX + 1), 
+	            /*
+	            j + i * (subDivsX + 1), 
+	            j + (i + 1) * (subDivsX + 1), 
+	            (j + 1) + (i + 1) * (subDivsX + 1), 
+	            (j + 1) + i * (subDivsX + 1), 
+	            */
+	            m0->getVertexSource()));
+	    }
+	}
+	m0->addFaces(faces0);
+	m0->update();
+	return m0;
+}
+
 std::string Mesh::getXML_legacy() const
 {
 	ostringstream d0;

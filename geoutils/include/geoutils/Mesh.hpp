@@ -465,6 +465,18 @@ Ionflux::GeoUtils::TransformableObject
 		length = 1., double radius = 0.005, double headLength = 0.1, double 
 		headRadius = 4.);
 		
+		/** Create mesh: grid.
+		 *
+		 * Create a planar grid mesh.
+		 *
+		 * \param subDivsX subdivisions (x).
+		 * \param subDivsY subdivisions (y).
+		 *
+		 * \return Grid mesh.
+		 */
+		static Ionflux::GeoUtils::Mesh* grid(unsigned int subDivsX = 10, unsigned
+		int subDivsY = 10);
+		
 		/** Get XML representation.
 		 *
 		 * Get an XML representation of the object.
