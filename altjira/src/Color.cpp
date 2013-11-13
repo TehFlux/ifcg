@@ -377,7 +377,7 @@ void Color::setRed(double newRed)
 
 double Color::getRed() const
 {
-	return red;
+    return red;
 }
 
 void Color::setGreen(double newGreen)
@@ -387,7 +387,7 @@ void Color::setGreen(double newGreen)
 
 double Color::getGreen() const
 {
-	return green;
+    return green;
 }
 
 void Color::setBlue(double newBlue)
@@ -397,7 +397,7 @@ void Color::setBlue(double newBlue)
 
 double Color::getBlue() const
 {
-	return blue;
+    return blue;
 }
 
 void Color::setAlpha(double newAlpha)
@@ -407,7 +407,7 @@ void Color::setAlpha(double newAlpha)
 
 double Color::getAlpha() const
 {
-	return alpha;
+    return alpha;
 }
 
 void Color::setHue(double newHue)
