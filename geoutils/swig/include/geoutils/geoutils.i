@@ -523,6 +523,7 @@ class Range
         virtual double getRadius() const;
         virtual double getExtent() const;
         virtual double getValue(double s) const;
+        virtual double getParam(double v) const;
         virtual double clamp(double value) const;
         virtual double getClampedValue(double s) const;
         virtual Ionflux::GeoUtils::RangeCompResult compare(const 
@@ -535,7 +536,7 @@ class Range
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Range& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Range* copy() const;
 		static Ionflux::GeoUtils::Range* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

@@ -117,6 +117,12 @@ double Range::getValue(double s) const
 	return rMin + (rMax - rMin) * s;
 }
 
+double Range::getParam(double v) const
+{
+	// TODO: Implementation.
+	return (v - rMin) / (rMax - rMin);
+}
+
 double Range::clamp(double value) const
 {
 	if (value < rMin)
@@ -172,11 +178,10 @@ bool Range::operator!=(const Ionflux::GeoUtils::Range& other) const
 	return !(*this == other);;
 }
 
-std::string Range::getString() const
+std::string Range::getValueString() const
 {
 	ostringstream state;
-	state << getClassName() << "[" << rMin 
-	    << ", " << rMax << "]";
+	state << rMin << ", " << rMax;
 	return state.str();
 }
 

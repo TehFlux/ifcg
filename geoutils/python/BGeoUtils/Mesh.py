@@ -82,8 +82,9 @@ class Mesh:
             if ((not uvTex is None) 
                 or (not vCol is None)):
                 k = 0
-                while (k < len(bf.loops)):
-                    l0 = bf.loops[k]
+                numLoops = len(bf.loops)
+                while (k < numLoops):
+                    l0 = bf.loops[((numLoops - 1) + k) % numLoops]
                     if (not tc0 is None):
                         # Get texture coordinates.
                         uv0 = l0[uvTex].uv
@@ -163,11 +164,11 @@ class Mesh:
                 for k in range(0, numLoops):
                     l0 = f1.loops[k]
                     if (not tc0 is None):
-                        uv0 = tc0.getVector(k)
+                        uv0 = tc0.getVector((k + 1) % numLoops)
                         l0[uvTex].uv[0] = uv0.getElement(0)
                         l0[uvTex].uv[1] = uv0.getElement(1)
                     if (not vc0 is None):
-                        c0 = vc0.getVector(k)
+                        c0 = vc0.getVector((k + 1) % numLoops)
                         l0[vCol][0] = c0.getElement(0)
                         l0[vCol][1] = c0.getElement(1)
                         l0[vCol][2] = c0.getElement(2)

@@ -145,6 +145,16 @@ class Range
 		 */
 		virtual double getValue(double s) const;
 		
+		/** Get parameter.
+		 *
+		 * Get the range parameter corresponding to the value v.
+		 *
+		 * \param v Value.
+		 *
+		 * \return Parameter.
+		 */
+		virtual double getParam(double v) const;
+		
 		/** Clamp value.
 		 *
 		 * Clamp the value to the range.
@@ -227,13 +237,13 @@ class Range
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Range& other) const;
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *
