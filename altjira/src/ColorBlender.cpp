@@ -153,7 +153,7 @@ void ColorBlender::setColor0(const Ionflux::Altjira::Color& newColor0)
 
 Ionflux::Altjira::Color ColorBlender::getColor0() const
 {
-	return color0;
+    return color0;
 }
 
 void ColorBlender::setColor1(const Ionflux::Altjira::Color& newColor1)
@@ -163,7 +163,7 @@ void ColorBlender::setColor1(const Ionflux::Altjira::Color& newColor1)
 
 Ionflux::Altjira::Color ColorBlender::getColor1() const
 {
-	return color1;
+    return color1;
 }
 
 void ColorBlender::setSourceOpacity(double newSourceOpacity)
@@ -173,7 +173,7 @@ void ColorBlender::setSourceOpacity(double newSourceOpacity)
 
 double ColorBlender::getSourceOpacity() const
 {
-	return sourceOpacity;
+    return sourceOpacity;
 }
 
 void ColorBlender::setTargetOpacity(double newTargetOpacity)
@@ -183,12 +183,14 @@ void ColorBlender::setTargetOpacity(double newTargetOpacity)
 
 double ColorBlender::getTargetOpacity() const
 {
-	return targetOpacity;
+    return targetOpacity;
 }
 
 Ionflux::Altjira::ColorBlender& ColorBlender::operator=(const 
 Ionflux::Altjira::ColorBlender& other)
 {
+if (this == &other)
+    return *this;
 setColor0(other.getColor0());
 setColor1(other.getColor1());
 setSourceOpacity(other.getSourceOpacity());

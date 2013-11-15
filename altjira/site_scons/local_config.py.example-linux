@@ -30,11 +30,6 @@ pythonSitePackagesPath = ('/python' + pythonVersion + '/lib/python'
 ifobjectTemplatePath = '/home/flux4/svn/iftools/trunk/ifobject/template'
 
 # The SWIG interface template file.
-swigInterfaceTemplateFile = 'template/' + baseName + '.i.tpl'
-# The SWIG interface file.
-swigInterfaceFile = 'swig/' + baseName + '.i'
-
-# The SWIG interface template file.
 swigInterfaceTemplateFile = [
     'template/' + baseName + '.i.tpl', 
     'template/' + baseName + 'noise.i.tpl', 
@@ -42,9 +37,9 @@ swigInterfaceTemplateFile = [
 ]
 # The SWIG interface file.
 swigInterfaceFile = [
-    'swig/' + baseName + '.i', 
-    'swig/' + baseName + 'noise.i', 
-    'swig/' + baseName + 'draw.i'
+    'swig/' + baseName + '/' + baseName + '.i', 
+    'swig/' + baseName + '/' + baseName + 'noise.i', 
+    'swig/' + baseName + '/' + baseName + 'draw.i'
 ]
 
 # Paths.

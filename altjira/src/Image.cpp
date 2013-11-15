@@ -1024,37 +1024,37 @@ Ionflux::Altjira::ColorSpace initColorSpace)
 
 unsigned int Image::getNumChannels() const
 {
-	return numChannels;
+    return numChannels;
 }
 
 unsigned int Image::getBitsPerSample() const
 {
-	return bitsPerSample;
+    return bitsPerSample;
 }
 
 Ionflux::Altjira::ColorSpace Image::getColorSpace() const
 {
-	return colorSpace;
+    return colorSpace;
 }
 
 unsigned int Image::getWidth() const
 {
-	return width;
+    return width;
 }
 
 unsigned int Image::getHeight() const
 {
-	return height;
+    return height;
 }
 
 unsigned int Image::getRowStride() const
 {
-	return rowStride;
+    return rowStride;
 }
 
 Ionflux::Altjira::PixelData Image::getPixels() const
 {
-	return pixels;
+    return pixels;
 }
 
 Ionflux::Altjira::Image& Image::operator=(const Ionflux::Altjira::Image& 

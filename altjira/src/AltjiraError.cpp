@@ -79,12 +79,14 @@ void AltjiraError::setReason(const std::string& newReason)
 
 std::string AltjiraError::getReason() const
 {
-	return reason;
+    return reason;
 }
 
 Ionflux::Altjira::AltjiraError& AltjiraError::operator=(const 
 Ionflux::Altjira::AltjiraError& other)
 {
+if (this == &other)
+    return *this;
 setReason(other.getReason());
 	return *this;
 }

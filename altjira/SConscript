@@ -161,10 +161,10 @@ if (not config.CheckLibWithHeader("python" + lc.pythonVersion,
     buildPyModule = False
 
 haveIFClassgen = True
-if (not config.CheckProgram("ifclassgen")):
+if (not config.CheckProgram("ifclassgen0")):
     haveIFClassgen = False
 haveIFTpl = True
-if (not config.CheckProgram("iftpl")):
+if (not config.CheckProgram("iftpl0")):
     haveIFTpl = False
 haveSWIG = True
 if (not config.CheckProgram("swig")):

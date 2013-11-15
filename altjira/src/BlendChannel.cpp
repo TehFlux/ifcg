@@ -166,7 +166,7 @@ void BlendChannel::setSrcFunc(Ionflux::Mapping::Mapping* newSrcFunc)
 
 Ionflux::Mapping::Mapping* BlendChannel::getSrcFunc() const
 {
-	return srcFunc;
+    return srcFunc;
 }
 
 void BlendChannel::setDestFunc(Ionflux::Mapping::Mapping* newDestFunc)
@@ -182,7 +182,7 @@ void BlendChannel::setDestFunc(Ionflux::Mapping::Mapping* newDestFunc)
 
 Ionflux::Mapping::Mapping* BlendChannel::getDestFunc() const
 {
-	return destFunc;
+    return destFunc;
 }
 
 void BlendChannel::setSrcChannel(Ionflux::Altjira::ChannelID newSrcChannel)
@@ -192,7 +192,7 @@ void BlendChannel::setSrcChannel(Ionflux::Altjira::ChannelID newSrcChannel)
 
 Ionflux::Altjira::ChannelID BlendChannel::getSrcChannel() const
 {
-	return srcChannel;
+    return srcChannel;
 }
 
 void BlendChannel::setDestChannel(Ionflux::Altjira::ChannelID 
@@ -203,7 +203,7 @@ newDestChannel)
 
 Ionflux::Altjira::ChannelID BlendChannel::getDestChannel() const
 {
-	return destChannel;
+    return destChannel;
 }
 
 void BlendChannel::setSrcSpace(Ionflux::Altjira::ColorSpace newSrcSpace)
@@ -213,7 +213,7 @@ void BlendChannel::setSrcSpace(Ionflux::Altjira::ColorSpace newSrcSpace)
 
 Ionflux::Altjira::ColorSpace BlendChannel::getSrcSpace() const
 {
-	return srcSpace;
+    return srcSpace;
 }
 
 void BlendChannel::setDestSpace(Ionflux::Altjira::ColorSpace newDestSpace)
@@ -223,7 +223,7 @@ void BlendChannel::setDestSpace(Ionflux::Altjira::ColorSpace newDestSpace)
 
 Ionflux::Altjira::ColorSpace BlendChannel::getDestSpace() const
 {
-	return destSpace;
+    return destSpace;
 }
 
 Ionflux::Altjira::BlendChannel& BlendChannel::operator=(const 

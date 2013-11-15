@@ -241,7 +241,7 @@ void ImagePattern::setImage(Ionflux::Altjira::Image* newImage)
 
 Ionflux::Altjira::Image* ImagePattern::getImage() const
 {
-	return image;
+    return image;
 }
 
 void ImagePattern::setOffsetX(double newOffsetX)
@@ -251,7 +251,7 @@ void ImagePattern::setOffsetX(double newOffsetX)
 
 double ImagePattern::getOffsetX() const
 {
-	return offsetX;
+    return offsetX;
 }
 
 void ImagePattern::setOffsetY(double newOffsetY)
@@ -261,7 +261,7 @@ void ImagePattern::setOffsetY(double newOffsetY)
 
 double ImagePattern::getOffsetY() const
 {
-	return offsetY;
+    return offsetY;
 }
 
 Ionflux::Altjira::ImagePattern& ImagePattern::operator=(const 

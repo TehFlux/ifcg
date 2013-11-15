@@ -273,12 +273,12 @@ std::string Matrix::getString() const
 
 unsigned int Matrix::getNumRows() const
 {
-	return numRows;
+    return numRows;
 }
 
 unsigned int Matrix::getNumCols() const
 {
-	return numCols;
+    return numCols;
 }
 
 Ionflux::Altjira::Matrix& Matrix::operator=(const Ionflux::Altjira::Matrix&

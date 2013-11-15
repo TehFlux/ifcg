@@ -15,47 +15,69 @@ baseName = 'geoutils'
 # Prefix.
 # Set this if you do not want to use the default or the SCons command line 
 # parameter.
-prefix = '/Users/flux/usr'
+prefix = '/Volumes/scratch/jmeier.scratch/usr'
 
-# Enable debug mode.
+# debug mode
 debug = True
 
 # Python version.
 pythonVersion = "3.3"
 # Python site packages path.
-pythonSitePackagesPath = ('python' + pythonVersion + '/lib/python' 
+pythonSitePackagesPath = ('/python' + pythonVersion + '/lib/python' 
     + pythonVersion + '/site-packages')
 
 # Ionflux Object Base system template path
-ifobjectTemplatePath = '/Users/flux/svn/iftools/trunk/ifobject/template'
+#ifobjectTemplatePath = 'template'
+ifobjectTemplatePath = '/NetUsers0/jmeier/svn/iftools/ifobject/template'
 
 # The SWIG interface template file.
 swigInterfaceTemplateFile = [
     'template/' + baseName + '.i.tpl', 
-    'template/altjira' + baseName + '.i.tpl'
+    'template/altjira' + baseName + '.i.tpl', 
 ]
 # The SWIG interface file.
 swigInterfaceFile = [
-    'swig/include/' + baseName + '/' + baseName + '.i', 
-    'swig/include/' + baseName + '/altjira' + baseName + '.i'
+    'swig/' + baseName + '/' + baseName + '.i', 
+    'swig/' + baseName + '/altjira' + baseName + '.i', 
+]
+
+# XML I/O template files.
+xmlIOTemplateFile = [
+    'template/xmlutils.hpp.tpl', 
+    'template/xmlutils_private.hpp.tpl', 
+    'template/xmlutils.cpp.tpl'
+]
+
+# XML I/O files.
+xmlIOFile = [
+    'include/' + baseName + '/xmlutils.hpp', 
+    'include/' + baseName + '/xmlutils_private.hpp', 
+    'src/xmlutils.cpp'
 ]
 
 # Paths.
 PATH = 'bin'
 CPPPATH = [
+    '/NetUsers0/jmeier/svn/iftools/ifobject/include', 
+    '/NetUsers0/jmeier/svn/iftools/ifobject/swig/include', 
+    '/NetUsers0/jmeier/svn/iftools/iftemplate/include', 
+    '/NetUsers0/jmeier/svn/iftools/iftemplate/swig/include', 
+    '/NetUsers0/jmeier/svn/ifcg/ifmapping/include', 
+    '/NetUsers0/jmeier/svn/ifcg/ifmapping/swig/include', 
+    '/NetUsers0/jmeier/svn/ifcg/altjira/include', 
+    '/NetUsers0/jmeier/svn/ifcg/altjira/swig/include', 
+    '/sw0/include', 
     prefix + '/include', 
     prefix + '/include/noise', 
-    '/Users/flux/svn/ifcg/trunk/ifmapping/include', 
-    '/Users/flux/svn/ifcg/trunk/ifmapping/swig/include', 
-    '/Users/flux/svn/ifcg/trunk/altjira/include', 
-    '/Users/flux/svn/ifcg/trunk/altjira/swig/include', 
-    prefix + '/python' + pythonVersion + '/include/python' + pythonVersion, 
-    '/opt/local/include'
+    prefix + '/python' + pythonVersion + '/include/python' + pythonVersion
 ]
 LIBPATH = [
+    '/NetUsers0/jmeier/svn/iftools/ifobject/lib', 
+    '/NetUsers0/jmeier/svn/iftools/iftemplate/lib', 
+    '/NetUsers0/jmeier/svn/ifcg/ifmapping/lib', 
+    '/NetUsers0/jmeier/svn/ifcg/altjira/lib', 
+    '/sw0/lib', 
     prefix + '/lib', 
-    '/Users/flux/svn/ifcg/trunk/ifmapping/lib', 
-    '/Users/flux/svn/ifcg/trunk/altjira/lib', 
-    prefix + '/python' + pythonVersion + '/lib', 
-    '/opt/local/lib'
+    prefix + '/python' + pythonVersion + '/lib'
 ]
+

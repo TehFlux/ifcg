@@ -193,7 +193,7 @@ void NoiseMap::setNoiseMap(noise::utils::NoiseMap* newNoiseMap)
 
 noise::utils::NoiseMap* NoiseMap::getNoiseMap() const
 {
-	return noiseMap;
+    return noiseMap;
 }
 
 Ionflux::Altjira::Noise::NoiseMap& NoiseMap::operator=(const 
