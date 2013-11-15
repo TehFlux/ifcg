@@ -138,6 +138,8 @@ std::string BisectionRootFinder::getString() const
 Ionflux::Mapping::BisectionRootFinder& BisectionRootFinder::operator=(const
 Ionflux::Mapping::BisectionRootFinder& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

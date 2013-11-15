@@ -125,7 +125,7 @@ void EvalCoord::setFunc(Ionflux::Mapping::PointMapping* newFunc)
 
 Ionflux::Mapping::PointMapping* EvalCoord::getFunc() const
 {
-	return func;
+    return func;
 }
 
 void EvalCoord::setCoord(Ionflux::Mapping::CoordinateID newCoord)
@@ -135,7 +135,7 @@ void EvalCoord::setCoord(Ionflux::Mapping::CoordinateID newCoord)
 
 Ionflux::Mapping::CoordinateID EvalCoord::getCoord() const
 {
-	return coord;
+    return coord;
 }
 
 void EvalCoord::setOffset(Ionflux::Mapping::Point newOffset)
@@ -145,7 +145,7 @@ void EvalCoord::setOffset(Ionflux::Mapping::Point newOffset)
 
 Ionflux::Mapping::Point EvalCoord::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 void EvalCoord::setScale(Ionflux::Mapping::Point newScale)
@@ -155,7 +155,7 @@ void EvalCoord::setScale(Ionflux::Mapping::Point newScale)
 
 Ionflux::Mapping::Point EvalCoord::getScale() const
 {
-	return scale;
+    return scale;
 }
 
 void EvalCoord::setParamOffset(Ionflux::Mapping::MappingValue 
@@ -166,7 +166,7 @@ newParamOffset)
 
 Ionflux::Mapping::MappingValue EvalCoord::getParamOffset() const
 {
-	return paramOffset;
+    return paramOffset;
 }
 
 void EvalCoord::setParamScale(Ionflux::Mapping::MappingValue newParamScale)
@@ -176,7 +176,7 @@ void EvalCoord::setParamScale(Ionflux::Mapping::MappingValue newParamScale)
 
 Ionflux::Mapping::MappingValue EvalCoord::getParamScale() const
 {
-	return paramScale;
+    return paramScale;
 }
 
 void EvalCoord::setPrecision(Ionflux::Mapping::MappingValue newPrecision)
@@ -186,7 +186,7 @@ void EvalCoord::setPrecision(Ionflux::Mapping::MappingValue newPrecision)
 
 Ionflux::Mapping::MappingValue EvalCoord::getPrecision() const
 {
-	return precision;
+    return precision;
 }
 
 Ionflux::Mapping::EvalCoord& EvalCoord::operator=(const 

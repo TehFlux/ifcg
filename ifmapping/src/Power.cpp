@@ -113,7 +113,7 @@ void Power::setExponent(int newExponent)
 
 int Power::getExponent() const
 {
-	return exponent;
+    return exponent;
 }
 
 Ionflux::Mapping::Power& Power::operator=(const Ionflux::Mapping::Power& 

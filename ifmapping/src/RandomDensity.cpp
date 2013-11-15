@@ -120,7 +120,7 @@ void RandomDensity::setMaxIters(unsigned int newMaxIters)
 
 unsigned int RandomDensity::getMaxIters() const
 {
-	return maxIters;
+    return maxIters;
 }
 
 Ionflux::Mapping::RandomDensity& RandomDensity::operator=(const 

@@ -125,7 +125,7 @@ void PointCoord::setFunc(Ionflux::Mapping::PointMapping* newFunc)
 
 Ionflux::Mapping::PointMapping* PointCoord::getFunc() const
 {
-	return func;
+    return func;
 }
 
 void PointCoord::setCoord(Ionflux::Mapping::CoordinateID newCoord)
@@ -135,7 +135,7 @@ void PointCoord::setCoord(Ionflux::Mapping::CoordinateID newCoord)
 
 Ionflux::Mapping::CoordinateID PointCoord::getCoord() const
 {
-	return coord;
+    return coord;
 }
 
 void PointCoord::setOffset(Ionflux::Mapping::MappingValue newOffset)
@@ -145,7 +145,7 @@ void PointCoord::setOffset(Ionflux::Mapping::MappingValue newOffset)
 
 Ionflux::Mapping::MappingValue PointCoord::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 void PointCoord::setScale(Ionflux::Mapping::MappingValue newScale)
@@ -155,7 +155,7 @@ void PointCoord::setScale(Ionflux::Mapping::MappingValue newScale)
 
 Ionflux::Mapping::MappingValue PointCoord::getScale() const
 {
-	return scale;
+    return scale;
 }
 
 Ionflux::Mapping::PointCoord& PointCoord::operator=(const 

@@ -167,6 +167,8 @@ std::string DekkerRootFinder::getString() const
 Ionflux::Mapping::DekkerRootFinder& DekkerRootFinder::operator=(const 
 Ionflux::Mapping::DekkerRootFinder& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

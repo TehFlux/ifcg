@@ -132,7 +132,7 @@ void NoiseMapping::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* NoiseMapping::getFunc() const
 {
-	return func;
+    return func;
 }
 
 void NoiseMapping::setScale(Ionflux::Mapping::MappingValue newScale)
@@ -142,7 +142,7 @@ void NoiseMapping::setScale(Ionflux::Mapping::MappingValue newScale)
 
 Ionflux::Mapping::MappingValue NoiseMapping::getScale() const
 {
-	return scale;
+    return scale;
 }
 
 void NoiseMapping::setOffset(Ionflux::Mapping::MappingValue newOffset)
@@ -152,7 +152,7 @@ void NoiseMapping::setOffset(Ionflux::Mapping::MappingValue newOffset)
 
 Ionflux::Mapping::MappingValue NoiseMapping::getOffset() const
 {
-	return offset;
+    return offset;
 }
 
 void NoiseMapping::setResultScale(Ionflux::Mapping::MappingValue 
@@ -163,7 +163,7 @@ newResultScale)
 
 Ionflux::Mapping::MappingValue NoiseMapping::getResultScale() const
 {
-	return resultScale;
+    return resultScale;
 }
 
 void NoiseMapping::setResultOffset(Ionflux::Mapping::MappingValue 
@@ -174,7 +174,7 @@ newResultOffset)
 
 Ionflux::Mapping::MappingValue NoiseMapping::getResultOffset() const
 {
-	return resultOffset;
+    return resultOffset;
 }
 
 Ionflux::Mapping::Noise::NoiseMapping* 

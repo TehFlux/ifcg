@@ -110,7 +110,7 @@ void Constant::setConstValue(Ionflux::Mapping::MappingValue newConstValue)
 
 Ionflux::Mapping::MappingValue Constant::getConstValue() const
 {
-	return constValue;
+    return constValue;
 }
 
 Ionflux::Mapping::Constant& Constant::operator=(const 

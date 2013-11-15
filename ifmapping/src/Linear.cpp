@@ -122,7 +122,7 @@ void Linear::setLower(Ionflux::Mapping::MappingValue newLower)
 
 Ionflux::Mapping::MappingValue Linear::getLower() const
 {
-	return lower;
+    return lower;
 }
 
 void Linear::setUpper(Ionflux::Mapping::MappingValue newUpper)
@@ -132,7 +132,7 @@ void Linear::setUpper(Ionflux::Mapping::MappingValue newUpper)
 
 Ionflux::Mapping::MappingValue Linear::getUpper() const
 {
-	return upper;
+    return upper;
 }
 
 Ionflux::Mapping::Linear& Linear::operator=(const Ionflux::Mapping::Linear&

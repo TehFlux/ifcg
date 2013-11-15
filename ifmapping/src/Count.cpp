@@ -120,7 +120,7 @@ void Count::setAdjustment(Ionflux::Mapping::MappingValue newAdjustment)
 
 Ionflux::Mapping::MappingValue Count::getAdjustment() const
 {
-	return adjustment;
+    return adjustment;
 }
 
 void Count::setModulus(Ionflux::Mapping::MappingValue newModulus)
@@ -130,7 +130,7 @@ void Count::setModulus(Ionflux::Mapping::MappingValue newModulus)
 
 Ionflux::Mapping::MappingValue Count::getModulus() const
 {
-	return modulus;
+    return modulus;
 }
 
 Ionflux::Mapping::Count& Count::operator=(const Ionflux::Mapping::Count& 

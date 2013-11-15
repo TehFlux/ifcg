@@ -111,6 +111,8 @@ std::string SecantRootFinder::getString() const
 Ionflux::Mapping::SecantRootFinder& SecantRootFinder::operator=(const 
 Ionflux::Mapping::SecantRootFinder& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

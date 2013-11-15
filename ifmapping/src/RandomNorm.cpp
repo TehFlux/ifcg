@@ -102,7 +102,7 @@ void RandomNorm::setMean(Ionflux::Mapping::MappingValue newMean)
 
 Ionflux::Mapping::MappingValue RandomNorm::getMean() const
 {
-	return mean;
+    return mean;
 }
 
 void RandomNorm::setStdDev(Ionflux::Mapping::MappingValue newStdDev)
@@ -112,7 +112,7 @@ void RandomNorm::setStdDev(Ionflux::Mapping::MappingValue newStdDev)
 
 Ionflux::Mapping::MappingValue RandomNorm::getStdDev() const
 {
-	return stdDev;
+    return stdDev;
 }
 
 Ionflux::Mapping::RandomNorm& RandomNorm::operator=(const 

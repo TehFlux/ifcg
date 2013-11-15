@@ -112,7 +112,7 @@ newExponent)
 
 Ionflux::Mapping::MappingValue InverseFalloff::getExponent() const
 {
-	return exponent;
+    return exponent;
 }
 
 Ionflux::Mapping::InverseFalloff& InverseFalloff::operator=(const 

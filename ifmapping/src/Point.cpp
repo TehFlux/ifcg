@@ -219,7 +219,7 @@ void Point::setX(Ionflux::Mapping::MappingValue newX)
 
 Ionflux::Mapping::MappingValue Point::getX() const
 {
-	return x;
+    return x;
 }
 
 void Point::setY(Ionflux::Mapping::MappingValue newY)
@@ -229,7 +229,7 @@ void Point::setY(Ionflux::Mapping::MappingValue newY)
 
 Ionflux::Mapping::MappingValue Point::getY() const
 {
-	return y;
+    return y;
 }
 
 void Point::setZ(Ionflux::Mapping::MappingValue newZ)
@@ -239,7 +239,7 @@ void Point::setZ(Ionflux::Mapping::MappingValue newZ)
 
 Ionflux::Mapping::MappingValue Point::getZ() const
 {
-	return z;
+    return z;
 }
 
 Ionflux::Mapping::Point& Point::operator=(const Ionflux::Mapping::Point& 

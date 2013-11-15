@@ -246,6 +246,8 @@ void AnimatedSpline::clearKeys()
 Ionflux::Mapping::AnimatedSpline& AnimatedSpline::operator=(const 
 Ionflux::Mapping::AnimatedSpline& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

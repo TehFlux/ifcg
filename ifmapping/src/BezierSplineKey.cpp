@@ -124,7 +124,7 @@ void BezierSplineKey::setT(Ionflux::Mapping::MappingValue newT)
 
 Ionflux::Mapping::MappingValue BezierSplineKey::getT() const
 {
-	return t;
+    return t;
 }
 
 Ionflux::Mapping::BezierSplineKey& BezierSplineKey::operator=(const 

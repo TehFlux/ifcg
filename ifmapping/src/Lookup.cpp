@@ -233,7 +233,7 @@ void Lookup::setSource(Ionflux::Mapping::Mapping* newSource)
 
 Ionflux::Mapping::Mapping* Lookup::getSource() const
 {
-	return source;
+    return source;
 }
 
 Ionflux::Mapping::Lookup& Lookup::operator=(const Ionflux::Mapping::Lookup&

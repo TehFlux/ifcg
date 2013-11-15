@@ -195,6 +195,8 @@ Ionflux::Mapping::BrentLinearRootFinder&
 BrentLinearRootFinder::operator=(const 
 Ionflux::Mapping::BrentLinearRootFinder& other)
 {
+if (this == &other)
+    return *this;
 	return *this;
 }
 

@@ -152,7 +152,7 @@ void Piece::setMapping(Ionflux::Mapping::Mapping* newMapping)
 
 Ionflux::Mapping::Mapping* Piece::getMapping() const
 {
-	return mapping;
+    return mapping;
 }
 
 void Piece::setParam(Ionflux::Mapping::MappingValue newParam)
@@ -162,7 +162,7 @@ void Piece::setParam(Ionflux::Mapping::MappingValue newParam)
 
 Ionflux::Mapping::MappingValue Piece::getParam() const
 {
-	return param;
+    return param;
 }
 
 Ionflux::Mapping::Piece& Piece::operator=(const Ionflux::Mapping::Piece& 

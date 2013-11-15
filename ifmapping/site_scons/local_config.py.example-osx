@@ -15,19 +15,20 @@ baseName = 'ifmapping'
 # Prefix.
 # Set this if you do not want to use the default or the SCons command line 
 # parameter.
-prefix = '/Users/flux/usr'
+prefix = '/Volumes/scratch/jmeier.scratch/usr'
 
-# Enable debug mode.
+# debug mode
 debug = True
 
 # Python version.
 pythonVersion = "3.3"
 # Python site packages path.
-pythonSitePackagesPath = ('python' + pythonVersion + '/lib/python' 
+pythonSitePackagesPath = ('/python' + pythonVersion + '/lib/python' 
     + pythonVersion + '/site-packages')
 
 # Ionflux Object Base system template path
-ifobjectTemplatePath = '/Users/flux/svn/iftools/trunk/ifobject/template'
+#ifobjectTemplatePath = 'template'
+ifobjectTemplatePath = '/NetUsers0/jmeier/svn/iftools/ifobject/template'
 
 # The SWIG interface template file.
 swigInterfaceTemplateFile = [
@@ -43,13 +44,20 @@ swigInterfaceFile = [
 # Paths.
 PATH = 'bin'
 CPPPATH = [
+    '/NetUsers0/jmeier/svn/iftools/ifobject/include', 
+    '/NetUsers0/jmeier/svn/iftools/ifobject/swig/include', 
+    '/NetUsers0/jmeier/svn/iftools/iftemplate/include', 
+    '/NetUsers0/jmeier/svn/iftools/iftemplate/swig/include', 
+    '/sw0/include', 
     prefix + '/include', 
     prefix + '/include/noise', 
-    prefix + '/python' + pythonVersion + '/include/python' + pythonVersion, 
-    '/opt/local/include'
+    prefix + '/python' + pythonVersion + '/include/python' + pythonVersion
 ]
 LIBPATH = [
+    '/NetUsers0/jmeier/svn/iftools/ifobject/lib', 
+    '/NetUsers0/jmeier/svn/iftools/iftemplate/lib', 
+    '/sw0/lib', 
     prefix + '/lib', 
-    prefix + '/python' + pythonVersion + '/lib', 
-    '/opt/local/lib'
+    prefix + '/python' + pythonVersion + '/lib'
 ]
+

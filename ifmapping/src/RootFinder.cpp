@@ -195,7 +195,7 @@ void RootFinder::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* RootFinder::getFunc() const
 {
-	return func;
+    return func;
 }
 
 Ionflux::Mapping::RootFinder& RootFinder::operator=(const 

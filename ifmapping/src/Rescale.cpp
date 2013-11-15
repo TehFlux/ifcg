@@ -171,7 +171,7 @@ void Rescale::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* Rescale::getFunc() const
 {
-	return func;
+    return func;
 }
 
 unsigned int Rescale::getNumArgs() const

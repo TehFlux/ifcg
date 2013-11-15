@@ -118,7 +118,7 @@ void Accept::setMaxIters(unsigned int newMaxIters)
 
 unsigned int Accept::getMaxIters() const
 {
-	return maxIters;
+    return maxIters;
 }
 
 void Accept::setAcceptRange(const Ionflux::Mapping::Range& newAcceptRange)
@@ -128,7 +128,7 @@ void Accept::setAcceptRange(const Ionflux::Mapping::Range& newAcceptRange)
 
 Ionflux::Mapping::Range Accept::getAcceptRange() const
 {
-	return acceptRange;
+    return acceptRange;
 }
 
 Ionflux::Mapping::Accept& Accept::operator=(const Ionflux::Mapping::Accept&
