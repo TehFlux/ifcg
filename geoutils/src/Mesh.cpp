@@ -879,6 +879,85 @@ subDivsY)
 	return m0;
 }
 
+Ionflux::GeoUtils::Mesh* Mesh::fiber(unsigned int aSubDivs, unsigned int 
+lSubDivs, double length, double radius)
+{
+	Mesh* m0 = create();
+	double s = 0.5 * length;
+	// Vertices.
+	Vertex3Vector verts0;
+	double dPhi = 2. * M_PI / aSubDivs;
+	double ds = length / lSubDivs;
+	// Hull vertices.
+	for (unsigned int i = 0; i <= lSubDivs; i++)
+	{
+	    double z = -s + i * ds;
+	    for (unsigned int j = 0; j < aSubDivs; j++)
+	    {
+	        double x = radius * ::sin(j * dPhi);
+	        double y = radius * ::cos(j * dPhi);
+	        verts0.push_back(Vertex::create(x, y, z));
+	    }
+	}
+	// Center vertices.
+	verts0.push_back(Vertex::create(0., 0., s));
+	verts0.push_back(Vertex::create(0., 0., -s));
+	m0->addVertices(verts0);
+	// Faces.
+	FaceVector faces0;
+	// Hull faces.
+	for (unsigned int i = 0; i < lSubDivs; i++)
+	{
+	    for (unsigned int j = 0; j < aSubDivs; j++)
+	    {
+	        if (j < (aSubDivs - 1))
+	            faces0.push_back(Face::create(
+	                i * aSubDivs + j, 
+	                (i + 1) * aSubDivs + j, 
+	                (i + 1) * aSubDivs + j + 1, 
+	                i * aSubDivs + j, 
+	                m0->getVertexSource()));
+	        else
+	            faces0.push_back(Face::create(
+	                i * aSubDivs + j, 
+	                (i + 1) * aSubDivs + j, 
+	                (i + 1) * aSubDivs, 
+	                i * aSubDivs, 
+	                m0->getVertexSource()));
+	    }
+	}
+	// Top faces.
+	unsigned int i0 = verts0.size() - 2;
+	for (unsigned int i = 0; i < aSubDivs; i++)
+	{
+	    if (i < (aSubDivs - 1))
+	        faces0.push_back(Face::create(
+	            i0, i, i + 1, Face::VERTEX_INDEX_NONE, 
+	            m0->getVertexSource()));
+	    else
+	        faces0.push_back(Face::create(
+	            i0, i, 0, Face::VERTEX_INDEX_NONE, 
+	            m0->getVertexSource()));
+	}
+	// Bottom faces.
+	i0 = verts0.size() - 1;
+	unsigned int k0 = aSubDivs * lSubDivs;
+	for (unsigned int i = 0; i < aSubDivs; i++)
+	{
+	    if (i < (aSubDivs - 1))
+	        faces0.push_back(Face::create(
+	            i0, k0 + i + 1, k0 + i, Face::VERTEX_INDEX_NONE, 
+	            m0->getVertexSource()));
+	    else
+	        faces0.push_back(Face::create(
+	            i0, k0, k0 + i, Face::VERTEX_INDEX_NONE, 
+	            m0->getVertexSource()));
+	}
+	m0->addFaces(faces0);
+	m0->update();
+	return m0;
+}
+
 std::string Mesh::getXML_legacy() const
 {
 	ostringstream d0;

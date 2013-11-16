@@ -477,6 +477,20 @@ Ionflux::GeoUtils::TransformableObject
 		static Ionflux::GeoUtils::Mesh* grid(unsigned int subDivsX = 10, unsigned
 		int subDivsY = 10);
 		
+		/** Create mesh: fiber.
+		 *
+		 * Create a fiber mesh.
+		 *
+		 * \param aSubDivs Angular subdivisions.
+		 * \param lSubDivs Length subdivisions.
+		 * \param length Length.
+		 * \param radius Radius.
+		 *
+		 * \return Fiber mesh.
+		 */
+		static Ionflux::GeoUtils::Mesh* fiber(unsigned int aSubDivs = 10, 
+		unsigned int lSubDivs = 10, double length = 1., double radius = 0.05);
+		
 		/** Get XML representation.
 		 *
 		 * Get an XML representation of the object.

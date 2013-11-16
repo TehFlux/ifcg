@@ -4418,6 +4418,9 @@ Ionflux::GeoUtils::TransformableObject
         double headRadius = 4.);
         static Ionflux::GeoUtils::Mesh* grid(unsigned int subDivsX = 10, 
         unsigned int subDivsY = 10);
+        static Ionflux::GeoUtils::Mesh* fiber(unsigned int aSubDivs = 10, 
+        unsigned int lSubDivs = 10, double length = 1., double radius = 
+        0.05);
         virtual std::string getXML_legacy() const;
         virtual void writeToFile_legacy(const std::string& fileName) const;
 		virtual Ionflux::GeoUtils::Mesh* copy() const;
