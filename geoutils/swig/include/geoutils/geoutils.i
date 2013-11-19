@@ -1914,7 +1914,7 @@ class Edge
         newVertices);
         virtual void getVertices(Ionflux::ObjectBase::IntVector& target) 
         const;
-        virtual double getVertex(int index) const;
+        virtual int getVertex(int index) const;
         virtual Ionflux::ObjectBase::IntVector getVector() const;
         virtual void setVertex(int index, int value);
         virtual bool operator==(const Ionflux::GeoUtils::Edge& other) 

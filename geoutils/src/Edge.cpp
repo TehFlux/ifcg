@@ -114,7 +114,7 @@ void Edge::getVertices(Ionflux::ObjectBase::IntVector& target) const
 	target.push_back(v1);
 }
 
-double Edge::getVertex(int index) const
+int Edge::getVertex(int index) const
 {
 	// TODO: Implementation.
 	return (*this)[index];;

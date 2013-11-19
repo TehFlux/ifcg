@@ -198,11 +198,86 @@ class Mesh:
         """Update the Blender mesh.
         
         Update the Blender mesh to reflect changes in the GeoUtils 
-        mesh.."""
+        mesh."""
         self.createBMesh()
     
     def __str__(self):
         if (not self.cgMesh is None):
             return str(self.cgMesh)
-            return "Mesh"
+        return "Mesh"
+
+class Polygon3:
+    """Polygon (3D).
+    
+    A wrapper around a CGeoUtils.Polygon3 for use with Blender."""
+    
+    def __init__(self, name = "UnnamedPolygon3", cgPoly = None, 
+        create = False):
+        self.name = name
+        # for memory management
+        self.mm = ib.IFObject()
+        if (not cgPoly is None):
+            self.mm.addLocalRef(cgPoly)
+        self.cgPoly = cgPoly
+        if (create):
+            self.createBMesh()
+    
+    def createBMesh(self, meshName = None):
+        """Create Blender mesh.
+        
+        Create a new Blender mesh from the current CGeoUtils polygon."""
+        if (self.cgPoly is None):
+            raise BGeoUtilsError("CGeoUtils mesh not set.")
+        p = self.cgPoly
+        m0 = self.getBMesh(meshName)
+        bm0 = bmesh.new()
+        # Vertices.
+        numVerts0 = p.getNumVertices()
+        for i in range(0, numVerts0):
+            v0 = p.getVertex(i)
+            bm0.verts.new((v0.getX(), v0.getY(), v0.getZ()))
+        bm0.verts.index_update()
+        # Edges.
+        numEdges0 = p.getNumEdges()
+        for i in range(0, numEdges0):
+            e0 = p.getEdge(i)
+            vt0 = ( 
+                bm0.verts[e0.getVertex(0)], 
+                bm0.verts[e0.getVertex(1)] 
+            )
+            bm0.edges.new(vt0)
+        bm0.edges.index_update()
+        bm0.to_mesh(m0)
+        bm0.free()
+        return m0
+
+    def getBMesh(self, meshName = None):
+        """Get Blender mesh."""
+        if (self.cgPoly is None):
+            raise BGeoUtilsError("CGeoUtils polygon not set.")
+        m = self.cgPoly
+        if (meshName is None):
+            meshName = self.name
+        if (meshName is None):
+            meshName = m.getID()
+        if (len(meshName) == 0):
+            meshName = "unnamedMesh"
+        m0 = bpy.data.meshes.get(meshName)
+        if (m0 is None):
+            m0 = bpy.data.meshes.new(meshName)
+        if (m0 is None):
+            raise BGeoUtilsError("Could not create Blender mesh.")
+        return m0
+    
+    def update(self):
+        """Update the Blender mesh.
+        
+        Update the Blender mesh to reflect changes in the GeoUtils 
+        mesh."""
+        self.createBMesh()
+    
+    def __str__(self):
+        if (not self.cgMesh is None):
+            return str(self.cgMesh)
+        return "Polygon3"
 

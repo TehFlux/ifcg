@@ -142,7 +142,7 @@ class Edge
 		 *
 		 * \return Element at the specified index.
 		 */
-		virtual double getVertex(int index) const;
+		virtual int getVertex(int index) const;
 		
 		/** Get coordinates as vector.
 		 *
