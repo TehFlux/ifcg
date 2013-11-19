@@ -16,6 +16,10 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Add Bezier curve based objects:
+  > There should be an option to convert Bezier objects into discrete 
+    representations (i.e. Polygon3, Mesh).
+
 + Mesh
   > Generator functions
     . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
@@ -226,8 +230,6 @@ Nice to have
   > Paths
   > Patches
   > Surfaces
-  > There should be an option to convert Bezier objects into discrete 
-    representations (i.e. Polygon3, Mesh).
 
 + Vector3Mapping:
   > Lookup3: Create static generator functions that create various types of 
