@@ -144,6 +144,12 @@ class Polygon3
 		 */
 		virtual ~Polygon3();
 		
+		/** Clear data.
+		 *
+		 * Clears the polygon data but keeps the vertex source.
+		 */
+		virtual void clearData();
+		
 		/** Copy vertices.
 		 *
 		 * Create a new vertex set with copies of the current vertices. This 

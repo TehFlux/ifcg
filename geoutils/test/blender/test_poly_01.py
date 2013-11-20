@@ -14,8 +14,16 @@ name = "Poly01"
 p0 = cg.Polygon3.circle()
 mm.addLocalRef(p0)
 
-gm0 = bgm.Polygon3(name + "M", p0)
-gm0.createBMesh(None)
-o0 = bgo.Object(name, gm0)
+gp0 = bgm.Polygon3(name + "M_0", p0)
+bm0 = gp0.createBMesh(None)
+o0 = bgo.Object(name, gp0)
 o0.createBObject()
+
+p1 = cg.Polygon3.create()
+mm.addLocalRef(p1)
+
+gp1 = bgm.Polygon3(name + "M_1", p1)
+gp1.setFromBMesh(bm0)
+
+print(p1.getString())
 

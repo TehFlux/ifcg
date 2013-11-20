@@ -222,6 +222,29 @@ class Polygon3:
         if (create):
             self.createBMesh()
     
+    def setFromBMesh(self, bMesh):
+        """Initialize from Blender mesh."""
+        if (self.cgPoly is None):
+            self.cgPoly = cg.Mesh.create()
+            self.mm.addLocalRef(self.cgPoly)
+        else:
+            self.cgPoly.clearData()
+        p = self.cgPoly
+        p.setID(self.name)
+        bm0 = bmesh.new()
+        bm0.from_mesh(bMesh)
+        # Vertices.
+        for v in bm0.verts:
+            p.addVertex(cg.Vertex3.create(v.co[0], v.co[1], v.co[2]))
+        # Edges.
+        for be in bm0.edges:
+            e = p.addEdge()
+            k = 0
+            for v in be.verts:
+                e.setVertex(k, v.index)
+                k += 1
+        bm0.free()
+    
     def createBMesh(self, meshName = None):
         """Create Blender mesh.
         

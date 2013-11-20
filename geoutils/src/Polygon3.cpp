@@ -174,6 +174,14 @@ void Polygon3::recalculateBounds()
 	removeLocalRef(p0);
 }
 
+void Polygon3::clearData()
+{
+	if (vertexSource != 0)
+	    vertexSource->clearVertices();
+	clearEdges();
+	TransformableObject::clear();
+}
+
 void Polygon3::copyVertices()
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
