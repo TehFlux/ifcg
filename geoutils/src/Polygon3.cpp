@@ -189,6 +189,28 @@ void Polygon3::copyVertices()
 	setVertexSource(vertexSource->copy());
 }
 
+Ionflux::GeoUtils::Edge* Polygon3::addEdge(int i0, int i1)
+{
+	unsigned int numVerts = getNumVertices();
+	if ((static_cast<unsigned int>(i0) < 0) 
+	    || (static_cast<unsigned int>(i0) > numVerts))
+	{
+	    std::ostringstream status;
+	    status << "Vertex index i0 out of range (i0 = " << i0 << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "addEdge"));
+	}
+	if ((static_cast<unsigned int>(i1) < 0) 
+	    || (static_cast<unsigned int>(i1) > numVerts))
+	{
+	    std::ostringstream status;
+	    status << "Vertex index i1 out of range (i1 = " << i1 << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "addEdge"));
+	}
+	Edge* e0 = addEdge();
+	e0->setVertices(i0, i1);
+	return e0;
+}
+
 int Polygon3::createEdges()
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 

@@ -1912,6 +1912,7 @@ class Edge
         virtual ~Edge();
         virtual void setVertices(const Ionflux::ObjectBase::IntVector& 
         newVertices);
+        virtual void setVertices(int i0, int i1);
         virtual void getVertices(Ionflux::ObjectBase::IntVector& target) 
         const;
         virtual int getVertex(int index) const;
@@ -2302,11 +2303,14 @@ class Vertex3
         Vertex3(double initX, double initY, double initZ);
         Vertex3(const Ionflux::ObjectBase::DoubleVector& initCoords);
         Vertex3(const Ionflux::GeoUtils::Vector3& initCoords);
+        Vertex3(const Ionflux::GeoUtils::Vector4& initCoords);
         virtual ~Vertex3();
         virtual void setCoords(double newX, double newY, double newZ);
         virtual void setCoords(const Ionflux::ObjectBase::DoubleVector& 
         newCoords);
         virtual void setCoords(const Ionflux::GeoUtils::Vector3& 
+        newCoords);
+        virtual void setCoords(const Ionflux::GeoUtils::Vector4& 
         newCoords);
         virtual void getCoords(Ionflux::ObjectBase::DoubleVector& target) 
         const;
@@ -2362,6 +2366,9 @@ class Vertex3
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vertex3* create(const 
 		Ionflux::GeoUtils::Vector3& initCoords, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const 
+		Ionflux::GeoUtils::Vector4& initCoords, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         virtual void setX(double newX);
         virtual double getX() const;
@@ -2507,6 +2514,7 @@ class Polygon3
         virtual ~Polygon3();
         virtual void clearData();
         virtual void copyVertices();
+        virtual Ionflux::GeoUtils::Edge* addEdge(int i0, int i1);
         virtual int createEdges();
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;

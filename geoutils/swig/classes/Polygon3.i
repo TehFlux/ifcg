@@ -62,6 +62,7 @@ class Polygon3
         virtual ~Polygon3();
         virtual void clearData();
         virtual void copyVertices();
+        virtual Ionflux::GeoUtils::Edge* addEdge(int i0, int i1);
         virtual int createEdges();
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;

@@ -107,6 +107,12 @@ void Edge::setVertices(const Ionflux::ObjectBase::IntVector& newVertices)
 	v0 = newVertices[0];
 }
 
+void Edge::setVertices(int i0, int i1)
+{
+	v0 = i0;
+	v1 = i1;
+}
+
 void Edge::getVertices(Ionflux::ObjectBase::IntVector& target) const
 {
 	target.clear();

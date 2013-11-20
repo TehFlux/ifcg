@@ -157,6 +157,18 @@ class Polygon3
 		 */
 		virtual void copyVertices();
 		
+		/** Add edge.
+		 *
+		 * Add a new edge that connects the vertices with indices \c i0 and \c
+		 * i1.
+		 *
+		 * \param i0 Vertex Index (0).
+		 * \param i1 Vertex Index (1).
+		 *
+		 * \return New edge.
+		 */
+		virtual Ionflux::GeoUtils::Edge* addEdge(int i0, int i1);
+		
 		/** Create edges.
 		 *
 		 * Takes two subsequent vertices from the list to create edges.

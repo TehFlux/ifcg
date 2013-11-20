@@ -58,6 +58,7 @@ class Edge
         virtual ~Edge();
         virtual void setVertices(const Ionflux::ObjectBase::IntVector& 
         newVertices);
+        virtual void setVertices(int i0, int i1);
         virtual void getVertices(Ionflux::ObjectBase::IntVector& target) 
         const;
         virtual int getVertex(int index) const;

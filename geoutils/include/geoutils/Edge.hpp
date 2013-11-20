@@ -126,6 +126,15 @@ class Edge
 		virtual void setVertices(const Ionflux::ObjectBase::IntVector& 
 		newVertices);
 		
+		/** Set vertices.
+		 *
+		 * Set vertex indices.
+		 *
+		 * \param i0 Vertex Index (0).
+		 * \param i1 Vertex Index (1).
+		 */
+		virtual void setVertices(int i0, int i1);
+		
 		/** Get vertices.
 		 *
 		 * Store the vertex indices in a vector of integers.
