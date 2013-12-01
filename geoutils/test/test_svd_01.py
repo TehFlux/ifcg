@@ -7,7 +7,14 @@ testName = "SVD (01)"
 print("CGeoUtils test: %s" % testName)
 
 mm = ib.IFObject()
-r = cg.Matrix3.rotate(0.5 * m.pi, cg.AXIS_Z).copy()
+
+axis0 = cg.Vector3.create(1., 2., 3.)
+mm.addLocalRef(axis0)
+axis0.normalizeIP()
+print("  rotation axis: (%s)" % axis0.getValueString())
+
+#r = cg.Matrix3.rotate(0.5 * m.pi, cg.AXIS_Z).copy()
+r = cg.Matrix3.rotate(0.5 * m.pi, axis0).copy()
 mm.addLocalRef(r)
 
 u = cg.Matrix3.create()
@@ -34,9 +41,9 @@ print("  u:  %s" % u.getValueString())
 print("  s:  %s" % s.getValueString())
 print("  v:  %s" % v.getValueString())
 
-axis0 = v.getC2()
+axis1 = v.getC2()
 angle0 = m.acos(0.5 * (r.trace() - 1.))
-print("  rotation axis:          (%s)" % axis0.getValueString())
+print("  rotation axis:          (%s)" % axis1.getValueString())
 print("  rotation angle (1/pi):  %f" % (angle0 / m.pi))
 
 print("All done!")

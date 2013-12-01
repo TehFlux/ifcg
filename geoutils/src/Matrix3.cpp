@@ -318,6 +318,22 @@ Ionflux::GeoUtils::AxisID axis)
 	return ZERO;
 }
 
+Ionflux::GeoUtils::Matrix3 Matrix3::crossProduct(const 
+Ionflux::GeoUtils::Vector3& v)
+{
+	// TODO: Implementation.
+	return Matrix3(0, -v[2], v[1], v[2], 0, -v[0], -v[1], v[0], 0);
+}
+
+Ionflux::GeoUtils::Matrix3 Matrix3::rotate(double phi, const 
+Ionflux::GeoUtils::Vector3& axis)
+{
+	Matrix3 cp(crossProduct(axis));
+	Matrix3 result(Matrix3::UNIT + ::sin(phi) * cp 
+	    + (1. - ::cos(phi)) * (cp * cp));
+	return result;
+}
+
 void Matrix3::setR0(const Ionflux::GeoUtils::Vector3& newR0)
 {
 	elements[0] = newR0.getX0();

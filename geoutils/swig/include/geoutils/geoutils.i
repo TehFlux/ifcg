@@ -1349,6 +1349,10 @@ class Matrix3
         ty = 0.);
         static Ionflux::GeoUtils::Matrix3 rotate(double phi = 0., 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+        static Ionflux::GeoUtils::Matrix3 crossProduct(const 
+        Ionflux::GeoUtils::Vector3& v);
+        static Ionflux::GeoUtils::Matrix3 rotate(double phi, const 
+        Ionflux::GeoUtils::Vector3& axis);
 		virtual Ionflux::GeoUtils::Matrix3* copy() const;
 		static Ionflux::GeoUtils::Matrix3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

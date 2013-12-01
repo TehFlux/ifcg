@@ -317,6 +317,29 @@ class Matrix3
 		static Ionflux::GeoUtils::Matrix3 rotate(double phi = 0., 
 		Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
 		
+		/** Create cross-product matrix.
+		 *
+		 * Create a cross-product matrix for the specified vector.
+		 *
+		 * \param v Vector.
+		 *
+		 * \return Cross-product matrix.
+		 */
+		static Ionflux::GeoUtils::Matrix3 crossProduct(const 
+		Ionflux::GeoUtils::Vector3& v);
+		
+		/** Create rotation matrix.
+		 *
+		 * Create a rotation matrix for the specified rotation angle and axis.
+		 *
+		 * \param phi Angle.
+		 * \param axis Axis vector.
+		 *
+		 * \return Rotation matrix.
+		 */
+		static Ionflux::GeoUtils::Matrix3 rotate(double phi, const 
+		Ionflux::GeoUtils::Vector3& axis);
+		
 		/** Assignment operator.
 		 *
 		 * Assign an object.

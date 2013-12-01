@@ -225,7 +225,7 @@ class Polygon3:
     def setFromBMesh(self, bMesh):
         """Initialize from Blender mesh."""
         if (self.cgPoly is None):
-            self.cgPoly = cg.Mesh.create()
+            self.cgPoly = cg.Polygon3.create()
             self.mm.addLocalRef(self.cgPoly)
         else:
             self.cgPoly.clearData()
@@ -238,11 +238,7 @@ class Polygon3:
             p.addVertex(cg.Vertex3.create(v.co[0], v.co[1], v.co[2]))
         # Edges.
         for be in bm0.edges:
-            e = p.addEdge()
-            k = 0
-            for v in be.verts:
-                e.setVertex(k, v.index)
-                k += 1
+            p.addEdge(be.verts[0].index, be.verts[1].index)
         bm0.free()
     
     def createBMesh(self, meshName = None):
