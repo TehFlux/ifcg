@@ -16,6 +16,18 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Matrix::transposeIP() does not do anything.
+
++ Segfaults:
+  > cg.Matrix3.create(r - cg.Matrix3.UNIT)
+  > import IFObjectBase as ib
+    import CGeoUtils as cg
+    import math as m
+    
+    mm = ib.IFObject()
+    r = cg.Matrix3.rotate(0.5 * m.pi, cg.AXIS_X)
+    mm.addLocalRef(r)
+
 + Add Bezier curve based objects:
   > There should be an option to convert Bezier objects into discrete 
     representations (i.e. Polygon3, Mesh).

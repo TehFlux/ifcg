@@ -222,6 +222,28 @@ class Matrix3
 		 */
 		virtual Ionflux::GeoUtils::Matrix3 operator/(double c) const;
 		
+		/** Add matrices.
+		 *
+		 * Add matrices element-wise.
+		 *
+		 * \param other Matrix.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Matrix3 operator+(const 
+		Ionflux::GeoUtils::Matrix3& other) const;
+		
+		/** Subtract matrices.
+		 *
+		 * Subtract matrices.
+		 *
+		 * \param other Matrix.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Matrix3 operator-(const 
+		Ionflux::GeoUtils::Matrix3& other) const;
+		
 		/** Calculate singular value decomposition.
 		 *
 		 * Calculate the singular value decomposition M = U S V^T of the 

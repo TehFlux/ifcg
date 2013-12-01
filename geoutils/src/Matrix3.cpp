@@ -240,6 +240,22 @@ Ionflux::GeoUtils::Matrix3 Matrix3::operator/(double c) const
 	return result;
 }
 
+Ionflux::GeoUtils::Matrix3 Matrix3::operator+(const 
+Ionflux::GeoUtils::Matrix3& other) const
+{
+	Matrix3 result(*this);
+	result.addIP(other);
+	return result;
+}
+
+Ionflux::GeoUtils::Matrix3 Matrix3::operator-(const 
+Ionflux::GeoUtils::Matrix3& other) const
+{
+	Matrix3 result(*this);
+	result.subtractIP(other);
+	return result;
+}
+
 void Matrix3::svd(Ionflux::GeoUtils::Matrix3& u, 
 Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) const
 {

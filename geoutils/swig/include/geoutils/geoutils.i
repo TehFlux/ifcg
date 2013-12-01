@@ -1332,6 +1332,10 @@ class Matrix3
         Ionflux::GeoUtils::Vector3& v) const;
         virtual Ionflux::GeoUtils::Matrix3 operator*(double c) const;
         virtual Ionflux::GeoUtils::Matrix3 operator/(double c) const;
+        virtual Ionflux::GeoUtils::Matrix3 operator+(const 
+        Ionflux::GeoUtils::Matrix3& other) const;
+        virtual Ionflux::GeoUtils::Matrix3 operator-(const 
+        Ionflux::GeoUtils::Matrix3& other) const;
         virtual void svd(Ionflux::GeoUtils::Matrix3& u, 
         Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) 
         const;
