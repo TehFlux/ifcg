@@ -157,15 +157,43 @@ void Matrix::transposeIP()
 	        << "x" << numCols << ").";
 	    throw GeoUtilsError(getErrorString(status.str(), "transposeIP"));
 	}
+	/* <---- DEBUG ----- //
+	std::cerr << "[Matrix::transposeIP] DEBUG: " 
+	    "numRows = " << numRows << ", numCols = " << numCols
+	    << std::endl;
+	// ----- DEBUG ----> */
 	for (unsigned int i = 0; i < numRows; i++)
-	    for (unsigned int k = 0; k < numCols; k++)
+	{
+	    for (unsigned int k = 0; k < i; k++)
 	    {
 	        unsigned int i0 = i * numCols + k;
 	        unsigned int i1 = k * numCols + i;
 	        double t0 = elements[i0];
+	        /* <---- DEBUG ----- //
+	        std::cerr << "[Matrix::transposeIP] DEBUG: " 
+	            "swapping (" << i << ", " << k << ") <-> ("
+	            << k << ", " << i << "): " << t0 << " <-> " << elements[i1]
+	            << std::endl;
+	        // ----- DEBUG ----> */
 	        elements[i0] = elements[i1];
 	        elements[i1] = t0;
 	    }
+	}
+}
+
+double Matrix::trace()
+{
+	unsigned int numRows = getNumRows();
+	unsigned int numCols = getNumCols();
+	double result = 0.;
+	unsigned int k = 0;
+	while ((k < numRows) 
+	    && (k < numCols))
+	{
+	    result += elements[k * numCols + k];
+	    k++;
+	}
+	return result;
 }
 
 void Matrix::transform(const Ionflux::GeoUtils::Vector& v, 

@@ -20,11 +20,7 @@ New
 
 + Segfaults:
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
-  > import IFObjectBase as ib
-    import CGeoUtils as cg
-    import math as m
-    
-    mm = ib.IFObject()
+  > mm = ib.IFObject()
     r = cg.Matrix3.rotate(0.5 * m.pi, cg.AXIS_X)
     mm.addLocalRef(r)
 

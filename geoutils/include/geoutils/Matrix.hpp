@@ -142,6 +142,14 @@ class Matrix
 		 */
 		virtual void transposeIP();
 		
+		/** Trace.
+		 *
+		 * Calculate the trace of the matrix.
+		 *
+		 * \return Trace of the matrix.
+		 */
+		virtual double trace();
+		
 		/** Transform.
 		 *
 		 * Transform a column vector by multiplying the matrix from the left.
