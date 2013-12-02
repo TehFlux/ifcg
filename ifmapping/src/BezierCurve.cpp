@@ -58,8 +58,7 @@ BezierCurve::BezierCurve()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	for (unsigned int i = 0; i < 4; i++)
-	    addPoint(new Point());
+	validate();
 }
 
 BezierCurve::BezierCurve(const Ionflux::Mapping::BezierCurve& other)
@@ -75,10 +74,10 @@ const Ionflux::Mapping::Point& initP3)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	addPoint(new Point(initP0));
-	addPoint(new Point(initP1));
-	addPoint(new Point(initP2));
-	addPoint(new Point(initP3));
+	addPoint(initP0.copy());
+	addPoint(initP1.copy());
+	addPoint(initP2.copy());
+	addPoint(initP3.copy());
 }
 
 BezierCurve::BezierCurve(const Ionflux::Mapping::PointVector& initPoints)
@@ -86,29 +85,15 @@ BezierCurve::BezierCurve(const Ionflux::Mapping::PointVector& initPoints)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	addPoints(initPoints);
-	// Make sure the four control points are allocated.
-	for (unsigned int i = 0; i < 4; i++)
-	    if (points[i] == 0)
-	    {
-	        Point* p0 = new Point();
-	        addLocalRef(p0);
-	        points[i] = p0;
-	    }
+	validate();
 }
 
-BezierCurve::BezierCurve(const Ionflux::Mapping::PointSet& initPoints)
+BezierCurve::BezierCurve(Ionflux::Mapping::PointSet& initPoints)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	addPoints(initPoints);
-	// Make sure the four control points are allocated.
-	for (unsigned int i = 0; i < 4; i++)
-	    if (points[i] == 0)
-	    {
-	        Point* p0 = new Point();
-	        addLocalRef(p0);
-	        points[i] = p0;
-	    }
+	addPoints(&initPoints);
+	validate();
 }
 
 BezierCurve::~BezierCurve()
@@ -116,10 +101,30 @@ BezierCurve::~BezierCurve()
 	// TODO: Nothing ATM. ;-)
 }
 
+void BezierCurve::validate()
+{
+	unsigned int numPoints = getNumPoints();
+	unsigned int k = 0;
+	while (k < 4)
+	{
+	    if (k < numPoints)
+	    {
+	        if (points[k] == 0)
+	        {
+	            Point* p0 = Point::create();
+	            addLocalRef(p0);
+	            points[k] = p0;
+	        }
+	    } else
+	        addPoint();
+	    k++;
+	}
+}
+
 void BezierCurve::setControlPoints(const Ionflux::Mapping::PointVector& 
 newPoints)
 {
-	unsigned int numPoints = points.size();
+	unsigned int numPoints = getNumPoints();
 	for (unsigned int i = 0; i < newPoints.size(); i++)
 	{
 	    Point* p0 = newPoints[i];
@@ -129,7 +134,7 @@ newPoints)
 	    else
 	    {
 	        if (p0 != 0)
-	            addPoint(new Point(*p0));
+	            addPoint(p0->copy());
 	        else
 	            addPoint(0);
 	    }
@@ -139,7 +144,7 @@ newPoints)
 void BezierCurve::setControlPoints(const Ionflux::Mapping::PointSet& 
 newPoints)
 {
-	unsigned int numPoints = points.size();
+	unsigned int numPoints = getNumPoints();
 	for (unsigned int i = 0; i < newPoints.getNumPoints(); i++)
 	{
 	    Point* p0 = newPoints.getPoint(i);
@@ -149,19 +154,26 @@ newPoints)
 	    else
 	    {
 	        if (p0 != 0)
-	            addPoint(new Point(*p0));
+	            addPoint(p0->copy());
 	        else
 	            addPoint(0);
 	    }
 	}
 }
 
-std::string BezierCurve::getString() const
+std::string BezierCurve::getValueString() const
 {
-	ostringstream status;
-	status << getClassName() << "[" << *(points[0]) << ", " 
-	    << *(points[1]) << ", " << *(points[2])  << ", " 
-	    << *(points[3]) << "]";
+	std::ostringstream status;
+	for (unsigned int i = 0; i < 4; i++)
+	{
+	    if (i > 0)
+	        status << ", ";
+	    Point* p0 = points[i];
+	    if (p0 != 0)
+	        status << "(" << p0->getValueString() << ")";
+	    else
+	        status << "<null>";
+	}
 	return status.str();
 }
 
@@ -184,10 +196,12 @@ const
 	{
 	    Point* p0 = points[i];
 	    if (p0 == 0)
-	        throw MappingError("Point (0) is null.");
+	        throw MappingError(getErrorString("Point (0) is null.", 
+	            "interpolate"));
 	    Point* p1 = other.points[i];
 	    if (p1 == 0)
-	        throw MappingError("Point (1) is null.");
+	        throw MappingError(getErrorString("Point (1) is null.", 
+	            "interpolate"));
 	    Point p2 = p0->interpolate(*p1, t);
 	    /* <---- DEBUG ----- //
 	    message.str("");
@@ -243,16 +257,7 @@ Ionflux::Mapping::BezierCurve& BezierCurve::operator=(const
 Ionflux::Mapping::BezierCurve& other)
 {
     PointSet::operator=(other);
-    while (points.size() < 4)
-        addPoint(new Point());
-    // Make sure the four control points are allocated.
-    for (unsigned int i = 0; i < 4; i++)
-        if (points[i] == 0)
-        {
-            Point* p0 = new Point();
-            addLocalRef(p0);
-            points[i] = p0;
-        }
+    validate();
 	return *this;
 }
 
@@ -273,6 +278,50 @@ Ionflux::Mapping::BezierCurve*
 BezierCurve::create(Ionflux::ObjectBase::IFObject* parentObject)
 {
     BezierCurve* newObject = new BezierCurve();
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::BezierCurve* BezierCurve::create(const 
+Ionflux::Mapping::Point& initP0, const Ionflux::Mapping::Point& initP1, 
+const Ionflux::Mapping::Point& initP2, const Ionflux::Mapping::Point& 
+initP3, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    BezierCurve* newObject = new BezierCurve(initP0, initP1, initP2, 
+    initP3);
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::BezierCurve* BezierCurve::create(const 
+Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    BezierCurve* newObject = new BezierCurve(initPoints);
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::BezierCurve* 
+BezierCurve::create(Ionflux::Mapping::PointSet& initPoints, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    BezierCurve* newObject = new BezierCurve(initPoints);
     if (newObject == 0)
     {
         throw MappingError("Could not allocate object.");

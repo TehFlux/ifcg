@@ -163,92 +163,9 @@ void getSVGBezierSplineFrames(const std::string& fileName,
 
 $Piece
 $Point
-
-namespace Ionflux
-{
-
-namespace Mapping
-{
-
-class PointSetClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        PointSetClassInfo();
-        virtual ~PointSetClassInfo();
-};
-
-class PointSet
-: virtual public Ionflux::ObjectBase::IFObject
-{
-    public:
-        
-        PointSet();
-		PointSet(const Ionflux::Mapping::PointSet& other);
-        PointSet(const Ionflux::Mapping::PointVector& initPoints);
-        virtual ~PointSet();
-        virtual void addPoints(const Ionflux::Mapping::PointVector& 
-        newPoints);
-        virtual void addPoints(const Ionflux::Mapping::PointSet& other);
-        virtual std::string getString() const;
-		static Ionflux::Mapping::PointSet* upcast(Ionflux::ObjectBase::IFObject* 
-		other);
-		static Ionflux::Mapping::PointSet* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
-        virtual unsigned int getNumPoints() const;
-        virtual Ionflux::Mapping::Point* getPoint(unsigned int elementIndex
-        = 0) const;
-		virtual int findPoint(Ionflux::Mapping::Point* needle, unsigned int 
-		occurence = 1) const;
-        virtual std::vector<Ionflux::Mapping::Point*>& getPoints();
-        virtual void addPoint(Ionflux::Mapping::Point* addElement);        
-        virtual void removePoint(Ionflux::Mapping::Point* removeElement);
-		virtual void removePointIndex(unsigned int removeIndex);
-        virtual void clearPoints();
-};
-
-class MappingSetClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        MappingSetClassInfo();
-        virtual ~MappingSetClassInfo();
-};
-
-class MappingSet
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-        
-        MappingSet();
-		MappingSet(const Ionflux::Mapping::MappingSet& other);
-        MappingSet(const Ionflux::Mapping::MappingVector& initMappings);
-        virtual ~MappingSet();
-        virtual void addMappings(const Ionflux::Mapping::MappingVector& 
-        newMappings);
-        virtual std::string getString() const;
-		static Ionflux::Mapping::MappingSet* 
-		upcast(Ionflux::ObjectBase::IFObject* other);
-		static Ionflux::Mapping::MappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
-        virtual unsigned int getNumMappings() const;
-        virtual Ionflux::Mapping::Mapping* getMapping(unsigned int 
-        elementIndex = 0) const;
-		virtual int findMapping(Ionflux::Mapping::Mapping* needle, unsigned int 
-		occurence = 1) const;
-        virtual std::vector<Ionflux::Mapping::Mapping*>& getMappings();
-        virtual void addMapping(Ionflux::Mapping::Mapping* addElement);        
-        virtual void removeMapping(Ionflux::Mapping::Mapping* 
-        removeElement);
-		virtual void removeMappingIndex(unsigned int removeIndex);
-        virtual void clearMappings();
-};
-
-}
-
-}
-
+$PointSet
 $Mapping
+$MappingSet
 $ChainableMapping
 $PointMapping
 $EvalCoord

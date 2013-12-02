@@ -50,8 +50,6 @@ class BezierSpline
         BezierSpline();
 		BezierSpline(const Ionflux::Mapping::BezierSpline& other);
         virtual ~BezierSpline();
-        virtual void addSegments(const Ionflux::Mapping::BezierCurveVector&
-        newCurves);
         virtual unsigned int getSegmentIndex(Ionflux::Mapping::MappingValue
         t) const;
         virtual void getPoints(Ionflux::Mapping::PointSet& target, 
@@ -74,7 +72,10 @@ class BezierSpline
         outputOffset = Ionflux::Mapping::Point::ORIGIN, 
         Ionflux::Mapping::CoordinateID inCoord = Ionflux::Mapping::C_X, 
         Ionflux::Mapping::CoordinateID outCoord = Ionflux::Mapping::C_Y);
-        virtual std::string getString() const;
+        virtual std::string getSVGPathData(const 
+        Ionflux::Mapping::CoordinateID imagePlaneNormal = 
+        Ionflux::Mapping::C_Z) const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::Mapping::BezierSpline* copy() const;
 		static Ionflux::Mapping::BezierSpline* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -86,7 +87,11 @@ class BezierSpline
 		virtual int findSegment(Ionflux::Mapping::BezierCurve* needle, unsigned 
 		int occurence = 1) const;
         virtual std::vector<Ionflux::Mapping::BezierCurve*>& getSegments();
-        virtual void addSegment(Ionflux::Mapping::BezierCurve* addElement);        
+        virtual void addSegment(Ionflux::Mapping::BezierCurve* addElement);
+		virtual Ionflux::Mapping::BezierCurve* addSegment();
+		virtual void addSegments(std::vector<Ionflux::Mapping::BezierCurve*>& 
+		newSegments);
+		virtual void addSegments(Ionflux::Mapping::BezierSpline* newSegments);        
         virtual void removeSegment(Ionflux::Mapping::BezierCurve* 
         removeElement);
 		virtual void removeSegmentIndex(unsigned int removeIndex);

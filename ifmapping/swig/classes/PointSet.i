@@ -51,14 +51,18 @@ class PointSet
 		PointSet(const Ionflux::Mapping::PointSet& other);
         PointSet(const Ionflux::Mapping::PointVector& initPoints);
         virtual ~PointSet();
-        virtual void addPoints(const Ionflux::Mapping::PointVector& 
-        newPoints);
-        virtual void addPoints(const Ionflux::Mapping::PointSet& other);
-        virtual std::string getString() const;
+        virtual std::string getSVGPathData(const 
+        Ionflux::Mapping::CoordinateID imagePlaneNormal = 
+        Ionflux::Mapping::C_Z, unsigned int startIndex = 0, unsigned int 
+        numPoints = 0) const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::Mapping::PointSet* copy() const;
 		static Ionflux::Mapping::PointSet* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::PointSet* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::Mapping::PointSet* create(const 
+		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);        
         virtual unsigned int getNumPoints() const;
         virtual Ionflux::Mapping::Point* getPoint(unsigned int elementIndex
@@ -66,7 +70,10 @@ class PointSet
 		virtual int findPoint(Ionflux::Mapping::Point* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::Mapping::Point*>& getPoints();
-        virtual void addPoint(Ionflux::Mapping::Point* addElement);        
+        virtual void addPoint(Ionflux::Mapping::Point* addElement);
+		virtual Ionflux::Mapping::Point* addPoint();
+		virtual void addPoints(std::vector<Ionflux::Mapping::Point*>& newPoints);
+		virtual void addPoints(Ionflux::Mapping::PointSet* newPoints);        
         virtual void removePoint(Ionflux::Mapping::Point* removeElement);
 		virtual void removePointIndex(unsigned int removeIndex);
 		virtual void clearPoints();

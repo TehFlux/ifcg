@@ -53,13 +53,14 @@ class BezierCurve
         Ionflux::Mapping::Point& initP1, const Ionflux::Mapping::Point& 
         initP2, const Ionflux::Mapping::Point& initP3);
         BezierCurve(const Ionflux::Mapping::PointVector& initPoints);
-        BezierCurve(const Ionflux::Mapping::PointSet& initPoints);
+        BezierCurve(Ionflux::Mapping::PointSet& initPoints);
         virtual ~BezierCurve();
+        virtual void validate();
         virtual void setControlPoints(const Ionflux::Mapping::PointVector& 
         newPoints);
         virtual void setControlPoints(const Ionflux::Mapping::PointSet& 
         newPoints);
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value);
         virtual Ionflux::Mapping::BezierCurve interpolate(const 
@@ -70,6 +71,15 @@ class BezierCurve
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierCurve* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::BezierCurve* create(const 
+		Ionflux::Mapping::Point& initP0, const Ionflux::Mapping::Point& initP1, 
+		const Ionflux::Mapping::Point& initP2, const Ionflux::Mapping::Point& 
+		initP3, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::BezierCurve* create(const 
+		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+		static Ionflux::Mapping::BezierCurve* create(Ionflux::Mapping::PointSet& 
+		initPoints, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setP0(const Ionflux::Mapping::Point& newP0);
         virtual Ionflux::Mapping::Point getP0() const;
         virtual void setP1(const Ionflux::Mapping::Point& newP1);

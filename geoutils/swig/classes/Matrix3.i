@@ -80,6 +80,7 @@ class Matrix3
         virtual void svd(Ionflux::GeoUtils::Matrix3& u, 
         Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) 
         const;
+        virtual Ionflux::GeoUtils::Vector4 getAxisAngle() const;
         virtual unsigned int getNumElements() const;
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;

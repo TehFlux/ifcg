@@ -261,10 +261,14 @@ class Point
         const;
         virtual Ionflux::Mapping::Point operator+(const 
         Ionflux::Mapping::Point& other) const;
+        virtual Ionflux::Mapping::Point operator-(const 
+        Ionflux::Mapping::Point& other) const;
         virtual Ionflux::Mapping::Point operator*(const 
         Ionflux::Mapping::Point& other) const;
         virtual bool operator==(const Ionflux::Mapping::Point& other) 
         const;
+        virtual bool eq(const Ionflux::Mapping::Point& other, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE) const;
         virtual bool operator!=(const Ionflux::Mapping::Point& other) 
         const;
         static Ionflux::Mapping::Point getRandom();
@@ -272,12 +276,22 @@ class Point
         Ionflux::Mapping::Point& mean = Ionflux::Mapping::Point::ORIGIN, 
         const Ionflux::Mapping::Point& stdDev = 
         Ionflux::Mapping::Point::DEFAULT_STD_DEV);
-        virtual std::string getString() const;
+        virtual std::string getSVGPathData(const 
+        Ionflux::Mapping::CoordinateID imagePlaneNormal = 
+        Ionflux::Mapping::C_Z) const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::Mapping::Point* copy() const;
 		static Ionflux::Mapping::Point* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Point* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::Mapping::Point* create(Ionflux::Mapping::MappingValue 
+		initX, Ionflux::Mapping::MappingValue initY, 
+		Ionflux::Mapping::MappingValue initZ, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::Mapping::Point* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX(Ionflux::Mapping::MappingValue newX);
         virtual Ionflux::Mapping::MappingValue getX() const;
         virtual void setY(Ionflux::Mapping::MappingValue newY);
@@ -290,6 +304,10 @@ class Point
 
 }
 
+
+%{
+#include "ifmapping/PointSet.hpp"
+%}
 
 namespace Ionflux
 {
@@ -314,13 +332,18 @@ class PointSet
 		PointSet(const Ionflux::Mapping::PointSet& other);
         PointSet(const Ionflux::Mapping::PointVector& initPoints);
         virtual ~PointSet();
-        virtual void addPoints(const Ionflux::Mapping::PointVector& 
-        newPoints);
-        virtual void addPoints(const Ionflux::Mapping::PointSet& other);
-        virtual std::string getString() const;
+        virtual std::string getSVGPathData(const 
+        Ionflux::Mapping::CoordinateID imagePlaneNormal = 
+        Ionflux::Mapping::C_Z, unsigned int startIndex = 0, unsigned int 
+        numPoints = 0) const;
+        virtual std::string getValueString() const;
+		virtual Ionflux::Mapping::PointSet* copy() const;
 		static Ionflux::Mapping::PointSet* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::PointSet* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::Mapping::PointSet* create(const 
+		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);        
         virtual unsigned int getNumPoints() const;
         virtual Ionflux::Mapping::Point* getPoint(unsigned int elementIndex
@@ -328,47 +351,13 @@ class PointSet
 		virtual int findPoint(Ionflux::Mapping::Point* needle, unsigned int 
 		occurence = 1) const;
         virtual std::vector<Ionflux::Mapping::Point*>& getPoints();
-        virtual void addPoint(Ionflux::Mapping::Point* addElement);        
+        virtual void addPoint(Ionflux::Mapping::Point* addElement);
+		virtual Ionflux::Mapping::Point* addPoint();
+		virtual void addPoints(std::vector<Ionflux::Mapping::Point*>& newPoints);
+		virtual void addPoints(Ionflux::Mapping::PointSet* newPoints);        
         virtual void removePoint(Ionflux::Mapping::Point* removeElement);
 		virtual void removePointIndex(unsigned int removeIndex);
-        virtual void clearPoints();
-};
-
-class MappingSetClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        MappingSetClassInfo();
-        virtual ~MappingSetClassInfo();
-};
-
-class MappingSet
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-        
-        MappingSet();
-		MappingSet(const Ionflux::Mapping::MappingSet& other);
-        MappingSet(const Ionflux::Mapping::MappingVector& initMappings);
-        virtual ~MappingSet();
-        virtual void addMappings(const Ionflux::Mapping::MappingVector& 
-        newMappings);
-        virtual std::string getString() const;
-		static Ionflux::Mapping::MappingSet* 
-		upcast(Ionflux::ObjectBase::IFObject* other);
-		static Ionflux::Mapping::MappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
-        virtual unsigned int getNumMappings() const;
-        virtual Ionflux::Mapping::Mapping* getMapping(unsigned int 
-        elementIndex = 0) const;
-		virtual int findMapping(Ionflux::Mapping::Mapping* needle, unsigned int 
-		occurence = 1) const;
-        virtual std::vector<Ionflux::Mapping::Mapping*>& getMappings();
-        virtual void addMapping(Ionflux::Mapping::Mapping* addElement);        
-        virtual void removeMapping(Ionflux::Mapping::Mapping* 
-        removeElement);
-		virtual void removeMappingIndex(unsigned int removeIndex);
-        virtual void clearMappings();
+		virtual void clearPoints();
 };
 
 }
@@ -410,6 +399,61 @@ class Mapping
         sample(Ionflux::Mapping::MappingValue value) const;
 		static Ionflux::Mapping::Mapping* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
+};
+
+}
+
+}
+
+
+%{
+#include "ifmapping/MappingSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class Mapping;
+
+class MappingSetClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        MappingSetClassInfo();
+        virtual ~MappingSetClassInfo();
+};
+
+class MappingSet
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        MappingSet();
+		MappingSet(const Ionflux::Mapping::MappingSet& other);
+        MappingSet(const Ionflux::Mapping::MappingVector& initMappings);
+        virtual ~MappingSet();
+        virtual void addMappings(const Ionflux::Mapping::MappingVector& 
+        newMappings);
+        virtual std::string getString() const;
+		virtual Ionflux::Mapping::MappingSet* copy() const;
+		static Ionflux::Mapping::MappingSet* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::MappingSet* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+        virtual unsigned int getNumMappings() const;
+        virtual Ionflux::Mapping::Mapping* getMapping(unsigned int 
+        elementIndex = 0) const;
+		virtual int findMapping(Ionflux::Mapping::Mapping* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::Mapping::Mapping*>& getMappings();
+        virtual void addMapping(Ionflux::Mapping::Mapping* addElement);        
+        virtual void removeMapping(Ionflux::Mapping::Mapping* 
+        removeElement);
+		virtual void removeMappingIndex(unsigned int removeIndex);
+		virtual void clearMappings();
 };
 
 }
@@ -1543,13 +1587,14 @@ class BezierCurve
         Ionflux::Mapping::Point& initP1, const Ionflux::Mapping::Point& 
         initP2, const Ionflux::Mapping::Point& initP3);
         BezierCurve(const Ionflux::Mapping::PointVector& initPoints);
-        BezierCurve(const Ionflux::Mapping::PointSet& initPoints);
+        BezierCurve(Ionflux::Mapping::PointSet& initPoints);
         virtual ~BezierCurve();
+        virtual void validate();
         virtual void setControlPoints(const Ionflux::Mapping::PointVector& 
         newPoints);
         virtual void setControlPoints(const Ionflux::Mapping::PointSet& 
         newPoints);
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value);
         virtual Ionflux::Mapping::BezierCurve interpolate(const 
@@ -1560,6 +1605,15 @@ class BezierCurve
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierCurve* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::BezierCurve* create(const 
+		Ionflux::Mapping::Point& initP0, const Ionflux::Mapping::Point& initP1, 
+		const Ionflux::Mapping::Point& initP2, const Ionflux::Mapping::Point& 
+		initP3, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::BezierCurve* create(const 
+		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+		static Ionflux::Mapping::BezierCurve* create(Ionflux::Mapping::PointSet& 
+		initPoints, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setP0(const Ionflux::Mapping::Point& newP0);
         virtual Ionflux::Mapping::Point getP0() const;
         virtual void setP1(const Ionflux::Mapping::Point& newP1);
@@ -1601,8 +1655,6 @@ class BezierSpline
         BezierSpline();
 		BezierSpline(const Ionflux::Mapping::BezierSpline& other);
         virtual ~BezierSpline();
-        virtual void addSegments(const Ionflux::Mapping::BezierCurveVector&
-        newCurves);
         virtual unsigned int getSegmentIndex(Ionflux::Mapping::MappingValue
         t) const;
         virtual void getPoints(Ionflux::Mapping::PointSet& target, 
@@ -1625,7 +1677,10 @@ class BezierSpline
         outputOffset = Ionflux::Mapping::Point::ORIGIN, 
         Ionflux::Mapping::CoordinateID inCoord = Ionflux::Mapping::C_X, 
         Ionflux::Mapping::CoordinateID outCoord = Ionflux::Mapping::C_Y);
-        virtual std::string getString() const;
+        virtual std::string getSVGPathData(const 
+        Ionflux::Mapping::CoordinateID imagePlaneNormal = 
+        Ionflux::Mapping::C_Z) const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::Mapping::BezierSpline* copy() const;
 		static Ionflux::Mapping::BezierSpline* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -1637,7 +1692,11 @@ class BezierSpline
 		virtual int findSegment(Ionflux::Mapping::BezierCurve* needle, unsigned 
 		int occurence = 1) const;
         virtual std::vector<Ionflux::Mapping::BezierCurve*>& getSegments();
-        virtual void addSegment(Ionflux::Mapping::BezierCurve* addElement);        
+        virtual void addSegment(Ionflux::Mapping::BezierCurve* addElement);
+		virtual Ionflux::Mapping::BezierCurve* addSegment();
+		virtual void addSegments(std::vector<Ionflux::Mapping::BezierCurve*>& 
+		newSegments);
+		virtual void addSegments(Ionflux::Mapping::BezierSpline* newSegments);        
         virtual void removeSegment(Ionflux::Mapping::BezierCurve* 
         removeElement);
 		virtual void removeSegmentIndex(unsigned int removeIndex);

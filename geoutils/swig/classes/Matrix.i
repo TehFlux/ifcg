@@ -61,7 +61,7 @@ class Matrix
         virtual void getCol(unsigned int colIndex, 
         Ionflux::GeoUtils::Vector& target) const;
         virtual void transposeIP();
-        virtual double trace();
+        virtual double trace() const;
         virtual void transform(const Ionflux::GeoUtils::Vector& v, 
         Ionflux::GeoUtils::Vector& target);
         virtual void multiply(const Ionflux::GeoUtils::Matrix& other, 

@@ -181,7 +181,7 @@ void Matrix::transposeIP()
 	}
 }
 
-double Matrix::trace()
+double Matrix::trace() const
 {
 	unsigned int numRows = getNumRows();
 	unsigned int numCols = getNumCols();

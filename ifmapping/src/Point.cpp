@@ -154,6 +154,13 @@ other) const
 	return result;
 }
 
+Ionflux::Mapping::Point Point::operator-(const Ionflux::Mapping::Point& 
+other) const
+{
+	Point result(x - other.x, y - other.y, z - other.z);
+	return result;
+}
+
 Ionflux::Mapping::Point Point::operator*(const Ionflux::Mapping::Point& 
 other) const
 {
@@ -166,6 +173,14 @@ bool Point::operator==(const Ionflux::Mapping::Point& other) const
 	if (!((x == other.x) && (y == other.y) && (z == other.z)))
 	        return false;
 	return true;
+}
+
+bool Point::eq(const Ionflux::Mapping::Point& other, double t) const
+{
+	// TODO: Implementation.
+	return Ionflux::Mapping::eq(x, other.x, t) 
+    && Ionflux::Mapping::eq(y, other.y, t) 
+    && Ionflux::Mapping::eq(z, other.z, t);
 }
 
 bool Point::operator!=(const Ionflux::Mapping::Point& other) const
@@ -205,11 +220,38 @@ mean, const Ionflux::Mapping::Point& stdDev)
 	return Point(Ionflux::Mapping::getRandomNorm(mean.x, stdDev.x), Ionflux::Mapping::getRandomNorm(mean.y, stdDev.y), Ionflux::Mapping::getRandomNorm(mean.z, stdDev.z));
 }
 
-std::string Point::getString() const
+std::string Point::getSVGPathData(const Ionflux::Mapping::CoordinateID 
+imagePlaneNormal) const
 {
-	ostringstream state;
-	state << getClassName() << "[" << x << ", " << y << ", " << z << "]";
-	return state.str();
+	std::ostringstream result;
+	bool first = true;
+	if (imagePlaneNormal != C_X)
+	{
+	    result << x;
+	    first = false;
+	}
+	if (imagePlaneNormal != C_Y)
+	{
+	    if (!first)
+	        result << ",";
+	    result << y;
+	    first = false;
+	}
+	if (imagePlaneNormal != C_Z)
+	{
+	    if (!first)
+	        result << ",";
+	    result << z;
+	    first = false;
+	}
+	return result.str();
+}
+
+std::string Point::getValueString() const
+{
+	std::ostringstream status;
+	status << x << ", " << y << ", " << z;
+	return status.str();
 }
 
 void Point::setX(Ionflux::Mapping::MappingValue newX)
@@ -270,7 +312,35 @@ parentObject)
     Point* newObject = new Point();
     if (newObject == 0)
     {
-        return 0;
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::Point* Point::create(Ionflux::Mapping::MappingValue 
+initX, Ionflux::Mapping::MappingValue initY, Ionflux::Mapping::MappingValue
+initZ, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Point* newObject = new Point(initX, initY, initZ);
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::Point* Point::create(const 
+Ionflux::ObjectBase::DoubleVector& initCoords, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Point* newObject = new Point(initCoords);
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

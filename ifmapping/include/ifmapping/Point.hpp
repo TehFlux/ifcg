@@ -29,6 +29,7 @@
 
 #include "ifobject/types.hpp"
 #include "ifmapping/types.hpp"
+#include "ifmapping/constants.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -180,6 +181,17 @@ class Point
 		virtual Ionflux::Mapping::Point operator+(const Ionflux::Mapping::Point& 
 		other) const;
 		
+		/** Subtraction operator.
+		 *
+		 * Subtract a point offset.
+		 *
+		 * \param other Point.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::Mapping::Point operator-(const Ionflux::Mapping::Point& 
+		other) const;
+		
 		/** Multiplication operator.
 		 *
 		 * Scale a point by factors taken from another point.
@@ -200,6 +212,18 @@ class Point
 		 * \return Result of the comparison.
 		 */
 		virtual bool operator==(const Ionflux::Mapping::Point& other) const;
+		
+		/** Comparison (with tolerance): equal.
+		 *
+		 * Compare the point with another point using the specified tolerance.
+		 *
+		 * \param other Point.
+		 * \param t Tolerance.
+		 *
+		 * \return Result of the comparison.
+		 */
+		virtual bool eq(const Ionflux::Mapping::Point& other, double t = 
+		Ionflux::Mapping::DEFAULT_TOLERANCE) const;
 		
 		/** Comparison operator: inequality.
 		 *
@@ -245,13 +269,26 @@ class Point
 		Ionflux::Mapping::Point& stdDev = 
 		Ionflux::Mapping::Point::DEFAULT_STD_DEV);
 		
-		/** Get string representation.
+		/** Get SVG path data.
 		 *
-		 * Get a string representation of the object
+		 * Get SVG path data for the point. The specified image plane normal 
+		 * coordinate will be assumed to be orthogonal to the image plane and 
+		 * omitted from the path data.
+		 *
+		 * \param imagePlaneNormal Image plane normal axis.
+		 *
+		 * \return SVG path data.
+		 */
+		virtual std::string getSVGPathData(const Ionflux::Mapping::CoordinateID 
+		imagePlaneNormal = Ionflux::Mapping::C_Z) const;
+		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object.
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *
@@ -295,6 +332,31 @@ class Point
 		 */
 		static Ionflux::Mapping::Point* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Point object.
+		 *
+		 * \param initX Element (X).
+		 * \param initY Element (Y).
+		 * \param initZ Element (Z).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::Point* create(Ionflux::Mapping::MappingValue 
+		initX, Ionflux::Mapping::MappingValue initY, 
+		Ionflux::Mapping::MappingValue initZ, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Point object.
+		 *
+		 * \param initCoords Coordinate vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::Point* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get x coordinate.
 		 *

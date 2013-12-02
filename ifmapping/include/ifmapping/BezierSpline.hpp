@@ -88,15 +88,6 @@ class BezierSpline
 		 */
 		virtual ~BezierSpline();
 		
-		/** Add segments.
-		 *
-		 * Add segments from a vector of Bezier curves.
-		 *
-		 * \param newCurves Curves.
-		 */
-		virtual void addSegments(const Ionflux::Mapping::BezierCurveVector& 
-		newCurves);
-		
 		/** Get segment index for parameter.
 		 *
 		 * Get the segment index for a parameter value
@@ -180,13 +171,26 @@ class BezierSpline
 		Ionflux::Mapping::C_X, Ionflux::Mapping::CoordinateID outCoord = 
 		Ionflux::Mapping::C_Y);
 		
-		/** Get string representation.
+		/** Get SVG path data.
 		 *
-		 * Get a string representation of the object
+		 * Get SVG path data for the bezier spline. The specified image plane 
+		 * normal coordinate will be assumed to be orthogonal to the image 
+		 * plane and omitted from the path data.
+		 *
+		 * \param imagePlaneNormal Image plane normal axis.
+		 *
+		 * \return SVG path data.
+		 */
+		virtual std::string getSVGPathData(const Ionflux::Mapping::CoordinateID 
+		imagePlaneNormal = Ionflux::Mapping::C_Z) const;
+		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object.
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *
@@ -273,6 +277,31 @@ class BezierSpline
 		 * \param addElement Segment to be added.
 		 */
 		virtual void addSegment(Ionflux::Mapping::BezierCurve* addElement);
+		
+		/** Create segment.
+		 *
+		 * Create a new segment which is managed by the segment set.
+		 *
+		 * \return New segment.
+		 */
+		virtual Ionflux::Mapping::BezierCurve* addSegment();
+		
+		/** Add segments.
+		 *
+		 * Add segments from a segment vector.
+		 *
+		 * \param newSegments segments.
+		 */
+		virtual void addSegments(const 
+		std::vector<Ionflux::Mapping::BezierCurve*>& newSegments);
+		
+		/** Add segments.
+		 *
+		 * Add segments from a segment set.
+		 *
+		 * \param newSegments segments.
+		 */
+		virtual void addSegments(Ionflux::Mapping::BezierSpline* newSegments);
 		
 		/** Remove segment.
 		 *

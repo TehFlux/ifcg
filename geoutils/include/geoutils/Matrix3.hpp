@@ -34,6 +34,7 @@
 #include "geoutils/Vector2.hpp"
 #include "geoutils/Matrix2.hpp"
 #include "geoutils/Vector3.hpp"
+#include "geoutils/Vector4.hpp"
 #include "geoutils/Matrix.hpp"
 
 namespace Ionflux
@@ -255,6 +256,18 @@ class Matrix3
 		 */
 		virtual void svd(Ionflux::GeoUtils::Matrix3& u, 
 		Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) const;
+		
+		/** Get rotation axis/angle.
+		 *
+		 * Get the rotation axis and angle for a rotation matrix. The rotation
+		 * axis is stored in the first three elements of the result vector. 
+		 * The rotation angle is stored in the fourth element of the result 
+		 * vector. If the matrix is not a rotation matrix, the result is 
+		 * undefined.
+		 *
+		 * \return Axis/angle vector.
+		 */
+		virtual Ionflux::GeoUtils::Vector4 getAxisAngle() const;
 		
 		/** Get number of elements.
 		 *

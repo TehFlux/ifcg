@@ -69,10 +69,14 @@ class Point
         const;
         virtual Ionflux::Mapping::Point operator+(const 
         Ionflux::Mapping::Point& other) const;
+        virtual Ionflux::Mapping::Point operator-(const 
+        Ionflux::Mapping::Point& other) const;
         virtual Ionflux::Mapping::Point operator*(const 
         Ionflux::Mapping::Point& other) const;
         virtual bool operator==(const Ionflux::Mapping::Point& other) 
         const;
+        virtual bool eq(const Ionflux::Mapping::Point& other, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE) const;
         virtual bool operator!=(const Ionflux::Mapping::Point& other) 
         const;
         static Ionflux::Mapping::Point getRandom();
@@ -80,12 +84,22 @@ class Point
         Ionflux::Mapping::Point& mean = Ionflux::Mapping::Point::ORIGIN, 
         const Ionflux::Mapping::Point& stdDev = 
         Ionflux::Mapping::Point::DEFAULT_STD_DEV);
-        virtual std::string getString() const;
+        virtual std::string getSVGPathData(const 
+        Ionflux::Mapping::CoordinateID imagePlaneNormal = 
+        Ionflux::Mapping::C_Z) const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::Mapping::Point* copy() const;
 		static Ionflux::Mapping::Point* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Point* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::Mapping::Point* create(Ionflux::Mapping::MappingValue 
+		initX, Ionflux::Mapping::MappingValue initY, 
+		Ionflux::Mapping::MappingValue initZ, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::Mapping::Point* create(const 
+		Ionflux::ObjectBase::DoubleVector& initCoords, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX(Ionflux::Mapping::MappingValue newX);
         virtual Ionflux::Mapping::MappingValue getX() const;
         virtual void setY(Ionflux::Mapping::MappingValue newY);

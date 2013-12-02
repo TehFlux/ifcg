@@ -107,13 +107,20 @@ class BezierCurve
 		 *
 		 * \param initPoints Control point set.
 		 */
-		BezierCurve(const Ionflux::Mapping::PointSet& initPoints);
+		BezierCurve(Ionflux::Mapping::PointSet& initPoints);
 		
 		/** Destructor.
 		 *
 		 * Destruct BezierCurve object.
 		 */
 		virtual ~BezierCurve();
+		
+		/** Validate control points.
+		 *
+		 * Validate the four control points of the bezier curve. This ensures 
+		 * that all control points are non-null.
+		 */
+		virtual void validate();
 		
 		/** Set control points.
 		 *
@@ -133,13 +140,13 @@ class BezierCurve
 		virtual void setControlPoints(const Ionflux::Mapping::PointSet& 
 		newPoints);
 		
-		/** Get string representation.
+		/** Get string representation of value.
 		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object.
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Evaluate the bezier curve.
 		 *
@@ -207,6 +214,42 @@ class BezierCurve
 		 */
 		static Ionflux::Mapping::BezierCurve* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new BezierCurve object.
+		 *
+		 * \param initP0 Control point (0).
+		 * \param initP1 Control point (1).
+		 * \param initP2 Control point (2).
+		 * \param initP3 Control point (3).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::BezierCurve* create(const 
+		Ionflux::Mapping::Point& initP0, const Ionflux::Mapping::Point& initP1, 
+		const Ionflux::Mapping::Point& initP2, const Ionflux::Mapping::Point& 
+		initP3, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new BezierCurve object.
+		 *
+		 * \param initPoints Control point vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::BezierCurve* create(const 
+		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new BezierCurve object.
+		 *
+		 * \param initPoints Control point set.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::BezierCurve* create(Ionflux::Mapping::PointSet& 
+		initPoints, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get control point (0).
 		 *

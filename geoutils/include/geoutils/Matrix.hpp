@@ -148,7 +148,7 @@ class Matrix
 		 *
 		 * \return Trace of the matrix.
 		 */
-		virtual double trace();
+		virtual double trace() const;
 		
 		/** Transform.
 		 *

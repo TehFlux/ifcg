@@ -82,23 +82,47 @@ PointSet::~PointSet()
 	// TODO: Nothing ATM. ;-)
 }
 
-void PointSet::addPoints(const Ionflux::Mapping::PointVector& newPoints)
+std::string PointSet::getSVGPathData(const Ionflux::Mapping::CoordinateID 
+imagePlaneNormal, unsigned int startIndex, unsigned int numPoints) const
 {
-	for (PointVector::const_iterator i = newPoints.begin(); 
-	    i != newPoints.end(); i++)
-	    addPoint(*i);
+	std::ostringstream result;
+	bool first = true;
+	unsigned int numPoints0 = getNumPoints();
+	unsigned int numPoints1 = numPoints;
+	if ((numPoints1 == 0) 
+	    || (numPoints1 > numPoints0))
+	    numPoints1 = numPoints0;
+	unsigned int k = startIndex;
+	while (k < numPoints1)
+	{
+	    Point* p0 = getPoint(k);
+	    if (p0 != 0)
+	    {
+	        if (!first)
+	            result << " ";
+	        result << p0->getSVGPathData(imagePlaneNormal);
+	        first = false;
+	    }
+	    k++;
+	}
+	return result.str();
 }
 
-void PointSet::addPoints(const Ionflux::Mapping::PointSet& other)
-{
-	for (unsigned int i = 0; i < other.points.size(); i++)
-	    addPoint(other.points[i]);
-}
-
-std::string PointSet::getString() const
+std::string PointSet::getValueString() const
 {
 	ostringstream status;
-	status << getClassName();
+	bool e0 = true;
+	for (PointVector::const_iterator i = points.begin(); 
+	    i != points.end(); i++)
+	{
+	    if (!e0)
+	        status << ", ";
+	    else
+	        e0 = false;
+	    status << "(" << (*i)->getValueString() << ")";
+	}
+	if (points.size() == 0)
+	    status << "<none>";
 	return status.str();
 }
 
@@ -150,6 +174,28 @@ void PointSet::addPoint(Ionflux::Mapping::Point* addElement)
 	points.push_back(addElement);
 }
 
+Ionflux::Mapping::Point* PointSet::addPoint()
+{
+	Ionflux::Mapping::Point* o0 = Point::create();
+	addPoint(o0);
+	return o0;
+}
+
+void PointSet::addPoints(const std::vector<Ionflux::Mapping::Point*>& 
+newPoints)
+{
+	for (std::vector<Ionflux::Mapping::Point*>::const_iterator i = newPoints.begin(); 
+	    i != newPoints.end(); i++)
+	    addPoint(*i);
+}
+
+void PointSet::addPoints(Ionflux::Mapping::PointSet* newPoints)
+{
+	for (unsigned int i = 0; 
+	    i < newPoints->getNumPoints(); i++)
+	    addPoint(newPoints->getPoint(i));
+}
+
 void PointSet::removePoint(Ionflux::Mapping::Point* removeElement)
 {
     bool found = false;
@@ -199,7 +245,7 @@ Ionflux::Mapping::PointSet& other)
     {
         Point* p0 = other.points[i];
         if (p0 != 0)
-            v0.push_back(new Point(*p0));
+            v0.push_back(p0->copy());
         else
             v0.push_back(0);
     }
@@ -225,6 +271,20 @@ Ionflux::Mapping::PointSet* PointSet::create(Ionflux::ObjectBase::IFObject*
 parentObject)
 {
     PointSet* newObject = new PointSet();
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::PointSet* PointSet::create(const 
+Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    PointSet* newObject = new PointSet(initPoints);
     if (newObject == 0)
     {
         throw MappingError("Could not allocate object.");

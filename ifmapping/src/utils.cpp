@@ -164,6 +164,7 @@ void extractSVGControlPoints(const std::string& rawData,
     explode(rawData, " ", parts0);
     unsigned int i = 0;
     Point prevPoint;
+    Point relPoint;
     Point p0;
     std::string pl;
     while (i < parts0.size())
@@ -183,38 +184,54 @@ void extractSVGControlPoints(const std::string& rawData,
             if (i >= parts0.size())
             {
                 std::ostringstream message;
-                message << "Invalid path specification: '" << rawData 
+                message << "[IFMapping::extractSVGControlPoints] "
+                    "Invalid path specification: '" << rawData 
                     << "' (point missing).";
                 throw MappingError(message.str());
             }
             p = parts0[i];
             extractSVGPoint(p, prevPoint);
         } else
-        if (p == "C")
+        if ((p == "C") 
+            || (p == "c"))
         {
             /* Curve to: Extract the remaining three control points 
                and use the previous point as the first control point. */
             pl = p;
-            target.addPoint(new Point(prevPoint));
+            if (pl == "c")
+                relPoint = prevPoint;
+            target.addPoint(prevPoint.copy());
             for (unsigned int j = 0; j < 3; j++)
             {
                 i++;
                 if (i >= parts0.size())
                 {
                     std::ostringstream message;
-                    message << "Invalid path specification: '" << rawData 
+                    message << "[IFMapping::extractSVGControlPoints] "
+                        "Invalid path specification: '" << rawData 
                         << "' (point missing).";
                     throw MappingError(message.str());
                 }
                 p = parts0[i];
                 extractSVGPoint(p, p0);
-                target.addPoint(new Point(p0));
+                Point* p1 = 0;
+                if (pl == "C")
+                {
+                    // absolute coordinates
+                    p1 = p0.copy();
+                } else
+                {
+                    // relative coordinates
+                    p1 = (relPoint + p0).copy();
+                }
+                target.addPoint(p1);
+                prevPoint = *p1;
             }
-            prevPoint = *(target.getPoint(target.getNumPoints() - 1));
         } else
         {
             std::ostringstream message;
-            message << "Invalid path specification: '" << rawData 
+            message << "[IFMapping::extractSVGControlPoints] "
+                "Invalid path specification: '" << rawData 
                 << "' (unknown path token: '" << p << "').";
             throw MappingError(message.str());
         }

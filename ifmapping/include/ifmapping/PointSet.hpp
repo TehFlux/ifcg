@@ -96,29 +96,34 @@ class PointSet
 		 */
 		virtual ~PointSet();
 		
-		/** Add points.
+		/** Get SVG path data.
 		 *
-		 * Add points from a vector of points.
+		 * Get SVG path data for the point set. The specified image plane 
+		 * normal coordinate will be assumed to be orthogonal to the image 
+		 * plane and omitted from the path data. The optional \c startIndex 
+		 * specified the index of the first point that should be included in 
+		 * the path data. The optional \c numPoints specified the number of 
+		 * points that should be included in the path data. If this is set to 
+		 * zero or a value greater than the number of points in the set, all 
+		 * points will be included.
 		 *
-		 * \param newPoints Points.
+		 * \param imagePlaneNormal Image plane normal axis.
+		 * \param startIndex Start index.
+		 * \param numPoints Number of points.
+		 *
+		 * \return SVG path data.
 		 */
-		virtual void addPoints(const Ionflux::Mapping::PointVector& newPoints);
+		virtual std::string getSVGPathData(const Ionflux::Mapping::CoordinateID 
+		imagePlaneNormal = Ionflux::Mapping::C_Z, unsigned int startIndex = 0, 
+		unsigned int numPoints = 0) const;
 		
-		/** Add points.
+		/** Get string representation of value.
 		 *
-		 * Add points from a point set.
-		 *
-		 * \param other Point set.
-		 */
-		virtual void addPoints(const Ionflux::Mapping::PointSet& other);
-		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
+		 * Get a string representation of the value of the object.
 		 *
 		 * \return String representation.
 		 */
-		virtual std::string getString() const;
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *
@@ -161,6 +166,17 @@ class PointSet
 		 * \return Pointer to the new instance.
 		 */
 		static Ionflux::Mapping::PointSet* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new PointSet object.
+		 *
+		 * \param initPoints Control point vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::PointSet* create(const 
+		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
 		
 		/** Get number of points.
@@ -205,6 +221,31 @@ class PointSet
 		 * \param addElement Point to be added.
 		 */
 		virtual void addPoint(Ionflux::Mapping::Point* addElement);
+		
+		/** Create point.
+		 *
+		 * Create a new point which is managed by the point set.
+		 *
+		 * \return New point.
+		 */
+		virtual Ionflux::Mapping::Point* addPoint();
+		
+		/** Add points.
+		 *
+		 * Add points from a point vector.
+		 *
+		 * \param newPoints points.
+		 */
+		virtual void addPoints(const std::vector<Ionflux::Mapping::Point*>& 
+		newPoints);
+		
+		/** Add points.
+		 *
+		 * Add points from a point set.
+		 *
+		 * \param newPoints points.
+		 */
+		virtual void addPoints(Ionflux::Mapping::PointSet* newPoints);
 		
 		/** Remove point.
 		 *

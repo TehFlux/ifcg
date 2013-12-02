@@ -29,6 +29,7 @@
 #include "ifobject/IFLogMessage.hpp"
 #include <sstream>
 #include <cmath>
+#include "ifobject/objectutils.hpp"
 #include "ifmapping/utils.hpp"
 #include "ifmapping/MappingError.hpp"
 #include "ifmapping/EvalCoord.hpp"
@@ -77,14 +78,6 @@ BezierSpline::~BezierSpline()
 	// TODO: Nothing ATM. ;-)
 }
 
-void BezierSpline::addSegments(const Ionflux::Mapping::BezierCurveVector& 
-newCurves)
-{
-	for (BezierCurveVector::const_iterator i = newCurves.begin(); 
-	    i != newCurves.end(); i++)
-	    addSegment(*i);
-}
-
 unsigned int BezierSpline::getSegmentIndex(Ionflux::Mapping::MappingValue 
 t) const
 {
@@ -107,10 +100,8 @@ Ionflux::Mapping::MappingValue precision)
 	for (unsigned int i = 0; i < numPoints; i++)
 	{
 	    Ionflux::Mapping::MappingValue xc = x0 + i * dx;
-	    Ionflux::Mapping::Point* p0 = new Point(evalCoord(xc, 
-	        coord, precision));
-	    if (p0 == 0)
-	        throw MappingError("Could not allocate object.");
+	    Ionflux::Mapping::Point* p0 = 
+	        evalCoord(xc, coord, precision).copy();
 	    target.addPoint(p0);
 	}
 }
@@ -125,7 +116,7 @@ void BezierSpline::initFromSVG(const std::string& rawData)
 	{
 	    std::ostringstream message;
 	    message << "Invalid number of points (" << numPoints << ").";
-	    throw MappingError(message.str());
+	    throw MappingError(getErrorString(message.str(), "initFromSVG"));
 	}
 	unsigned int numSegments = numPoints / 4;
 	for (unsigned int i = 0; i < numSegments; i++)
@@ -134,7 +125,7 @@ void BezierSpline::initFromSVG(const std::string& rawData)
 	    Point* p1 = points.getPoint(4 * i + 1);
 	    Point* p2 = points.getPoint(4 * i + 2);
 	    Point* p3 = points.getPoint(4 * i + 3);
-	    BezierCurve* c0 = new BezierCurve(*p0, *p1, *p2, *p3);
+	    BezierCurve* c0 = BezierCurve::create(*p0, *p1, *p2, *p3);
 	    addSegment(c0);
 	}
 }
@@ -155,15 +146,16 @@ const
 {
 	BezierSpline result;
 	if (segments.size() != other.segments.size())
-	    throw MappingError("Cannot interpolate splines with " 
-	        "different number of segments.");
+	    throw MappingError(getErrorString(
+	        "Cannot interpolate splines with "
+	        "different number of segments.", "interpolate"));
 	/* <---- DEBUG ----- //
 	std::ostringstream message;
 	// <---- DEBUG ----- */
 	for (unsigned int i = 0; i < segments.size(); i++)
 	{
-	    BezierCurve* c0 = new BezierCurve(
-	        segments[i]->interpolate(*(other.segments[i]), t));
+	    BezierCurve* c0 = 
+	        segments[i]->interpolate(*(other.segments[i]), t).copy();
 	    /* <---- DEBUG ----- //
 	    message.str("");
 	    message << c0->getString();
@@ -194,22 +186,60 @@ outCoord)
 	return pc;
 }
 
-std::string BezierSpline::getString() const
+std::string BezierSpline::getSVGPathData(const 
+Ionflux::Mapping::CoordinateID imagePlaneNormal) const
 {
-	ostringstream message;
-	message << getClassName() << "[";
+	std::ostringstream result;
+	unsigned int numSegments = getNumSegments();
+	Point* pPrev = 0;
+	for (unsigned int k = 0; k < numSegments; k++)
+	{
+	    BezierCurve* c0 = getSegment(k);
+	    if (c0 != 0)
+	    {
+	        Point* p0 = Ionflux::ObjectBase::nullPointerCheck(
+	            c0->getPoint(0), this, "getSVGPathData", "Point (0)");
+	        if (k == 0)
+	        {
+	            // first segment
+	            result << "M ";
+	            result << p0->getSVGPathData(imagePlaneNormal) << " C";
+	        } else
+	        {
+	            /* Check whether the last point of the previous segment 
+	               is equal to the first point of this segment. */
+	            if (!p0->eq(*pPrev))
+	            {
+	                std::ostringstream status;
+	                status << "Spline is not continuous (p0 = (" 
+	                    << p0->getValueString()<< "), pPrev = (" 
+	                    << pPrev->getValueString() << "))";
+	                throw MappingError(getErrorString(status.str(), 
+	                    "getSVGPathData"));
+	            }
+	        }
+	        result << " " << c0->getSVGPathData(imagePlaneNormal, 1);
+	        pPrev = Ionflux::ObjectBase::nullPointerCheck(
+	            c0->getPoint(3), this, "getSVGPathData", "Point (3)");
+	    }
+	}
+	return result.str();
+}
+
+std::string BezierSpline::getValueString() const
+{
+	std::ostringstream status;
 	bool e0 = true;
 	for (BezierCurveVector::const_iterator i = segments.begin(); 
 	    i != segments.end(); i++)
 	{
 	    if (!e0)
-	        message << ", ";
+	        status << ", ";
 	    else
 	        e0 = false;
-	    message << (*i)->getString();
+	    status << "[" << (*i)->getValueString() << "]";
 	}
-	message << "]";
-	return message.str();
+	return status.str();
 }
 
 unsigned int BezierSpline::getNumSegments() const
@@ -260,6 +290,28 @@ void BezierSpline::addSegment(Ionflux::Mapping::BezierCurve* addElement)
 	segments.push_back(addElement);
 }
 
+Ionflux::Mapping::BezierCurve* BezierSpline::addSegment()
+{
+	Ionflux::Mapping::BezierCurve* o0 = BezierCurve::create();
+	addSegment(o0);
+	return o0;
+}
+
+void BezierSpline::addSegments(const 
+std::vector<Ionflux::Mapping::BezierCurve*>& newSegments)
+{
+	for (std::vector<Ionflux::Mapping::BezierCurve*>::const_iterator i = newSegments.begin(); 
+	    i != newSegments.end(); i++)
+	    addSegment(*i);
+}
+
+void BezierSpline::addSegments(Ionflux::Mapping::BezierSpline* newSegments)
+{
+	for (unsigned int i = 0; 
+	    i < newSegments->getNumSegments(); i++)
+	    addSegment(newSegments->getSegment(i));
+}
+
 void BezierSpline::removeSegment(Ionflux::Mapping::BezierCurve* 
 removeElement)
 {
@@ -308,7 +360,13 @@ Ionflux::Mapping::BezierSpline& other)
     BezierCurveVector v0;
     for (BezierCurveVector::const_iterator i = other.segments.begin(); 
         i != other.segments.end(); i++)
-        v0.push_back(new BezierCurve(*(*i)));
+    {
+        BezierCurve* c0 = *i;
+        if (c0 != 0)
+            v0.push_back(c0->copy());
+        else
+            v0.push_back(0);
+    }
     /* <---- DEBUG ----- //
     std::ostringstream message;
     message << "Segments: " << other.getNumSegments();
