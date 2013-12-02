@@ -16,9 +16,6 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Segfaults:
-  > cg.Matrix3.create(r - cg.Matrix3.UNIT)
-
 + Add Bezier curve based objects:
   > There should be an option to convert Bezier objects into discrete 
     representations (i.e. Polygon3, Mesh).
@@ -34,6 +31,9 @@ Critical stuff
 --------------------------------------------------------------------------------
 
 + add 'hasClassInfo = true' for parent classes that have class information.
+
++ Segfaults:
+  > cg.Matrix3.create(r - cg.Matrix3.UNIT)
 
 + BGeoUtils
   > export a scene (TransformableGroup containing Camera and Objects)

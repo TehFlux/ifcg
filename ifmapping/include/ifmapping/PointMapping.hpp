@@ -108,14 +108,6 @@ class PointMapping
 		virtual Ionflux::Mapping::Point operator()(Ionflux::Mapping::MappingValue
 		value);
 		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
-		
 		/** Evaluate the mapping.
 		 *
 		 * Evaluate the mapping with the specified parameter.

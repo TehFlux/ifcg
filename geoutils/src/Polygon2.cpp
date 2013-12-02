@@ -214,13 +214,6 @@ bool Polygon2::checkVertex(const Ionflux::GeoUtils::Vertex2& v, double t)
 	return true;
 }
 
-std::string Polygon2::getString() const
-{
-	ostringstream state;
-	state << getClassName();
-	return state.str();
-}
-
 unsigned int Polygon2::getNumVertices() const
 {
     return vertices.size();

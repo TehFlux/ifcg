@@ -28,6 +28,7 @@
  * ========================================================================== */
 
 #include "ifobject/types.hpp"
+#include "ifmapping/Point.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
@@ -135,6 +136,14 @@ class Vertex3
 		 */
 		Vertex3(const Ionflux::GeoUtils::Vector4& initCoords);
 		
+		/** Constructor.
+		 *
+		 * Construct new Vertex3 object.
+		 *
+		 * \param initCoords Point.
+		 */
+		Vertex3(const Ionflux::Mapping::Point& initCoords);
+		
 		/** Destructor.
 		 *
 		 * Destruct Vertex3 object.
@@ -185,6 +194,14 @@ class Vertex3
 		 * \param target Target vector.
 		 */
 		virtual void getCoords(Ionflux::ObjectBase::DoubleVector& target) const;
+		
+		/** Set coordinates.
+		 *
+		 * Set coordinates from a point.
+		 *
+		 * \param newCoords Point.
+		 */
+		virtual void setCoords(const Ionflux::Mapping::Point& newCoords);
 		
 		/** Get coordinates.
 		 *
@@ -534,6 +551,16 @@ class Vertex3
 		static Ionflux::GeoUtils::Vertex3* create(const 
 		Ionflux::GeoUtils::Vector4& initCoords, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vertex3 object.
+		 *
+		 * \param initCoords Point.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vertex3* create(const Ionflux::Mapping::Point& 
+		initCoords, Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.
 		 *

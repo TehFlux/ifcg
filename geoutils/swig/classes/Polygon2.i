@@ -58,7 +58,6 @@ class Polygon2
         virtual int createEdges();
         virtual bool checkVertex(const Ionflux::GeoUtils::Vertex2& v, 
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual std::string getString() const;
 		virtual Ionflux::GeoUtils::Polygon2* copy() const;        
         virtual unsigned int getNumVertices() const;
         virtual Ionflux::GeoUtils::Vertex2* getVertex(unsigned int 

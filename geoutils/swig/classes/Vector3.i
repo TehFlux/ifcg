@@ -62,12 +62,15 @@ class Vector3
         Vector3(const Ionflux::ObjectBase::DoubleVector& initElements0);
         Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 1.);
+        Vector3(const Ionflux::Mapping::Point& initElements0);
         virtual ~Vector3();
         virtual void setElements(double newX0, double newX1, double newX2);
         virtual void setElements(const Ionflux::GeoUtils::Vector2& 
         newElements);
         virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, 
         double newZ = 1.);
+        virtual void setElements(const Ionflux::Mapping::Point& 
+        newElements);
         virtual Ionflux::GeoUtils::Vector3 flip() const;
         virtual Ionflux::GeoUtils::Vector3 normalize() const;
         virtual Ionflux::GeoUtils::Vector3 cross(const 
@@ -107,6 +110,7 @@ class Vector3
         Ionflux::GeoUtils::Range* range = 0, double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
+        virtual Ionflux::Mapping::Point getPoint() const;
         virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& 
         plane) const;
         virtual unsigned int getNumElements() const;
@@ -125,6 +129,8 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(const Ionflux::Mapping::Point& 
+		initElements0, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);

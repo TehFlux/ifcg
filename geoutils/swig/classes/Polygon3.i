@@ -113,6 +113,8 @@ class Polygon3
         Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* 
         indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
         interpolationType = QUAD_INTERPOLATION_BILINEAR);
+        virtual void createSpline(Ionflux::Mapping::BezierSpline& target, 
+        double smoothness = 0.2);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
 		virtual Ionflux::GeoUtils::Polygon3* copy() const;

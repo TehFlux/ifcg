@@ -28,6 +28,7 @@
  * ========================================================================== */
 #include <string>
 #include "ifobject/types.hpp"
+#include "ifmapping/Point.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/Vector2.hpp"
@@ -696,6 +697,84 @@ Ionflux::GeoUtils::Vector2 solveQuadraticEquation(
  */
 int solveCubicEquation(double a, double b, double c, double d, 
     Ionflux::GeoUtils::Vector3& target);
+
+/** Calculate Bezier control points.
+ * 
+ * Calculate the control point positions for a Bezier curve segment 
+ * that connects vertices \c v0 and \c v1. The \c smoothness parameter 
+ * specifies the distance of the inner control points of the Bezier curve 
+ * segment as a fraction of the edge length.
+ *
+ * \param v0 vertex (0)
+ * \param v1 vertex (1)
+ * \param p0 control point (0)
+ * \param p1 control point (1)
+ * \param p2 control point (2)
+ * \param p3 control point (3)
+ * \param smoothness smoothness parameter
+ */
+void calculateLineBezierControlPoints(
+    const Ionflux::GeoUtils::Vertex3& v0, 
+    const Ionflux::GeoUtils::Vertex3& v1, 
+    Ionflux::Mapping::Point& p0, 
+    Ionflux::Mapping::Point& p1, 
+    Ionflux::Mapping::Point& p2, 
+    Ionflux::Mapping::Point& p3, 
+    double smoothness = 0.2);
+
+/** Calculate Bezier control points.
+ * 
+ * Calculate the control point positions for two Bezier curve segments 
+ * that connect at vertex \c v1, given its neighbouring vertices \c v0 and 
+ * \c v2. The \c smoothness parameter can be used to determine how closely 
+ * the curve will follow the original edges. \c smoothness specifies 
+ * the distance of the control points of the Bezier curve segments 
+ * originating at vertex \c v1 as a fraction of the average edge length at 
+ * that vertex, i.e. the average distance of \c v1 to \c v0 and \c v2.
+ * Control points are placed on the tangent at \c v1 parallel to the line 
+ * connecting \c v0 and \c v1.
+ *
+ * \param v0 vertex (0)
+ * \param v1 vertex (1)
+ * \param v2 vertex (2)
+ * \param p0 control point (0)
+ * \param p1 control point (1)
+ * \param p2 control point (2)
+ * \param smoothness smoothness parameter
+ */
+void calculateInnerBezierControlPoints(
+    const Ionflux::GeoUtils::Vertex3& v0, 
+    const Ionflux::GeoUtils::Vertex3& v1, 
+    const Ionflux::GeoUtils::Vertex3& v2, 
+    Ionflux::Mapping::Point& p0, 
+    Ionflux::Mapping::Point& p1, 
+    Ionflux::Mapping::Point& p2, 
+    double smoothness = 0.2);
+
+/** Calculate Bezier control points.
+ * 
+ * Calculate the control point position for an outer vertex of a Bezier 
+ * curve segment. Depending on the order of control points in the 
+ * parameter list, the position of either p1 or p2 can be calculated. 
+ * The \c smoothness parameter can be used to determine how closely the 
+ * curve will follow the original edge. \c smoothness specifies the distance 
+ * of the control point of the Bezier curve segment originating at point 
+ * \c p0 as a fraction of the average edge length at that point. The control 
+ * point is placed on the tangent through \c p2 parallel to the line 
+ * connecting \c p0 and \c p3.
+ *
+ * \param p0 control point (0)
+ * \param p1 control point (1)
+ * \param p2 control point (2)
+ * \param p3 control point (3)
+ * \param smoothness smoothness parameter
+ */
+void calculateOuterBezierControlPoint(
+    const Ionflux::Mapping::Point* p0, 
+    Ionflux::Mapping::Point* p1, 
+    const Ionflux::Mapping::Point* p2, 
+    const Ionflux::Mapping::Point* p3, 
+    double smoothness = 0.2);
 
 namespace TransformNodes
 {

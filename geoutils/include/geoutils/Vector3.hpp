@@ -28,6 +28,7 @@
  * ========================================================================== */
 
 #include "ifobject/types.hpp"
+#include "ifmapping/Point.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/Vector2.hpp"
@@ -127,6 +128,14 @@ class Vector3
 		Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double initZ = 
 		1.);
 		
+		/** Constructor.
+		 *
+		 * Construct new Vector3 object.
+		 *
+		 * \param initElements0 Point.
+		 */
+		Vector3(const Ionflux::Mapping::Point& initElements0);
+		
 		/** Destructor.
 		 *
 		 * Destruct Vector3 object.
@@ -162,6 +171,14 @@ class Vector3
 		 */
 		virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, double 
 		newZ = 1.);
+		
+		/** Set elements.
+		 *
+		 * Set elements from a point.
+		 *
+		 * \param newElements Point.
+		 */
+		virtual void setElements(const Ionflux::Mapping::Point& newElements);
 		
 		/** Flip vector.
 		 *
@@ -402,6 +419,14 @@ class Vector3
 		 */
 		virtual Ionflux::GeoUtils::Vector2 getV2() const;
 		
+		/** Create point.
+		 *
+		 * Create a point.
+		 *
+		 * \return Point.
+		 */
+		virtual Ionflux::Mapping::Point getPoint() const;
+		
 		/** Calculate distance to plane.
 		 *
 		 * Returns the distance of the point with coordinates indicated by the
@@ -509,6 +534,16 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector3 object.
+		 *
+		 * \param initElements0 Point.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector3* create(const Ionflux::Mapping::Point& 
+		initElements0, Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.
 		 *

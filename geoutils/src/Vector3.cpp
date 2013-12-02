@@ -113,6 +113,14 @@ initZ)
 	setV2(initElements0, initZ);
 }
 
+Vector3::Vector3(const Ionflux::Mapping::Point& initElements0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	initElements();
+	setElements(initElements0);
+}
+
 Vector3::~Vector3()
 {
 	// TODO: Nothing ATM. ;-)
@@ -136,6 +144,13 @@ newZ)
 {
 	setElements(newElements);
 	elements[2] = newZ;
+}
+
+void Vector3::setElements(const Ionflux::Mapping::Point& newElements)
+{
+	elements[0] = newElements.getX();
+	elements[1] = newElements.getY();
+	elements[2] = newElements.getZ();
 }
 
 Ionflux::GeoUtils::Vector3 Vector3::flip() const
@@ -364,6 +379,13 @@ Ionflux::GeoUtils::Vector2 Vector3::getV2() const
 	return Vector2(elements[0], elements[1]);
 }
 
+Ionflux::Mapping::Point Vector3::getPoint() const
+{
+	// TODO: Implementation.
+	return Ionflux::Mapping::Point(
+    elements[0], elements[1], elements[2]);
+}
+
 double Vector3::distanceToPlane(const Ionflux::GeoUtils::Plane3& plane) 
 const
 {
@@ -494,6 +516,19 @@ Ionflux::GeoUtils::Vector2& initElements0, double initZ,
 Ionflux::ObjectBase::IFObject* parentObject)
 {
     Vector3* newObject = new Vector3(initElements0, initZ);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector3* Vector3::create(const Ionflux::Mapping::Point& 
+initElements0, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector3* newObject = new Vector3(initElements0);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object.");

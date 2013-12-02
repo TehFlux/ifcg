@@ -43,7 +43,7 @@ class Line3ClassInfo
 };
 
 class Line3
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::Mapping::PointMapping
 {
     public:
         
@@ -62,6 +62,8 @@ class Line3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) 
         const;
+        virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
+        value);
         virtual std::string getValueString() const;
         static const Ionflux::GeoUtils::Line3& axisX();
         static const Ionflux::GeoUtils::Line3& axisY();
@@ -71,6 +73,9 @@ class Line3
 		other);
 		static Ionflux::GeoUtils::Line3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Line3* create(const Ionflux::GeoUtils::Vector3&
+		initP, const Ionflux::GeoUtils::Vector3& initU, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setU(const Ionflux::GeoUtils::Vector3& newU);

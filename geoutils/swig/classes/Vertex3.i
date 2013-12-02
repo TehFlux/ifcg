@@ -58,6 +58,7 @@ class Vertex3
         Vertex3(const Ionflux::ObjectBase::DoubleVector& initCoords);
         Vertex3(const Ionflux::GeoUtils::Vector3& initCoords);
         Vertex3(const Ionflux::GeoUtils::Vector4& initCoords);
+        Vertex3(const Ionflux::Mapping::Point& initCoords);
         virtual ~Vertex3();
         virtual void setCoords(double newX, double newY, double newZ);
         virtual void setCoords(const Ionflux::ObjectBase::DoubleVector& 
@@ -68,6 +69,7 @@ class Vertex3
         newCoords);
         virtual void getCoords(Ionflux::ObjectBase::DoubleVector& target) 
         const;
+        virtual void setCoords(const Ionflux::Mapping::Point& newCoords);
         virtual void getCoords(Ionflux::GeoUtils::Vector3& target) const;
         virtual double getCoord(int index) const;
         virtual Ionflux::GeoUtils::Vector3 getVector() const;
@@ -124,6 +126,8 @@ class Vertex3
 		static Ionflux::GeoUtils::Vertex3* create(const 
 		Ionflux::GeoUtils::Vector4& initCoords, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const Ionflux::Mapping::Point& 
+		initCoords, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX(double newX);
         virtual double getX() const;
         virtual void setY(double newY);

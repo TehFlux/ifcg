@@ -114,6 +114,14 @@ Vertex3::Vertex3(const Ionflux::GeoUtils::Vector4& initCoords)
 	setCoords(initCoords);
 }
 
+Vertex3::Vertex3(const Ionflux::Mapping::Point& initCoords)
+: x(0.), y(0.), z(0.)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	setCoords(initCoords);
+}
+
 Vertex3::~Vertex3()
 {
 	// TODO: Nothing ATM. ;-)
@@ -157,6 +165,13 @@ void Vertex3::getCoords(Ionflux::ObjectBase::DoubleVector& target) const
 	target.push_back(x);
 	target.push_back(y);
 	target.push_back(z);
+}
+
+void Vertex3::setCoords(const Ionflux::Mapping::Point& newCoords)
+{
+	x = newCoords.getX();
+	y = newCoords.getY();
+	z = newCoords.getZ();
 }
 
 void Vertex3::getCoords(Ionflux::GeoUtils::Vector3& target) const
@@ -494,6 +509,19 @@ parentObject)
 Ionflux::GeoUtils::Vertex3* Vertex3::create(const 
 Ionflux::GeoUtils::Vector4& initCoords, Ionflux::ObjectBase::IFObject* 
 parentObject)
+{
+    Vertex3* newObject = new Vertex3(initCoords);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vertex3* Vertex3::create(const Ionflux::Mapping::Point& 
+initCoords, Ionflux::ObjectBase::IFObject* parentObject)
 {
     Vertex3* newObject = new Vertex3(initCoords);
     if (newObject == 0)

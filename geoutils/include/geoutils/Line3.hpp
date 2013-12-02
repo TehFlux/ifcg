@@ -33,7 +33,7 @@
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Plane3.hpp"
 #include "geoutils/Polygon3.hpp"
-#include "ifobject/IFObject.hpp"
+#include "ifmapping/PointMapping.hpp"
 
 namespace Ionflux
 {
@@ -58,7 +58,7 @@ class Line3ClassInfo
  * A line in three-dimensional space.
  */
 class Line3
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::Mapping::PointMapping
 {
 	private:
 		
@@ -163,6 +163,17 @@ class Line3
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) const;
 		
+		/** Evaluate the mapping.
+		 *
+		 * Evaluate the mapping with the specified parameter.
+		 *
+		 * \param value Value.
+		 *
+		 * \return Value of the mapping at the specified parameter.
+		 */
+		virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue 
+		value);
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object
@@ -237,6 +248,18 @@ class Line3
 		 */
 		static Ionflux::GeoUtils::Line3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Line3 object.
+		 *
+		 * \param initP Position vector.
+		 * \param initU Direction vector (u).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Line3* create(const Ionflux::GeoUtils::Vector3&
+		initP, const Ionflux::GeoUtils::Vector3& initU, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get position vector.
 		 *

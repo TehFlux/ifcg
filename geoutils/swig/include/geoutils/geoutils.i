@@ -994,12 +994,15 @@ class Vector3
         Vector3(const Ionflux::ObjectBase::DoubleVector& initElements0);
         Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 1.);
+        Vector3(const Ionflux::Mapping::Point& initElements0);
         virtual ~Vector3();
         virtual void setElements(double newX0, double newX1, double newX2);
         virtual void setElements(const Ionflux::GeoUtils::Vector2& 
         newElements);
         virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, 
         double newZ = 1.);
+        virtual void setElements(const Ionflux::Mapping::Point& 
+        newElements);
         virtual Ionflux::GeoUtils::Vector3 flip() const;
         virtual Ionflux::GeoUtils::Vector3 normalize() const;
         virtual Ionflux::GeoUtils::Vector3 cross(const 
@@ -1039,6 +1042,7 @@ class Vector3
         Ionflux::GeoUtils::Range* range = 0, double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Vector2 getV2() const;
+        virtual Ionflux::Mapping::Point getPoint() const;
         virtual double distanceToPlane(const Ionflux::GeoUtils::Plane3& 
         plane) const;
         virtual unsigned int getNumElements() const;
@@ -1057,6 +1061,8 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(const Ionflux::Mapping::Point& 
+		initElements0, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX0(double newX0);
         virtual double getX0() const;
         virtual void setX1(double newX1);
@@ -2017,7 +2023,6 @@ class Polygon2
         virtual int createEdges();
         virtual bool checkVertex(const Ionflux::GeoUtils::Vertex2& v, 
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual std::string getString() const;
 		virtual Ionflux::GeoUtils::Polygon2* copy() const;        
         virtual unsigned int getNumVertices() const;
         virtual Ionflux::GeoUtils::Vertex2* getVertex(unsigned int 
@@ -2314,6 +2319,7 @@ class Vertex3
         Vertex3(const Ionflux::ObjectBase::DoubleVector& initCoords);
         Vertex3(const Ionflux::GeoUtils::Vector3& initCoords);
         Vertex3(const Ionflux::GeoUtils::Vector4& initCoords);
+        Vertex3(const Ionflux::Mapping::Point& initCoords);
         virtual ~Vertex3();
         virtual void setCoords(double newX, double newY, double newZ);
         virtual void setCoords(const Ionflux::ObjectBase::DoubleVector& 
@@ -2324,6 +2330,7 @@ class Vertex3
         newCoords);
         virtual void getCoords(Ionflux::ObjectBase::DoubleVector& target) 
         const;
+        virtual void setCoords(const Ionflux::Mapping::Point& newCoords);
         virtual void getCoords(Ionflux::GeoUtils::Vector3& target) const;
         virtual double getCoord(int index) const;
         virtual Ionflux::GeoUtils::Vector3 getVector() const;
@@ -2380,6 +2387,8 @@ class Vertex3
 		static Ionflux::GeoUtils::Vertex3* create(const 
 		Ionflux::GeoUtils::Vector4& initCoords, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Vertex3* create(const Ionflux::Mapping::Point& 
+		initCoords, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX(double newX);
         virtual double getX() const;
         virtual void setY(double newY);
@@ -2575,6 +2584,8 @@ class Polygon3
         Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* 
         indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
         interpolationType = QUAD_INTERPOLATION_BILINEAR);
+        virtual void createSpline(Ionflux::Mapping::BezierSpline& target, 
+        double smoothness = 0.2);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
 		virtual Ionflux::GeoUtils::Polygon3* copy() const;
@@ -3223,7 +3234,7 @@ class Line3ClassInfo
 };
 
 class Line3
-: public Ionflux::ObjectBase::IFObject
+: public Ionflux::Mapping::PointMapping
 {
     public:
         
@@ -3242,6 +3253,8 @@ class Line3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) 
         const;
+        virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
+        value);
         virtual std::string getValueString() const;
         static const Ionflux::GeoUtils::Line3& axisX();
         static const Ionflux::GeoUtils::Line3& axisY();
@@ -3251,6 +3264,9 @@ class Line3
 		other);
 		static Ionflux::GeoUtils::Line3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		static Ionflux::GeoUtils::Line3* create(const Ionflux::GeoUtils::Vector3&
+		initP, const Ionflux::GeoUtils::Vector3& initU, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setU(const Ionflux::GeoUtils::Vector3& newU);

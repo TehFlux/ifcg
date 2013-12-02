@@ -139,14 +139,6 @@ class Polygon2
 		virtual bool checkVertex(const Ionflux::GeoUtils::Vertex2& v, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Get string representation.
-		 *
-		 * Get a string representation of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getString() const;
-		
 		/** Assignment operator.
 		 *
 		 * Assign an object.

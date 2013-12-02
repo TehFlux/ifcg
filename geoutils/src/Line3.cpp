@@ -47,7 +47,6 @@ Line3ClassInfo::Line3ClassInfo()
 {
 	name = "Line3";
 	desc = "Line (3D)";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
 }
 
 Line3ClassInfo::~Line3ClassInfo()
@@ -196,6 +195,12 @@ bool Line3::operator!=(const Ionflux::GeoUtils::Line3& other) const
 	return !(*this == other);;
 }
 
+Ionflux::Mapping::Point Line3::call(Ionflux::Mapping::MappingValue value)
+{
+	Vector3 result(p + value * u);
+	return result.getPoint();
+}
+
 std::string Line3::getValueString() const
 {
 	std::ostringstream status;
@@ -274,7 +279,21 @@ parentObject)
     Line3* newObject = new Line3();
     if (newObject == 0)
     {
-        return 0;
+        throw GeoUtilsError("Could not allocate object");;
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Line3* Line3::create(const Ionflux::GeoUtils::Vector3& 
+initP, const Ionflux::GeoUtils::Vector3& initU, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Line3* newObject = new Line3(initP, initU);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object");;
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

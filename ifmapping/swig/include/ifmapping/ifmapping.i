@@ -551,7 +551,6 @@ class PointMapping
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
         virtual Ionflux::Mapping::Point 
         operator()(Ionflux::Mapping::MappingValue value);
-        virtual std::string getString() const;
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value) = 0;
 		static Ionflux::Mapping::PointMapping* 

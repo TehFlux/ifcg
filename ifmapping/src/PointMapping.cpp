@@ -92,13 +92,6 @@ PointMapping::operator()(Ionflux::Mapping::MappingValue value)
 	return call(value);;
 }
 
-std::string PointMapping::getString() const
-{
-	ostringstream state;
-	state << getClassName();
-	return state.str();
-}
-
 Ionflux::Mapping::PointMapping* 
 PointMapping::upcast(Ionflux::ObjectBase::IFObject* other)
 {

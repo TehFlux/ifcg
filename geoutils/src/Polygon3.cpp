@@ -32,6 +32,7 @@
 #include <sstream>
 #include <iomanip>
 #include "ifobject/objectutils.hpp"
+#include "ifmapping/BezierCurve.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/utils.hpp"
 #include "geoutils/Line3.hpp"
@@ -759,6 +760,78 @@ Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType)
 	    throw GeoUtilsError(getErrorString(status.str(), "getUVVertex"));
 	}
 	return Vertex3(p);
+}
+
+void Polygon3::createSpline(Ionflux::Mapping::BezierSpline& target, double 
+smoothness)
+{
+	unsigned int numVerts0 = getNumVertices();
+	if (numVerts0 < 2)
+	    return;
+	unsigned int numEdges0 = numVerts0 - 1;
+	target.clearSegments();
+	// Create Bezier curve segments for the polygon lines.
+	for (unsigned int i = 0; i < numEdges0; i++)
+	{
+	    Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(i), this, "createSpline", "Vertex (0)");
+	    Vertex3* v1 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(i + 1), this, "createSpline", "Vertex (1)");
+	    Ionflux::Mapping::Point p0;
+	    Ionflux::Mapping::Point p1;
+	    Ionflux::Mapping::Point p2;
+	    Ionflux::Mapping::Point p3;
+	    calculateLineBezierControlPoints(*v0, *v1, p0, p1, p2, p3, 
+	        smoothness);
+	    Ionflux::Mapping::BezierCurve* c0 = 
+	        Ionflux::Mapping::BezierCurve::create(p0, p1, p2, p3);
+	    target.addSegment(c0);
+	}
+	if ((numEdges0 == 1) 
+	    || (smoothness == 0.))
+	    return;
+	// Displace the control points to create a smooth curve.
+	Ionflux::Mapping::BezierCurve* c0 = 0;
+	Ionflux::Mapping::BezierCurve* c1 = 0;
+	Ionflux::Mapping::Point* p0 = 0;
+	Ionflux::Mapping::Point* p1 = 0;
+	Ionflux::Mapping::Point* p2 = 0;
+	Ionflux::Mapping::Point* p3 = 0;
+	Ionflux::Mapping::Point* p4 = 0;
+	Vertex3 v0;
+	Vertex3 v1;
+	Vertex3 v2;
+	for (unsigned int i = 0; i < numEdges0 - 1; i++)
+	{
+	    /* For each inner vertex, the control points are placed on the 
+	       tangent through that vertex in the direction of the line 
+	       connecting the neighbouring vertices. */
+	    c0 = target.getSegment(i);
+	    c1 = target.getSegment(i + 1);
+	    p0 = c0->getPoint(0);
+	    p1 = c0->getPoint(2);
+	    p2 = c0->getPoint(3);
+	    p3 = c1->getPoint(1);
+	    p4 = c1->getPoint(3);
+	    v0.setCoords(*p0);
+	    v1.setCoords(*p2);
+	    v2.setCoords(*p4);
+	    calculateInnerBezierControlPoints(v0, v1, v2, *p1, *p2, *p3, 
+	        smoothness);
+	}
+	// Displace the outer control points.
+	c0 = target.getSegment(0);
+	p0 = c0->getPoint(0);
+	p1 = c0->getPoint(1);
+	p2 = c0->getPoint(2);
+	p3 = c0->getPoint(3);
+	calculateOuterBezierControlPoint(p0, p1, p2, p3, smoothness);
+	c0 = target.getSegment(numEdges0 - 1);
+	p0 = c0->getPoint(0);
+	p1 = c0->getPoint(1);
+	p2 = c0->getPoint(2);
+	p3 = c0->getPoint(3);
+	calculateOuterBezierControlPoint(p3, p2, p1, p0, smoothness);
 }
 
 Ionflux::GeoUtils::Polygon3* Polygon3::circle(unsigned int resolution)

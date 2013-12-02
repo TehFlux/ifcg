@@ -36,6 +36,8 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/BoxBoundsItemCompare.hpp"
 #include "geoutils/BoxBoundsItemCompareAxis.hpp"
+#include "geoutils/Line3.hpp"
+#include "geoutils/Vertex3.hpp"
 
 namespace Ionflux
 {
@@ -802,6 +804,74 @@ int solveCubicEquation(double a, double b, double c, double d,
     int result = gsl_poly_solve_cubic(b / a, c / a, d / a, &x1, &x2, &x3);
     target.setElements(x1, x2, x3);
     return result;
+}
+
+void calculateLineBezierControlPoints(
+    const Ionflux::GeoUtils::Vertex3& v0, 
+    const Ionflux::GeoUtils::Vertex3& v1, 
+    Ionflux::Mapping::Point& p0, 
+    Ionflux::Mapping::Point& p1, 
+    Ionflux::Mapping::Point& p2, 
+    Ionflux::Mapping::Point& p3, 
+    double smoothness)
+{
+    Vector3 vv0(v0.getVector());
+    Vector3 vv1(v1.getVector());
+    Vector3 u0(vv1 - vv0);
+    Line3 t0(vv0, u0);
+    p0 = vv0.getPoint();
+    p1 = t0(smoothness);
+    p2 = t0(1. - smoothness);
+    p3 = vv1.getPoint();
+}
+
+void calculateInnerBezierControlPoints(
+    const Ionflux::GeoUtils::Vertex3& v0, 
+    const Ionflux::GeoUtils::Vertex3& v1, 
+    const Ionflux::GeoUtils::Vertex3& v2, 
+    Ionflux::Mapping::Point& p0, 
+    Ionflux::Mapping::Point& p1, 
+    Ionflux::Mapping::Point& p2, 
+    double smoothness)
+{
+    Vector3 vv0(v0.getVector());
+    Vector3 vv1(v1.getVector());
+    Vector3 vv2(v2.getVector());
+    double l0 = (vv1 - vv0).norm();
+    double l1 = (vv2 - vv1).norm();
+    double la0 = 0.5 * (l0 + l1);
+    double s0 = smoothness * la0;
+    Vector3 u0(vv2 - vv0);
+    u0.normalizeIP();
+    Line3 t0(vv1, u0);
+    p1 = vv1.getPoint();
+    p0 = t0(-s0);
+    p2 = t0(s0);
+}
+
+void calculateOuterBezierControlPoint(
+    const Ionflux::Mapping::Point* p0, 
+    Ionflux::Mapping::Point* p1, 
+    const Ionflux::Mapping::Point* p2, 
+    const Ionflux::Mapping::Point* p3, 
+    double smoothness)
+{
+    Vector3 vv0(*p0);
+    Vector3 vv1(*p1);
+    Vector3 vv2(*p2);
+    Vector3 vv3(*p3);
+    Vector3 u0(vv3 - vv0);
+    double s0 = smoothness * u0.norm();
+    u0.normalizeIP();
+    /* Some linear algebra to position the control point on the 
+       tangent with the correct offset. */
+    Vector3 g0(vv2 - vv0);
+    Vector3 x0(u0.project(g0));
+    Vector3 d0(g0 - x0);
+    double dn0 = d0.norm();
+    double yn0 = ::sqrt(s0 * s0 + dn0 * dn0);
+    Vector3 pc0(vv0 + d0 + yn0 * u0);
+    *p1 = pc0.getPoint();
 }
 
 namespace TransformNodes

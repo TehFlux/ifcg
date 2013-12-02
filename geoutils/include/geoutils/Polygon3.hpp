@@ -27,6 +27,7 @@
  * 
  * ========================================================================== */
 
+#include "ifmapping/BezierSpline.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/Vertex3.hpp"
@@ -451,6 +452,22 @@ class Polygon3
 		Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* indices =
 		0, Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType = 
 		QUAD_INTERPOLATION_BILINEAR);
+		
+		/** Create Bezier spline.
+		 *
+		 * Create a Bezier spline that interpolates the vertices of the 
+		 * polygon. The \c smoothness parameter can be used to determine how 
+		 * closely the curve will follow the original polygon lines. For each 
+		 * vertex of the polygon, \c smoothness specifies the distance of the 
+		 * inner control points of the Bezier curve segments originating at 
+		 * that vertex as a fraction of the average edge length at that 
+		 * vertex.
+		 *
+		 * \param target Where to store the Bezier spline data.
+		 * \param smoothness Smoothness parameter.
+		 */
+		virtual void createSpline(Ionflux::Mapping::BezierSpline& target, double 
+		smoothness = 0.2);
 		
 		/** Create polygon: circle.
 		 *
