@@ -49,6 +49,13 @@ namespace GeoUtils
 
 class Polygon3;
 
+namespace XMLUtils
+{
+
+class Polygon3XMLFactory;
+
+}
+
 /// Class information for class Polygon3.
 class Polygon3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -595,6 +602,15 @@ class Polygon3
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get vertex source.
 		 *

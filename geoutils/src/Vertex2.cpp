@@ -35,6 +35,7 @@
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/Vertex2XMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -363,6 +364,21 @@ void Vertex2::loadFromXMLFile(const std::string& fileName)
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVertex2(data, *this);
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+Vertex2::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

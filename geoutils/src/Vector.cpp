@@ -35,6 +35,7 @@
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/VectorXMLFactory.hpp"
 
 using namespace std;
 
@@ -421,6 +422,21 @@ void Vector::loadFromXMLFile(const std::string& fileName)
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getVector(data, *this);
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+Vector::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::VectorXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

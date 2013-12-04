@@ -43,6 +43,13 @@ namespace GeoUtils
 class Plane3;
 class Range;
 
+namespace XMLUtils
+{
+
+class Vector3XMLFactory;
+
+}
+
 /// Class information for class Vector3.
 class Vector3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -578,6 +585,15 @@ class Vector3
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get element x0.
 		 *

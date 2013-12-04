@@ -43,6 +43,13 @@ namespace GeoUtils
 class Interpolator;
 class Vertex2;
 
+namespace XMLUtils
+{
+
+class Vertex2XMLFactory;
+
+}
+
 /// Class information for class Vertex2.
 class Vertex2ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -362,6 +369,15 @@ class Vertex2
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get x coordinate.
 		 *

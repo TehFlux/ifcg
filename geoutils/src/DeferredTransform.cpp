@@ -40,6 +40,7 @@
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/DeferredTransformXMLFactory.hpp"
 
 using namespace std;
 
@@ -661,6 +662,21 @@ void DeferredTransform::loadFromXMLFile(const std::string& fileName)
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getDeferredTransform(data, *this);
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+DeferredTransform::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

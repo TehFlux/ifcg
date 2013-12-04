@@ -41,6 +41,13 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+namespace XMLUtils
+{
+
+class CameraXMLFactory;
+
+}
+
 /// Class information for class Camera.
 class CameraClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -443,6 +450,15 @@ class Camera
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get location vector.
 		 *

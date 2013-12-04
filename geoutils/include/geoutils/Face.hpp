@@ -41,6 +41,13 @@ namespace GeoUtils
 class VectorSetSet;
 class FaceData;
 
+namespace XMLUtils
+{
+
+class FaceXMLFactory;
+
+}
+
 /// Class information for class Face.
 class FaceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -797,6 +804,15 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get number of vertices.
 		 *

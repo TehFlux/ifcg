@@ -38,6 +38,13 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+namespace XMLUtils
+{
+
+class Vector2XMLFactory;
+
+}
+
 /// Class information for class Vector2.
 class Vector2ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -351,6 +358,15 @@ class Vector2
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get element x0.
 		 *

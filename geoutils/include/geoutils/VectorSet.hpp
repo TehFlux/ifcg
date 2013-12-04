@@ -40,6 +40,13 @@ namespace GeoUtils
 
 class Vector;
 
+namespace XMLUtils
+{
+
+class VectorSetXMLFactory;
+
+}
+
 /// Class information for class VectorSet.
 class VectorSetClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -216,6 +223,15 @@ class VectorSet
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get number of vectors.
 		 *

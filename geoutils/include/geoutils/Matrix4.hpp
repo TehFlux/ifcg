@@ -42,6 +42,13 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+namespace XMLUtils
+{
+
+class Matrix4XMLFactory;
+
+}
+
 /// Class information for class Matrix4.
 class Matrix4ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -600,6 +607,15 @@ class Matrix4
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get row vector (0).
 		 *

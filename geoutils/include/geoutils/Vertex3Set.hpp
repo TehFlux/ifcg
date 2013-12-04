@@ -42,6 +42,13 @@ namespace GeoUtils
 
 class Vertex3;
 
+namespace XMLUtils
+{
+
+class Vertex3SetXMLFactory;
+
+}
+
 /// Class information for class Vertex3Set.
 class Vertex3SetClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -364,6 +371,15 @@ class Vertex3Set
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get number of vertices.
 		 *

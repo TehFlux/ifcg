@@ -36,7 +36,7 @@ if (not os.path.isfile('site_scons/local_config.py')):
 import local_config as lc
 from sources import *
 from builders import buildSource, buildClassInterface, buildInterface
-from builders import buildClassXMLIO, buildXMLIO
+from builders import buildClassXMLFactory, buildClassXMLIO, buildXMLIO
 
 Help("""
 Type 'scons' to build the default targets.
@@ -88,8 +88,8 @@ else:
 prefix = ARGUMENTS.get('prefix', defaultPrefix)
 
 geoutilsEnv.VariantDir('build', 'src')
-geoutilsEnv.VariantDir('test/build', 'test')
-geoutilsEnv.VariantDir('swig/wrapper/build', 'swig/wrapper')
+geoutilsEnv.VariantDir('build/test', 'test')
+geoutilsEnv.VariantDir('build/swig/wrapper', 'swig/wrapper')
 
 def checkProgram(ctx, cmd):
     """Check for installed program."""
@@ -198,7 +198,6 @@ if (not config.CheckProgram("swig")):
 
 geoutilsEnv = config.Finish()
 
-
 sourceBuilder = Builder(action = buildSource)
 classInterfaceBuilder = Builder(action = buildClassInterface)
 interfaceBuilder = Builder(action = buildInterface)
@@ -207,6 +206,7 @@ for it in geoutilsEnv['CPPPATH']:
     swigIncludes += ('-I' + it + ' ')
 swigPythonBuilder = Builder(action = "swig -c++ -python "
     + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
+classXMLFactoryBuilder = Builder(action = buildClassXMLFactory)
 classXMLIOBuilder = Builder(action = buildClassXMLIO)
 xmlIOBuilder = Builder(action = buildXMLIO)
 
@@ -214,6 +214,7 @@ geoutilsEnv.Append(BUILDERS = { 'Source' : sourceBuilder,
     'ClassInterface' : classInterfaceBuilder, 
     'Interface' : interfaceBuilder, 
     'SWIGPython' : swigPythonBuilder, 
+    'ClassXMLFactory' : classXMLFactoryBuilder, 
     'ClassXMLIO' : classXMLIOBuilder, 
     'XMLIO' : xmlIOBuilder
 })
@@ -281,6 +282,7 @@ else:
 if (haveIFTpl):
     xmlIO = []
     classXMLIO = []
+    classXMLFactory = []
     # geoutils library
     xmlIOTargets0 = []
     xmlIOTargets1 = []
@@ -289,6 +291,7 @@ if (haveIFTpl):
         t0 = 'temp/xmlutils/' + it + '_xml.hpp'
         t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
         t2 = 'temp/xmlutils/' + it + '_xml.cpp'
+        t3 = 'conf/class/xmlio/' + it + 'XMLFactory.conf'
         xmlIOTargets0 += [t0]
         xmlIOTargets1 += [t1]
         xmlIOTargets2 += [t2]
@@ -299,6 +302,10 @@ if (haveIFTpl):
                 source = ['conf/class/' + it + '.conf']), 
             geoutilsEnv.ClassXMLIO(target = t2, 
                 source = ['conf/class/' + it + '.conf'])
+        ]
+        classXMLFactory += [
+            geoutilsEnv.ClassXMLFactory(target = t3, 
+                source = ['conf/class/' + it + '.conf']), 
         ]
     xmlIO += [ 
         geoutilsEnv.XMLIO(target = lc.xmlIOFile[0], 
@@ -327,11 +334,29 @@ if (haveIFTpl):
     #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[5], 
     #        source = xmlIOTargets + [lc.xmlIOTemplateFile[5]])
     #]
-    allTargets += (classXMLIO + xmlIO)
+    allTargets += (classXMLFactory + classXMLIO + xmlIO)
 else:
     print "***********************************************************"
     print "iftpl not found -  XML I/O functions will NOT be generated!"
     print "***********************************************************"
+
+# XML object factory source files.
+if (haveIFClassgen):
+    xmlFactorySources = []
+    for it in geoutilsLibXMLClasses:
+        xmlFactorySources += [ 
+            geoutilsEnv.Source(target = [
+                    'include/geoutils/xmlio/' + it + 'XMLFactory.hpp', 
+                    'src/xmlio/' + it + 'XMLFactory.cpp'], 
+                source = ['conf/class/xmlio/' + it + 'XMLFactory.conf'])
+        ]
+        geoutilsLibSources += [ 'build/xmlio/' + it + 'XMLFactory.cpp' ]
+    allTargets += xmlFactorySources
+else:
+    print "**********************************************************"
+    print "ifclassgen not found - XML factory source files will NOT "
+    print "be generated!"
+    print "**********************************************************"
 
 ## tinyxml
 #tinyxmlLibEnv = env.Clone()
@@ -376,7 +401,7 @@ targetTests = [cgeoutilstest14Bin]
 
 # geoutils Python module.
 geoutilsWrapper = geoutilsEnv.SWIGPython(target = [ 
-        'swig/wrapper/geoutils_wrap.cxx', 'swig/python/CGeoUtils.py'], 
+        'swig/wrapper/geoutils_wrap.cpp', 'swig/python/CGeoUtils.py'], 
     source = lc.swigInterfaceFile[0])
 
 geoutilsPyModuleEnv = geoutilsEnv.Clone()
@@ -386,12 +411,12 @@ if (sys.platform == 'darwin'):
 
 geoutilsPyModule = geoutilsPyModuleEnv.SharedLibrary(
     target = 'swig/python/_CGeoUtils', 
-    source = 'swig/wrapper/geoutils_wrap.cxx', 
+    source = 'build/swig/wrapper/geoutils_wrap.cpp', 
     SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
 
 # Altjira/GeoUtils Python module.
 altjiraGeoUtilsWrapper = altjiraGeoUtilsEnv.SWIGPython(target = [ 
-        'swig/wrapper/altjirageoutils_wrap.cxx', 'swig/python/AltjiraGeoUtils.py'], 
+        'swig/wrapper/altjirageoutils_wrap.cpp', 'swig/python/AltjiraGeoUtils.py'], 
     source = lc.swigInterfaceFile[1])
 
 altjiraGeoUtilsPyModuleEnv = altjiraGeoUtilsEnv.Clone()
@@ -402,7 +427,7 @@ if (sys.platform == 'darwin'):
 
 altjiraGeoUtilsPyModule = altjiraGeoUtilsPyModuleEnv.SharedLibrary(
     target = 'swig/python/_AltjiraGeoUtils', 
-    source = 'swig/wrapper/altjirageoutils_wrap.cxx', 
+    source = 'build/swig/wrapper/altjirageoutils_wrap.cpp', 
     SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
 
 pyModules = [geoutilsPyModule]
@@ -443,8 +468,9 @@ aliasInstall = Alias('install', installTargets)
 if (haveIFClassgen):
     aliasSources = Alias('sources', sources)
 if (haveIFTpl):
-    #aliasXMLIO = Alias('xmlio', classXMLIO + xmlIO)
-    aliasXMLIO = Alias('xmlio', classXMLIO)
+    aliasXMLIO = Alias('xmlio', classXMLFactory + classXMLIO + xmlIO 
+        + xmlFactorySources)
+    #aliasXMLIO = Alias('xmlio', classXMLIO)
     aliasInterfaces = Alias('interfaces', classInterfaces + interfaces)
 if (buildPyModule):
     aliasPyModule = Alias('pymodule', pyModules)

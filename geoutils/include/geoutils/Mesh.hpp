@@ -40,6 +40,13 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+namespace XMLUtils
+{
+
+class MeshXMLFactory;
+
+}
+
 /// Class information for class Mesh.
 class MeshClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -607,6 +614,15 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get vertex source.
 		 *

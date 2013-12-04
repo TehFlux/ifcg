@@ -36,10 +36,13 @@ def buildSource(source, target, env):
         cn, ext = os.path.splitext(os.path.basename(it.path))
         if (ext == '.conf'):
             classNames += [cn]
+    sourcePath = os.path.dirname(source[0].path)
+    targetIncludePath = os.path.dirname(target[0].path)
+    targetSrcPath = os.path.dirname(target[1].path)
     for cn in classNames:
         c0 = ("ifclassgen0 -t " + lc.ifobjectTemplatePath 
-            + " -c conf/class -m conf/main.conf -i include/" 
-            + lc.baseName + " -s src " + cn)
+            + " -c " + sourcePath + " -m conf/main.conf -i " 
+            + targetIncludePath + " -s " + targetSrcPath + " " + cn)
         print c0
         sp0 = subprocess.call(shlex.split(c0))
 
@@ -79,6 +82,23 @@ def buildInterface(source, target, env):
     for it in target:
         f0 = open(it.path, 'w')
         f0.write(tpl.substitute(tplData))
+        f0.close()
+
+def buildClassXMLFactory(source, target, env):
+    """Builder function to build an XML object factory configuration file 
+       from class configuration."""
+    classNames = []
+    for it in source:
+        cn, ext = os.path.splitext(os.path.basename(it.path))
+        if (ext == '.conf'):
+            classNames += [cn]
+    for cn in classNames:
+        c0 = ("iftpl0 -I " + lc.ifobjectTemplatePath 
+            + " xml.conf.xml_object_factory conf/class/" + cn 
+            + ".conf conf/main.conf")
+        print c0
+        f0 = open("conf/class/xmlio/" + cn + "XMLFactory.conf", 'w')
+        sp0 = subprocess.call(shlex.split(c0), stdout = f0)
         f0.close()
 
 def buildClassXMLIO(source, target, env):

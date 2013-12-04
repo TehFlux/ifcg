@@ -34,6 +34,7 @@
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/Shape3XMLFactory.hpp"
 
 using namespace std;
 
@@ -207,6 +208,18 @@ void Shape3::loadFromXMLFile(const std::string& fileName)
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getShape3(data, *this);
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+Shape3::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory::create();
+        fac0->addRef();
+    }
+    return fac0;
 }
 
 }

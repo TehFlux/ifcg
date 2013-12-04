@@ -38,6 +38,7 @@
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/TransformableGroupXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -520,6 +521,18 @@ void TransformableGroup::loadFromXMLFile(const std::string& fileName)
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getTransformableGroup(data, *this);
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+TransformableGroup::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory::create();
+        fac0->addRef();
+    }
+    return fac0;
 }
 
 }

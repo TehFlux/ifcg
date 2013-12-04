@@ -43,6 +43,13 @@ namespace GeoUtils
 
 class Polygon3;
 
+namespace XMLUtils
+{
+
+class Polygon3SetXMLFactory;
+
+}
+
 /// Class information for class Polygon3Set.
 class Polygon3SetClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -448,6 +455,15 @@ class Polygon3Set
 		 * \param fileName file name
 		 */
 		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get number of polygons.
 		 *

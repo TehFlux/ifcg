@@ -39,6 +39,7 @@
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/Polygon3SetXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -556,6 +557,18 @@ void Polygon3Set::loadFromXMLFile(const std::string& fileName)
 	    << std::endl;
 	// <---- DEBUG ----- */
 	Ionflux::GeoUtils::XMLUtils::getPolygon3Set(data, *this);
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+Polygon3Set::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory::create();
+        fac0->addRef();
+    }
+    return fac0;
 }
 
 }
