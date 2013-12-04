@@ -71,6 +71,7 @@ class TransformNode
         virtual std::string getDebugInfo(bool expand = true);
         virtual void enableDebugMode(bool newDebugMode = true, bool expand 
         = false);
+		virtual Ionflux::GeoUtils::TransformNodes::TransformNode* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::TransformNode* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 

@@ -97,6 +97,11 @@ TransformNode::~TransformNode()
 	// TODO: Nothing ATM. ;-)
 }
 
+void TransformNode::process()
+{
+	// TODO: Implementation.
+}
+
 void TransformNode::addInputs(const Ionflux::GeoUtils::InputNodeSpecVector&
 newInputs)
 {
@@ -562,6 +567,15 @@ Ionflux::GeoUtils::TransformNodes::TransformNode& other)
     clearOutputs();
     addInputs(v0);
 	return *this;
+}
+
+Ionflux::GeoUtils::TransformNodes::TransformNode* TransformNode::copy() 
+const
+{
+    TransformNode* newTransformNode = 
+        new TransformNode();
+    *newTransformNode = *this;
+    return newTransformNode;
 }
 
 Ionflux::GeoUtils::TransformNodes::TransformNode* 

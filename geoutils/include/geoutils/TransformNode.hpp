@@ -97,7 +97,7 @@ class TransformNode
 		 * Update the outputs of the node by processing the inputs. This 
 		 * should be implemented by derived classes.
 		 */
-		virtual void process() = 0;
+		virtual void process();
 		
 	public:
 		/// Default maximum loop count.
@@ -244,6 +244,14 @@ class TransformNode
 		 */
 		virtual Ionflux::GeoUtils::TransformNodes::TransformNode& operator=(const
 		Ionflux::GeoUtils::TransformNodes::TransformNode& other);
+		
+		/** Copy.
+		 *
+		 * Create a copy of the object.
+		 *
+		 * \return Newly allocated copy of the object.
+		 */
+		virtual Ionflux::GeoUtils::TransformNodes::TransformNode* copy() const;
 		
 		/** Upcast.
 		 *

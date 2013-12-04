@@ -439,8 +439,10 @@ altjiraGeoUtilsPyModule = altjiraGeoUtilsPyModuleEnv.SharedLibrary(
     source = 'build/swig/wrapper/altjirageoutils_wrap.cpp', 
     SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
 
+pyWrappers = [geoutilsWrapper]
 pyModules = [geoutilsPyModule]
 if (buildAltjiraGeoUtils):
+    pyWrappers += [altjiraGeoUtilsWrapper]
     pyModules += [altjiraGeoUtilsPyModule]
 
 allHeaders = geoutilsLibHeaders + lc.swigInterfaceFile
@@ -466,7 +468,7 @@ if (buildPyModule):
 
 allTargets += (targetLibs + targetBins + targetTests)
 if (buildPyModule):
-    allTargets += pyModules
+    allTargets += (pyWrappers + pyModules)
 
 installTargets = [
     installHeaders, installXMLFactoryHeaders, installLibs, installBins
