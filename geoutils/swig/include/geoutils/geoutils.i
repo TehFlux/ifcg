@@ -431,11 +431,8 @@ Ionflux::GeoUtils::TransformNodes::InputNodeSpec createInputNodeSpec(
 void getSVGPolygons(const std::string& fileName, 
     const Ionflux::ObjectBase::StringVector& elementIDs, 
     Ionflux::GeoUtils::Polygon3Set& target);
-void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Mesh& target);
 void getBoundingBox(const std::string& fileName, const std::string& elementID, 
     Ionflux::GeoUtils::BoundingBox& target);
-void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, Ionflux::GeoUtils::Vertex3Set& target);
 
 // Classes
 
@@ -4571,6 +4568,10 @@ class Voxel
 }
 
 
+%{
+#include "geoutils/Vector3Mapping.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -4604,6 +4605,26 @@ class Vector3Mapping
 		static Ionflux::GeoUtils::Mapping::Vector3Mapping* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Compose3.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace Mapping
+{
 
 class Compose3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -4644,6 +4665,26 @@ class Compose3
         virtual Ionflux::Mapping::Mapping* getFuncX2() const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Accept3.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace Mapping
+{
+
 class Accept3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -4678,6 +4719,26 @@ class Accept3
         const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/AcceptLength3.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace Mapping
+{
+
 class AcceptLength3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -4702,6 +4763,7 @@ class AcceptLength3
         virtual std::string getString() const;
         virtual bool checkCondition(const Ionflux::GeoUtils::Vector3& v) 
         const;
+		virtual Ionflux::GeoUtils::Mapping::AcceptLength3* copy() const;
 		static Ionflux::GeoUtils::Mapping::AcceptLength3* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptLength3* 
@@ -4770,6 +4832,10 @@ class AcceptVolume3
 }
 
 
+%{
+#include "geoutils/Lookup3.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -4805,6 +4871,7 @@ class Lookup3
         virtual Ionflux::GeoUtils::Vector3 
         call(Ionflux::Mapping::MappingValue value) const;
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::Mapping::Lookup3* copy() const;
 		static Ionflux::GeoUtils::Mapping::Lookup3* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::Lookup3* 
@@ -4819,7 +4886,7 @@ class Lookup3
         virtual void removeEntry(Ionflux::GeoUtils::Vector3* 
         removeElement);
 		virtual void removeEntryIndex(unsigned int removeIndex);
-        virtual void clearEntries();
+		virtual void clearEntries();
         virtual void setSource(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
         newSource);
         virtual Ionflux::GeoUtils::Mapping::Vector3Mapping* getSource() 
@@ -4827,6 +4894,21 @@ class Lookup3
 };
 
 }
+
+}
+
+}
+
+
+%{
+#include "geoutils/Vector3MappingSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
 
 class Vector3MappingSetClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -4849,6 +4931,7 @@ class Vector3MappingSet
         virtual void addMappings(const 
         Ionflux::GeoUtils::Vector3MappingVector& newMappings);
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::Vector3MappingSet* copy() const;
 		static Ionflux::GeoUtils::Vector3MappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vector3MappingSet* 
@@ -4866,8 +4949,23 @@ class Vector3MappingSet
         removeMapping(Ionflux::GeoUtils::Mapping::Vector3Mapping* 
         removeElement);
 		virtual void removeMappingIndex(unsigned int removeIndex);
-        virtual void clearMappings();
+		virtual void clearMappings();
 };
+
+}
+
+}
+
+
+%{
+#include "geoutils/TransformNode.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
 
 namespace TransformNodes
 {
@@ -4883,10 +4981,6 @@ class TransformNodeClassInfo
 class TransformNode
 : virtual public Ionflux::ObjectBase::IFObject
 {
-    protected:
-        // Required so SWIG knows this is an abstract class.
-		virtual void process() = 0;
-        
     public:
 		static const unsigned int DEFAULT_LOOP_MAX;
         
@@ -4929,7 +5023,7 @@ class TransformNode
         virtual void removeInput(const 
         Ionflux::GeoUtils::TransformNodes::InputNodeSpec& removeElement);
 		virtual void removeInputIndex(unsigned int removeIndex);
-        virtual void clearInputs();        
+		virtual void clearInputs();        
         virtual unsigned int getNumOutputs() const;
         virtual Ionflux::GeoUtils::TransformableGroup* getOutput(unsigned 
         int elementIndex = 0) const;
@@ -4942,7 +5036,7 @@ class TransformNode
         virtual void removeOutput(Ionflux::GeoUtils::TransformableGroup* 
         removeElement);
 		virtual void removeOutputIndex(unsigned int removeIndex);
-        virtual void clearOutputs();
+		virtual void clearOutputs();
         virtual void setLoopMax(unsigned int newLoopMax);
         virtual unsigned int getLoopMax() const;
         virtual void setMaxNumInputs(unsigned int newMaxNumInputs);
@@ -4950,6 +5044,26 @@ class TransformNode
         virtual void setUpdateCounter(unsigned int newUpdateCounter);
         virtual unsigned int getUpdateCounter() const;
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Connection.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class ConnectionClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -4988,6 +5102,7 @@ class Connection
         checkSource, Ionflux::GeoUtils::TransformNodes::TransformNode* 
         checkTarget, unsigned int checkOutputID = 0, unsigned int 
         checkInputID = 0);
+		virtual Ionflux::GeoUtils::TransformNodes::Connection* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Connection* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
         virtual Ionflux::GeoUtils::TransformNodes::TransformNode* 
@@ -5067,6 +5182,10 @@ class ParamControl
 }
 
 
+%{
+#include "geoutils/TransformGraph.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -5087,10 +5206,6 @@ class TransformGraphClassInfo
 class TransformGraph
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int NODE_INDEX_LAST;
         
@@ -5158,7 +5273,7 @@ class TransformGraph
         virtual void removeInput(const 
         Ionflux::GeoUtils::TransformNodes::InputNodeSpec& removeElement);
 		virtual void removeInputIndex(unsigned int removeIndex);
-        virtual void clearInputs();        
+		virtual void clearInputs();        
         virtual unsigned int getNumOutputs() const;
         virtual Ionflux::GeoUtils::TransformableGroup* getOutput(unsigned 
         int elementIndex = 0) const;
@@ -5171,7 +5286,7 @@ class TransformGraph
         virtual void removeOutput(Ionflux::GeoUtils::TransformableGroup* 
         removeElement);
 		virtual void removeOutputIndex(unsigned int removeIndex);
-        virtual void clearOutputs();        
+		virtual void clearOutputs();        
         virtual unsigned int getNumConnections() const;
         virtual Ionflux::GeoUtils::TransformNodes::Connection* 
         getConnection(unsigned int elementIndex = 0) const;
@@ -5187,7 +5302,7 @@ class TransformGraph
         removeConnection(Ionflux::GeoUtils::TransformNodes::Connection* 
         removeElement);
 		virtual void removeConnectionIndex(unsigned int removeIndex);
-        virtual void clearConnections();        
+		virtual void clearConnections();        
         virtual unsigned int getNumNodes() const;
         virtual Ionflux::GeoUtils::TransformNodes::TransformNode* 
         getNode(unsigned int elementIndex = 0) const;
@@ -5203,7 +5318,7 @@ class TransformGraph
         removeNode(Ionflux::GeoUtils::TransformNodes::TransformNode* 
         removeElement);
 		virtual void removeNodeIndex(unsigned int removeIndex);
-        virtual void clearNodes();
+		virtual void clearNodes();
         virtual void 
         setSource(Ionflux::GeoUtils::TransformNodes::TransformNode* 
         newSource);
@@ -5316,6 +5431,10 @@ class WriteSVG
 }
 
 
+%{
+#include "geoutils/Duplicate.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -5336,10 +5455,6 @@ class DuplicateClassInfo
 class Duplicate
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5353,15 +5468,44 @@ class Duplicate
         Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Duplicate();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Duplicate* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Duplicate* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Duplicate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 
+		Ionflux::Mapping::MappingValue paramValue);
+		virtual Ionflux::Mapping::MappingValue 
+		getParam(Ionflux::ObjectBase::IFParamID paramID);
         virtual void setNumDuplicates(unsigned int newNumDuplicates);
         virtual unsigned int getNumDuplicates() const;
+        virtual void setNumDuplicatesParam(Ionflux::Mapping::MappingValue 
+        newNumDuplicatesParam);
+        virtual Ionflux::Mapping::MappingValue getNumDuplicatesParam() 
+        const;
         virtual void setFunc(Ionflux::Mapping::Mapping* newFunc);
         virtual Ionflux::Mapping::Mapping* getFunc() const;
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/MatrixTransform.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class MatrixTransformClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5374,10 +5518,6 @@ class MatrixTransformClassInfo
 class MatrixTransform
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5388,6 +5528,7 @@ class MatrixTransform
         Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~MatrixTransform();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::MatrixTransform* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::MatrixTransform* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::MatrixTransform* 
@@ -5396,6 +5537,26 @@ class MatrixTransform
         newMatrix);
         virtual Ionflux::GeoUtils::Matrix4 getMatrix() const;
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Rotate.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class RotateClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5408,10 +5569,6 @@ class RotateClassInfo
 class Rotate
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5461,6 +5618,26 @@ class Rotate
         const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Translate.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
+
 class TranslateClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -5472,10 +5649,6 @@ class TranslateClassInfo
 class Translate
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5488,6 +5661,7 @@ class Translate
         const Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Translate();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Translate* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Translate* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Translate* 
@@ -5507,6 +5681,26 @@ class Translate
         getDistanceFunc() const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Scale.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
+
 class ScaleClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -5518,10 +5712,6 @@ class ScaleClassInfo
 class Scale
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5570,6 +5760,26 @@ class Scale
         virtual Ionflux::Mapping::MappingValue getDeltaScaleFactor() const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Center.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
+
 class CenterClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -5581,10 +5791,6 @@ class CenterClassInfo
 class Center
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5596,6 +5802,7 @@ class Center
         const Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Center();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Center* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Center* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Center* 
@@ -5608,6 +5815,26 @@ class Center
         virtual Ionflux::GeoUtils::CenteringMethod getMethod() const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Normalize.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
+
 class NormalizeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -5619,10 +5846,6 @@ class NormalizeClassInfo
 class Normalize
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5632,11 +5855,32 @@ class Normalize
         Normalize(const Ionflux::ObjectBase::IFObjectID& nodeID);
         virtual ~Normalize();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Normalize* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Normalize* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Normalize* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Array.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class ArrayClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5649,10 +5893,6 @@ class ArrayClassInfo
 class Array
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5670,6 +5910,7 @@ class Array
         const Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Array();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Array* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Array* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Array* 
@@ -5687,6 +5928,26 @@ class Array
         virtual double getCellHeight() const;
 };
 
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Flatten.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
+
 class FlattenClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -5698,10 +5959,6 @@ class FlattenClassInfo
 class Flatten
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5711,11 +5968,32 @@ class Flatten
         Flatten(const Ionflux::ObjectBase::IFObjectID& nodeID);
         virtual ~Flatten();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Flatten* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Flatten* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Flatten* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Merge.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class MergeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5728,10 +6006,6 @@ class MergeClassInfo
 class Merge
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_FIRST;
 		static const unsigned int OUTPUT_TARGET;
@@ -5741,11 +6015,32 @@ class Merge
         Merge(const Ionflux::ObjectBase::IFObjectID& nodeID);
         virtual ~Merge();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Merge* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Merge* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Merge* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Explode.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class ExplodeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5758,10 +6053,6 @@ class ExplodeClassInfo
 class Explode
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_FIRST;
@@ -5773,6 +6064,7 @@ class Explode
         Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Explode();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Explode* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Explode* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Explode* 
@@ -5780,6 +6072,26 @@ class Explode
         virtual void setElementsPerGroup(unsigned int newElementsPerGroup);
         virtual unsigned int getElementsPerGroup() const;
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Wrap.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class WrapClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5792,10 +6104,6 @@ class WrapClassInfo
 class Wrap
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_FIRST;
 		static const unsigned int OUTPUT_TARGET;
@@ -5805,11 +6113,32 @@ class Wrap
         Wrap(const Ionflux::ObjectBase::IFObjectID& nodeID);
         virtual ~Wrap();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Wrap* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Wrap* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Wrap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Unwrap.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class UnwrapClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5822,10 +6151,6 @@ class UnwrapClassInfo
 class Unwrap
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_FIRST;
@@ -5835,11 +6160,32 @@ class Unwrap
         Unwrap(const Ionflux::ObjectBase::IFObjectID& nodeID);
         virtual ~Unwrap();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Unwrap* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Unwrap* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Unwrap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Iterate.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class IterateClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5852,10 +6198,6 @@ class IterateClassInfo
 class Iterate
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_FIRST;
@@ -5867,6 +6209,8 @@ class Iterate
         Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Iterate();
         virtual std::string getString() const;
+        virtual void updateInputs();
+		virtual Ionflux::GeoUtils::TransformNodes::Iterate* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Iterate* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Iterate* 
@@ -5874,6 +6218,26 @@ class Iterate
         virtual void setNumIterations(unsigned int newNumIterations);
         virtual unsigned int getNumIterations() const;
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Source.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class SourceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5886,10 +6250,6 @@ class SourceClassInfo
 class Source
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int OUTPUT_TARGET;
         
@@ -5899,6 +6259,7 @@ class Source
         Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Source();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Source* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Source* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Source* 
@@ -5907,6 +6268,26 @@ class Source
         newSource);
         virtual Ionflux::GeoUtils::TransformableGroup* getSource() const;
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Cache.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class CacheClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5919,10 +6300,6 @@ class CacheClassInfo
 class Cache
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_TARGET;
@@ -5932,12 +6309,34 @@ class Cache
         Cache(const Ionflux::ObjectBase::IFObjectID& nodeID);
         virtual ~Cache();
         virtual std::string getString() const;
+        virtual void cleanup();
         virtual void update();
+		virtual Ionflux::GeoUtils::TransformNodes::Cache* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Cache* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Cache* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/Clone.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace TransformNodes
+{
 
 class CloneClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -5950,10 +6349,6 @@ class CloneClassInfo
 class Clone
 : public Ionflux::GeoUtils::TransformNodes::TransformNode
 {
-    protected:
-        // Required so SWIG knows this is not an abstract class.
-		virtual void process();
-        
     public:
 		static const unsigned int INPUT_SOURCE;
 		static const unsigned int OUTPUT_FIRST;
@@ -5965,6 +6360,7 @@ class Clone
         Ionflux::ObjectBase::IFObjectID& nodeID = "");
         virtual ~Clone();
         virtual std::string getString() const;
+		virtual Ionflux::GeoUtils::TransformNodes::Clone* copy() const;
 		static Ionflux::GeoUtils::TransformNodes::Clone* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Clone* 
@@ -6408,6 +6804,1238 @@ namespace XMLUtils
 
 void getFaceData(const std::string& data, Ionflux::GeoUtils::FaceData& 
 target);
+
+}
+
+}
+
+}
+
+
+
+%{
+#include "geoutils/xmlio/VectorXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class VectorXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VectorXMLFactoryClassInfo();
+        virtual ~VectorXMLFactoryClassInfo();
+};
+
+class VectorXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        VectorXMLFactory();
+		VectorXMLFactory(const Ionflux::GeoUtils::XMLUtils::VectorXMLFactory& other);
+        virtual ~VectorXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vector& target, const std::string& elementName =
+        "") const;
+        virtual Ionflux::GeoUtils::Vector* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Vector2XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Vector2XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Vector2XMLFactoryClassInfo();
+        virtual ~Vector2XMLFactoryClassInfo();
+};
+
+class Vector2XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Vector2XMLFactory();
+		Vector2XMLFactory(const Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory& other);
+        virtual ~Vector2XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vector2& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Vector2* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Vector3XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Vector3XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Vector3XMLFactoryClassInfo();
+        virtual ~Vector3XMLFactoryClassInfo();
+};
+
+class Vector3XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Vector3XMLFactory();
+		Vector3XMLFactory(const Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory& other);
+        virtual ~Vector3XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vector3& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Vector3* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Vector4XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Vector4XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Vector4XMLFactoryClassInfo();
+        virtual ~Vector4XMLFactoryClassInfo();
+};
+
+class Vector4XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Vector4XMLFactory();
+		Vector4XMLFactory(const Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory& other);
+        virtual ~Vector4XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vector4& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Vector4* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/VectorSetXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class VectorSetXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VectorSetXMLFactoryClassInfo();
+        virtual ~VectorSetXMLFactoryClassInfo();
+};
+
+class VectorSetXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        VectorSetXMLFactory();
+		VectorSetXMLFactory(const Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory& other);
+        virtual ~VectorSetXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::VectorSet& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::VectorSet* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/VectorSetSetXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class VectorSetSetXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VectorSetSetXMLFactoryClassInfo();
+        virtual ~VectorSetSetXMLFactoryClassInfo();
+};
+
+class VectorSetSetXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        VectorSetSetXMLFactory();
+		VectorSetSetXMLFactory(const Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory& other);
+        virtual ~VectorSetSetXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::VectorSetSet& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::VectorSetSet* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory* copy() 
+		const;
+		static Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Object3XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Object3XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Object3XMLFactoryClassInfo();
+        virtual ~Object3XMLFactoryClassInfo();
+};
+
+class Object3XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Object3XMLFactory();
+		Object3XMLFactory(const Ionflux::GeoUtils::XMLUtils::Object3XMLFactory& other);
+        virtual ~Object3XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Object3& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Object3* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Object3XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Object3XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Object3XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/MatrixXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class MatrixXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        MatrixXMLFactoryClassInfo();
+        virtual ~MatrixXMLFactoryClassInfo();
+};
+
+class MatrixXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        MatrixXMLFactory();
+		MatrixXMLFactory(const Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory& other);
+        virtual ~MatrixXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Matrix& target, const std::string& elementName =
+        "") const;
+        virtual Ionflux::GeoUtils::Matrix* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Matrix2XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Matrix2XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Matrix2XMLFactoryClassInfo();
+        virtual ~Matrix2XMLFactoryClassInfo();
+};
+
+class Matrix2XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Matrix2XMLFactory();
+		Matrix2XMLFactory(const Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory& other);
+        virtual ~Matrix2XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Matrix2& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Matrix2* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Matrix3XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Matrix3XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Matrix3XMLFactoryClassInfo();
+        virtual ~Matrix3XMLFactoryClassInfo();
+};
+
+class Matrix3XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Matrix3XMLFactory();
+		Matrix3XMLFactory(const Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory& other);
+        virtual ~Matrix3XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Matrix3& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Matrix3* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Matrix4XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Matrix4XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Matrix4XMLFactoryClassInfo();
+        virtual ~Matrix4XMLFactoryClassInfo();
+};
+
+class Matrix4XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Matrix4XMLFactory();
+		Matrix4XMLFactory(const Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory& other);
+        virtual ~Matrix4XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Matrix4& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Matrix4* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/FaceDataXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class FaceDataXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        FaceDataXMLFactoryClassInfo();
+        virtual ~FaceDataXMLFactoryClassInfo();
+};
+
+class FaceDataXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        FaceDataXMLFactory();
+		FaceDataXMLFactory(const Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory& other);
+        virtual ~FaceDataXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::FaceData& target, const std::string& elementName
+        = "") const;
+        virtual Ionflux::GeoUtils::FaceData* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/DeferredTransformXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class DeferredTransformXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        DeferredTransformXMLFactoryClassInfo();
+        virtual ~DeferredTransformXMLFactoryClassInfo();
+};
+
+class DeferredTransformXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        DeferredTransformXMLFactory();
+		DeferredTransformXMLFactory(const Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory& other);
+        virtual ~DeferredTransformXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::DeferredTransform& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::DeferredTransform* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* copy() 
+		const;
+		static Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/TransformableObjectXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class TransformableObjectXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        TransformableObjectXMLFactoryClassInfo();
+        virtual ~TransformableObjectXMLFactoryClassInfo();
+};
+
+class TransformableObjectXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        TransformableObjectXMLFactory();
+		TransformableObjectXMLFactory(const Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory& other);
+        virtual ~TransformableObjectXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::TransformableObject& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::TransformableObject* createObject() 
+        const;
+		virtual Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory* 
+		copy() const;
+		static Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Vertex2XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Vertex2XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Vertex2XMLFactoryClassInfo();
+        virtual ~Vertex2XMLFactoryClassInfo();
+};
+
+class Vertex2XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Vertex2XMLFactory();
+		Vertex2XMLFactory(const Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory& other);
+        virtual ~Vertex2XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vertex2& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Vertex2* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Vertex3XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Vertex3XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Vertex3XMLFactoryClassInfo();
+        virtual ~Vertex3XMLFactoryClassInfo();
+};
+
+class Vertex3XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Vertex3XMLFactory();
+		Vertex3XMLFactory(const Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory& other);
+        virtual ~Vertex3XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vertex3& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::GeoUtils::Vertex3* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Vertex3SetXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Vertex3SetXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Vertex3SetXMLFactoryClassInfo();
+        virtual ~Vertex3SetXMLFactoryClassInfo();
+};
+
+class Vertex3SetXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Vertex3SetXMLFactory();
+		Vertex3SetXMLFactory(const Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory& other);
+        virtual ~Vertex3SetXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Vertex3Set& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::Vertex3Set* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/FaceXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class FaceXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        FaceXMLFactoryClassInfo();
+        virtual ~FaceXMLFactoryClassInfo();
+};
+
+class FaceXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        FaceXMLFactory();
+		FaceXMLFactory(const Ionflux::GeoUtils::XMLUtils::FaceXMLFactory& other);
+        virtual ~FaceXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Face& target, const std::string& elementName = 
+        "") const;
+        virtual Ionflux::GeoUtils::Face* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::FaceXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::FaceXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::FaceXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/EdgeXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class EdgeXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        EdgeXMLFactoryClassInfo();
+        virtual ~EdgeXMLFactoryClassInfo();
+};
+
+class EdgeXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        EdgeXMLFactory();
+		EdgeXMLFactory(const Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory& other);
+        virtual ~EdgeXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Edge& target, const std::string& elementName = 
+        "") const;
+        virtual Ionflux::GeoUtils::Edge* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/MeshXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class MeshXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        MeshXMLFactoryClassInfo();
+        virtual ~MeshXMLFactoryClassInfo();
+};
+
+class MeshXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        MeshXMLFactory();
+		MeshXMLFactory(const Ionflux::GeoUtils::XMLUtils::MeshXMLFactory& other);
+        virtual ~MeshXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Mesh& target, const std::string& elementName = 
+        "") const;
+        virtual Ionflux::GeoUtils::Mesh* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::MeshXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::MeshXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::MeshXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/TransformableGroupXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class TransformableGroupXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        TransformableGroupXMLFactoryClassInfo();
+        virtual ~TransformableGroupXMLFactoryClassInfo();
+};
+
+class TransformableGroupXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        TransformableGroupXMLFactory();
+		TransformableGroupXMLFactory(const Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory& other);
+        virtual ~TransformableGroupXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::TransformableGroup& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::TransformableGroup* createObject() 
+        const;
+		virtual Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* copy()
+		const;
+		static Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Polygon3XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Polygon3XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Polygon3XMLFactoryClassInfo();
+        virtual ~Polygon3XMLFactoryClassInfo();
+};
+
+class Polygon3XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Polygon3XMLFactory();
+		Polygon3XMLFactory(const Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory& other);
+        virtual ~Polygon3XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Polygon3& target, const std::string& elementName
+        = "") const;
+        virtual Ionflux::GeoUtils::Polygon3* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Polygon3SetXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Polygon3SetXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Polygon3SetXMLFactoryClassInfo();
+        virtual ~Polygon3SetXMLFactoryClassInfo();
+};
+
+class Polygon3SetXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Polygon3SetXMLFactory();
+		Polygon3SetXMLFactory(const Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory& other);
+        virtual ~Polygon3SetXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Polygon3Set& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::GeoUtils::Polygon3Set* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/Shape3XMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class Shape3XMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        Shape3XMLFactoryClassInfo();
+        virtual ~Shape3XMLFactoryClassInfo();
+};
+
+class Shape3XMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        Shape3XMLFactory();
+		Shape3XMLFactory(const Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory& other);
+        virtual ~Shape3XMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Shape3& target, const std::string& elementName =
+        "") const;
+        virtual Ionflux::GeoUtils::Shape3* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "geoutils/xmlio/CameraXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+namespace XMLUtils
+{
+
+class CameraXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        CameraXMLFactoryClassInfo();
+        virtual ~CameraXMLFactoryClassInfo();
+};
+
+class CameraXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        CameraXMLFactory();
+		CameraXMLFactory(const Ionflux::GeoUtils::XMLUtils::CameraXMLFactory& other);
+        virtual ~CameraXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::GeoUtils::Camera& target, const std::string& elementName =
+        "") const;
+        virtual Ionflux::GeoUtils::Camera* createObject() const;
+		virtual Ionflux::GeoUtils::XMLUtils::CameraXMLFactory* copy() const;
+		static Ionflux::GeoUtils::XMLUtils::CameraXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::XMLUtils::CameraXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
 
 }
 

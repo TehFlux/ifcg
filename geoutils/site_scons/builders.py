@@ -50,33 +50,39 @@ def buildClassInterface(source, target, env):
     """Builder function to build SWIG interface files from class 
        configuration."""
     classNames = []
+    sourceFiles = []
     for it in source:
         cn, ext = os.path.splitext(os.path.basename(it.path))
         if (ext == '.conf'):
             classNames += [cn]
-    for cn in classNames:
+            sourceFiles += [it.path]
+    for k in range(0, len(classNames)):
+        cn = classNames[k]
         c0 = ("iftpl0 -I " + lc.ifobjectTemplatePath 
-            + " swig.interface conf/class/" + cn + ".conf conf/main.conf")
+            + " swig.interface " + sourceFiles[k] + " conf/main.conf")
         print c0
-        f0 = open("swig/classes/" + cn + ".i", 'w')
+        f0 = open(target[k].path, 'w')
         sp0 = subprocess.call(shlex.split(c0), stdout = f0)
         f0.close()
 
 def buildInterface(source, target, env):
     """Builder function to build a SWIG interface declaration."""
     classNames = []
+    sourceFiles = []
     if (isinstance(lc.swigInterfaceTemplateFile, str)):
         templateFile = lc.swigInterfaceTemplateFile
     for it in source:
         cn, ext = os.path.splitext(os.path.basename(it.path))
         if (ext == '.i'):
             classNames += [cn]
+            sourceFiles += [it.path]
         elif (ext == '.tpl'):
             templateFile = it.path
     tplData = {}
     p0 = re.compile("/\*.*?\*/", re.DOTALL)
-    for cn in classNames:
-        tplData[cn] = p0.sub('', open('swig/classes/' + cn + '.i').read())
+    for k in range(0, len(classNames)):
+        cn = classNames[k]
+        tplData[cn] = p0.sub('', open(sourceFiles[k]).read())
     tplStr = open(templateFile).read()
     tpl = string.Template(tplStr)
     for it in target:

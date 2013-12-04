@@ -99,7 +99,8 @@ geoutilsLibHeaders = [
     'include/geoutils/SVGShapeStyleSource.hpp', 
     'include/geoutils/SVGShapeStyleMap.hpp', 
     'include/geoutils/SVGShapeStyleVectorSource.hpp', 
-    'include/geoutils/SVGImageProperties.hpp'
+    'include/geoutils/SVGImageProperties.hpp', 
+    'include/geoutils/xml_factories.hpp'
 ]
 
 geoutilsLibSources = [

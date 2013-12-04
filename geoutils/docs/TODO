@@ -16,11 +16,13 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Test the new polymorphic XML I/O.
 
-+ Add Bezier curve based objects:
-  > There should be an option to convert Bezier objects into discrete 
-    representations (i.e. Polygon3, Mesh).
+
+--------------------------------------------------------------------------------
+Critical stuff
+--------------------------------------------------------------------------------
+
++ Test the new polymorphic XML I/O.
 
 + Mesh
   > Generator functions
@@ -28,9 +30,9 @@ New
     . fiber(): like cylinder, but with a number of subdivisions so cross 
       sections can be transformed individually
 
---------------------------------------------------------------------------------
-Critical stuff
---------------------------------------------------------------------------------
++ Add Bezier curve based objects:
+  > There should be an option to convert Bezier objects into discrete 
+    representations (i.e. Polygon3, Mesh).
 
 + add 'hasClassInfo = true' for parent classes that have class information.
 
