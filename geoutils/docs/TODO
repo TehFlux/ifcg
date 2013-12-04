@@ -16,6 +16,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Test the new polymorphic XML I/O.
+
 + Add Bezier curve based objects:
   > There should be an option to convert Bezier objects into discrete 
     representations (i.e. Polygon3, Mesh).
