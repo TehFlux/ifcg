@@ -37,6 +37,7 @@
 #include "geoutils/transformutils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/TransformableGroupXMLFactory.hpp"
 
@@ -514,13 +515,8 @@ indentLevel) const
 
 void TransformableGroup::loadFromXMLFile(const std::string& fileName)
 {
-	std::string data;
-	Ionflux::ObjectBase::readFile(fileName, data);
-	/* <---- DEBUG ----- //
-	std::cerr << "[TransformableGroup::loadFromXMLFile] data = " << data 
-	    << std::endl;
-	// <---- DEBUG ----- */
-	Ionflux::GeoUtils::XMLUtils::getTransformableGroup(data, *this);
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
 }
 
 Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 

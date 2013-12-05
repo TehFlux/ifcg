@@ -88,6 +88,13 @@ class DeferredTransform
         virtual void applyVI(const Ionflux::GeoUtils::VectorSet& vectors, 
         Ionflux::GeoUtils::VectorSet& target, bool clearTransform = true);
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::DeferredTransform* copy() const;
 		static Ionflux::GeoUtils::DeferredTransform* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -112,14 +119,6 @@ class DeferredTransform
         newLastImageMatrix);
         virtual Ionflux::GeoUtils::Matrix4* getLastImageMatrix() const;
 };
-
-namespace XMLUtils
-{
-
-void getDeferredTransform(const std::string& data, 
-Ionflux::GeoUtils::DeferredTransform& target);
-
-}
 
 }
 

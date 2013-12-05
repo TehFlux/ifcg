@@ -110,6 +110,13 @@ class Polygon3Set
         virtual void sort(Ionflux::GeoUtils::Polygon3Compare* compFunc = 
         0);
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Polygon3Set* copy() const;
 		static Ionflux::GeoUtils::Polygon3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -134,14 +141,6 @@ class Polygon3Set
 		virtual void removePolygonIndex(unsigned int removeIndex);
 		virtual void clearPolygons();
 };
-
-namespace XMLUtils
-{
-
-void getPolygon3Set(const std::string& data, 
-Ionflux::GeoUtils::Polygon3Set& target);
-
-}
 
 }
 

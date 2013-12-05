@@ -76,6 +76,13 @@ class Object3
         image = 0);
         virtual std::string getValueString() const;
         virtual Ionflux::GeoUtils::Object3& duplicate();
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Object3* copy() const;
 		static Ionflux::GeoUtils::Object3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -86,14 +93,6 @@ class Object3
         virtual void setMesh(Ionflux::GeoUtils::Mesh* newMesh);
         virtual Ionflux::GeoUtils::Mesh* getMesh() const;
 };
-
-namespace XMLUtils
-{
-
-void getObject3(const std::string& data, Ionflux::GeoUtils::Object3& 
-target);
-
-}
 
 }
 

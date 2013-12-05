@@ -9,8 +9,7 @@ TODO
 Up next
 --------------------------------------------------------------------------------
 
-+ cgeoutilstest31: getRotationMatrix() does not yield the local Camera 
-  vectors.
+
 
 --------------------------------------------------------------------------------
 New
@@ -22,7 +21,8 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Test the new polymorphic XML I/O.
++ cgeoutilstest31: getRotationMatrix() does not yield the local Camera 
+  vectors.
 
 + Mesh
   > Generator functions
@@ -40,6 +40,7 @@ Critical stuff
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
 
 + BGeoUtils
+  > convert between Blender Bezier splines and IFMapping Bezier splines
   > export a scene (TransformableGroup containing Camera and Objects)
   > add an operator to export/import an object (Object3 XML I/O)
   > update to work with BMesh

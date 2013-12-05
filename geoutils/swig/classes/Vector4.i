@@ -100,6 +100,13 @@ class Vector4
         axisID);
         static Ionflux::GeoUtils::Vector4 axisH(Ionflux::GeoUtils::AxisID 
         axisID);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Vector4* copy() const;
 		static Ionflux::GeoUtils::Vector4* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -129,14 +136,6 @@ class Vector4
 
 Ionflux::GeoUtils::Vector4 operator*(double c, const 
 Ionflux::GeoUtils::Vector4& v);
-
-namespace XMLUtils
-{
-
-void getVector4(const std::string& data, Ionflux::GeoUtils::Vector4& 
-target);
-
-}
 
 }
 

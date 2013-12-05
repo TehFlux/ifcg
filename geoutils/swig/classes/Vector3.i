@@ -116,6 +116,13 @@ class Vector3
         virtual unsigned int getNumElements() const;
         static Ionflux::GeoUtils::Vector3 axis(Ionflux::GeoUtils::AxisID 
         axisID);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Vector3* copy() const;
 		static Ionflux::GeoUtils::Vector3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -141,14 +148,6 @@ class Vector3
 
 Ionflux::GeoUtils::Vector3 operator*(double c, const 
 Ionflux::GeoUtils::Vector3& v);
-
-namespace XMLUtils
-{
-
-void getVector3(const std::string& data, Ionflux::GeoUtils::Vector3& 
-target);
-
-}
 
 }
 

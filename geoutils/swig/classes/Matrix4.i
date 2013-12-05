@@ -119,6 +119,13 @@ class Matrix4
         Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID depthAxis = 
         Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID horizonAxis = 
         Ionflux::GeoUtils::AXIS_X);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Matrix4* copy() const;
 		static Ionflux::GeoUtils::Matrix4* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -155,14 +162,6 @@ class Matrix4
 
 Ionflux::GeoUtils::Matrix4 operator*(double c, const 
 Ionflux::GeoUtils::Matrix4& m);
-
-namespace XMLUtils
-{
-
-void getMatrix4(const std::string& data, Ionflux::GeoUtils::Matrix4& 
-target);
-
-}
 
 }
 

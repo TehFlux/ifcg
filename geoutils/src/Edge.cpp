@@ -33,6 +33,7 @@
 #include "geoutils/GeoUtilsError.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/EdgeXMLFactory.hpp"
 
@@ -295,13 +296,8 @@ const
 
 void Edge::loadFromXMLFile(const std::string& fileName)
 {
-	std::string data;
-	Ionflux::ObjectBase::readFile(fileName, data);
-	/* <---- DEBUG ----- //
-	std::cerr << "[Edge::loadFromXMLFile] data = " << data 
-	    << std::endl;
-	// <---- DEBUG ----- */
-	Ionflux::GeoUtils::XMLUtils::getEdge(data, *this);
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
 }
 
 Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 

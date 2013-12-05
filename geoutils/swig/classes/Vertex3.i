@@ -110,6 +110,13 @@ class Vertex3
         virtual std::string getValueString() const;
         virtual std::string getXMLData_legacy() const;
         virtual std::string getXML_legacy() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Vertex3* copy() const;
 		static Ionflux::GeoUtils::Vertex3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -135,14 +142,6 @@ class Vertex3
         virtual void setZ(double newZ);
         virtual double getZ() const;
 };
-
-namespace XMLUtils
-{
-
-void getVertex3(const std::string& data, Ionflux::GeoUtils::Vertex3& 
-target);
-
-}
 
 }
 

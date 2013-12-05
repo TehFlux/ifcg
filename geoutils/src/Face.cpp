@@ -38,6 +38,7 @@
 #include "geoutils/FaceData.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/FaceXMLFactory.hpp"
 
@@ -1130,13 +1131,8 @@ const
 
 void Face::loadFromXMLFile(const std::string& fileName)
 {
-	std::string data;
-	Ionflux::ObjectBase::readFile(fileName, data);
-	/* <---- DEBUG ----- //
-	std::cerr << "[Face::loadFromXMLFile] data = " << data 
-	    << std::endl;
-	// <---- DEBUG ----- */
-	Ionflux::GeoUtils::XMLUtils::getFace(data, *this);
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
 }
 
 Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 

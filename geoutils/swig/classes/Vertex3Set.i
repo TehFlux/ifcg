@@ -80,6 +80,13 @@ class Vertex3Set
         virtual std::string getValueString() const;
         virtual std::string getXMLData_legacy() const;
         virtual std::string getXML_legacy() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Vertex3Set* copy() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -104,14 +111,6 @@ class Vertex3Set
 		virtual void removeVertexIndex(unsigned int removeIndex);
 		virtual void clearVertices();
 };
-
-namespace XMLUtils
-{
-
-void getVertex3Set(const std::string& data, Ionflux::GeoUtils::Vertex3Set& 
-target);
-
-}
 
 }
 

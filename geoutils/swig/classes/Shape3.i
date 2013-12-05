@@ -71,19 +71,19 @@ class Shape3
         virtual bool checkVertex(const Ionflux::GeoUtils::Vertex3& v, 
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual Ionflux::GeoUtils::Shape3& duplicate();
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Shape3* copy() const;
 		static Ionflux::GeoUtils::Shape3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::GeoUtils::Shape3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
-
-namespace XMLUtils
-{
-
-void getShape3(const std::string& data, Ionflux::GeoUtils::Shape3& target);
-
-}
 
 }
 

@@ -13,9 +13,19 @@ testName = "XML I/O 02"
 # memory management
 mm = ib.IFObject()
 
+outFile0 = 'temp/mesh.xml'
+
 print("GeoUtils test script: " + testName)
 
 meshName01 = "cube01"
+
+# Get XML factories to initialize the hierarchy.
+xf0 = cg.MeshXMLFactory.upcast(cg.Mesh.getXMLObjectFactory())
+xf1 = cg.Vector2.getXMLObjectFactory()
+xf2 = cg.Vector3.getXMLObjectFactory()
+xf3 = cg.Vector4.getXMLObjectFactory()
+xf4 = cg.VectorSet.getXMLObjectFactory()
+xf5 = cg.FaceData.getXMLObjectFactory()
 
 print("  Creating mesh '%s'..." % meshName01)
 
@@ -40,11 +50,23 @@ print("  XML:")
 
 print(xml0)
 
+print("Writing XML data to file '%s'..." % outFile0)
+mesh01.writeToXMLFile(outFile0)
+
 mesh02 = cg.Mesh.create()
 mm.addLocalRef(mesh02)
-cg.getMesh(xml0, mesh02)
+xf0.initObject(xml0, mesh02)
 
 print("  Mesh (from XML):")
+print("    name = '%s'" % mesh02.getID())
+print("    %s" % mesh02.getString())
+
+print("Reading XML data from file '%s'..." % outFile0)
+mesh02.clear()
+mesh02.setID("<none>")
+mesh02.loadFromXMLFile(outFile0)
+
+print("  Mesh (from XML file):")
 print("    name = '%s'" % mesh02.getID())
 print("    %s" % mesh02.getString())
 

@@ -58,6 +58,13 @@ class VectorSet
         virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) 
         const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::VectorSet* copy() const;
 		static Ionflux::GeoUtils::VectorSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -82,14 +89,6 @@ class VectorSet
 		virtual void removeVectorIndex(unsigned int removeIndex);
 		virtual void clearVectors();
 };
-
-namespace XMLUtils
-{
-
-void getVectorSet(const std::string& data, Ionflux::GeoUtils::VectorSet& 
-target);
-
-}
 
 }
 

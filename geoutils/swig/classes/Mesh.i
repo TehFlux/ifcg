@@ -119,6 +119,13 @@ Ionflux::GeoUtils::TransformableObject
         0.05);
         virtual std::string getXML_legacy() const;
         virtual void writeToFile_legacy(const std::string& fileName) const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Mesh* copy() const;
 		static Ionflux::GeoUtils::Mesh* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -162,13 +169,6 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void removeFaceIndex(unsigned int removeIndex);
 		virtual void clearFaces();
 };
-
-namespace XMLUtils
-{
-
-void getMesh(const std::string& data, Ionflux::GeoUtils::Mesh& target);
-
-}
 
 }
 

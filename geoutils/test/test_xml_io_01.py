@@ -32,9 +32,11 @@ print("  XML:")
 
 print(xml0)
 
-vs1 = cg.Vertex3Set()
+xf0 = cg.Vertex3SetXMLFactory.upcast(
+    cg.Vertex3Set.getXMLObjectFactory())
+vs1 = cg.Vertex3Set.create()
 mm.addLocalRef(vs1)
-cg.getVertex3Set(xml0, vs1)
+xf0.initObject(xml0, vs1)
 
 print("  Vertex set (from XML):")
 print("    name = '%s'" % vs1.getID())

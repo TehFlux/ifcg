@@ -37,6 +37,7 @@
 #include "geoutils/Vertex3.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/CameraXMLFactory.hpp"
 
@@ -910,13 +911,8 @@ const
 
 void Camera::loadFromXMLFile(const std::string& fileName)
 {
-	std::string data;
-	Ionflux::ObjectBase::readFile(fileName, data);
-	/* <---- DEBUG ----- //
-	std::cerr << "[Camera::loadFromXMLFile] data = " << data 
-	    << std::endl;
-	// <---- DEBUG ----- */
-	Ionflux::GeoUtils::XMLUtils::getCamera(data, *this);
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
 }
 
 Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 

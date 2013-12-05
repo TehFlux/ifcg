@@ -78,6 +78,13 @@ class TransformableGroup
         virtual std::string getDebugInfo(bool expand = true, unsigned int 
         level = 0);
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::TransformableGroup* copy() const;
 		static Ionflux::GeoUtils::TransformableGroup* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -101,14 +108,6 @@ class TransformableGroup
 		virtual void removeItemIndex(unsigned int removeIndex);
 		virtual void clearItems();
 };
-
-namespace XMLUtils
-{
-
-void getTransformableGroup(const std::string& data, 
-Ionflux::GeoUtils::TransformableGroup& target);
-
-}
 
 }
 

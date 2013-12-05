@@ -90,6 +90,13 @@ class TransformableObject
         virtual Ionflux::GeoUtils::Matrix4* getViewMatrix() const;
         virtual Ionflux::GeoUtils::Matrix4* getImageMatrix() const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::TransformableObject* copy() const;
 		static Ionflux::GeoUtils::TransformableObject* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -101,14 +108,6 @@ class TransformableObject
         virtual Ionflux::GeoUtils::DeferredTransform* 
         getDeferredTransform() const;
 };
-
-namespace XMLUtils
-{
-
-void getTransformableObject(const std::string& data, 
-Ionflux::GeoUtils::TransformableObject& target);
-
-}
 
 }
 

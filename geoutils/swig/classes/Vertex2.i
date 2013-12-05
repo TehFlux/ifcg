@@ -77,6 +77,13 @@ class Vertex2
         virtual bool operator!=(const Ionflux::GeoUtils::Vertex2& other) 
         const;
         virtual std::string getString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Vertex2* copy() const;
 		static Ionflux::GeoUtils::Vertex2* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -95,14 +102,6 @@ class Vertex2
         virtual void setY(double newY);
         virtual double getY() const;
 };
-
-namespace XMLUtils
-{
-
-void getVertex2(const std::string& data, Ionflux::GeoUtils::Vertex2& 
-target);
-
-}
 
 }
 

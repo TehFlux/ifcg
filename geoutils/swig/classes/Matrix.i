@@ -72,19 +72,19 @@ class Matrix
         virtual unsigned int getNumElements() const;
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Matrix* copy() const;
 		static Ionflux::GeoUtils::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::GeoUtils::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
-
-namespace XMLUtils
-{
-
-void getMatrix(const std::string& data, Ionflux::GeoUtils::Matrix& target);
-
-}
 
 }
 

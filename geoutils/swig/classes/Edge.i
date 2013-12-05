@@ -69,6 +69,13 @@ class Edge
         virtual bool operator!=(const Ionflux::GeoUtils::Edge& other) 
         const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Edge* copy() const;
 		static Ionflux::GeoUtils::Edge* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -84,13 +91,6 @@ class Edge
         virtual void setV1(int newV1);
         virtual int getV1() const;
 };
-
-namespace XMLUtils
-{
-
-void getEdge(const std::string& data, Ionflux::GeoUtils::Edge& target);
-
-}
 
 }
 

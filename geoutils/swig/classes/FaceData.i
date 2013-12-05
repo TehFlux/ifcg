@@ -61,6 +61,13 @@ class FaceData
         virtual bool hasType(Ionflux::GeoUtils::FaceDataTypeID typeID);
         static std::string 
         getTypeIDString(Ionflux::GeoUtils::FaceDataTypeID typeID);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::FaceData* copy() const;
 		static Ionflux::GeoUtils::FaceData* upcast(Ionflux::ObjectBase::IFObject*
 		other);
@@ -77,14 +84,6 @@ class FaceData
         newDataType);
         virtual Ionflux::GeoUtils::FaceDataTypeID getDataType() const;
 };
-
-namespace XMLUtils
-{
-
-void getFaceData(const std::string& data, Ionflux::GeoUtils::FaceData& 
-target);
-
-}
 
 }
 

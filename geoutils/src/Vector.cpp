@@ -34,6 +34,7 @@
 #include "geoutils/utils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/VectorXMLFactory.hpp"
 
@@ -415,13 +416,8 @@ const
 
 void Vector::loadFromXMLFile(const std::string& fileName)
 {
-	std::string data;
-	Ionflux::ObjectBase::readFile(fileName, data);
-	/* <---- DEBUG ----- //
-	std::cerr << "[Vector::loadFromXMLFile] data = " << data 
-	    << std::endl;
-	// <---- DEBUG ----- */
-	Ionflux::GeoUtils::XMLUtils::getVector(data, *this);
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
 }
 
 Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 

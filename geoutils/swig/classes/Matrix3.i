@@ -94,6 +94,13 @@ class Matrix3
         Ionflux::GeoUtils::Vector3& v);
         static Ionflux::GeoUtils::Matrix3 rotate(double phi, const 
         Ionflux::GeoUtils::Vector3& axis);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Matrix3* copy() const;
 		static Ionflux::GeoUtils::Matrix3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -122,14 +129,6 @@ class Matrix3
 
 Ionflux::GeoUtils::Matrix3 operator*(double c, const 
 Ionflux::GeoUtils::Matrix3& m);
-
-namespace XMLUtils
-{
-
-void getMatrix3(const std::string& data, Ionflux::GeoUtils::Matrix3& 
-target);
-
-}
 
 }
 

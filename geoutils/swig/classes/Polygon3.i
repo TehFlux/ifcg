@@ -117,6 +117,13 @@ class Polygon3
         double smoothness = 0.2);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Polygon3* copy() const;
 		static Ionflux::GeoUtils::Polygon3* upcast(Ionflux::ObjectBase::IFObject*
 		other);
@@ -165,14 +172,6 @@ class Polygon3
 		virtual void removeEdgeIndex(unsigned int removeIndex);
 		virtual void clearEdges();
 };
-
-namespace XMLUtils
-{
-
-void getPolygon3(const std::string& data, Ionflux::GeoUtils::Polygon3& 
-target);
-
-}
 
 }
 

@@ -75,6 +75,13 @@ class Matrix2
         static Ionflux::GeoUtils::Matrix2 scale(double sx = 1., double sy =
         1.);
         static Ionflux::GeoUtils::Matrix2 rotate(double phi = 0.);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Matrix2* copy() const;
 		static Ionflux::GeoUtils::Matrix2* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -98,14 +105,6 @@ class Matrix2
 
 Ionflux::GeoUtils::Matrix2 operator*(double c, const 
 Ionflux::GeoUtils::Matrix2& m);
-
-namespace XMLUtils
-{
-
-void getMatrix2(const std::string& data, Ionflux::GeoUtils::Matrix2& 
-target);
-
-}
 
 }
 

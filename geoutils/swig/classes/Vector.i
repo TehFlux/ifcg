@@ -80,19 +80,19 @@ class Vector
         const;
         virtual std::string getValueString() const;
         virtual unsigned int getNumElements() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Vector* copy() const;
 		static Ionflux::GeoUtils::Vector* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::GeoUtils::Vector* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
-
-namespace XMLUtils
-{
-
-void getVector(const std::string& data, Ionflux::GeoUtils::Vector& target);
-
-}
 
 }
 

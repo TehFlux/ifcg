@@ -36,7 +36,7 @@ if (not os.path.isfile('site_scons/local_config.py')):
 import local_config as lc
 from sources import *
 from builders import buildSource, buildClassInterface, buildInterface
-from builders import buildClassXMLFactory, buildClassXMLIO, buildXMLIO
+from builders import buildClassXMLFactory
 
 Help("""
 Type 'scons' to build the default targets.
@@ -207,16 +207,12 @@ for it in geoutilsEnv['CPPPATH']:
 swigPythonBuilder = Builder(action = "swig -c++ -python "
     + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
 classXMLFactoryBuilder = Builder(action = buildClassXMLFactory)
-classXMLIOBuilder = Builder(action = buildClassXMLIO)
-xmlIOBuilder = Builder(action = buildXMLIO)
 
 geoutilsEnv.Append(BUILDERS = { 'Source' : sourceBuilder, 
     'ClassInterface' : classInterfaceBuilder, 
     'Interface' : interfaceBuilder, 
     'SWIGPython' : swigPythonBuilder, 
-    'ClassXMLFactory' : classXMLFactoryBuilder, 
-    'ClassXMLIO' : classXMLIOBuilder, 
-    'XMLIO' : xmlIOBuilder
+    'ClassXMLFactory' : classXMLFactoryBuilder
 })
 
 altjiraGeoUtilsEnv = geoutilsEnv.Clone()
@@ -245,66 +241,23 @@ else:
     print "ifclassgen not found - source files will NOT be generated!"
     print "**********************************************************"
 
-# XML I/O functions.
+# XML object factory configuration files.
 if (haveIFTpl):
-    xmlIO = []
-    classXMLIO = []
     classXMLFactory = []
     # geoutils library
-    xmlIOTargets0 = []
-    xmlIOTargets1 = []
-    xmlIOTargets2 = []
     for it in geoutilsLibXMLClasses:
-        t0 = 'temp/xmlutils/' + it + '_xml.hpp'
-        t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
-        t2 = 'temp/xmlutils/' + it + '_xml.cpp'
-        t3 = 'conf/class/xmlio/' + it + 'XMLFactory.conf'
-        xmlIOTargets0 += [t0]
-        xmlIOTargets1 += [t1]
-        xmlIOTargets2 += [t2]
-        classXMLIO += [ 
-            geoutilsEnv.ClassXMLIO(target = t0, 
-                source = ['conf/class/' + it + '.conf']), 
-            geoutilsEnv.ClassXMLIO(target = t1, 
-                source = ['conf/class/' + it + '.conf']), 
-            geoutilsEnv.ClassXMLIO(target = t2, 
-                source = ['conf/class/' + it + '.conf'])
-        ]
+        t0 = 'conf/class/xmlio/' + it + 'XMLFactory.conf'
         classXMLFactory += [
-            geoutilsEnv.ClassXMLFactory(target = t3, 
+            geoutilsEnv.ClassXMLFactory(target = t0, 
                 source = ['conf/class/' + it + '.conf']), 
         ]
-    xmlIO += [ 
-        geoutilsEnv.XMLIO(target = lc.xmlIOFile[0], 
-            source = xmlIOTargets0 + [lc.xmlIOTemplateFile[0]]), 
-        geoutilsEnv.XMLIO(target = lc.xmlIOFile[1], 
-            source = xmlIOTargets1 + [lc.xmlIOTemplateFile[1]]), 
-        geoutilsEnv.XMLIO(target = lc.xmlIOFile[2], 
-            source = xmlIOTargets2 + [lc.xmlIOTemplateFile[2]])
-    ]
     ## Altjira/GeoUtils library
-    #xmlIOTargets = []
-    #for it in altjiraGeoUtilsLibXMLClasses:
-    #    t0 = 'temp/xmlutils/' + it + '_xml.hpp'
-    #    t1 = 'temp/xmlutils/' + it + '_xml_private.hpp'
-    #    t2 = 'temp/xmlutils/' + it + '_xml.cpp'
-    #    xmlIOTargets += [t0]
-    #    classXMLIO += [ 
-    #        geoutilsEnv.ClassXMLIO(target = [ t0, t1, t2 ], 
-    #            source = ['conf/class/' + it + '.conf'])
-    #    ]
-    #xmlIO += [ 
-    #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[3], 
-    #        source = xmlIOTargets + [lc.xmlIOTemplateFile[3]]), 
-    #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[4], 
-    #        source = xmlIOTargets + [lc.xmlIOTemplateFile[4]]), 
-    #    geoutilsEnv.XMLIO(target = lc.xmlIOFile[5], 
-    #        source = xmlIOTargets + [lc.xmlIOTemplateFile[5]])
-    #]
-    allTargets += (classXMLFactory + classXMLIO + xmlIO)
+    # Nothing here.
+    allTargets += classXMLFactory
 else:
     print "***********************************************************"
-    print "iftpl not found -  XML I/O functions will NOT be generated!"
+    print "iftpl not found -  XML factory configuration files will NOT "
+    print "be generated!"
     print "***********************************************************"
 
 # XML object factory source files.
@@ -331,7 +284,7 @@ else:
 if (haveIFTpl):
     interfaces = []
     classInterfaces = []
-    # geoutils library
+    # GeoUtils library: classes
     interfaceTargets = []
     for it in geoutilsLibClasses:
         t0 = 'swig/classes/' + it + '.i'
@@ -340,6 +293,7 @@ if (haveIFTpl):
             geoutilsEnv.ClassInterface(target = [ t0 ], 
                 source = ['conf/class/' + it + '.conf'])
         ]
+    # GeoUtils library; XML object factories
     for it in geoutilsLibXMLClasses:
         t0 = 'swig/classes/xmlio/' + it + 'XMLFactory.i'
         interfaceTargets += [t0]
@@ -349,7 +303,7 @@ if (haveIFTpl):
         ]
     interfaces += [ geoutilsEnv.Interface(target = lc.swigInterfaceFile[0], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[0]]) ]
-    # Altjira/GeoUtils library
+    # Altjira/GeoUtils library: classes
     interfaceTargets = []
     for it in altjiraGeoUtilsLibClasses:
         t0 = 'swig/classes/' + it + '.i'
@@ -484,9 +438,7 @@ aliasInstall = Alias('install', installTargets)
 if (haveIFClassgen):
     aliasSources = Alias('sources', sources)
 if (haveIFTpl):
-    aliasXMLIO = Alias('xmlio', classXMLFactory + classXMLIO + xmlIO 
-        + xmlFactorySources)
-    #aliasXMLIO = Alias('xmlio', classXMLIO)
+    aliasXMLIO = Alias('xmlio', classXMLFactory + xmlFactorySources)
     aliasInterfaces = Alias('interfaces', classInterfaces + interfaces)
 if (buildPyModule):
     aliasPyModule = Alias('pymodule', pyModules)

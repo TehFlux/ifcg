@@ -106,6 +106,13 @@ class Camera
         virtual void setOriginCam(double distance0 = 10., double rotX = 
         -30., double rotY = 0., double rotZ = 30.);
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Camera* copy() const;
 		static Ionflux::GeoUtils::Camera* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -142,13 +149,6 @@ class Camera
         Ionflux::GeoUtils::CameraSetupFlags& newSetupFlags);
         virtual Ionflux::GeoUtils::CameraSetupFlags getSetupFlags() const;
 };
-
-namespace XMLUtils
-{
-
-void getCamera(const std::string& data, Ionflux::GeoUtils::Camera& target);
-
-}
 
 }
 
