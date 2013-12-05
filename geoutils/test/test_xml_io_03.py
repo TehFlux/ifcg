@@ -20,7 +20,7 @@ xf0 = cg.Vector.getXMLFactory()
 xf1 = cg.Vector2.getXMLFactory()
 xf2 = cg.Vector3.getXMLFactory()
 xf3 = cg.Vector4.getXMLFactory()
-xf4 = cg.VectorSet.getXMLFactory()
+xf4 = cg.VectorSetXMLFactory.upcast(cg.VectorSet.getXMLFactory())
 
 vs0 = cg.VectorSet.create()
 vs0.setID("vs0")
