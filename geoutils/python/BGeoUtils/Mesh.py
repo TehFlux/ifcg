@@ -31,30 +31,61 @@ from BGeoUtils import BGeoUtilsError
 import bpy
 import bmesh
 
-class Mesh:
-    """Mesh.
+class DataNode:
+    """Data node.
     
-    A wrapper around a CGeoUtils.Mesh for use with Blender."""
+    Wrapper around a Blender data node.
     
-    def __init__(self, name = "UnnamedMesh", cgMesh = None, 
+    name    -- Name
+    cgData  -- CGeoUtils data object
+    """
+    
+    def __init__(self, name = "UnnamedData", cgData = None, 
         create = False):
         self.name = name
         # for memory management
         self.mm = ib.IFObject()
-        if (not cgMesh is None):
-            self.mm.addLocalRef(cgMesh)
-        self.cgMesh = cgMesh
+        if (not cgData is None):
+            self.mm.addLocalRef(cgData)
+        self.cgData = cgData
         if (create):
-            self.createBMesh()
+            self.createBData()
+    
+    def createBData(self, dataName = None):
+        pass
+    
+    def getBData(self, dataName = None):
+        pass
+    
+    def update(self):
+        """Update the Blender data.
+        
+        Update the Blender data to reflect changes in the GeoUtils 
+        data."""
+        self.createBData()
+    
+    def __str__(self):
+        if (not self.cgData is None):
+            return "DataNode[" + str(self.cgData) + "]"
+        return "DataNode"
+
+class Mesh(DataNode):
+    """Mesh.
+    
+    Wrapper around a CGeoUtils.Mesh for use with Blender."""
+    
+    def __init__(self, name = "UnnamedMesh", cgMesh = None, 
+        create = False):
+        DataNode.__init__(self, name, cgMesh, create)
     
     def setFromBMesh(self, bMesh):
         """Initialize from Blender mesh."""
-        if (self.cgMesh is None):
-            self.cgMesh = cg.Mesh.create()
-            self.mm.addLocalRef(self.cgMesh)
+        if (self.cgData is None):
+            self.cgData = cg.Mesh.create()
+            self.mm.addLocalRef(self.cgData)
         else:
-            self.cgMesh.clearData()
-        m = self.cgMesh
+            self.cgData.clearData()
+        m = self.cgData
         m.setID(self.name)
         bm0 = bmesh.new()
         bm0.from_mesh(bMesh)
@@ -103,9 +134,9 @@ class Mesh:
         """Create Blender mesh.
         
         Create a new Blender mesh from the current CGeoUtils mesh."""
-        if (self.cgMesh is None):
+        if (self.cgData is None):
             raise BGeoUtilsError("CGeoUtils mesh not set.")
-        m = self.cgMesh
+        m = self.cgData
         m0 = self.getBMesh(meshName)
         bm0 = bmesh.new()
         # Vertices.
@@ -176,11 +207,14 @@ class Mesh:
         bm0.free()
         return m0
     
+    def createBData():
+        self.createBMesh()
+    
     def getBMesh(self, meshName = None):
         """Get Blender mesh."""
-        if (self.cgMesh is None):
-            raise BGeoUtilsError("CGeoUtils mesh not set.")
-        m = self.cgMesh
+        if (self.cgData is None):
+            raise BGeoUtilsError("CGeoUtils data object not set.")
+        m = self.cgData
         if (meshName is None):
             meshName = self.name
         if (meshName is None):
@@ -194,42 +228,31 @@ class Mesh:
             raise BGeoUtilsError("Could not create Blender mesh.")
         return m0
     
-    def update(self):
-        """Update the Blender mesh.
-        
-        Update the Blender mesh to reflect changes in the GeoUtils 
-        mesh."""
-        self.createBMesh()
+    def getBData(self, dataName = None):
+        return self.getBMesh(dataName)
     
     def __str__(self):
-        if (not self.cgMesh is None):
-            return str(self.cgMesh)
+        if (not self.cgData is None):
+            return "Mesh[" + str(self.cgData) + "]"
         return "Mesh"
 
-class Polygon3:
+class Polygon3(Mesh):
     """Polygon (3D).
     
     A wrapper around a CGeoUtils.Polygon3 for use with Blender."""
     
     def __init__(self, name = "UnnamedPolygon3", cgPoly = None, 
         create = False):
-        self.name = name
-        # for memory management
-        self.mm = ib.IFObject()
-        if (not cgPoly is None):
-            self.mm.addLocalRef(cgPoly)
-        self.cgPoly = cgPoly
-        if (create):
-            self.createBMesh()
+        Mesh.__init__(self, name, cgPoly, create)
     
     def setFromBMesh(self, bMesh):
         """Initialize from Blender mesh."""
-        if (self.cgPoly is None):
-            self.cgPoly = cg.Polygon3.create()
-            self.mm.addLocalRef(self.cgPoly)
+        if (self.cgData is None):
+            self.cgData = cg.Polygon3.create()
+            self.mm.addLocalRef(self.cgData)
         else:
-            self.cgPoly.clearData()
-        p = self.cgPoly
+            self.cgData.clearData()
+        p = self.cgData
         p.setID(self.name)
         bm0 = bmesh.new()
         bm0.from_mesh(bMesh)
@@ -245,9 +268,9 @@ class Polygon3:
         """Create Blender mesh.
         
         Create a new Blender mesh from the current CGeoUtils polygon."""
-        if (self.cgPoly is None):
+        if (self.cgData is None):
             raise BGeoUtilsError("CGeoUtils mesh not set.")
-        p = self.cgPoly
+        p = self.cgData
         m0 = self.getBMesh(meshName)
         bm0 = bmesh.new()
         # Vertices.
@@ -269,34 +292,9 @@ class Polygon3:
         bm0.to_mesh(m0)
         bm0.free()
         return m0
-
-    def getBMesh(self, meshName = None):
-        """Get Blender mesh."""
-        if (self.cgPoly is None):
-            raise BGeoUtilsError("CGeoUtils polygon not set.")
-        m = self.cgPoly
-        if (meshName is None):
-            meshName = self.name
-        if (meshName is None):
-            meshName = m.getID()
-        if (len(meshName) == 0):
-            meshName = "unnamedMesh"
-        m0 = bpy.data.meshes.get(meshName)
-        if (m0 is None):
-            m0 = bpy.data.meshes.new(meshName)
-        if (m0 is None):
-            raise BGeoUtilsError("Could not create Blender mesh.")
-        return m0
-    
-    def update(self):
-        """Update the Blender mesh.
-        
-        Update the Blender mesh to reflect changes in the GeoUtils 
-        mesh."""
-        self.createBMesh()
     
     def __str__(self):
-        if (not self.cgMesh is None):
-            return str(self.cgMesh)
+        if (not self.cgData is None):
+            return "Polygon3[" + str(self.cgData) + "]"
         return "Polygon3"
 

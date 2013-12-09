@@ -32,32 +32,32 @@ import BGeoUtils.Mesh as bm
 import CGeoUtils as cg
 import bpy
 
-def createBObject(objectName, mesh):
-    """Create a Blender object for a a mesh."""
-    o0 = bpy.data.objects.new(objectName, mesh)
+def createBObject(objectName, blenderData):
+    """Create a Blender object for data."""
+    o0 = bpy.data.objects.new(objectName, blenderData)
     o1 = bpy.context.scene.objects.link(o0)
     return o1
 
 class Object:
     """Object.
     
-    Convenience class for creating a Blender object from a GeoUtils Mesh.
+    Convenience class for creating Blender objects.
     
     name     -- object name
-    mesh     -- BGeoUtils.Mesh
+    data     -- BGeoUtils data object
     bObject  -- Blender object
     """
     
-    def __init__(self, name = "Unnamed", mesh = None, create = False):
+    def __init__(self, name = "Unnamed", data = None, create = False):
         self.name = name
-        self.mesh = mesh
+        self.data = data
         o0 = bpy.data.objects.get(self.name)
         if (not o0 is None):
             # Use existing Blender object.
             self.bObject = o0
         else:
             self.bObject = None
-        if (create and not (mesh is None)):
+        if (create and not (data is None)):
             self.createBObject()
     
     def moveToLayer(self, layer):
@@ -73,7 +73,7 @@ class Object:
         """Get Blender object."""
         o0 = bpy.data.objects.get(self.name)
         if (o0 is None):
-            o0 = bpy.data.objects.new(self.name, self.mesh.getBMesh())
+            o0 = bpy.data.objects.new(self.name, self.data.getBData())
         if (o0 is None):
             raise BGeoUtilsError("Could not create Blender object.")
         return o0
