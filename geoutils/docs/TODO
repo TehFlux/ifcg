@@ -15,8 +15,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ BGeoUtils
-  > Object should support different data types (Mesh, Curve)
++ Testing
+  > BGeoUtils: BezierSpline
 
 --------------------------------------------------------------------------------
 Critical stuff

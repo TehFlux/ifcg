@@ -12,6 +12,7 @@ mm = ib.IFObject()
 
 inFile0 = 'test/images/spline02.svg'
 outFile0 = 'temp/test_spline_01-01.svg'
+outFile1 = 'temp/test_spline_01-01.xml'
 templatePath0 = 'test/template'
 smoothness = 0.2
 
@@ -35,7 +36,14 @@ poly0.createSpline(spline0, smoothness)
 
 print("  spline: [%s]" % spline0.getValueString())
 
-print("Writing spline data to file '%s'..." % outFile0)
+print("Writing spline XML data to file '%s'..." % outFile1)
+
+#xml0 = spline0.getXML0()
+#print(xml0)
+
+spline0.writeToXMLFile(outFile1)
+
+print("Writing spline SVG data to file '%s'..." % outFile0)
 
 tr0 = ift.TemplateRepository.create()
 mm.addLocalRef(tr0)

@@ -76,6 +76,13 @@ class BezierSpline
         Ionflux::Mapping::CoordinateID imagePlaneNormal = 
         Ionflux::Mapping::C_Z) const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::Mapping::BezierSpline* copy() const;
 		static Ionflux::Mapping::BezierSpline* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

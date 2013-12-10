@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ==========================================================================
 # GeoUtils - Ionflux' Geometry Library
-# Copyright © 2010-2012 Jörn P. Meier
+# Copyright © 2010-2013 Jörn P. Meier
 # mail@ionflux.org
 # --------------------------------------------------------------------------
 # Mesh.py          Blender mesh tools.
@@ -26,6 +26,7 @@
 # 
 # ==========================================================================
 import IFObjectBase as ib
+import IFMapping as im
 import CGeoUtils as cg
 from BGeoUtils import BGeoUtilsError
 import bpy
@@ -220,7 +221,7 @@ class Mesh(DataNode):
         if (meshName is None):
             meshName = m.getID()
         if (len(meshName) == 0):
-            meshName = "unnamedMesh"
+            meshName = "UnnamedMesh"
         m0 = bpy.data.meshes.get(meshName)
         if (m0 is None):
             m0 = bpy.data.meshes.new(meshName)
@@ -297,4 +298,99 @@ class Polygon3(Mesh):
         if (not self.cgData is None):
             return "Polygon3[" + str(self.cgData) + "]"
         return "Polygon3"
+
+class BezierSpline(DataNode):
+    """Bezier spline.
+    
+    Wrapper around an IFMapping.BezierSpline for use with Blender.
+    """
+    
+    def __init__(self, name = "UnnamedCurve", cgCurve = None, 
+        create = False):
+        DataNode.__init__(self, name, cgCurve, create)
+    
+    def createBCurve(self, dataName):
+        """Create Blender curve.
+        
+        Create a new Blender curve from the current IFMapping curve."""
+        if (self.cgData is None):
+            raise BGeoUtilsError("IFMapping curve not set.")
+        c0 = self.cgData
+        c1 = self.getBCurve(dataName)
+        if (len(c1.splines) == 0):
+            s0 = c1.splines.new(type = 'BEZIER')
+        else:
+            s0 = c1.splines[0]
+        numCurves0 = c0.getNumSegments()
+        numPoints0 = numCurves0 + 1
+        numPoints1 = len(s0.bezier_points)
+        if (numPoints1 < numPoints0):
+            s0.bezier_points.add(numPoints0 - numPoints1)
+        for i in range(0, numCurves0):
+            cs0 = c0.getSegment(i)
+            ps0 = cs0.getPoint(0)
+            ps1 = cs0.getPoint(1)
+            ps2 = cs0.getPoint(2)
+            pt0 = s0.bezier_points[i]
+            pt1 = s0.bezier_points[i + 1]
+            if (i == 0):
+                pt0.handle_left_type = 'ALIGNED'
+            if (i == numCurves0 - 1):
+                pt1.handle_right_type = 'ALIGNED'
+            pt0.handle_right_type = 'FREE'
+            pt0.co = [ ps0.getX(), ps0.getY(), ps0.getZ() ]
+            pt0.handle_right = [ ps1.getX(), ps1.getY(), ps1.getZ() ]
+            pt1.handle_left_type = 'FREE'
+            pt1.handle_left = [ ps2.getX(), ps2.getY(), ps2.getZ() ]
+        return c1
+    
+    def getBCurve(self, dataName):
+        if (self.cgData is None):
+            raise BGeoUtilsError("CGeoUtils data object not set.")
+        c = self.cgData
+        if (dataName is None):
+            dataName = self.name
+        if (dataName is None):
+            dataName = c.getID()
+        if (len(dataName) == 0):
+            dataName = "UnnamedCurve"
+        c0 = bpy.data.curves.get(dataName)
+        if (c0 is None):
+            c0 = bpy.data.curves.new(dataName, type = 'CURVE')
+        if (c0 is None):
+            raise BGeoUtilsError("Could not create Blender curve.")
+        return c0
+    
+    def setFromBCurve(self, bCurve):
+        """Initialize from Blender curve."""
+        if (self.cgData is None):
+            self.cgData = im.BezierSpline.create()
+            self.mm.addLocalRef(self.cgData)
+        else:
+            self.cgData.clearCurves()
+        c0 = self.cgData
+        c0.setID(self.name)
+        s0 = bCurve.splines[0]
+        numPoints0 = len(s0.bezier_points)
+        numCurves0 = numPoints0 - 1
+        for i in range(0, numCurves0):
+            ps0 = s0.bezier_points[i]
+            ps1 = s0.bezier_points[i + 1]
+            pt0 = im.Point(*ps0.co)
+            pt1 = im.Point(*ps0.handle_right)
+            pt2 = im.Point(*ps1.handle_left)
+            pt3 = im.Point(*ps1.co)
+            cs0 = im.BezierCurve.create(pt0, pt1, pt2, pt3)
+            c0.addSegment(cs0)
+    
+    def createBData(self, dataName = None):
+        self.createBCurve(dataName)
+    
+    def getBData(self, dataName = None):
+        return self.getBCurve(dataName)
+    
+    def __str__(self):
+        if (not self.cgData is None):
+            return "BezierSpline[" + str(self.cgCurve) + "]"
+        return "BezierSpline"
 

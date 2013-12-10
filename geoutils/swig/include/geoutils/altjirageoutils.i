@@ -7,6 +7,7 @@
 %import "altjira/altjira.i"
 %import "altjira/altjiradraw.i"
 %{
+#include "ifmapping/xml_factories.hpp"
 #include "geoutils/geoutils.hpp"
 #include "geoutils/xml_factories.hpp"
 #include "altjira/altjira.hpp"

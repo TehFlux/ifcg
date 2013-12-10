@@ -30,6 +30,11 @@
 #include <sstream>
 #include "ifmapping/utils.hpp"
 #include "ifmapping/MappingError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "ifmapping/xmlutils.hpp"
+#include "ifmapping/xmlio/BezierCurveXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -44,6 +49,8 @@ BezierCurveClassInfo::BezierCurveClassInfo()
 {
 	name = "BezierCurve";
 	desc = "Cubic Bezier curve";
+	baseClassInfo.push_back(Ionflux::Mapping::PointMapping::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::Mapping::PointSet::CLASS_INFO);
 }
 
 BezierCurveClassInfo::~BezierCurveClassInfo()
@@ -54,11 +61,13 @@ BezierCurveClassInfo::~BezierCurveClassInfo()
 const BezierCurveClassInfo BezierCurve::bezierCurveClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* BezierCurve::CLASS_INFO = &BezierCurve::bezierCurveClassInfo;
 
+const std::string BezierCurve::XML_ELEMENT_NAME = "bezcurve";
+
 BezierCurve::BezierCurve()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	validate();
+	// TODO: Nothing ATM. ;-)
 }
 
 BezierCurve::BezierCurve(const Ionflux::Mapping::BezierCurve& other)
@@ -329,6 +338,51 @@ Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string BezierCurve::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string BezierCurve::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::Mapping::PointSet::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void BezierCurve::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::Mapping::PointSet::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void BezierCurve::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+BezierCurve::getXMLObjectFactory()
+{
+	static Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 0;
+        bFac = Ionflux::Mapping::PointSet::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

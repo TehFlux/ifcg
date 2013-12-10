@@ -29,6 +29,11 @@
 #include <sstream>
 #include "ifmapping/MappingError.hpp"
 #include "ifmapping/utils.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "ifmapping/xmlutils.hpp"
+#include "ifmapping/xmlio/PointXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -58,6 +63,8 @@ const Ionflux::Mapping::Point Point::ONES = Ionflux::Mapping::Point(1., 1., 1.);
 // run-time type information instance constants
 const PointClassInfo Point::pointClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Point::CLASS_INFO = &Point::pointClassInfo;
+
+const std::string Point::XML_ELEMENT_NAME = "p";
 
 Point::Point()
 : x(0.), y(0.), z(0.)
@@ -345,6 +352,54 @@ Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string Point::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Point::getXMLAttributeData() const
+{
+    std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+    std::ostringstream d0;
+    if (a0.size() > 0)
+        d0 << a0 << " ";
+    d0 << "d=\"" << x << Ionflux::ObjectBase::DEFAULT_COORD_SEPARATOR 
+        << y << Ionflux::ObjectBase::DEFAULT_COORD_SEPARATOR
+        << z << "\"";
+    return d0.str();
+}
+
+void Point::getXMLChildData(std::string& target, unsigned int indentLevel) 
+const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void Point::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+Point::getXMLObjectFactory()
+{
+	static Ionflux::Mapping::XMLUtils::PointXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::Mapping::XMLUtils::PointXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

@@ -66,6 +66,13 @@ class BezierCurve
         virtual Ionflux::Mapping::BezierCurve interpolate(const 
         Ionflux::Mapping::BezierCurve& other, 
         Ionflux::Mapping::MappingValue t = 0.5) const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::Mapping::BezierCurve* copy() const;
 		static Ionflux::Mapping::BezierCurve* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

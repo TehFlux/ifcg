@@ -208,7 +208,8 @@ swigPythonBuilder = Builder(action = "swig -c++ -python "
     + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
 classXMLFactoryBuilder = Builder(action = buildClassXMLFactory)
 
-geoutilsEnv.Append(BUILDERS = { 'Source' : sourceBuilder, 
+geoutilsEnv.Append(BUILDERS = { 
+    'Source' : sourceBuilder, 
     'ClassInterface' : classInterfaceBuilder, 
     'Interface' : interfaceBuilder, 
     'SWIGPython' : swigPythonBuilder, 

@@ -9,7 +9,7 @@ of the operator label.
 import IFObjectBase as ib
 import CGeoUtils as cg
 import BGeoUtils as bg
-import BGeoUtils.Mesh as bgm
+import BGeoUtils.Data as bgd
 import BGeoUtils.Object as bgo
 #import BGeoUtils.Material as bgMat
 import BGeoUtils.utils as bgu
@@ -33,7 +33,7 @@ class ShowPCABase(bpy.types.Operator):
             o0 = bpy.data.objects.get(self.name)
             n0 = self.name
         m0 = o0.data
-        m1 = bgm.Mesh(n0)
+        m1 = bgd.Mesh(n0)
         m1.setFromBMesh(m0)
         vs0 = m1.cgMesh.getVertexSource()
         pca0 = vs0.getPCABase()
@@ -102,7 +102,7 @@ class MakeFacesPlanar(bpy.types.Operator):
             f = m0.faces[i]
             if (f.select):
                 sf.push_back(i)
-        m1 = bgm.Mesh(n1)
+        m1 = bgd.Mesh(n1)
         m1.setFromBMesh(m0)
         m2 = m1.cgMesh
         m2.update()
@@ -133,7 +133,7 @@ class SaveMesh(bpy.types.Operator):
             n0 = str(self.name)
         else:
             n0 = o0.name
-        gm0 = bgm.Mesh(n0)
+        gm0 = bgd.Mesh(n0)
         gm0.setFromBMesh(bm0)
         gm0.cgMesh.writeToXMLFile(self.filepath)
         return {'FINISHED'}
@@ -165,7 +165,7 @@ class LoadMesh(bpy.types.Operator):
             n0 = cgm0.getID()
         if (n0 == ""):
             n0 = "UnnamedObject"
-        gm0 = bgm.Mesh(n0 + "M", cgm0)
+        gm0 = bgd.Mesh(n0 + "M", cgm0)
         gm0.createBMesh(None, self.createUVTex, 
             self.createVertexColors)
         o0 = bgo.Object(n0, gm0)

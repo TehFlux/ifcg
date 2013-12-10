@@ -38,6 +38,13 @@ namespace Ionflux
 namespace Mapping
 {
 
+namespace XMLUtils
+{
+
+class PointXMLFactory;
+
+}
+
 /// Class information for class Point.
 class PointClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -78,6 +85,8 @@ class Point
 		static const PointClassInfo pointClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -357,6 +366,49 @@ class Point
 		static Ionflux::Mapping::Point* create(const 
 		Ionflux::ObjectBase::DoubleVector& initCoords, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		virtual std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		virtual std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get x coordinate.
 		 *

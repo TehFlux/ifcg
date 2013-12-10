@@ -30,6 +30,11 @@
 #include <sstream>
 #include "ifmapping/utils.hpp"
 #include "ifmapping/MappingError.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "ifmapping/xmlutils.hpp"
+#include "ifmapping/xmlio/PointSetXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -54,6 +59,8 @@ PointSetClassInfo::~PointSetClassInfo()
 // run-time type information instance constants
 const PointSetClassInfo PointSet::pointSetClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* PointSet::CLASS_INFO = &PointSet::pointSetClassInfo;
+
+const std::string PointSet::XML_ELEMENT_NAME = "pointset";
 
 PointSet::PointSet()
 {
@@ -292,6 +299,61 @@ parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string PointSet::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string PointSet::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void PointSet::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(points, "pointvec", "", 
+        indentLevel, "pname=\"points\"");
+    xcFirst = false;
+	target = d0.str();
+}
+
+void PointSet::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+PointSet::getXMLObjectFactory()
+{
+	static Ionflux::Mapping::XMLUtils::PointSetXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::Mapping::XMLUtils::PointSetXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

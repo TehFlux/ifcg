@@ -15,11 +15,12 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 + All uses of 'new' within the library should be checked for 0 return values.
 

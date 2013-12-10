@@ -34,6 +34,11 @@
 #include "ifmapping/MappingError.hpp"
 #include "ifmapping/EvalCoord.hpp"
 #include "ifmapping/PointCoord.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "ifmapping/xmlutils.hpp"
+#include "ifmapping/xmlio/BezierSplineXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -48,6 +53,7 @@ BezierSplineClassInfo::BezierSplineClassInfo()
 {
 	name = "BezierSpline";
 	desc = "Cubic Bezier spline";
+	baseClassInfo.push_back(Ionflux::Mapping::PointMapping::CLASS_INFO);
 }
 
 BezierSplineClassInfo::~BezierSplineClassInfo()
@@ -57,6 +63,8 @@ BezierSplineClassInfo::~BezierSplineClassInfo()
 // run-time type information instance constants
 const BezierSplineClassInfo BezierSpline::bezierSplineClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* BezierSpline::CLASS_INFO = &BezierSpline::bezierSplineClassInfo;
+
+const std::string BezierSpline::XML_ELEMENT_NAME = "bezspline";
 
 BezierSpline::BezierSpline()
 {
@@ -401,6 +409,50 @@ BezierSpline::create(Ionflux::ObjectBase::IFObject* parentObject)
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
     return newObject;
+}
+
+std::string BezierSpline::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string BezierSpline::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	return d0.str();
+}
+
+void BezierSpline::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(segments, "bezcurvevec", "", 
+        indentLevel, "pname=\"segments\"");
+    xcFirst = false;
+	target = d0.str();
+}
+
+void BezierSpline::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+BezierSpline::getXMLObjectFactory()
+{
+	static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory::create();
+        fac0->addRef();
+    }
+    return fac0;
 }
 
 }

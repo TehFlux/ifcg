@@ -28,7 +28,7 @@
 # ==========================================================================
 import CGeoUtils as cg
 from BGeoUtils import BGeoUtilsError
-import BGeoUtils.Mesh as bm
+import BGeoUtils.Data as bgd
 import CGeoUtils as cg
 import bpy
 
@@ -185,7 +185,7 @@ class Arrow(PointingObject):
         if (mesh is None):
             m0 = cg.Mesh.arrow(subDivs, length * scale, radius * scale, 
                 headLength, headRadius)
-            m1 = bm.Mesh(name + "M", m0, True)
+            m1 = bgd.Mesh(name + "M", m0, True)
             mesh = m1
         Object.__init__(self, name, mesh, create)
 
@@ -198,7 +198,7 @@ class Cylinder(PointingObject):
         radius = 0.5, scale = 1., mesh = None, create = False):
         if (mesh is None):
             m0 = cg.Mesh.cylinder(subDivs, length * scale, radius * scale)
-            m1 = bm.Mesh(name + "M", m0, True)
+            m1 = bgd.Mesh(name + "M", m0, True)
             mesh = m1
         Object.__init__(self, name, mesh, create)
 

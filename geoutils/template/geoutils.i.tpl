@@ -8,6 +8,7 @@
 %{
 #include "geoutils/geoutils.hpp"
 #include "ifmapping/ifmapping.hpp"
+#include "ifmapping/xml_factories.hpp"
 #include "ifobject/ifobjectbase.hpp"
 #include <assert.h>
 using namespace std;

@@ -7,6 +7,7 @@
 %import "noise.i"
 %{
 #include "ifmapping/ifmapping.hpp"
+#include "ifmapping/xml_factories.hpp"
 #include "ifmapping/ifmappingnoise.hpp"
 #include "ifmapping/MappingError.hpp"
 #include "noise/noise.h"

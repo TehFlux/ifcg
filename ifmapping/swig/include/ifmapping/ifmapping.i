@@ -7,6 +7,7 @@
 %import "ifobject/ifobject.i"
 %{
 #include "ifmapping/ifmapping.hpp"
+#include "ifmapping/xml_factories.hpp"
 #include "ifobject/ifobjectbase.hpp"
 #include <assert.h>
 using namespace std;
@@ -280,6 +281,13 @@ class Point
         Ionflux::Mapping::CoordinateID imagePlaneNormal = 
         Ionflux::Mapping::C_Z) const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::Mapping::Point* copy() const;
 		static Ionflux::Mapping::Point* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -337,6 +345,13 @@ class PointSet
         Ionflux::Mapping::C_Z, unsigned int startIndex = 0, unsigned int 
         numPoints = 0) const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::Mapping::PointSet* copy() const;
 		static Ionflux::Mapping::PointSet* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -628,11 +643,17 @@ class EvalCoord
 }
 
 
+%{
+#include "ifmapping/PointMappingSet.hpp"
+%}
+
 namespace Ionflux
 {
 
 namespace Mapping
 {
+
+class PointMapping;
 
 class PointMappingSetClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -655,6 +676,7 @@ class PointMappingSet
         virtual void addMappings(const 
         Ionflux::Mapping::PointMappingVector& newMappings);
         virtual std::string getString() const;
+		virtual Ionflux::Mapping::PointMappingSet* copy() const;
 		static Ionflux::Mapping::PointMappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointMappingSet* 
@@ -671,8 +693,23 @@ class PointMappingSet
         virtual void removeMapping(Ionflux::Mapping::PointMapping* 
         removeElement);
 		virtual void removeMappingIndex(unsigned int removeIndex);
-        virtual void clearMappings();
+		virtual void clearMappings();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Constant.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class ConstantClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -694,6 +731,9 @@ class Constant
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
+        static Ionflux::Mapping::Constant* 
+        create(Ionflux::Mapping::MappingValue initConstValue);
+		virtual Ionflux::Mapping::Constant* copy() const;
 		static Ionflux::Mapping::Constant* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Constant* create(Ionflux::ObjectBase::IFObject* 
@@ -761,6 +801,10 @@ class Linear
 }
 
 
+%{
+#include "ifmapping/Cubic.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -787,11 +831,27 @@ class Cubic
         virtual ~Cubic();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Cubic* copy() const;
 		static Ionflux::Mapping::Cubic* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Cubic* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Rescale.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class RescaleClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -817,6 +877,7 @@ class Rescale
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Rescale* copy() const;
 		static Ionflux::Mapping::Rescale* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
         virtual void setFunc(Ionflux::Mapping::Mapping* newFunc);
@@ -831,8 +892,23 @@ class Rescale
         virtual void removeArg(Ionflux::Mapping::MappingValue 
         removeElement);
 		virtual void removeArgIndex(unsigned int removeIndex);
-        virtual void clearArgs();
+		virtual void clearArgs();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/InverseFalloff.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class InverseFalloffClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -854,6 +930,7 @@ class InverseFalloff
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::InverseFalloff* copy() const;
 		static Ionflux::Mapping::InverseFalloff* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::InverseFalloff* 
@@ -862,6 +939,23 @@ class InverseFalloff
         newExponent);
         virtual Ionflux::Mapping::MappingValue getExponent() const;
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Piecewise.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class Piece;
 
 class PiecewiseClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -882,6 +976,10 @@ class Piecewise
         Ionflux::Mapping::Mapping* initFunc = 0, 
         Ionflux::Mapping::MappingValue initScale = 1., 
         Ionflux::Mapping::MappingValue initOffset = 0.);
+        Piecewise(const Ionflux::Mapping::PointSet& points, 
+        Ionflux::Mapping::Mapping* initFunc = 0, 
+        Ionflux::Mapping::MappingValue initScale = 1., 
+        Ionflux::Mapping::MappingValue initOffset = 0.);
         virtual ~Piecewise();
         virtual void addPieces(const Ionflux::Mapping::PieceVector& 
         newPieces);
@@ -899,6 +997,7 @@ class Piecewise
         step(Ionflux::Mapping::MappingValue numSteps = 1., 
         Ionflux::Mapping::MappingValue minValue = 0., 
         Ionflux::Mapping::MappingValue maxValue = 1.);
+		virtual Ionflux::Mapping::Piecewise* copy() const;
 		static Ionflux::Mapping::Piecewise* upcast(Ionflux::ObjectBase::IFObject*
 		other);
 		static Ionflux::Mapping::Piecewise* create(Ionflux::ObjectBase::IFObject*
@@ -912,8 +1011,23 @@ class Piecewise
         virtual void addPiece(Ionflux::Mapping::Piece* addElement);        
         virtual void removePiece(Ionflux::Mapping::Piece* removeElement);
 		virtual void removePieceIndex(unsigned int removeIndex);
-        virtual void clearPieces();
+		virtual void clearPieces();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Multiply.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class MultiplyClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -935,6 +1049,7 @@ class Multiply
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Multiply* copy() const;
 		static Ionflux::Mapping::Multiply* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Multiply* create(Ionflux::ObjectBase::IFObject* 
@@ -948,9 +1063,25 @@ class Multiply
         virtual void addFunc(Ionflux::Mapping::Mapping* addElement);        
         virtual void removeFunc(Ionflux::Mapping::Mapping* removeElement);
 		virtual void removeFuncIndex(unsigned int removeIndex);
-        virtual void clearFuncs();
+		virtual void clearFuncs();
 };
 
+}
+
+}
+
+
+%{
+#include "ifmapping/LinearCombination.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class Piece;
 
 class LinearCombinationClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -974,6 +1105,7 @@ class LinearCombination
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::LinearCombination* copy() const;
 		static Ionflux::Mapping::LinearCombination* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::LinearCombination* 
@@ -987,8 +1119,23 @@ class LinearCombination
         virtual void addPiece(Ionflux::Mapping::Piece* addElement);        
         virtual void removePiece(Ionflux::Mapping::Piece* removeElement);
 		virtual void removePieceIndex(unsigned int removeIndex);
-        virtual void clearPieces();
+		virtual void clearPieces();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Chain.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class ChainClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1010,6 +1157,7 @@ class Chain
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Chain* copy() const;
 		static Ionflux::Mapping::Chain* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Chain* create(Ionflux::ObjectBase::IFObject* 
@@ -1023,8 +1171,23 @@ class Chain
         virtual void addFunc(Ionflux::Mapping::Mapping* addElement);        
         virtual void removeFunc(Ionflux::Mapping::Mapping* removeElement);
 		virtual void removeFuncIndex(unsigned int removeIndex);
-        virtual void clearFuncs();
+		virtual void clearFuncs();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Power.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class PowerClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1048,6 +1211,7 @@ class Power
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Power* copy() const;
 		static Ionflux::Mapping::Power* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Power* create(Ionflux::ObjectBase::IFObject* 
@@ -1055,6 +1219,21 @@ class Power
         virtual void setExponent(int newExponent);
         virtual int getExponent() const;
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Exp.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class ExpClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1077,11 +1256,27 @@ class Exp
         virtual ~Exp();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Exp* copy() const;
 		static Ionflux::Mapping::Exp* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Exp* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Sin.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class SinClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1104,11 +1299,27 @@ class Sin
         virtual ~Sin();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Sin* copy() const;
 		static Ionflux::Mapping::Sin* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Sin* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Cos.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class CosClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1131,11 +1342,27 @@ class Cos
         virtual ~Cos();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Cos* copy() const;
 		static Ionflux::Mapping::Cos* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Cos* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Tan.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class TanClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1158,11 +1385,27 @@ class Tan
         virtual ~Tan();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Tan* copy() const;
 		static Ionflux::Mapping::Tan* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Tan* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/ArcSin.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class ArcSinClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1185,11 +1428,27 @@ class ArcSin
         virtual ~ArcSin();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::ArcSin* copy() const;
 		static Ionflux::Mapping::ArcSin* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::ArcSin* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/ArcCos.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class ArcCosClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1212,11 +1471,27 @@ class ArcCos
         virtual ~ArcCos();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::ArcCos* copy() const;
 		static Ionflux::Mapping::ArcCos* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::ArcCos* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/ArcTan.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class ArcTanClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1239,11 +1514,27 @@ class ArcTan
         virtual ~ArcTan();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::ArcTan* copy() const;
 		static Ionflux::Mapping::ArcTan* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::ArcTan* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Polynomial.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class PolynomialClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1270,6 +1561,7 @@ class Polynomial
         virtual std::string getString() const;
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Polynomial* copy() const;
 		static Ionflux::Mapping::Polynomial* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::Polynomial* 
@@ -1286,8 +1578,23 @@ class Polynomial
         virtual void removeCoefficient(Ionflux::Mapping::MappingValue 
         removeElement);
 		virtual void removeCoefficientIndex(unsigned int removeIndex);
-        virtual void clearCoefficients();
+		virtual void clearCoefficients();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Random.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class RandomClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1310,11 +1617,27 @@ class Random
         virtual ~Random();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::Random* copy() const;
 		static Ionflux::Mapping::Random* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Random* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/RandomNorm.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class RandomNormClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1339,6 +1662,7 @@ class RandomNorm
         virtual ~RandomNorm();
         virtual Ionflux::Mapping::MappingValue 
         callWithParam(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::RandomNorm* copy() const;
 		static Ionflux::Mapping::RandomNorm* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::RandomNorm* 
@@ -1348,6 +1672,21 @@ class RandomNorm
         virtual void setStdDev(Ionflux::Mapping::MappingValue newStdDev);
         virtual Ionflux::Mapping::MappingValue getStdDev() const;
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/RandomDensity.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class RandomDensityClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1373,6 +1712,7 @@ class RandomDensity
         callWithParam(Ionflux::Mapping::MappingValue value) const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::RandomDensity* copy() const;
 		static Ionflux::Mapping::RandomDensity* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::RandomDensity* 
@@ -1599,6 +1939,13 @@ class BezierCurve
         virtual Ionflux::Mapping::BezierCurve interpolate(const 
         Ionflux::Mapping::BezierCurve& other, 
         Ionflux::Mapping::MappingValue t = 0.5) const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::Mapping::BezierCurve* copy() const;
 		static Ionflux::Mapping::BezierCurve* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -1680,6 +2027,13 @@ class BezierSpline
         Ionflux::Mapping::CoordinateID imagePlaneNormal = 
         Ionflux::Mapping::C_Z) const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::Mapping::BezierSpline* copy() const;
 		static Ionflux::Mapping::BezierSpline* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -1760,6 +2114,10 @@ class PointCoord
 }
 
 
+%{
+#include "ifmapping/BezierSplineKey.hpp"
+%}
+
 namespace Ionflux
 {
 
@@ -1786,6 +2144,7 @@ class BezierSplineKey
         Ionflux::Mapping::MappingValue initT);
         virtual ~BezierSplineKey();
         virtual std::string getString() const;
+		virtual Ionflux::Mapping::BezierSplineKey* copy() const;
 		static Ionflux::Mapping::BezierSplineKey* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierSplineKey* 
@@ -1793,6 +2152,21 @@ class BezierSplineKey
         virtual void setT(Ionflux::Mapping::MappingValue newT);
         virtual Ionflux::Mapping::MappingValue getT() const;
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/AnimatedSpline.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class AnimatedSplineClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1814,7 +2188,8 @@ class AnimatedSpline
         Ionflux::Mapping::BezierSpline& target) const;
         virtual Ionflux::Mapping::BezierSpline 
         call(Ionflux::Mapping::MappingValue value) const;
-        virtual std::string getString() const;        
+        virtual std::string getString() const;
+		virtual Ionflux::Mapping::AnimatedSpline* copy() const;        
         virtual unsigned int getNumKeys() const;
         virtual Ionflux::Mapping::BezierSplineKey* getKey(unsigned int 
         elementIndex = 0) const;
@@ -1825,8 +2200,23 @@ class AnimatedSpline
         virtual void removeKey(Ionflux::Mapping::BezierSplineKey* 
         removeElement);
 		virtual void removeKeyIndex(unsigned int removeIndex);
-        virtual void clearKeys();
+		virtual void clearKeys();
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/RootFinder.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class RootFinderClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1868,6 +2258,21 @@ class RootFinder
         virtual Ionflux::Mapping::Mapping* getFunc() const;
 };
 
+}
+
+}
+
+
+%{
+#include "ifmapping/BisectionRootFinder.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
 class BisectionRootFinderClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -1893,11 +2298,27 @@ class BisectionRootFinder
         Ionflux::Mapping::MappingValue b, Ionflux::Mapping::MappingValue 
         delta, unsigned int samples) const;
         virtual std::string getString() const;
+		virtual Ionflux::Mapping::BisectionRootFinder* copy() const;
 		static Ionflux::Mapping::BisectionRootFinder* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BisectionRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/SecantRootFinder.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class SecantRootFinderClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1924,11 +2345,27 @@ class SecantRootFinder
         Ionflux::Mapping::MappingValue b, Ionflux::Mapping::MappingValue 
         delta, unsigned int maxIters, unsigned int i = 0) const;
         virtual std::string getString() const;
+		virtual Ionflux::Mapping::SecantRootFinder* copy() const;
 		static Ionflux::Mapping::SecantRootFinder* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::SecantRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/DekkerRootFinder.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class DekkerRootFinderClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1956,11 +2393,27 @@ class DekkerRootFinder
         delta, unsigned int samples, unsigned int maxIters = 50, unsigned 
         int i = 0) const;
         virtual std::string getString() const;
+		virtual Ionflux::Mapping::DekkerRootFinder* copy() const;
 		static Ionflux::Mapping::DekkerRootFinder* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::DekkerRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
+
+}
+
+}
+
+
+%{
+#include "ifmapping/BrentLinearRootFinder.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
 
 class BrentLinearRootFinderClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -1990,6 +2443,7 @@ class BrentLinearRootFinder
         forceBisection = false, Ionflux::Mapping::MappingValue bPrev = 0.) 
         const;
         virtual std::string getString() const;
+		virtual Ionflux::Mapping::BrentLinearRootFinder* copy() const;
 		static Ionflux::Mapping::BrentLinearRootFinder* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BrentLinearRootFinder* 
@@ -1999,6 +2453,204 @@ class BrentLinearRootFinder
 }
 
 }
+
+
+
+%{
+#include "ifmapping/xmlio/PointXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class PointXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        PointXMLFactoryClassInfo();
+        virtual ~PointXMLFactoryClassInfo();
+};
+
+class PointXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        PointXMLFactory();
+		PointXMLFactory(const Ionflux::Mapping::XMLUtils::PointXMLFactory& other);
+        virtual ~PointXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::Point& target, const std::string& elementName = 
+        "") const;
+        virtual Ionflux::Mapping::Point* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::PointXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::PointXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::PointXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "ifmapping/xmlio/PointSetXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class PointSetXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        PointSetXMLFactoryClassInfo();
+        virtual ~PointSetXMLFactoryClassInfo();
+};
+
+class PointSetXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        PointSetXMLFactory();
+		PointSetXMLFactory(const Ionflux::Mapping::XMLUtils::PointSetXMLFactory& other);
+        virtual ~PointSetXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::PointSet& target, const std::string& elementName 
+        = "") const;
+        virtual Ionflux::Mapping::PointSet* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::PointSetXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::PointSetXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::PointSetXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "ifmapping/xmlio/BezierCurveXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class BezierCurveXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        BezierCurveXMLFactoryClassInfo();
+        virtual ~BezierCurveXMLFactoryClassInfo();
+};
+
+class BezierCurveXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        BezierCurveXMLFactory();
+		BezierCurveXMLFactory(const Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory& other);
+        virtual ~BezierCurveXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::BezierCurve& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::Mapping::BezierCurve* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "ifmapping/xmlio/BezierSplineXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class BezierSplineXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        BezierSplineXMLFactoryClassInfo();
+        virtual ~BezierSplineXMLFactoryClassInfo();
+};
+
+class BezierSplineXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        BezierSplineXMLFactory();
+		BezierSplineXMLFactory(const Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory& other);
+        virtual ~BezierSplineXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::BezierSpline& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::Mapping::BezierSpline* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
 
 %template(MappingVector) std::vector<Ionflux::Mapping::Mapping*>;
 %template(PieceVector) std::vector<Ionflux::Mapping::Piece*>;
