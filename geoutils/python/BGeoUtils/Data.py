@@ -331,17 +331,19 @@ class BezierSpline(DataNode):
             ps0 = cs0.getPoint(0)
             ps1 = cs0.getPoint(1)
             ps2 = cs0.getPoint(2)
+            ps3 = cs0.getPoint(3)
             pt0 = s0.bezier_points[i]
             pt1 = s0.bezier_points[i + 1]
             if (i == 0):
-                pt0.handle_left_type = 'ALIGNED'
-            if (i == numCurves0 - 1):
-                pt1.handle_right_type = 'ALIGNED'
+                pt0.handle_left_type = 'AUTO'
             pt0.handle_right_type = 'FREE'
             pt0.co = [ ps0.getX(), ps0.getY(), ps0.getZ() ]
             pt0.handle_right = [ ps1.getX(), ps1.getY(), ps1.getZ() ]
             pt1.handle_left_type = 'FREE'
             pt1.handle_left = [ ps2.getX(), ps2.getY(), ps2.getZ() ]
+            if (i == numCurves0 - 1):
+                pt1.handle_right_type = 'AUTO'
+                pt1.co = [ ps3.getX(), ps3.getY(), ps3.getZ() ]
         return c1
     
     def getBCurve(self, dataName):
@@ -367,7 +369,7 @@ class BezierSpline(DataNode):
             self.cgData = im.BezierSpline.create()
             self.mm.addLocalRef(self.cgData)
         else:
-            self.cgData.clearCurves()
+            self.cgData.clearSegments()
         c0 = self.cgData
         c0.setID(self.name)
         s0 = bCurve.splines[0]

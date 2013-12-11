@@ -1,0 +1,28 @@
+<bezspline>
+  <bezcurvevec pname="segments">
+    <bezcurve>
+      <pointvec pname="points">
+        <p d="0.255309,6.19336,0" />
+        <p d="0.852635,5.77129,0" />
+        <p d="2.92752,4.80237,0" />
+        <p d="3.46295,4.69548,0" />
+      </pointvec>
+    </bezcurve>
+    <bezcurve>
+      <pointvec pname="points">
+        <p d="3.46295,4.69548,0" />
+        <p d="3.99838,4.58859,0" />
+        <p d="4.68169,5.20709,0" />
+        <p d="5.32001,5.18229,0" />
+      </pointvec>
+    </bezcurve>
+    <bezcurve>
+      <pointvec pname="points">
+        <p d="5.32001,5.18229,0" />
+        <p d="5.95833,5.15749,0" />
+        <p d="8.85608,4.67748,0" />
+        <p d="9.72817,4.45208,0" />
+      </pointvec>
+    </bezcurve>
+  </bezcurvevec>
+</bezspline>
