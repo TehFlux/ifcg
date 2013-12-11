@@ -15,6 +15,7 @@ outFile0 = 'temp/test_spline_01-01.svg'
 outFile1 = 'temp/test_spline_01-01.xml'
 templatePath0 = 'test/template'
 smoothness = 0.2
+scale0 = 10.
 
 print("Reading polygon data from file '%s'..." % inFile0)
 
@@ -30,18 +31,36 @@ print("  polygon: [%s]" % poly0.getValueString())
 spline0 = im.BezierSpline.create()
 mm.addLocalRef(spline0)
 
-print("Creating spline...")
+print("Creating interpolating spline...")
 
-poly0.createSpline(spline0, smoothness)
+poly0.createSplineInterp(spline0, smoothness)
 
 print("  spline: [%s]" % spline0.getValueString())
 
-print("Writing spline XML data to file '%s'..." % outFile1)
+print("Transforming spline...")
 
-#xml0 = spline0.getXML0()
-#print(xml0)
+poly1 = cg.Polygon3.create()
+mm.addLocalRef(poly1)
+poly1.initFromSpline(spline0)
+poly1.center()
+poly1.normalize()
+poly1.scale(cg.Vector3(scale0, scale0, scale0))
+poly1.applyTransform()
 
-spline0.writeToXMLFile(outFile1)
+print(poly1.getString())
+
+spline1 = im.BezierSpline.create()
+mm.addLocalRef(spline1)
+poly1.createSpline(spline1)
+
+print("  Transformed spline XML data:")
+
+xml0 = spline1.getXML0()
+print(xml0)
+
+print("Writing transformed spline XML data to file '%s'..." % outFile1)
+
+spline1.writeToXMLFile(outFile1)
 
 print("Writing spline SVG data to file '%s'..." % outFile0)
 

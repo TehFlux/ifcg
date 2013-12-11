@@ -446,6 +446,14 @@ class Vertex3
 		 */
 		virtual Ionflux::GeoUtils::Vertex3& duplicate();
 		
+		/** Create point.
+		 *
+		 * Create a point.
+		 *
+		 * \return Point.
+		 */
+		virtual Ionflux::Mapping::Point getPoint() const;
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object

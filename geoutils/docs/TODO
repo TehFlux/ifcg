@@ -15,12 +15,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Polygon3
-  > create a BezierSpline using the polygon vertices as the actual control 
-    points.
-  > create a Polygon3 from a BezierSpline
-    . using the control point positions as the polygon vertices
-    . by sampling the spline
++ Merge VectorN, MatrixNM (from ifphysim)
 
 --------------------------------------------------------------------------------
 Critical stuff

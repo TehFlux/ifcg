@@ -374,6 +374,12 @@ Ionflux::GeoUtils::Vertex3& Vertex3::duplicate()
 	return *copy();
 }
 
+Ionflux::Mapping::Point Vertex3::getPoint() const
+{
+	// TODO: Implementation.
+	return Ionflux::Mapping::Point(x, y, z);
+}
+
 std::string Vertex3::getValueString() const
 {
 	std::ostringstream status;

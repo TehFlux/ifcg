@@ -11,7 +11,8 @@ import math as m
 mm = ib.IFObject()
 
 name = "Spline01"
-inFile0 = '/Users/flux/recent/ifcg/geoutils/test/curves/spline01.xml'
+#inFile0 = '/Users/flux/recent/ifcg/geoutils/test/curves/spline01.xml'
+inFile0 = '/home/flux4/recent/ifcg/geoutils/test/curves/spline01.xml'
 
 spline0 = im.BezierSpline.create()
 mm.addLocalRef(spline0)

@@ -63,7 +63,7 @@ class Polygon3
         virtual void clearData();
         virtual void copyVertices();
         virtual Ionflux::GeoUtils::Edge* addEdge(int i0, int i1);
-        virtual int createEdges();
+        virtual int createEdges(bool closePolygon = true);
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;
         virtual std::string getValueString() const;
@@ -98,7 +98,6 @@ class Polygon3
         virtual bool isPlanar(double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual void getPolygon2(Ionflux::GeoUtils::Polygon2& target);
-        static Ionflux::GeoUtils::Polygon3* square();
         virtual bool isTri();
         virtual bool isQuad();
         virtual void calculateUVCoefficients(const 
@@ -113,10 +112,16 @@ class Polygon3
         Ionflux::GeoUtils::Vector2& uv, Ionflux::ObjectBase::IntVector* 
         indices = 0, Ionflux::GeoUtils::QuadInterpolationTypeID 
         interpolationType = QUAD_INTERPOLATION_BILINEAR);
-        virtual void createSpline(Ionflux::Mapping::BezierSpline& target, 
-        double smoothness = 0.2);
+        virtual void initFromSpline(const Ionflux::Mapping::BezierSpline& 
+        spline);
+        virtual void sample(Ionflux::Mapping::PointMapping& mapping, 
+        unsigned int numSamples = 20, double tMin = 0., double tMax = 1.);
+        virtual void createSpline(Ionflux::Mapping::BezierSpline& target);
+        virtual void createSplineInterp(Ionflux::Mapping::BezierSpline& 
+        target, double smoothness = 0.2);
         static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution 
         = 20);
+        static Ionflux::GeoUtils::Polygon3* square();
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

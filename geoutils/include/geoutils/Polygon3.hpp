@@ -181,9 +181,11 @@ class Polygon3
 		 *
 		 * Takes two subsequent vertices from the list to create edges.
 		 *
+		 * \param closePolygon Add an edge to close the polygon.
+		 *
 		 * \return The number of edges created.
 		 */
-		virtual int createEdges();
+		virtual int createEdges(bool closePolygon = true);
 		
 		/** Get plane spanned by vertices.
 		 *
@@ -376,14 +378,6 @@ class Polygon3
 		 */
 		virtual void getPolygon2(Ionflux::GeoUtils::Polygon2& target);
 		
-		/** Create polygon: square.
-		 *
-		 * Create a square polygon.
-		 *
-		 * \return Square polygon.
-		 */
-		static Ionflux::GeoUtils::Polygon3* square();
-		
 		/** Triangle check.
 		 *
 		 * Check whether the polygon is a triangle.
@@ -460,7 +454,46 @@ class Polygon3
 		0, Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType = 
 		QUAD_INTERPOLATION_BILINEAR);
 		
+		/** Initialize from Bezier spline.
+		 *
+		 * Initialize the polygon from a Bezier spline. The polygon vertices 
+		 * are set to the control points of the spline, where the last point 
+		 * of each segment and the first point of the following segment are 
+		 * assumed to coincide.
+		 *
+		 * \param spline Bezier spline.
+		 */
+		virtual void initFromSpline(const Ionflux::Mapping::BezierSpline& 
+		spline);
+		
+		/** Sample point mapping.
+		 *
+		 * Initialize the polygon from a point mapping. The polygon vertices 
+		 * are chosen as a sampling of the point mapping at regular intervals 
+		 * within the specified parameter range.
+		 *
+		 * \param mapping Point mapping.
+		 * \param numSamples Number of samples.
+		 * \param tMin Minimum parameter value.
+		 * \param tMax Maximum parameter value.
+		 */
+		virtual void sample(Ionflux::Mapping::PointMapping& mapping, unsigned int
+		numSamples = 20, double tMin = 0., double tMax = 1.);
+		
 		/** Create Bezier spline.
+		 *
+		 * Create a Bezier spline using the polygon vertices as the control 
+		 * points. A total of four points is used to define the control points
+		 * for each segment of the Bezier spline, where the last vertex of 
+		 * each segment is used as the first vertex of the next segment. 
+		 * Additional polygon vertices that would form incomplete segments are
+		 * ignored.
+		 *
+		 * \param target Where to store the Bezier spline data.
+		 */
+		virtual void createSpline(Ionflux::Mapping::BezierSpline& target);
+		
+		/** Create Bezier spline interpolation.
 		 *
 		 * Create a Bezier spline that interpolates the vertices of the 
 		 * polygon. The \c smoothness parameter can be used to determine how 
@@ -473,8 +506,8 @@ class Polygon3
 		 * \param target Where to store the Bezier spline data.
 		 * \param smoothness Smoothness parameter.
 		 */
-		virtual void createSpline(Ionflux::Mapping::BezierSpline& target, double 
-		smoothness = 0.2);
+		virtual void createSplineInterp(Ionflux::Mapping::BezierSpline& target, 
+		double smoothness = 0.2);
 		
 		/** Create polygon: circle.
 		 *
@@ -485,6 +518,14 @@ class Polygon3
 		 * \return Square polygon.
 		 */
 		static Ionflux::GeoUtils::Polygon3* circle(unsigned int resolution = 20);
+		
+		/** Create polygon: square.
+		 *
+		 * Create a square polygon.
+		 *
+		 * \return Square polygon.
+		 */
+		static Ionflux::GeoUtils::Polygon3* square();
 		
 		/** Assignment operator.
 		 *

@@ -55,6 +55,7 @@ Polygon3ClassInfo::Polygon3ClassInfo()
 {
 	name = "Polygon3";
 	desc = "Polygon (3D)";
+	baseClassInfo.push_back(Ionflux::GeoUtils::TransformableObject::CLASS_INFO);
 }
 
 Polygon3ClassInfo::~Polygon3ClassInfo()
@@ -214,7 +215,7 @@ Ionflux::GeoUtils::Edge* Polygon3::addEdge(int i0, int i1)
 	return e0;
 }
 
-int Polygon3::createEdges()
+int Polygon3::createEdges(bool closePolygon)
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
 	    "createEdges", "Vertex source");
@@ -230,7 +231,8 @@ int Polygon3::createEdges()
 	    e0->setV1(i);
 	    addEdge(e0);
 	}
-	if (numVerts >= 3)
+	if (closePolygon 
+	    && (numVerts >= 3))
 	{
 	    e0 = Edge::create();
 	    e0->setV0(numVerts - 1);
@@ -522,20 +524,6 @@ void Polygon3::getPolygon2(Ionflux::GeoUtils::Polygon2& target)
 	}
 }
 
-Ionflux::GeoUtils::Polygon3* Polygon3::square()
-{
-	Polygon3* p0 = Polygon3::create();
-	double s = 0.5;
-	Vertex3Vector verts0;
-	verts0.push_back(Vertex3::create(-s, 0., -s));
-	verts0.push_back(Vertex3::create(s, 0., -s));
-	verts0.push_back(Vertex3::create(s, 0., s));
-	verts0.push_back(Vertex3::create(-s, 0., s));
-	p0->addVertices(verts0);
-	p0->createEdges();
-	return p0;
-}
-
 bool Polygon3::isTri()
 {
 	// TODO: Implementation.
@@ -764,8 +752,74 @@ Ionflux::GeoUtils::QuadInterpolationTypeID interpolationType)
 	return Vertex3(p);
 }
 
-void Polygon3::createSpline(Ionflux::Mapping::BezierSpline& target, double 
-smoothness)
+void Polygon3::initFromSpline(const Ionflux::Mapping::BezierSpline& spline)
+{
+	clearData();
+	unsigned int numSegments0 = spline.getNumSegments();
+	// Create vertices.
+	for (unsigned int i = 0; i < numSegments0; i++)
+	{
+	    Ionflux::Mapping::BezierCurve* c0 = 
+	        Ionflux::ObjectBase::nullPointerCheck(
+	            spline.getSegment(i), this, "initFromSpline", 
+	            "Spline segment");
+	    addVertex(Vertex3::create(*c0->getPoint(0)));
+	    addVertex(Vertex3::create(*c0->getPoint(1)));
+	    addVertex(Vertex3::create(*c0->getPoint(2)));
+	    if (i == numSegments0 - 1)
+	        addVertex(Vertex3::create(*c0->getPoint(3)));
+	}
+	createEdges(false);
+}
+
+void Polygon3::sample(Ionflux::Mapping::PointMapping& mapping, unsigned int
+numSamples, double tMin, double tMax)
+{
+	clearData();
+	if (numSamples < 2)
+	    return;
+	double dt = (tMax - tMin) / static_cast<double>(numSamples - 1);
+	// Create vertices.
+	double t = tMin;
+	for (unsigned int i = 0; i < numSamples; i++)
+	{
+	    Ionflux::Mapping::Point p0(mapping(t));
+	    addVertex(Vertex3::create(p0));
+	    t += dt;
+	}
+	createEdges(false);
+}
+
+void Polygon3::createSpline(Ionflux::Mapping::BezierSpline& target)
+{
+	unsigned int numVerts0 = getNumVertices();
+	if (numVerts0 < 4)
+	    return;
+	unsigned int numSegments0 = (numVerts0 - 1) / 3;
+	target.clearSegments();
+	// Create Bezier curve segments.
+	for (unsigned int i = 0; i < numSegments0; i++)
+	{
+	    Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(3 * i), this, "createSpline", "Vertex (0)");
+	    Vertex3* v1 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(3 * i + 1), this, "createSpline", "Vertex (1)");
+	    Vertex3* v2 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(3 * i + 2), this, "createSpline", "Vertex (2)");
+	    Vertex3* v3 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(3 * i + 3), this, "createSpline", "Vertex (3)");
+	    Ionflux::Mapping::Point p0(v0->getPoint());
+	    Ionflux::Mapping::Point p1(v1->getPoint());
+	    Ionflux::Mapping::Point p2(v2->getPoint());
+	    Ionflux::Mapping::Point p3(v3->getPoint());
+	    Ionflux::Mapping::BezierCurve* c0 = 
+	        Ionflux::Mapping::BezierCurve::create(p0, p1, p2, p3);
+	    target.addSegment(c0);
+	}
+}
+
+void Polygon3::createSplineInterp(Ionflux::Mapping::BezierSpline& target, 
+double smoothness)
 {
 	unsigned int numVerts0 = getNumVertices();
 	if (numVerts0 < 2)
@@ -776,9 +830,9 @@ smoothness)
 	for (unsigned int i = 0; i < numEdges0; i++)
 	{
 	    Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
-	        getVertex(i), this, "createSpline", "Vertex (0)");
+	        getVertex(i), this, "createSplineInterp", "Vertex (0)");
 	    Vertex3* v1 = Ionflux::ObjectBase::nullPointerCheck(
-	        getVertex(i + 1), this, "createSpline", "Vertex (1)");
+	        getVertex(i + 1), this, "createSplineInterp", "Vertex (1)");
 	    Ionflux::Mapping::Point p0;
 	    Ionflux::Mapping::Point p1;
 	    Ionflux::Mapping::Point p2;
@@ -847,6 +901,20 @@ Ionflux::GeoUtils::Polygon3* Polygon3::circle(unsigned int resolution)
 	    v0->rotate(2. * M_PI / resolution * i, AXIS_Y);
 	    verts0.push_back(v0);
 	}
+	p0->addVertices(verts0);
+	p0->createEdges();
+	return p0;
+}
+
+Ionflux::GeoUtils::Polygon3* Polygon3::square()
+{
+	Polygon3* p0 = Polygon3::create();
+	double s = 0.5;
+	Vertex3Vector verts0;
+	verts0.push_back(Vertex3::create(-s, 0., -s));
+	verts0.push_back(Vertex3::create(s, 0., -s));
+	verts0.push_back(Vertex3::create(s, 0., s));
+	verts0.push_back(Vertex3::create(-s, 0., s));
 	p0->addVertices(verts0);
 	p0->createEdges();
 	return p0;
