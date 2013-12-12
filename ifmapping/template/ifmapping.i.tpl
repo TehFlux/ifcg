@@ -205,6 +205,7 @@ $BisectionRootFinder
 $SecantRootFinder
 $DekkerRootFinder
 $BrentLinearRootFinder
+$ArcLength
 
 $PointXMLFactory
 $PointSetXMLFactory

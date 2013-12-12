@@ -159,6 +159,14 @@ Ionflux::GeoUtils::Vector3& s)
 	return *this;
 }
 
+Ionflux::GeoUtils::TransformableObject& TransformableObject::scale(double 
+sx, double sy, double sz)
+{
+	Matrix4 s0 = Matrix4::scale(sx, sy, sz);
+	transform(s0);
+	return *this;
+}
+
 Ionflux::GeoUtils::TransformableObject& 
 TransformableObject::translate(const Ionflux::GeoUtils::Vector3& t)
 {

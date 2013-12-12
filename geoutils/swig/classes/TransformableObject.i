@@ -62,6 +62,8 @@ class TransformableObject
         Ionflux::GeoUtils::DeferredTransform::COMPARE_TOLERANCE);
         virtual Ionflux::GeoUtils::TransformableObject& scale(const 
         Ionflux::GeoUtils::Vector3& s);
+        virtual Ionflux::GeoUtils::TransformableObject& scale(double sx, 
+        double sy = 1., double sz = 1.);
         virtual Ionflux::GeoUtils::TransformableObject& translate(const 
         Ionflux::GeoUtils::Vector3& t);
         virtual Ionflux::GeoUtils::TransformableObject& rotate(double phi, 

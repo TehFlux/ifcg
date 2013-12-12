@@ -81,6 +81,10 @@ class Vector4
         Ionflux::GeoUtils::Vector4& other) const;
         virtual Ionflux::GeoUtils::Vector4 ortho(const 
         Ionflux::GeoUtils::Vector4& other) const;
+        virtual double angle(const Ionflux::GeoUtils::Vector4& other) 
+        const;
+        virtual Ionflux::GeoUtils::Vector4 slerp(const 
+        Ionflux::GeoUtils::Vector4& other, double t) const;
         virtual Ionflux::GeoUtils::Vector4 permute(int px, int py, int pz, 
         int pw) const;
         virtual Ionflux::GeoUtils::Vector4 permute(const 

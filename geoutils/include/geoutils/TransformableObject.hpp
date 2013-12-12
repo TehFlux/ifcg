@@ -192,6 +192,19 @@ class TransformableObject
 		virtual Ionflux::GeoUtils::TransformableObject& scale(const 
 		Ionflux::GeoUtils::Vector3& s);
 		
+		/** Scale.
+		 *
+		 * Scale the object by the specified scale factors.
+		 *
+		 * \param sx Scale factor (X).
+		 * \param sy Scale factor (Y).
+		 * \param sz Scale factor (Z).
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::TransformableObject& scale(double sx, double 
+		sy = 1., double sz = 1.);
+		
 		/** Translate.
 		 *
 		 * Translate the object by the specified vector.

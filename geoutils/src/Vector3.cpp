@@ -227,6 +227,16 @@ double Vector3::angle(const Ionflux::GeoUtils::Vector3& other) const
 	return ::acos(t);
 }
 
+Ionflux::GeoUtils::Vector3 Vector3::slerp(const Ionflux::GeoUtils::Vector3&
+other, double t) const
+{
+	double phi0 = angle(other);
+	Vector3 v0(ortho(other));
+	double phi1 = t * phi0;
+	Vector3 result(::sin(phi1) * v0 + ::cos(phi1) * (*this));
+	return result;
+}
+
 Ionflux::GeoUtils::Vector3 Vector3::permute(int px, int py, int pz) const
 {
 	const Vector3& v = *this;

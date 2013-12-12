@@ -167,7 +167,7 @@ class PointingObject(Object):
         """Set base point.
         
         Set the point from which the object starts."""
-        b = self.mesh.cgMesh.getBounds()
+        b = self.data.cgData.getBounds()
         l0 = b.getExtent(cg.AXIS_Z)
         o0 = bpy.data.objects.get(self.name)
         m = o0.matrix_basis

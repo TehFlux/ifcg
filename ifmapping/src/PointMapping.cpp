@@ -29,6 +29,7 @@
 #include <sstream>
 #include "ifmapping/utils.hpp"
 #include "ifmapping/PointCoord.hpp"
+#include "ifmapping/ArcLength.hpp"
 #include "ifmapping/BrentLinearRootFinder.hpp"
 #include "ifmapping/MappingError.hpp"
 
@@ -54,6 +55,8 @@ PointMappingClassInfo::~PointMappingClassInfo()
 
 // public member constants
 const Ionflux::Mapping::MappingValue PointMapping::DEFAULT_PRECISION = 1e-5;
+const Ionflux::Mapping::MappingValue PointMapping::DEFAULT_RELATIVE_ERROR = 1e-4;
+const unsigned int PointMapping::DEFAULT_MAX_NUM_ITERATIONS = 14;
 
 // run-time type information instance constants
 const PointMappingClassInfo PointMapping::pointMappingClassInfo;
@@ -77,7 +80,23 @@ Ionflux::Mapping::CoordinateID coord, Ionflux::Mapping::MappingValue
 precision)
 {
 	Ionflux::Mapping::PointCoord* fc = 
-	    new Ionflux::Mapping::PointCoord(this, coord, -value);
+	    Ionflux::Mapping::PointCoord::create(this, coord, -value);
+	Ionflux::Mapping::BrentLinearRootFinder rf;
+	rf.setFunc(fc);
+	Ionflux::Mapping::MappingValue t = rf(0. - precision, 
+	    1. + precision, precision);
+	return call(t);
+}
+
+Ionflux::Mapping::Point 
+PointMapping::evalArcLength(Ionflux::Mapping::MappingValue value, 
+Ionflux::Mapping::MappingValue relativeError, 
+Ionflux::Mapping::MappingValue maxNumIterations, 
+Ionflux::Mapping::MappingValue precision)
+{
+	Ionflux::Mapping::ArcLength* fc = 
+	    Ionflux::Mapping::ArcLength::create(
+	        this, -value, 1., 0., relativeError, maxNumIterations);
 	Ionflux::Mapping::BrentLinearRootFinder rf;
 	rf.setFunc(fc);
 	Ionflux::Mapping::MappingValue t = rf(0. - precision, 

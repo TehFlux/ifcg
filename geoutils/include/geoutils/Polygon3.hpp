@@ -202,6 +202,14 @@ class Polygon3
 		virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, int v2
 		= -1) const;
 		
+		/** Get length.
+		 *
+		 * Get the total edge length of the polygon.
+		 *
+		 * \return Total edge length.
+		 */
+		virtual double getLength() const;
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.
@@ -282,6 +290,19 @@ class Polygon3
 		 */
 		virtual Ionflux::GeoUtils::Polygon3& scale(const 
 		Ionflux::GeoUtils::Vector3& s);
+		
+		/** Scale.
+		 *
+		 * Scale the object by the specified scale factors.
+		 *
+		 * \param sx Scale factor (X).
+		 * \param sy Scale factor (Y).
+		 * \param sz Scale factor (Z).
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::Polygon3& scale(double sx, double sy = 1., 
+		double sz = 1.);
 		
 		/** Translate.
 		 *

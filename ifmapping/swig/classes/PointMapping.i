@@ -47,12 +47,22 @@ class PointMapping
 {
     public:
 		static const Ionflux::Mapping::MappingValue DEFAULT_PRECISION;
+		static const Ionflux::Mapping::MappingValue DEFAULT_RELATIVE_ERROR;
+		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
         
         PointMapping();
         virtual ~PointMapping();
         virtual Ionflux::Mapping::Point 
         evalCoord(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::CoordinateID coord = Ionflux::Mapping::C_X, 
+        Ionflux::Mapping::MappingValue precision = 
+        Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+        virtual Ionflux::Mapping::Point 
+        evalArcLength(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::MappingValue relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
         virtual Ionflux::Mapping::Point 

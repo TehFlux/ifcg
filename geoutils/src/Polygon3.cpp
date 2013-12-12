@@ -278,6 +278,28 @@ Ionflux::GeoUtils::Plane3 Polygon3::getPlane(int v0, int v1, int v2) const
 	return Plane3(a, b - a, c - a);;
 }
 
+double Polygon3::getLength() const
+{
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getLength", "Vertex source");
+	double result = 0.;
+	unsigned int numEdges0 = getNumEdges();
+	for (unsigned int i = 0; i < numEdges0; i++)
+	{
+	    Edge* e0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getEdge(i), this, "getLength", "Edge");
+	    int vi0 = e0->getV0();
+	    int vi1 = e0->getV1();
+	    Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(vi0), this, "getLength", "Vertex (0)");
+	    Vertex3* v1 = Ionflux::ObjectBase::nullPointerCheck(
+	        getVertex(vi1), this, "getLength", "Vertex (1)");
+	    Vector3 d(v1->getVector() - v0->getVector());
+	    result += d.norm();
+	}
+	return result;
+}
+
 std::string Polygon3::getValueString() const
 {
 	ostringstream status;
@@ -445,6 +467,13 @@ Ionflux::GeoUtils::Polygon3& Polygon3::scale(const
 Ionflux::GeoUtils::Vector3& s)
 {
 	TransformableObject::scale(s);
+	return *this;
+}
+
+Ionflux::GeoUtils::Polygon3& Polygon3::scale(double sx, double sy, double 
+sz)
+{
+	TransformableObject::scale(sx, sy, sz);
 	return *this;
 }
 
@@ -792,6 +821,8 @@ numSamples, double tMin, double tMax)
 
 void Polygon3::createSpline(Ionflux::Mapping::BezierSpline& target)
 {
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "createSpline", "Vertex source");
 	unsigned int numVerts0 = getNumVertices();
 	if (numVerts0 < 4)
 	    return;
@@ -821,6 +852,8 @@ void Polygon3::createSpline(Ionflux::Mapping::BezierSpline& target)
 void Polygon3::createSplineInterp(Ionflux::Mapping::BezierSpline& target, 
 double smoothness)
 {
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "createSplineInterp", "Vertex source");
 	unsigned int numVerts0 = getNumVertices();
 	if (numVerts0 < 2)
 	    return;

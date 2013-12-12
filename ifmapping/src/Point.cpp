@@ -27,6 +27,7 @@
 
 #include "ifmapping/Point.hpp"
 #include <sstream>
+#include <cmath>
 #include "ifmapping/MappingError.hpp"
 #include "ifmapping/utils.hpp"
 #include "ifobject/utils.hpp"
@@ -211,6 +212,15 @@ Ionflux::Mapping::MappingValue Point::operator[](int index) const
 	    result = y;
 	if (index == 2)
 	    result = z;
+	return result;
+}
+
+Ionflux::Mapping::MappingValue Point::distance(const 
+Ionflux::Mapping::Point& other) const
+{
+	double result = ::sqrt((x - other.x) * (x - other.x) 
+	    + (y - other.y) * (y - other.y) 
+	    + (z - other.z) * (z - other.z));
 	return result;
 }
 

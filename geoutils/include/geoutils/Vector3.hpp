@@ -257,6 +257,18 @@ class Vector3
 		 */
 		virtual double angle(const Ionflux::GeoUtils::Vector3& other) const;
 		
+		/** Spherical linear interpolation.
+		 *
+		 * Interpolate vectors using spherical linear interpolation.
+		 *
+		 * \param other Vector.
+		 * \param t Parameter.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 slerp(const 
+		Ionflux::GeoUtils::Vector3& other, double t) const;
+		
 		/** Permute vector.
 		 *
 		 * Permute the vector using the specified permutation of indices.

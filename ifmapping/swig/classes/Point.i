@@ -79,6 +79,8 @@ class Point
         Ionflux::Mapping::DEFAULT_TOLERANCE) const;
         virtual bool operator!=(const Ionflux::Mapping::Point& other) 
         const;
+        virtual Ionflux::Mapping::MappingValue distance(const 
+        Ionflux::Mapping::Point& other) const;
         static Ionflux::Mapping::Point getRandom();
         static Ionflux::Mapping::Point getRandomNorm(const 
         Ionflux::Mapping::Point& mean = Ionflux::Mapping::Point::ORIGIN, 

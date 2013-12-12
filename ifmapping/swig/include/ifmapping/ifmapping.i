@@ -272,6 +272,8 @@ class Point
         Ionflux::Mapping::DEFAULT_TOLERANCE) const;
         virtual bool operator!=(const Ionflux::Mapping::Point& other) 
         const;
+        virtual Ionflux::Mapping::MappingValue distance(const 
+        Ionflux::Mapping::Point& other) const;
         static Ionflux::Mapping::Point getRandom();
         static Ionflux::Mapping::Point getRandomNorm(const 
         Ionflux::Mapping::Point& mean = Ionflux::Mapping::Point::ORIGIN, 
@@ -556,12 +558,22 @@ class PointMapping
 {
     public:
 		static const Ionflux::Mapping::MappingValue DEFAULT_PRECISION;
+		static const Ionflux::Mapping::MappingValue DEFAULT_RELATIVE_ERROR;
+		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
         
         PointMapping();
         virtual ~PointMapping();
         virtual Ionflux::Mapping::Point 
         evalCoord(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::CoordinateID coord = Ionflux::Mapping::C_X, 
+        Ionflux::Mapping::MappingValue precision = 
+        Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+        virtual Ionflux::Mapping::Point 
+        evalArcLength(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::MappingValue relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
         virtual Ionflux::Mapping::Point 
@@ -2091,7 +2103,7 @@ class PointCoord
         Ionflux::Mapping::MappingValue initOffset = 0., 
         Ionflux::Mapping::MappingValue initScale = 1.);
         virtual ~PointCoord();
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
 		virtual Ionflux::Mapping::PointCoord* copy() const;
@@ -2099,6 +2111,12 @@ class PointCoord
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointCoord* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::PointCoord* 
+		create(Ionflux::Mapping::PointMapping* initFunc, 
+		Ionflux::Mapping::CoordinateID initCoord = Ionflux::Mapping::C_X, 
+		Ionflux::Mapping::MappingValue initOffset = 0., 
+		Ionflux::Mapping::MappingValue initScale = 1., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setFunc(Ionflux::Mapping::PointMapping* newFunc);
         virtual Ionflux::Mapping::PointMapping* getFunc() const;
         virtual void setCoord(Ionflux::Mapping::CoordinateID newCoord);
@@ -2448,6 +2466,79 @@ class BrentLinearRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BrentLinearRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+
+%{
+#include "ifmapping/ArcLength.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class ArcLengthClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        ArcLengthClassInfo();
+        virtual ~ArcLengthClassInfo();
+};
+
+class ArcLength
+: public Ionflux::Mapping::Mapping
+{
+    public:
+		static const Ionflux::Mapping::MappingValue DEFAULT_RELATIVE_ERROR;
+		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
+        
+        ArcLength();
+		ArcLength(const Ionflux::Mapping::ArcLength& other);
+        ArcLength(Ionflux::Mapping::PointMapping* initFunc, 
+        Ionflux::Mapping::MappingValue initOffset = 0., 
+        Ionflux::Mapping::MappingValue initScale = 1., 
+        Ionflux::Mapping::MappingValue initRefParam = 0., 
+        Ionflux::Mapping::MappingValue initRelativeError = 
+        DEFAULT_RELATIVE_ERROR, Ionflux::Mapping::MappingValue 
+        initMaxNumIterations = DEFAULT_MAX_NUM_ITERATIONS);
+        virtual ~ArcLength();
+        virtual std::string getValueString() const;
+        virtual Ionflux::Mapping::MappingValue 
+        call(Ionflux::Mapping::MappingValue value) const;
+		virtual Ionflux::Mapping::ArcLength* copy() const;
+		static Ionflux::Mapping::ArcLength* upcast(Ionflux::ObjectBase::IFObject*
+		other);
+		static Ionflux::Mapping::ArcLength* create(Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+		static Ionflux::Mapping::ArcLength* 
+		create(Ionflux::Mapping::PointMapping* initFunc, 
+		Ionflux::Mapping::MappingValue initOffset = 0., 
+		Ionflux::Mapping::MappingValue initScale = 1., 
+		Ionflux::Mapping::MappingValue initRefParam = 0., 
+		Ionflux::Mapping::MappingValue initRelativeError = 
+		DEFAULT_RELATIVE_ERROR, Ionflux::Mapping::MappingValue 
+		initMaxNumIterations = DEFAULT_MAX_NUM_ITERATIONS, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setFunc(Ionflux::Mapping::PointMapping* newFunc);
+        virtual Ionflux::Mapping::PointMapping* getFunc() const;
+        virtual void setOffset(Ionflux::Mapping::MappingValue newOffset);
+        virtual Ionflux::Mapping::MappingValue getOffset() const;
+        virtual void setScale(Ionflux::Mapping::MappingValue newScale);
+        virtual Ionflux::Mapping::MappingValue getScale() const;
+        virtual void setRefParam(Ionflux::Mapping::MappingValue 
+        newRefParam);
+        virtual Ionflux::Mapping::MappingValue getRefParam() const;
+        virtual void setRelativeError(Ionflux::Mapping::MappingValue 
+        newRelativeError);
+        virtual Ionflux::Mapping::MappingValue getRelativeError() const;
+        virtual void setMaxNumIterations(unsigned int newMaxNumIterations);
+        virtual unsigned int getMaxNumIterations() const;
 };
 
 }

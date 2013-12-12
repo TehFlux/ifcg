@@ -451,8 +451,10 @@ $Vertex2
 $Vector3
 $Range3
 $Vector4
+$VectorN
 $Matrix3
 $Matrix4
+$MatrixMN
 
 namespace Ionflux
 {
@@ -512,6 +514,19 @@ namespace GeoUtils
 %rename(mult4) operator*(double, const Ionflux::GeoUtils::Vector4&);
 %rename(mult3x3) operator*(double, const Ionflux::GeoUtils::Matrix3&);
 %rename(mult4x4) operator*(double, const Ionflux::GeoUtils::Matrix4&);
+
+%extend VectorN {
+    double __getitem__(int index)
+    {
+        return $$self->getElement(index);
+    }
+    void __setitem__(int index, double value)
+    {
+        return $$self->setElement(index, value);
+    }
+}
+
+%rename(multN) operator*(double, const Ionflux::GeoUtils::VectorN&);
 
 }
 
@@ -639,6 +654,7 @@ $VectorXMLFactory
 $Vector2XMLFactory
 $Vector3XMLFactory
 $Vector4XMLFactory
+$VectorNXMLFactory
 $VectorSetXMLFactory
 $VectorSetSetXMLFactory
 $Object3XMLFactory
@@ -646,6 +662,7 @@ $MatrixXMLFactory
 $Matrix2XMLFactory
 $Matrix3XMLFactory
 $Matrix4XMLFactory
+$MatrixMNXMLFactory
 $FaceDataXMLFactory
 $DeferredTransformXMLFactory
 $TransformableObjectXMLFactory

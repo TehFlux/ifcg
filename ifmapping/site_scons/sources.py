@@ -55,7 +55,8 @@ ifmappingLibHeaders = ['include/ifmapping/constants.hpp',
 	'include/ifmapping/RootFinder.hpp', 
 	'include/ifmapping/SecantRootFinder.hpp', 
 	'include/ifmapping/Sin.hpp', 
-	'include/ifmapping/Tan.hpp'
+	'include/ifmapping/Tan.hpp', 
+	'include/ifmapping/ArcLength.hpp'
 ]
 
 ifmappingLibSources = ['build/utils.cpp',
@@ -103,7 +104,8 @@ ifmappingLibSources = ['build/utils.cpp',
 	'build/RootFinder.cpp', 
 	'build/SecantRootFinder.cpp', 
 	'build/Sin.cpp', 
-	'build/Tan.cpp'
+	'build/Tan.cpp', 
+	'build/ArcLength.cpp'
 ]
 
 ifmappingLibClasses = [
@@ -150,7 +152,8 @@ ifmappingLibClasses = [
 	'RootFinder', 
 	'SecantRootFinder', 
 	'Sin', 
-	'Tan'
+	'Tan', 
+	'ArcLength'
 ]
 
 ifmappingNoiseLibClasses = [ 

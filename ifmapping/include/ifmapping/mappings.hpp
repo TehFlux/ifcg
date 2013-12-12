@@ -58,6 +58,7 @@
 #include "ifmapping/PointCoord.hpp"
 #include "ifmapping/BezierCurve.hpp"
 #include "ifmapping/BezierSpline.hpp"
+#include "ifmapping/ArcLength.hpp"
 
 /** \file mappings.hpp
  * \brief Mappings (header).

@@ -66,6 +66,7 @@ class Polygon3
         virtual int createEdges(bool closePolygon = true);
         virtual Ionflux::GeoUtils::Plane3 getPlane(int v0 = 0, int v1 = 1, 
         int v2 = -1) const;
+        virtual double getLength() const;
         virtual std::string getValueString() const;
         virtual std::string getSVG(const std::string& attrs = 
         SVG_DEFAULT_POLY_STYLE, const std::string& elementID = "polygon", 
@@ -81,6 +82,8 @@ class Polygon3
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Polygon3& scale(const 
         Ionflux::GeoUtils::Vector3& s);
+        virtual Ionflux::GeoUtils::Polygon3& scale(double sx, double sy = 
+        1., double sz = 1.);
         virtual Ionflux::GeoUtils::Polygon3& translate(const 
         Ionflux::GeoUtils::Vector3& t);
         virtual Ionflux::GeoUtils::Polygon3& rotate(double phi, 

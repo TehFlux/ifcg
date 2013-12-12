@@ -240,6 +240,28 @@ class Vector4
 		virtual Ionflux::GeoUtils::Vector4 ortho(const 
 		Ionflux::GeoUtils::Vector4& other) const;
 		
+		/** Calculate angle.
+		 *
+		 * Calculate the geometric angle between the two vectors.
+		 *
+		 * \param other Vector.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual double angle(const Ionflux::GeoUtils::Vector4& other) const;
+		
+		/** Spherical linear interpolation.
+		 *
+		 * Interpolate vectors using spherical linear interpolation.
+		 *
+		 * \param other Vector.
+		 * \param t Parameter.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Vector4 slerp(const 
+		Ionflux::GeoUtils::Vector4& other, double t) const;
+		
 		/** Permute vector.
 		 *
 		 * Permute the vector using the specified permutation of indices.

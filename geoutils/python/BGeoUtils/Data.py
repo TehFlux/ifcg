@@ -208,7 +208,7 @@ class Mesh(DataNode):
         bm0.free()
         return m0
     
-    def createBData():
+    def createBData(self):
         self.createBMesh()
     
     def getBMesh(self, meshName = None):

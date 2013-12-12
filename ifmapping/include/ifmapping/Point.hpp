@@ -254,6 +254,17 @@ class Point
 		 */
 		virtual Ionflux::Mapping::MappingValue operator[](int index) const;
 		
+		/** Distance.
+		 *
+		 * Calculate the distance between two points.
+		 *
+		 * \param other Point.
+		 *
+		 * \return Distance between points.
+		 */
+		virtual Ionflux::Mapping::MappingValue distance(const 
+		Ionflux::Mapping::Point& other) const;
+		
 		/** Get random point.
 		 *
 		 * Generate a random point.

@@ -188,6 +188,28 @@ other) const
 	return other.norm() * (other - v0.project(other)).normalize();
 }
 
+double Vector4::angle(const Ionflux::GeoUtils::Vector4& other) const
+{
+	const Vector4& v0 = *this;
+	double t = (v0 * other) / (v0.norm() * other.norm());
+	if (t < -1.)
+	    t = -1.;
+	else
+	if (t > 1.)
+	    t = 1.;
+	return ::acos(t);
+}
+
+Ionflux::GeoUtils::Vector4 Vector4::slerp(const Ionflux::GeoUtils::Vector4&
+other, double t) const
+{
+	double phi0 = angle(other);
+	Vector4 v0(ortho(other));
+	double phi1 = t * phi0;
+	Vector4 result(::sin(phi1) * v0 + ::cos(phi1) * (*this));
+	return result;
+}
+
 Ionflux::GeoUtils::Vector4 Vector4::permute(int px, int py, int pz, int pw)
 const
 {

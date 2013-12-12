@@ -85,15 +85,15 @@ PointCoord::~PointCoord()
 	// TODO: Nothing ATM. ;-)
 }
 
-std::string PointCoord::getString() const
+std::string PointCoord::getValueString() const
 {
 	ostringstream status;
-	status << getClassName() << "[";
 	if (func != 0)
 	    status << (*func);
 	else
 	    status << "<none>";
-	status << "; " << coordToString(coord) << ", " << offset << "]";
+	status << "; " << coordToString(coord) << ", scale = " 
+	    << scale << ", offset = " << offset;
 	return status.str();
 }
 
@@ -184,6 +184,23 @@ Ionflux::Mapping::PointCoord*
 PointCoord::create(Ionflux::ObjectBase::IFObject* parentObject)
 {
     PointCoord* newObject = new PointCoord();
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::PointCoord* 
+PointCoord::create(Ionflux::Mapping::PointMapping* initFunc, 
+Ionflux::Mapping::CoordinateID initCoord, Ionflux::Mapping::MappingValue 
+initOffset, Ionflux::Mapping::MappingValue initScale, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    PointCoord* newObject = new PointCoord(initFunc, initCoord, initOffset,
+    initScale);
     if (newObject == 0)
     {
         throw MappingError("Could not allocate object.");

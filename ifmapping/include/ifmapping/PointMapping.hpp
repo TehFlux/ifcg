@@ -65,6 +65,10 @@ class PointMapping
 	public:
 		/// Default precision.
 		static const Ionflux::Mapping::MappingValue DEFAULT_PRECISION;
+		/// Default relative error.
+		static const Ionflux::Mapping::MappingValue DEFAULT_RELATIVE_ERROR;
+		/// Maximum number of iterations.
+		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
 		/// Class information instance.
 		static const PointMappingClassInfo pointMappingClassInfo;
 		/// Class information.
@@ -94,6 +98,26 @@ class PointMapping
 		 */
 		virtual Ionflux::Mapping::Point evalCoord(Ionflux::Mapping::MappingValue 
 		value, Ionflux::Mapping::CoordinateID coord = Ionflux::Mapping::C_X, 
+		Ionflux::Mapping::MappingValue precision = 
+		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+		
+		/** Evaluate the mapping.
+		 *
+		 * Evaluate the mapping at the specified arc length.
+		 *
+		 * \param value Arc length value.
+		 * \param relativeError Relative error.
+		 * \param maxNumIterations Maximum number of iterations.
+		 * \param precision Precision.
+		 *
+		 * \return Y value for the specified X value.
+		 */
+		virtual Ionflux::Mapping::Point 
+		evalArcLength(Ionflux::Mapping::MappingValue value, 
+		Ionflux::Mapping::MappingValue relativeError = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+		Ionflux::Mapping::MappingValue maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
 		Ionflux::Mapping::MappingValue precision = 
 		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
 		

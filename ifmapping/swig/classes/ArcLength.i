@@ -3,7 +3,7 @@
  * Copyright © 2010 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * PointCoord.i                    Point coordinate mapping (interface).
+ * ArcLength.i                     Arc length mapping (interface).
  * =========================================================================
  * 
  * This file is part of IFMapping - Ionflux Mapping Library.
@@ -25,7 +25,7 @@
  * 
  * ========================================================================== */
 %{
-#include "ifmapping/PointCoord.hpp"
+#include "ifmapping/ArcLength.hpp"
 %}
 
 namespace Ionflux
@@ -34,48 +34,62 @@ namespace Ionflux
 namespace Mapping
 {
 
-class PointCoordClassInfo
+class ArcLengthClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
     public:
-        PointCoordClassInfo();
-        virtual ~PointCoordClassInfo();
+        ArcLengthClassInfo();
+        virtual ~ArcLengthClassInfo();
 };
 
-class PointCoord
+class ArcLength
 : public Ionflux::Mapping::Mapping
 {
     public:
+		static const Ionflux::Mapping::MappingValue DEFAULT_RELATIVE_ERROR;
+		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
         
-        PointCoord();
-		PointCoord(const Ionflux::Mapping::PointCoord& other);
-        PointCoord(Ionflux::Mapping::PointMapping* initFunc, 
-        Ionflux::Mapping::CoordinateID initCoord = Ionflux::Mapping::C_X, 
+        ArcLength();
+		ArcLength(const Ionflux::Mapping::ArcLength& other);
+        ArcLength(Ionflux::Mapping::PointMapping* initFunc, 
         Ionflux::Mapping::MappingValue initOffset = 0., 
-        Ionflux::Mapping::MappingValue initScale = 1.);
-        virtual ~PointCoord();
+        Ionflux::Mapping::MappingValue initScale = 1., 
+        Ionflux::Mapping::MappingValue initRefParam = 0., 
+        Ionflux::Mapping::MappingValue initRelativeError = 
+        DEFAULT_RELATIVE_ERROR, Ionflux::Mapping::MappingValue 
+        initMaxNumIterations = DEFAULT_MAX_NUM_ITERATIONS);
+        virtual ~ArcLength();
         virtual std::string getValueString() const;
         virtual Ionflux::Mapping::MappingValue 
         call(Ionflux::Mapping::MappingValue value) const;
-		virtual Ionflux::Mapping::PointCoord* copy() const;
-		static Ionflux::Mapping::PointCoord* 
-		upcast(Ionflux::ObjectBase::IFObject* other);
-		static Ionflux::Mapping::PointCoord* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
-		static Ionflux::Mapping::PointCoord* 
+		virtual Ionflux::Mapping::ArcLength* copy() const;
+		static Ionflux::Mapping::ArcLength* upcast(Ionflux::ObjectBase::IFObject*
+		other);
+		static Ionflux::Mapping::ArcLength* create(Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+		static Ionflux::Mapping::ArcLength* 
 		create(Ionflux::Mapping::PointMapping* initFunc, 
-		Ionflux::Mapping::CoordinateID initCoord = Ionflux::Mapping::C_X, 
 		Ionflux::Mapping::MappingValue initOffset = 0., 
 		Ionflux::Mapping::MappingValue initScale = 1., 
+		Ionflux::Mapping::MappingValue initRefParam = 0., 
+		Ionflux::Mapping::MappingValue initRelativeError = 
+		DEFAULT_RELATIVE_ERROR, Ionflux::Mapping::MappingValue 
+		initMaxNumIterations = DEFAULT_MAX_NUM_ITERATIONS, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setFunc(Ionflux::Mapping::PointMapping* newFunc);
         virtual Ionflux::Mapping::PointMapping* getFunc() const;
-        virtual void setCoord(Ionflux::Mapping::CoordinateID newCoord);
-        virtual Ionflux::Mapping::CoordinateID getCoord() const;
         virtual void setOffset(Ionflux::Mapping::MappingValue newOffset);
         virtual Ionflux::Mapping::MappingValue getOffset() const;
         virtual void setScale(Ionflux::Mapping::MappingValue newScale);
         virtual Ionflux::Mapping::MappingValue getScale() const;
+        virtual void setRefParam(Ionflux::Mapping::MappingValue 
+        newRefParam);
+        virtual Ionflux::Mapping::MappingValue getRefParam() const;
+        virtual void setRelativeError(Ionflux::Mapping::MappingValue 
+        newRelativeError);
+        virtual Ionflux::Mapping::MappingValue getRelativeError() const;
+        virtual void setMaxNumIterations(unsigned int newMaxNumIterations);
+        virtual unsigned int getMaxNumIterations() const;
 };
 
 }

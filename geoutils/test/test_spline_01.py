@@ -44,7 +44,7 @@ mm.addLocalRef(poly1)
 poly1.initFromSpline(spline0)
 poly1.center()
 poly1.normalize()
-poly1.scale(cg.Vector3(scale0, scale0, scale0))
+poly1.scale(scale0, scale0, scale0)
 poly1.applyTransform()
 
 print(poly1.getString())
