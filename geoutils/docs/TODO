@@ -15,7 +15,14 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ MatrixMN
+  > invert, svd (use GSL)
 
++ BGeoUtils
+  > Visualize a Vertex3Set (as a collection of small spheres)
+
++ Testing
+  > Mesh::fiber()
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -27,8 +34,6 @@ Critical stuff
 + Mesh
   > Generator functions
     . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
-    . fiber(): like cylinder, but with a number of subdivisions so cross 
-      sections can be transformed individually
 
 + Add Bezier curve based objects:
   > There should be an option to convert Bezier objects into discrete 

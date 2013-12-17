@@ -86,6 +86,23 @@ class PointMapping
 		 */
 		virtual ~PointMapping();
 		
+		/** Get parameter for coordinate value.
+		 *
+		 * Get the parameter value corresponding to the specified  coordinate 
+		 * value.
+		 *
+		 * \param value Coordinate value.
+		 * \param coord Coordinate.
+		 * \param precision Precision.
+		 *
+		 * \return Parameter value for the specified coordinate value.
+		 */
+		virtual Ionflux::Mapping::MappingValue 
+		getParamCoord(Ionflux::Mapping::MappingValue value, 
+		Ionflux::Mapping::CoordinateID coord = Ionflux::Mapping::C_X, 
+		Ionflux::Mapping::MappingValue precision = 
+		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+		
 		/** Evaluate the mapping.
 		 *
 		 * Evaluate the mapping at the specified coordinate value.
@@ -94,10 +111,30 @@ class PointMapping
 		 * \param coord Coordinate.
 		 * \param precision Precision.
 		 *
-		 * \return Y value for the specified X value.
+		 * \return Mapping point for the specified coordinate value.
 		 */
 		virtual Ionflux::Mapping::Point evalCoord(Ionflux::Mapping::MappingValue 
 		value, Ionflux::Mapping::CoordinateID coord = Ionflux::Mapping::C_X, 
+		Ionflux::Mapping::MappingValue precision = 
+		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+		
+		/** Get parameter for arc length.
+		 *
+		 * Get the parameter value corresponding to the specified arc length.
+		 *
+		 * \param value Arc length value.
+		 * \param relativeError Relative error.
+		 * \param maxNumIterations Maximum number of iterations.
+		 * \param precision Precision.
+		 *
+		 * \return Parameter value for the specified arc length.
+		 */
+		virtual Ionflux::Mapping::MappingValue 
+		getParamArcLength(Ionflux::Mapping::MappingValue value, 
+		Ionflux::Mapping::MappingValue relativeError = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+		Ionflux::Mapping::MappingValue maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
 		Ionflux::Mapping::MappingValue precision = 
 		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
 		
@@ -110,7 +147,7 @@ class PointMapping
 		 * \param maxNumIterations Maximum number of iterations.
 		 * \param precision Precision.
 		 *
-		 * \return Y value for the specified X value.
+		 * \return Mapping point for the specified arc length.
 		 */
 		virtual Ionflux::Mapping::Point 
 		evalArcLength(Ionflux::Mapping::MappingValue value, 

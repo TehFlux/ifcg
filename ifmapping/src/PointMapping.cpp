@@ -74,8 +74,8 @@ PointMapping::~PointMapping()
 	// TODO: Nothing ATM. ;-)
 }
 
-Ionflux::Mapping::Point 
-PointMapping::evalCoord(Ionflux::Mapping::MappingValue value, 
+Ionflux::Mapping::MappingValue 
+PointMapping::getParamCoord(Ionflux::Mapping::MappingValue value, 
 Ionflux::Mapping::CoordinateID coord, Ionflux::Mapping::MappingValue 
 precision)
 {
@@ -85,11 +85,21 @@ precision)
 	rf.setFunc(fc);
 	Ionflux::Mapping::MappingValue t = rf(0. - precision, 
 	    1. + precision, precision);
-	return call(t);
+	return t;
 }
 
 Ionflux::Mapping::Point 
-PointMapping::evalArcLength(Ionflux::Mapping::MappingValue value, 
+PointMapping::evalCoord(Ionflux::Mapping::MappingValue value, 
+Ionflux::Mapping::CoordinateID coord, Ionflux::Mapping::MappingValue 
+precision)
+{
+	Ionflux::Mapping::MappingValue t = getParamCoord(
+	    value, coord, precision);
+	return call(t);
+}
+
+Ionflux::Mapping::MappingValue 
+PointMapping::getParamArcLength(Ionflux::Mapping::MappingValue value, 
 Ionflux::Mapping::MappingValue relativeError, 
 Ionflux::Mapping::MappingValue maxNumIterations, 
 Ionflux::Mapping::MappingValue precision)
@@ -101,6 +111,17 @@ Ionflux::Mapping::MappingValue precision)
 	rf.setFunc(fc);
 	Ionflux::Mapping::MappingValue t = rf(0. - precision, 
 	    1. + precision, precision);
+	return t;
+}
+
+Ionflux::Mapping::Point 
+PointMapping::evalArcLength(Ionflux::Mapping::MappingValue value, 
+Ionflux::Mapping::MappingValue relativeError, 
+Ionflux::Mapping::MappingValue maxNumIterations, 
+Ionflux::Mapping::MappingValue precision)
+{
+	Ionflux::Mapping::MappingValue t = getParamArcLength(
+	    value, relativeError, maxNumIterations, precision);
 	return call(t);
 }
 
