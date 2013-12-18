@@ -15,9 +15,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ PointMapping
-  > arc length evaluation (with a specified error)
-    . use the ArcLength mapping and a root finder
++ ArcLength is rather slow.
 
 --------------------------------------------------------------------------------
 Critical stuff
