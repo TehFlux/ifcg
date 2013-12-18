@@ -16,13 +16,14 @@ New
 --------------------------------------------------------------------------------
 
 + MatrixMN
-  > invert, svd (use GSL)
+  > invert, solve, svd (use GSL)
 
 + BGeoUtils
   > Visualize a Vertex3Set (as a collection of small spheres)
 
 + Testing
   > Mesh::fiber()
+  > qrDecomp(), qrSolve(), MatrixMN::qrDecomp(), etc.
 
 --------------------------------------------------------------------------------
 Critical stuff

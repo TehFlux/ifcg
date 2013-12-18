@@ -35,6 +35,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class VectorN;
+
 namespace XMLUtils
 {
 
@@ -105,6 +107,40 @@ class MatrixMN
 		 * Destruct MatrixMN object.
 		 */
 		virtual ~MatrixMN();
+		
+		/** QR decomposition.
+		 *
+		 * Calculate the QR decomposition M = QR of the matrix.
+		 *
+		 * \param q Q.
+		 * \param r R.
+		 */
+		virtual void qrDecomp(Ionflux::GeoUtils::MatrixMN& q, 
+		Ionflux::GeoUtils::MatrixMN& r) const;
+		
+		/** Solve.
+		 *
+		 * Solve the system M x = b, where M is the matrix itself.
+		 *
+		 * \param b b.
+		 *
+		 * \return Result of the computation.
+		 */
+		virtual Ionflux::GeoUtils::VectorN solve(const 
+		Ionflux::GeoUtils::VectorN& b) const;
+		
+		/** QR solve.
+		 *
+		 * Solve the system R x = Q^T b.
+		 *
+		 * \param q Q.
+		 * \param r R.
+		 * \param b b.
+		 * \param x x.
+		 */
+		static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
+		Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
+		Ionflux::GeoUtils::VectorN& x);
 		
 		/** Assignment operator.
 		 *

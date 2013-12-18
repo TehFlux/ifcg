@@ -31,6 +31,8 @@
 #include <sstream>
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/VectorN.hpp"
+#include "geoutils/gslutils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "ifobject/xmlutils_private.hpp"
@@ -87,6 +89,32 @@ MatrixMN::MatrixMN(unsigned int initNumCols, unsigned int initNumRows)
 MatrixMN::~MatrixMN()
 {
 	// TODO: Nothing ATM. ;-)
+}
+
+void MatrixMN::qrDecomp(Ionflux::GeoUtils::MatrixMN& q, 
+Ionflux::GeoUtils::MatrixMN& r) const
+{
+	Ionflux::GeoUtils::qrDecomp(*this, q, r);
+}
+
+Ionflux::GeoUtils::VectorN MatrixMN::solve(const 
+Ionflux::GeoUtils::VectorN& b) const
+{
+	unsigned int numRows0 = getNumRows();
+	unsigned int numCols0 = getNumCols();
+	Ionflux::GeoUtils::MatrixMN q(numRows0, numRows0);
+	Ionflux::GeoUtils::MatrixMN r(numRows0, numCols0);
+	Ionflux::GeoUtils::VectorN result(numCols0);
+	qrDecomp(q, r);
+	Ionflux::GeoUtils::qrSolve(q, r, b, result);
+	return result;
+}
+
+void MatrixMN::qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
+Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
+Ionflux::GeoUtils::VectorN& x)
+{
+	Ionflux::GeoUtils::qrSolve(q, r, b, x);
 }
 
 void MatrixMN::setNumRows(unsigned int newNumRows)

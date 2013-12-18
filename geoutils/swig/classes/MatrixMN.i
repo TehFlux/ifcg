@@ -34,6 +34,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class VectorN;
+
 class MatrixMNClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -51,6 +53,13 @@ class MatrixMN
 		MatrixMN(const Ionflux::GeoUtils::MatrixMN& other);
         MatrixMN(unsigned int initNumCols, unsigned int initNumRows);
         virtual ~MatrixMN();
+        virtual void qrDecomp(Ionflux::GeoUtils::MatrixMN& q, 
+        Ionflux::GeoUtils::MatrixMN& r) const;
+        virtual Ionflux::GeoUtils::VectorN solve(const 
+        Ionflux::GeoUtils::VectorN& b) const;
+        static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
+        Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& 
+        b, Ionflux::GeoUtils::VectorN& x);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

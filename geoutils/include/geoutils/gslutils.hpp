@@ -18,6 +18,8 @@ namespace GeoUtils
 
 class Vector3;
 class Matrix3;
+class VectorN;
+class MatrixMN;
 class Vertex3Set;
 
 /** GSL vector conversion (3D).
@@ -52,9 +54,71 @@ void gslToMatrix3(gsl_matrix* m0, Ionflux::GeoUtils::Matrix3& m1);
  * Convert Matrix3 to GSL matrix.
  *
  * \param v0 matrix (3x3)
- * \param v1 GSL vector
+ * \param v1 GSL matrix
  */
 void gslFromMatrix3(const Ionflux::GeoUtils::Matrix3& m0, gsl_matrix* m1);
+
+/** GSL vector conversion (N-D).
+ *
+ * Convert GSL vector to VectorN.
+ *
+ * \param v0 GSL vector
+ * \param v1 vector (N-D)
+ */
+void gslToVectorN(gsl_vector* v0, Ionflux::GeoUtils::VectorN& v1);
+
+/** GSL vector conversion (N-D).
+ *
+ * Convert VectorN to GSL vector.
+ *
+ * \param v0 vector (N-D)
+ * \param v1 GSL vector
+ */
+void gslFromVectorN(const Ionflux::GeoUtils::VectorN& v0, gsl_vector* v1);
+
+/** GSL matrix conversion (MxN).
+ *
+ * Convert GSL matrix to MatrixMN.
+ *
+ * \param v0 GSL matrix
+ * \param v1 matrix (MxN)
+ */
+void gslToMatrixMN(gsl_matrix* m0, Ionflux::GeoUtils::MatrixMN& m1);
+
+/** GSL matrix conversion (MxN).
+ *
+ * Convert MatrixNM to GSL matrix.
+ *
+ * \param v0 matrix (MxN)
+ * \param v1 GSL matrix
+ */
+void gslFromMatrixMN(const Ionflux::GeoUtils::MatrixMN& m0, gsl_matrix* m1);
+
+/** QR decomposition (MxN).
+ * 
+ * Calculate the QR decomposition of the input matrix.
+ *
+ * \param m input matrix
+ * \param q Q
+ * \param r R
+ */
+void qrDecomp(const Ionflux::GeoUtils::MatrixMN& m, 
+    Ionflux::GeoUtils::MatrixMN& q, 
+    Ionflux::GeoUtils::MatrixMN& r);
+
+/** QR solve.
+ * 
+ * Solve the system R x = Q^T b.
+ *
+ * \param q Q
+ * \param r R
+ * \param b b
+ * \param x x
+ */
+void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, 
+    const Ionflux::GeoUtils::MatrixMN& r, 
+    const Ionflux::GeoUtils::VectorN& b, 
+    Ionflux::GeoUtils::VectorN& x);
 
 /** Singular value decomposition (3D).
  *
