@@ -104,6 +104,8 @@ Ionflux::Mapping::MappingValue relativeError,
 Ionflux::Mapping::MappingValue maxNumIterations, 
 Ionflux::Mapping::MappingValue precision)
 {
+	if (value == 0.)
+	    return 0.;
 	Ionflux::Mapping::ArcLength* fc = 
 	    Ionflux::Mapping::ArcLength::create(
 	        this, -value, 1., 0., relativeError, maxNumIterations);
