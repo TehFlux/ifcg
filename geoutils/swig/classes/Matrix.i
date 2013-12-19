@@ -54,6 +54,7 @@ class Matrix
         virtual ~Matrix();
         virtual double getElement(unsigned int rowIndex, unsigned int 
         colIndex) const;
+        virtual void setElement(unsigned int index, double value);
         virtual void setElement(unsigned int rowIndex, unsigned int 
         colIndex, double value);
         virtual void getRow(unsigned int rowIndex, 

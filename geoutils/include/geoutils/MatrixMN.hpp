@@ -102,11 +102,44 @@ class MatrixMN
 		 */
 		MatrixMN(unsigned int initNumCols, unsigned int initNumRows);
 		
+		/** Constructor.
+		 *
+		 * Construct new MatrixMN object.
+		 *
+		 * \param initNumCols Number of columns.
+		 * \param initNumRows Number of columns.
+		 * \param x0 element (0).
+		 * \param x1 element (1).
+		 * \param x2 element (2).
+		 * \param x3 element (3).
+		 * \param x4 element (4).
+		 * \param x5 element (5).
+		 * \param x6 element (6).
+		 * \param x7 element (7).
+		 * \param x8 element (8).
+		 * \param x9 element (9).
+		 * \param x10 element (10).
+		 * \param x11 element (11).
+		 * \param x12 element (12).
+		 */
+		MatrixMN(unsigned int initNumCols, unsigned int initNumRows, double x0, 
+		double x1 = 0., double x2 = 0., double x3 = 0., double x4 = 0., double x5
+		= 0., double x6 = 0., double x7 = 0., double x8 = 0., double x9 = 0., 
+		double x10 = 0., double x11 = 0., double x12 = 0.);
+		
 		/** Destructor.
 		 *
 		 * Destruct MatrixMN object.
 		 */
 		virtual ~MatrixMN();
+		
+		/** Transpose.
+		 *
+		 * Transpose the matrix.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::MatrixMN transpose() const;
 		
 		/** QR decomposition.
 		 *
@@ -141,6 +174,14 @@ class MatrixMN
 		static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
 		Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
 		Ionflux::GeoUtils::VectorN& x);
+		
+		/** Get number of elements.
+		 *
+		 * Get the number of elements in the matrix
+		 *
+		 * \return Number of elements.
+		 */
+		virtual unsigned int getNumElements() const;
 		
 		/** Assignment operator.
 		 *
@@ -196,6 +237,33 @@ class MatrixMN
 		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
 		unsigned int initNumRows, Ionflux::ObjectBase::IFObject* parentObject = 
 		0);
+        
+		/** Create instance.
+		 *
+		 * Create a new MatrixMN object.
+		 *
+		 * \param initNumCols Number of columns.
+		 * \param initNumRows Number of columns.
+		 * \param x0 element (0).
+		 * \param x1 element (1).
+		 * \param x2 element (2).
+		 * \param x3 element (3).
+		 * \param x4 element (4).
+		 * \param x5 element (5).
+		 * \param x6 element (6).
+		 * \param x7 element (7).
+		 * \param x8 element (8).
+		 * \param x9 element (9).
+		 * \param x10 element (10).
+		 * \param x11 element (11).
+		 * \param x12 element (12).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
+		unsigned int initNumRows, double x0, double x1 = 0., double x2 = 0., 
+		double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., double x7
+		= 0., double x8 = 0., double x9 = 0., double x10 = 0., double x11 = 0., 
+		double x12 = 0., Ionflux::ObjectBase::IFObject* parentObject = 0);
         
 		/** Get XML element name.
 		 *

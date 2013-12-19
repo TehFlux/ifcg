@@ -54,6 +54,10 @@ class Vector
         virtual void zero();
         virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
         newElements);
+        virtual void setElements(double x0, double x1 = 0., double x2 = 0.,
+        double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., 
+        double x7 = 0., double x8 = 0., double x9 = 0., double x10 = 0., 
+        double x11 = 0., double x12 = 0.);
         virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
         const;
         virtual double getElement(unsigned int index) const;

@@ -55,10 +55,6 @@ class VectorN
         double x6 = 0., double x7 = 0., double x8 = 0., double x9 = 0., 
         double x10 = 0., double x11 = 0., double x12 = 0.);
         virtual ~VectorN();
-        virtual void setElements(double x0, double x1 = 0., double x2 = 0.,
-        double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., 
-        double x7 = 0., double x8 = 0., double x9 = 0., double x10 = 0., 
-        double x11 = 0., double x12 = 0.);
         virtual Ionflux::GeoUtils::VectorN interpolate(const 
         Ionflux::GeoUtils::VectorN& other, double t = 0.5, 
         Ionflux::GeoUtils::Interpolator* interp = 0);

@@ -116,6 +116,15 @@ class Matrix
 		 *
 		 * Set the element at the specified index.
 		 *
+		 * \param index Index.
+		 * \param value Value.
+		 */
+		virtual void setElement(unsigned int index, double value);
+		
+		/** Set element.
+		 *
+		 * Set the element at the specified index.
+		 *
 		 * \param rowIndex Row index.
 		 * \param colIndex Column index.
 		 * \param value Value.

@@ -86,9 +86,28 @@ MatrixMN::MatrixMN(unsigned int initNumCols, unsigned int initNumRows)
 	zero();
 }
 
+MatrixMN::MatrixMN(unsigned int initNumCols, unsigned int initNumRows, 
+double x0, double x1, double x2, double x3, double x4, double x5, double 
+x6, double x7, double x8, double x9, double x10, double x11, double x12)
+: numRows(initNumRows), numCols(initNumCols)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	zero();
+	setElements(x0, x1, x2, x3, x4, x5, x6, 
+	    x7, x8, x9, x10, x11, x12);
+}
+
 MatrixMN::~MatrixMN()
 {
 	// TODO: Nothing ATM. ;-)
+}
+
+Ionflux::GeoUtils::MatrixMN MatrixMN::transpose() const
+{
+	MatrixMN result(*this);
+	result.transposeIP();
+	return result;
 }
 
 void MatrixMN::qrDecomp(Ionflux::GeoUtils::MatrixMN& q, 
@@ -115,6 +134,12 @@ Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b,
 Ionflux::GeoUtils::VectorN& x)
 {
 	Ionflux::GeoUtils::qrSolve(q, r, b, x);
+}
+
+unsigned int MatrixMN::getNumElements() const
+{
+	// TODO: Implementation.
+	return getNumCols() * getNumRows();
 }
 
 void MatrixMN::setNumRows(unsigned int newNumRows)
@@ -178,6 +203,22 @@ Ionflux::GeoUtils::MatrixMN* MatrixMN::create(unsigned int initNumCols,
 unsigned int initNumRows, Ionflux::ObjectBase::IFObject* parentObject)
 {
     MatrixMN* newObject = new MatrixMN(initNumCols, initNumRows);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::MatrixMN* MatrixMN::create(unsigned int initNumCols, 
+unsigned int initNumRows, double x0, double x1, double x2, double x3, 
+double x4, double x5, double x6, double x7, double x8, double x9, double 
+x10, double x11, double x12, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    MatrixMN* newObject = new MatrixMN(initNumCols, initNumRows, x0, x1, 
+    x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object.");

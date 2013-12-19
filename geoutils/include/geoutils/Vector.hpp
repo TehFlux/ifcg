@@ -123,6 +123,30 @@ class Vector
 		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
 		newElements);
 		
+		/** Set elements.
+		 *
+		 * Set elements of the vector. This is a convenience function that can
+		 * be used to set up to 12 elements of the vector at once.
+		 *
+		 * \param x0 element (0).
+		 * \param x1 element (1).
+		 * \param x2 element (2).
+		 * \param x3 element (3).
+		 * \param x4 element (4).
+		 * \param x5 element (5).
+		 * \param x6 element (6).
+		 * \param x7 element (7).
+		 * \param x8 element (8).
+		 * \param x9 element (9).
+		 * \param x10 element (10).
+		 * \param x11 element (11).
+		 * \param x12 element (12).
+		 */
+		virtual void setElements(double x0, double x1 = 0., double x2 = 0., 
+		double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., double x7
+		= 0., double x8 = 0., double x9 = 0., double x10 = 0., double x11 = 0., 
+		double x12 = 0.);
+		
 		/** Get elements.
 		 *
 		 * Store the elements of the vector in a vector of doubles.

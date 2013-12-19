@@ -107,58 +107,6 @@ VectorN::~VectorN()
 	// TODO: Nothing ATM. ;-)
 }
 
-void VectorN::setElements(double x0, double x1, double x2, double x3, 
-double x4, double x5, double x6, double x7, double x8, double x9, double 
-x10, double x11, double x12)
-{
-	if (numElements > 0)
-	    setElement(0, x0);
-	else
-	    return;
-	if (numElements > 1)
-	    setElement(1, x1);
-	else
-	    return;
-	if (numElements > 2)
-	    setElement(2, x2);
-	else
-	    return;
-	if (numElements > 3)
-	    setElement(3, x3);
-	else
-	    return;
-	if (numElements > 4)
-	    setElement(4, x4);
-	else
-	    return;
-	if (numElements > 5)
-	    setElement(5, x5);
-	else
-	    return;
-	if (numElements > 6)
-	    setElement(6, x6);
-	else
-	    return;
-	if (numElements > 7)
-	    setElement(7, x7);
-	else
-	    return;
-	if (numElements > 8)
-	    setElement(8, x8);
-	else
-	    return;
-	if (numElements > 9)
-	    setElement(9, x9);
-	else
-	    return;
-	if (numElements > 10)
-	    setElement(10, x10);
-	else
-	    return;
-	if (numElements > 11)
-	    setElement(11, x11);
-}
-
 Ionflux::GeoUtils::VectorN VectorN::interpolate(const 
 Ionflux::GeoUtils::VectorN& other, double t, 
 Ionflux::GeoUtils::Interpolator* interp)

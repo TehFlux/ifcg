@@ -101,6 +101,11 @@ const
 	return (*this)[numCols * rowIndex + colIndex];;
 }
 
+void Matrix::setElement(unsigned int index, double value)
+{
+	Vector::setElement(index, value);
+}
+
 void Matrix::setElement(unsigned int rowIndex, unsigned int colIndex, 
 double value)
 {

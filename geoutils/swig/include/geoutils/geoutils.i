@@ -584,6 +584,10 @@ class Vector
         virtual void zero();
         virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
         newElements);
+        virtual void setElements(double x0, double x1 = 0., double x2 = 0.,
+        double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., 
+        double x7 = 0., double x8 = 0., double x9 = 0., double x10 = 0., 
+        double x11 = 0., double x12 = 0.);
         virtual void getElements(Ionflux::ObjectBase::DoubleVector& target)
         const;
         virtual double getElement(unsigned int index) const;
@@ -743,6 +747,7 @@ class Matrix
         virtual ~Matrix();
         virtual double getElement(unsigned int rowIndex, unsigned int 
         colIndex) const;
+        virtual void setElement(unsigned int index, double value);
         virtual void setElement(unsigned int rowIndex, unsigned int 
         colIndex, double value);
         virtual void getRow(unsigned int rowIndex, 
@@ -1320,10 +1325,6 @@ class VectorN
         double x6 = 0., double x7 = 0., double x8 = 0., double x9 = 0., 
         double x10 = 0., double x11 = 0., double x12 = 0.);
         virtual ~VectorN();
-        virtual void setElements(double x0, double x1 = 0., double x2 = 0.,
-        double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., 
-        double x7 = 0., double x8 = 0., double x9 = 0., double x10 = 0., 
-        double x11 = 0., double x12 = 0.);
         virtual Ionflux::GeoUtils::VectorN interpolate(const 
         Ionflux::GeoUtils::VectorN& other, double t = 0.5, 
         Ionflux::GeoUtils::Interpolator* interp = 0);
@@ -1657,7 +1658,12 @@ class MatrixMN
         MatrixMN();
 		MatrixMN(const Ionflux::GeoUtils::MatrixMN& other);
         MatrixMN(unsigned int initNumCols, unsigned int initNumRows);
+        MatrixMN(unsigned int initNumCols, unsigned int initNumRows, double
+        x0, double x1 = 0., double x2 = 0., double x3 = 0., double x4 = 0.,
+        double x5 = 0., double x6 = 0., double x7 = 0., double x8 = 0., 
+        double x9 = 0., double x10 = 0., double x11 = 0., double x12 = 0.);
         virtual ~MatrixMN();
+        virtual Ionflux::GeoUtils::MatrixMN transpose() const;
         virtual void qrDecomp(Ionflux::GeoUtils::MatrixMN& q, 
         Ionflux::GeoUtils::MatrixMN& r) const;
         virtual Ionflux::GeoUtils::VectorN solve(const 
@@ -1665,6 +1671,7 @@ class MatrixMN
         static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
         Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& 
         b, Ionflux::GeoUtils::VectorN& x);
+        virtual unsigned int getNumElements() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -1680,6 +1687,11 @@ class MatrixMN
 		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
 		unsigned int initNumRows, Ionflux::ObjectBase::IFObject* parentObject = 
 		0);
+		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
+		unsigned int initNumRows, double x0, double x1 = 0., double x2 = 0., 
+		double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., double x7
+		= 0., double x8 = 0., double x9 = 0., double x10 = 0., double x11 = 0., 
+		double x12 = 0., Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setNumRows(unsigned int newNumRows);
         virtual unsigned int getNumRows() const;
         virtual void setNumCols(unsigned int newNumCols);
