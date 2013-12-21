@@ -16,7 +16,8 @@ m0 = cg.MatrixMN.create(3, 3,
 )
 mm.addLocalRef(m0)
 
-print("  m0: [%s]" % m0.getValueString())
+print("  m0:")
+print(m0.getValueStringF(3))
 
 q0 = cg.MatrixMN.create(3, 3)
 r0 = cg.MatrixMN.create(3, 3)
@@ -24,9 +25,13 @@ mm.addLocalRef(q0)
 mm.addLocalRef(r0)
 
 m0.qrDecomp(q0, r0)
+q0.roundIP(4)
+r0.roundIP(4)
 
-print("  q:  %s" % q0.getValueString())
-print("  r:  %s" % r0.getValueString())
+print("  q0:")
+print(q0.getValueStringF(10))
+print("  r0:")
+print(r0.getValueStringF(10))
 
 b0 = cg.VectorN.create(3)
 b1 = cg.VectorN.create(3)

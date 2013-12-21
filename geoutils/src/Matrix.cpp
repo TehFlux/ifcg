@@ -452,6 +452,38 @@ std::string Matrix::getValueString() const
 	return status.str();
 }
 
+std::string Matrix::getValueStringF(unsigned int fieldWidth, unsigned int 
+precision, const std::string& colSep, const std::string& rowSep, const 
+std::string& rowPrefix) const
+{
+	std::ostringstream status;
+	unsigned int numRows = getNumRows();
+	unsigned int numCols = getNumCols();
+	bool e0 = true;
+	bool e1 = true;
+	for (unsigned int i = 0; i < numRows; i++)
+	{
+	    if (!e0)
+	        status << rowSep;
+	    else
+	        e0 = false;
+	    e1 = true;
+	    if (rowPrefix != "")
+	        status << rowPrefix;
+	    for (unsigned int k = 0; k < numCols; k++)
+	    {
+	        if (!e1)
+	            status << colSep;
+	        else
+	            e1 = false;
+	        status << std::setw(fieldWidth) << std::setfill(' ') 
+	            << std::setprecision(precision) << right 
+	            << elements[i * numCols + k];
+	    }
+	}
+	return status.str();
+}
+
 unsigned int Matrix::getNumElements() const
 {
 	// TODO: Implementation.

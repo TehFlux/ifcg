@@ -303,6 +303,24 @@ class Matrix
 		 */
 		virtual std::string getValueString() const;
 		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object. This 
+		 * returns a string in which the numbers are formatted according to 
+		 * the specified parameters.
+		 *
+		 * \param fieldWidth field width.
+		 * \param precision decimal precision.
+		 * \param colSep column separator.
+		 * \param rowSep row separator.
+		 * \param rowPrefix row prefix.
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueStringF(unsigned int fieldWidth = 5, unsigned
+		int precision = 3, const std::string& colSep = " ", const std::string& 
+		rowSep = "\n", const std::string& rowPrefix = "") const;
+		
 		/** Get number of elements.
 		 *
 		 * Get the number of elements in the vector

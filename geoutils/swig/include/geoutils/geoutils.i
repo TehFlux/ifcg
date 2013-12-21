@@ -786,6 +786,10 @@ class Matrix
         virtual void permuteRowsIP(const Ionflux::GeoUtils::Vector& p);
         virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
         virtual std::string getValueString() const;
+        virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
+        unsigned int precision = 3, const std::string& colSep = " ", const 
+        std::string& rowSep = "\n", const std::string& rowPrefix = "") 
+        const;
         virtual unsigned int getNumElements() const;
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
