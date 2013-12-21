@@ -16,6 +16,7 @@ New
 --------------------------------------------------------------------------------
 
 + MatrixMN
+  > conversion to/from other Matrix types
   > invert, solve, svd (use GSL)
 
 + BGeoUtils

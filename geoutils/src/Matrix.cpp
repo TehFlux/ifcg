@@ -122,6 +122,53 @@ double value)
 	Vector::setElement(numCols * rowIndex + colIndex, value);
 }
 
+void Matrix::setElements(const Ionflux::ObjectBase::DoubleVector& 
+newElements)
+{
+	Vector::setElements(newElements);
+}
+
+void Matrix::setElements(const Ionflux::GeoUtils::Vector& newElements, 
+unsigned int sourceOffset, unsigned int targetOffset)
+{
+	Vector::setElements(newElements, sourceOffset, targetOffset);
+}
+
+void Matrix::setElements(const Ionflux::GeoUtils::Matrix& other, unsigned 
+int sourceRowOffset, unsigned int sourceColOffset, unsigned int 
+targetRowOffset, unsigned int targetColOffset)
+{
+	unsigned int numRows0 = getNumRows();
+	unsigned int numCols0 = getNumCols();
+	unsigned int numRows1 = other.getNumRows();
+	unsigned int numCols1 = other.getNumCols();
+	unsigned int i = 0;
+	while (((i + targetRowOffset) < numRows0) 
+	    && ((i + sourceRowOffset) < numRows1))
+	{
+	    unsigned int k = 0;
+	    while (((k + targetColOffset) < numCols0) 
+	        && ((k + sourceColOffset) < numCols1))
+	    {
+	        unsigned int si0 = (i + sourceRowOffset) * numCols1 
+	            + (k + sourceColOffset);
+	        unsigned int ti0 = (i + targetRowOffset) * numCols0 
+	            + (k + targetColOffset);
+	        elements[ti0] = other.elements[si0];
+	        k++;
+	    }
+	    i++;
+	}
+}
+
+void Matrix::setElements(double x0, double x1, double x2, double x3, double
+x4, double x5, double x6, double x7, double x8, double x9, double x10, 
+double x11, double x12)
+{
+	Vector::setElements(x0, x1, x2, x3, x4, x5, x6, 
+	    x7, x8, x9, x10, x11, x12);
+}
+
 void Matrix::getRow(unsigned int rowIndex, Ionflux::GeoUtils::Vector& 
 target) const
 {
@@ -151,6 +198,51 @@ target) const
 	}
 	for (unsigned i = 0; i < numRows; i++)
 	    target.setElement(i, elements[i * numCols + colIndex]);
+}
+
+void Matrix::setRow(unsigned int rowIndex, const Ionflux::GeoUtils::Vector&
+v, unsigned int sourceOffset, unsigned int targetOffset)
+{
+	unsigned int numRows0 = getNumRows();
+	unsigned int numCols0 = getNumCols();
+	unsigned int numElements0 = v.getNumElements();
+	if (rowIndex >= numRows0)
+	{
+	    std::ostringstream status;
+	    status << "Index out of range: " << rowIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "setRow"));
+	}
+	unsigned int rowOffset = rowIndex * numCols0;
+	unsigned int i = 0;
+	while (((i + sourceOffset) < numElements0) 
+	    && ((i + targetOffset) < numCols0))
+	{
+	    elements[rowOffset + i + targetOffset] = 
+	        v.getElement(i + sourceOffset);
+	    i++;
+	}
+}
+
+void Matrix::setCol(unsigned int colIndex, const Ionflux::GeoUtils::Vector&
+v, unsigned int sourceOffset, unsigned int targetOffset)
+{
+	unsigned int numRows0 = getNumRows();
+	unsigned int numCols0 = getNumCols();
+	unsigned int numElements0 = v.getNumElements();
+	if (colIndex >= numCols0)
+	{
+	    std::ostringstream status;
+	    status << "Index out of range: " << colIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "getCol"));
+	}
+	unsigned int i = 0;
+	while (((i + sourceOffset) < numElements0) 
+	    && ((i + targetOffset) < numRows0))
+	{
+	    elements[(i + targetOffset) * numCols0 + colIndex] = 
+	        v.getElement(i + sourceOffset);
+	    i++;
+	}
 }
 
 void Matrix::transposeIP()

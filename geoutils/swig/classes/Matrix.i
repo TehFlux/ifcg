@@ -57,10 +57,29 @@ class Matrix
         virtual void setElement(unsigned int index, double value);
         virtual void setElement(unsigned int rowIndex, unsigned int 
         colIndex, double value);
+        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
+        newElements);
+        virtual void setElements(const Ionflux::GeoUtils::Vector& 
+        newElements, unsigned int sourceOffset = 0, unsigned int 
+        targetOffset = 0);
+        virtual void setElements(const Ionflux::GeoUtils::Matrix& other, 
+        unsigned int sourceRowOffset = 0, unsigned int sourceColOffset = 0,
+        unsigned int targetRowOffset = 0, unsigned int targetColOffset = 
+        0);
+        virtual void setElements(double x0, double x1 = 0., double x2 = 0.,
+        double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., 
+        double x7 = 0., double x8 = 0., double x9 = 0., double x10 = 0., 
+        double x11 = 0., double x12 = 0.);
         virtual void getRow(unsigned int rowIndex, 
         Ionflux::GeoUtils::Vector& target) const;
         virtual void getCol(unsigned int colIndex, 
         Ionflux::GeoUtils::Vector& target) const;
+        virtual void setRow(unsigned int rowIndex, const 
+        Ionflux::GeoUtils::Vector& v, unsigned int sourceOffset = 0, 
+        unsigned int targetOffset = 0);
+        virtual void setCol(unsigned int colIndex, const 
+        Ionflux::GeoUtils::Vector& v, unsigned int sourceOffset = 0, 
+        unsigned int targetOffset = 0);
         virtual void transposeIP();
         virtual double trace() const;
         virtual void transform(const Ionflux::GeoUtils::Vector& v, 

@@ -62,6 +62,7 @@ class MatrixMN
         Ionflux::GeoUtils::MatrixMN& r) const;
         virtual Ionflux::GeoUtils::VectorN solve(const 
         Ionflux::GeoUtils::VectorN& b) const;
+        virtual Ionflux::GeoUtils::MatrixMN invert() const;
         static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
         Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& 
         b, Ionflux::GeoUtils::VectorN& x);

@@ -162,6 +162,14 @@ class MatrixMN
 		virtual Ionflux::GeoUtils::VectorN solve(const 
 		Ionflux::GeoUtils::VectorN& b) const;
 		
+		/** Invert.
+		 *
+		 * Invert the matrix (if possible).
+		 *
+		 * \return Result of the computation.
+		 */
+		virtual Ionflux::GeoUtils::MatrixMN invert() const;
+		
 		/** QR solve.
 		 *
 		 * Solve the system R x = Q^T b.

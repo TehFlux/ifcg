@@ -127,6 +127,21 @@ newElements)
 	}
 }
 
+void Vector::setElements(const Ionflux::GeoUtils::Vector& other, unsigned 
+int sourceOffset, unsigned int targetOffset)
+{
+	unsigned int numElements0 = getNumElements();
+	unsigned int numElements1 = other.getNumElements();
+	unsigned int i = 0;
+	while (((i + targetOffset) < numElements0) 
+	    && ((i + sourceOffset) < numElements1))
+	{
+	    elements[i + targetOffset] = 
+	        other.elements[i + sourceOffset];
+	    i++;
+	}
+}
+
 void Vector::setElements(double x0, double x1, double x2, double x3, double
 x4, double x5, double x6, double x7, double x8, double x9, double x10, 
 double x11, double x12)
@@ -319,6 +334,15 @@ other)
 	}
 	for (unsigned int i = 0; i < numElements; i++)
 	    elements[i] = elements[i] + other.elements[i];
+	return *this;
+}
+
+Ionflux::GeoUtils::Vector& Vector::roundIP(unsigned int numDecimals)
+{
+	unsigned int numElements = getNumElements();
+	double c0 = ::pow(10., numDecimals);
+	for (unsigned int i = 0; i < numElements; i++)
+	    elements[i] = ::round(elements[i] * c0) / c0;
 	return *this;
 }
 

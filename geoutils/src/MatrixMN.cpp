@@ -129,6 +129,28 @@ Ionflux::GeoUtils::VectorN& b) const
 	return result;
 }
 
+Ionflux::GeoUtils::MatrixMN MatrixMN::invert() const
+{
+	unsigned int numRows0 = getNumRows();
+	unsigned int numCols0 = getNumCols();
+	if (numRows0 != numCols0)
+	    throw GeoUtilsError(getErrorString(
+	        "Cannot invert non-square matrix.", "invert"));
+	Ionflux::GeoUtils::MatrixMN q(numRows0, numRows0);
+	Ionflux::GeoUtils::MatrixMN r(numRows0, numRows0);
+	qrDecomp(q, r);
+	Ionflux::GeoUtils::MatrixMN result(numRows0, numRows0);
+	for (unsigned int i = 0; i < numRows0; i++)
+	{
+	    Ionflux::GeoUtils::VectorN b(numRows0);
+	    Ionflux::GeoUtils::VectorN x(numRows0);
+	    b.setElement(i, 1.);
+	    Ionflux::GeoUtils::qrSolve(q, r, b, x);
+	    result.setCol(i, x);
+	}
+	return result;
+}
+
 void MatrixMN::qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
 Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
 Ionflux::GeoUtils::VectorN& x)

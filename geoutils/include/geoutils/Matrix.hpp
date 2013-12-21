@@ -132,6 +132,71 @@ class Matrix
 		virtual void setElement(unsigned int rowIndex, unsigned int colIndex, 
 		double value);
 		
+		/** Set elements.
+		 *
+		 * Set elements from a vector of doubles. If the vector contains fewer
+		 * than the required number of elements, the remaining elements will 
+		 * be left alone.
+		 *
+		 * \param newElements Element vector.
+		 */
+		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
+		newElements);
+		
+		/** Set elements.
+		 *
+		 * Set elements from a vector. If the vector contains fewer than the 
+		 * required number of elements, the remaining elements will be left 
+		 * alone.
+		 *
+		 * \param newElements Element vector.
+		 * \param sourceOffset Source offset.
+		 * \param targetOffset Target offset.
+		 */
+		virtual void setElements(const Ionflux::GeoUtils::Vector& newElements, 
+		unsigned int sourceOffset = 0, unsigned int targetOffset = 0);
+		
+		/** Set elements.
+		 *
+		 * Set elements from a matrix. The dimensions of the target and source
+		 * matrices may differ. In this case, only the relevant number of 
+		 * elements will be considered. The optional offsets may be specified 
+		 * to set a certain subset of elements.
+		 *
+		 * \param other Matrix.
+		 * \param sourceRowOffset Source row offset.
+		 * \param sourceColOffset Source column offset.
+		 * \param targetRowOffset Target row offset.
+		 * \param targetColOffset Target column offset.
+		 */
+		virtual void setElements(const Ionflux::GeoUtils::Matrix& other, unsigned
+		int sourceRowOffset = 0, unsigned int sourceColOffset = 0, unsigned int 
+		targetRowOffset = 0, unsigned int targetColOffset = 0);
+		
+		/** Set elements.
+		 *
+		 * Set elements of the matrix. This is a convenience function that can
+		 * be used to set up to 12 elements of the matrix at once.
+		 *
+		 * \param x0 element (0).
+		 * \param x1 element (1).
+		 * \param x2 element (2).
+		 * \param x3 element (3).
+		 * \param x4 element (4).
+		 * \param x5 element (5).
+		 * \param x6 element (6).
+		 * \param x7 element (7).
+		 * \param x8 element (8).
+		 * \param x9 element (9).
+		 * \param x10 element (10).
+		 * \param x11 element (11).
+		 * \param x12 element (12).
+		 */
+		virtual void setElements(double x0, double x1 = 0., double x2 = 0., 
+		double x3 = 0., double x4 = 0., double x5 = 0., double x6 = 0., double x7
+		= 0., double x8 = 0., double x9 = 0., double x10 = 0., double x11 = 0., 
+		double x12 = 0.);
+		
 		/** Get row vector.
 		 *
 		 * Get the row vector at the specified index.
@@ -151,6 +216,32 @@ class Matrix
 		 */
 		virtual void getCol(unsigned int colIndex, Ionflux::GeoUtils::Vector& 
 		target) const;
+		
+		/** Set row vector.
+		 *
+		 * Set the row vector at the specified index.
+		 *
+		 * \param rowIndex Row index.
+		 * \param v Vector.
+		 * \param sourceOffset Source offset.
+		 * \param targetOffset Target offset.
+		 */
+		virtual void setRow(unsigned int rowIndex, const 
+		Ionflux::GeoUtils::Vector& v, unsigned int sourceOffset = 0, unsigned int
+		targetOffset = 0);
+		
+		/** Set column vector.
+		 *
+		 * Set the column vector at the specified index.
+		 *
+		 * \param colIndex Column index.
+		 * \param v Vector.
+		 * \param sourceOffset Source offset.
+		 * \param targetOffset Target offset.
+		 */
+		virtual void setCol(unsigned int colIndex, const 
+		Ionflux::GeoUtils::Vector& v, unsigned int sourceOffset = 0, unsigned int
+		targetOffset = 0);
 		
 		/** Transpose (in-place).
 		 *

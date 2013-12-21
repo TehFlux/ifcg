@@ -125,6 +125,20 @@ class Vector
 		
 		/** Set elements.
 		 *
+		 * Set elements from a vector. The sizes of the target and source 
+		 * vectors may differ. In this case, only the relevant number of 
+		 * elements will be considered. The optional offsets may be specified 
+		 * to set a certain subset of elements.
+		 *
+		 * \param other Vector.
+		 * \param sourceOffset Source offset.
+		 * \param targetOffset Target offset.
+		 */
+		virtual void setElements(const Ionflux::GeoUtils::Vector& other, unsigned
+		int sourceOffset = 0, unsigned int targetOffset = 0);
+		
+		/** Set elements.
+		 *
 		 * Set elements of the vector. This is a convenience function that can
 		 * be used to set up to 12 elements of the vector at once.
 		 *
@@ -277,6 +291,17 @@ class Vector
 		 */
 		virtual Ionflux::GeoUtils::Vector& addIP(const Ionflux::GeoUtils::Vector&
 		other);
+		
+		/** Round (in-place).
+		 *
+		 * Round the elements in the vector to the specified number of decimal
+		 * places (in-place).
+		 *
+		 * \param numDecimals number of decimal places to round to.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::Vector& roundIP(unsigned int numDecimals = 0);
 		
 		/** Comparison operator: equality.
 		 *
