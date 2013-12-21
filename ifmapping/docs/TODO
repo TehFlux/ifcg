@@ -16,6 +16,7 @@ New
 --------------------------------------------------------------------------------
 
 + ArcLength is rather slow.
+  > Sample adaptively and cache intermediate results.
 
 --------------------------------------------------------------------------------
 Critical stuff

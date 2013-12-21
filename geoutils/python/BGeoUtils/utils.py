@@ -29,6 +29,26 @@ import CGeoUtils as cg
 import BGeoUtils.Object as bgo
 import BGeoUtils.Material as bgMat
 
+def getBlenderMatrix(m):
+    """Convert CGeoUtils.Matrix to Blender matrix."""
+    numRows0 = m.getNumRows()
+    numCols0 = m.getNumCols()
+    bm0 = []
+    for i in range(0, numRows0):
+        r0 = []
+        for k in range(0, numCols0):
+            r0 += [m.getElement(i, k)]
+        bm0 += [r0]
+    return bm0
+
+def getCGMatrix(bm, m):
+    """Convert Blender matrix to CGeoUtils.Matrix."""
+    numRows0 = len(bm)
+    numCols0 = len(bm[0])
+    for i in range(0, numRows0):
+        for k in range(0, numCols0):
+            m.setElement(i, k, bm[i][k])
+
 def visualizeTransform(m, t = cg.Vector3.ZERO, name = "UnnamedT", 
     scale0 = 1.):
     """Visualize a transform.

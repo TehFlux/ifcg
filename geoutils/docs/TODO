@@ -15,16 +15,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ MatrixMN
-  > conversion to/from other Matrix types
-  > invert, solve, svd (use GSL)
 
-+ BGeoUtils
-  > Visualize a Vertex3Set (as a collection of small spheres)
-
-+ Testing
-  > Mesh::fiber()
-  > qrDecomp(), qrSolve(), MatrixMN::qrDecomp(), etc.
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -32,6 +23,9 @@ Critical stuff
 
 + cgeoutilstest31: getRotationMatrix() does not yield the local Camera 
   vectors.
+
++ MatrixMN
+  > svd (use GSL)
 
 + Mesh
   > Generator functions
@@ -47,16 +41,16 @@ Critical stuff
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
 
 + BGeoUtils
-  > convert between Blender Bezier splines and IFMapping Bezier splines
+  > Visualize a Vertex3Set (as a collection of small spheres)
   > export a scene (TransformableGroup containing Camera and Objects)
   > add an operator to export/import an object (Object3 XML I/O)
-  > update to work with BMesh
   > Blender Object.matrix_basis seems to require M^T as input but 
     provides M as output. Why is that the case?
   > test UV texture coordinate and vertex color transfer between Blender 
     mesh and GeoUtils mesh
 
 + Testing
+  > Mesh::fiber()
   > Camera
   > TransformableObject and derived classes
     . Face, Mesh, TransformableGroup, Object3, Vertex3, 

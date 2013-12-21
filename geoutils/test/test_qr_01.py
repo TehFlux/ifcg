@@ -68,13 +68,15 @@ m1.setCol(0, x0)
 m1.setCol(1, x1)
 m1.setCol(2, x2)
 
-print("  m1: [%s]" % m1.getValueString())
+print("  m1:")
+print(m1.getValueStringF(10))
 
 m2 = cg.MatrixMN.create(3, 3)
 mm.addLocalRef(m2)
 m0.multiply(m1, m2)
 m2.roundIP()
 
-print("  m2: [%s]" % m2.getValueString())
+print("  m2:")
+print(m2.getValueStringF(3))
 
 print("All done!")
