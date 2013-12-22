@@ -476,15 +476,24 @@ newSetupFlags, double t)
 	    *sky = *up;
 }
 
+Ionflux::GeoUtils::Matrix4 Camera::getExtrinsicMatrix()
+{
+	checkVectors();
+	Matrix4 result;
+	result.setCol(0, *right);
+	result.setCol(1, *up);
+	result.setCol(2, direction->normalize());
+	result.setCol(3, *location);
+	result.setElement(3, 3, 1.);
+	return result;
+}
+
 Ionflux::GeoUtils::Matrix4 
 Camera::getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness, 
 Ionflux::GeoUtils::AxisID upAxis, Ionflux::GeoUtils::AxisID depthAxis, 
 Ionflux::GeoUtils::AxisID horizonAxis)
 {
 	checkVectors();
-	// <---- DEBUG ----- //
-	std::ostringstream status;
-	// ----- DEBUG ----> */
 	/* NOTE: There is probably a way easier way of doing this by creating a 
 	         matrix from the orthonormalized camera axes and inverting it. */
 	Vector3 unitUp = Vector3::axis(upAxis);
@@ -548,10 +557,10 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	    roll *= c[1];
 	Matrix3 R(Matrix3::rotate(roll, depthAxis));
 	Matrix4 YPR(YP * R);
-	// <---- DEBUG ----- //
-	status.str("");
+	/* <---- DEBUG ----- //
 	Vector4 zDir4(Vector3::E_Z * direction->norm());
-	status << "upAxis = " << axisToString(upAxis) 
+	std::cerr << "[Camera::getRotationMatrix] DEBUG: " 
+	    << "upAxis = " << axisToString(upAxis) 
 	    << ", depthAxis = " << axisToString(depthAxis) 
 	    << ", horizonAxis = " << axisToString(horizonAxis) 
 	    << ", handedness = " << handednessToString(handedness) 
@@ -562,9 +571,8 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	    << ", P = " << P
 	    << ", R = " << R
 	    << ", YPR = " << YPR
-	    << ", YPR * zDir4 = " << (YPR * zDir4);
-	log(Ionflux::ObjectBase::IFLogMessage(status.str(), 
-	Ionflux::ObjectBase::VL_DEBUG_OPT, this, "getRotationMatrix"));
+	    << ", YPR * zDir4 = " << (YPR * zDir4)
+	    << std::endl;
 	// ----- DEBUG ----> */
 	return YPR;
 }

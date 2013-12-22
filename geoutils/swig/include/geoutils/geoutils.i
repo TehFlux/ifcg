@@ -4236,6 +4236,7 @@ class Camera
         virtual void validate(const Ionflux::GeoUtils::CameraSetupFlags* 
         newSetupFlags = 0, double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual Ionflux::GeoUtils::Matrix4 getExtrinsicMatrix();
         virtual Ionflux::GeoUtils::Matrix4 
         getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness = 
         Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID 

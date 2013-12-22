@@ -28,6 +28,7 @@
 import IFObjectBase as ib
 import CGeoUtils as cg
 from BGeoUtils import BGeoUtilsError
+import BGeoUtils.utils as bgu
 import bpy
 
 class Camera:
@@ -48,12 +49,18 @@ class Camera:
             self.cgCam = cg.Camera.create()
             self.mm.addLocalRef(cgCam)
         c = self.cgCam
-        m = bCam.matrix_world
-        right = cg.Vector3.create(*m[0][0:3])
-        up = cg.Vector3.create(*m[1][0:3])
-        direction = cg.Vector3.create(*m[2][0:3])
+        m0 = bCam.matrix_world
+        m1 = cg.Matrix4()
+        bgu.getCGMatrix(m0, m1)
+        right = m1.getC0().getV3().copy()
+        #cg.Vector3.create(*m[0][0:3])
+        up = m1.getC1().getV3().copy()
+        #cg.Vector3.create(*m[1][0:3])
+        direction = m1.getC2().getV3().copy()
         direction.flipIP()
-        location = cg.Vector3.create(*m[3][0:3])
+        #cg.Vector3.create(*m[2][0:3])
+        location = m1.getC3().getV3().copy()
+        #cg.Vector3.create(*m[3][0:3])
         lens = bCam.data.lens
         cs0 = cg.CameraSetupFlags()
         cs0.useDirection = True

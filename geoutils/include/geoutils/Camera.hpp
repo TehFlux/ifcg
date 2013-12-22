@@ -255,6 +255,15 @@ class Camera
 		virtual void validate(const Ionflux::GeoUtils::CameraSetupFlags* 
 		newSetupFlags = 0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
+		/** Get extrinsic matrix.
+		 *
+		 * Get the extrinsic matrix for the camera. This matrix contains the 
+		 * local frame basis vectors and the camera position.
+		 *
+		 * \return Extrinsic camera matrix.
+		 */
+		virtual Ionflux::GeoUtils::Matrix4 getExtrinsicMatrix();
+		
 		/** Get rotation matrix.
 		 *
 		 * Calculate the rotation matrix for the camera.
