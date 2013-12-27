@@ -247,7 +247,7 @@ cam0.setLens(lens)
 cam0.validate(cs0)
 checkCamera(cam0, bCamMatrix, bCamLens)
 #V = cam0.getViewMatrix(cg.Camera.MODE_PERSPECTIVE, False)
-V = cam0.getModelViewMatrix()
+V = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, True)
 I = cg.Matrix4.scale(imageScale, imageScale, imageScale)
 
 print("  Transforming mesh...")
