@@ -93,7 +93,10 @@ class Camera:
         c0.lens = c.getLens()
     
     def getBMatrixWorld(self):
-        """Get Blender camera world matrix."""
+        """Get Blender camera world matrix.
+        
+        Returns a matrix that can be assigned to the matrix_world property 
+        of a Blender camera object."""
         if (self.cgCam is None):
             raise BGeoUtilsError("CGeoUtils camera not set.")
         c = self.cgCam

@@ -15,14 +15,12 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ BGeoUtils
+  > Create a Blender version of cgeoutilstest31.
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
-
-+ cgeoutilstest31: getRotationMatrix() does not yield the local Camera 
-  vectors.
 
 + MatrixMN
   > svd (use GSL)
