@@ -4237,6 +4237,12 @@ class Camera
         newSetupFlags = 0, double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual Ionflux::GeoUtils::Matrix4 getExtrinsicMatrix();
+        virtual Ionflux::GeoUtils::Vector3 
+        getEulerAngles(Ionflux::GeoUtils::HandednessID handedness = 
+        Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID 
+        upAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
+        depthAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
+        horizonAxis = Ionflux::GeoUtils::AXIS_X);
         virtual Ionflux::GeoUtils::Matrix4 
         getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness = 
         Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID 

@@ -28,6 +28,7 @@ bgu.getCGMatrix(bCam0.matrix_world, bCamMatrix0)
 #cam0.matrix_world = bgu.getBlenderMatrix(
 #    bCamMatrix0.transpose())
 
+print("Blender camera world matrix:")
 print(bCamMatrix0.getValueStringF(10))
 
 m0 = cg.Matrix3.create()
@@ -72,4 +73,72 @@ print(m1.getValueStringF(10))
 t1 = cg.Vector3.ZERO
 
 bgu.visualizeTransform(m1, t1, "CGCameraET")
+
+ypr0 = cgCam0.getEulerAngles()
+print("CG camera YPR angles: (%s)" % ypr0.getValueString())
+
+upAxis = cg.AXIS_Z
+depthAxis = cg.AXIS_Y
+horizonAxis = cg.AXIS_X
+
+yawM0 = cg.Matrix3.create()
+yawM0.setElements(cg.Matrix3.rotate(ypr0[0], upAxis))
+print("CG camera yaw matrix:")
+print(yawM0.getValueStringF(10))
+
+pitchM0 = cg.Matrix3.create()
+pitchM0.setElements(cg.Matrix3.rotate(ypr0[1], horizonAxis))
+print("CG camera pitch matrix:")
+print(pitchM0.getValueStringF(10))
+
+rollM0 = cg.Matrix3.create()
+rollM0.setElements(cg.Matrix3.rotate(ypr0[2], depthAxis))
+print("CG camera roll matrix:")
+print(rollM0.getValueStringF(10))
+
+ypM0 = cg.Matrix3.create()
+ypM0.setElements(yawM0 * pitchM0)
+print("CG camera yaw/pitch matrix:")
+print(ypM0.getValueStringF(10))
+
+yprM0 = cg.Matrix3.create()
+yprM0.setElements(ypM0 * rollM0)
+print("CG camera yaw/pitch/roll matrix:")
+print(ypM0.getValueStringF(10))
+
+mm.addLocalRef(yawM0)
+mm.addLocalRef(pitchM0)
+mm.addLocalRef(rollM0)
+mm.addLocalRef(ypM0)
+mm.addLocalRef(yprM0)
+
+m1.setElements(yprM0)
+t1.setElements(-2., 0., 0.)
+
+bgu.visualizeTransform(m1, t1, "CGCameraYPR")
+
+rot0 = cgCam0.getRotationMatrix()
+
+print("CG camera rotation matrix:")
+print(rot0.getValueStringF(10))
+
+m1.setElements(ypM0)
+t1.setElements(2., 0., 0.)
+
+bgu.visualizeTransform(m1, t1, "CGCameraRot")
+
+print("Blender camera world matrix:")
+print(bCamMatrix0.getValueStringF(10))
+
+print("CG camera world matrix (Blender):")
+m2 = cg.Matrix4.create()
+mm.addLocalRef(m2)
+bgu.getCGMatrix(bgCam0.getBMatrixWorld(), m2)
+m2.transposeIP()
+print(m2.getValueStringF(10))
+
+if (bCamMatrix0.eq(m2)):
+    print("(***) Matrices are equal.")
+else:
+    print("(!!!) Matrices are NOT equal!")
 

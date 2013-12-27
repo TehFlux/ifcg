@@ -134,6 +134,7 @@ t1 = cg.Matrix4(
     -0.143565, 0.350933, 0.925330, 0.000000, 
     0.000000, 0.000000, 0.000000, 1.000000)
 tCube = t1
+#tCube = None
 
 # Camera matrix from cube02.blend/cube03.blend
 bCamMatrix0 = cg.Matrix4(
@@ -225,7 +226,7 @@ c0 = cg.Mesh.cube()
 g0.addItem(c0)
 c0.scale(cg.Vector3(cubeScale, cubeScale, cubeScale))
 if (not tCube is None):
-    print("WARNING: Transforming cube mesh!")
+    print("Transforming cube mesh...")
     c0.transform(tCube)
 c0.applyTransform()
 
@@ -283,6 +284,7 @@ ip0.setStyleSource(styleSource)
 ip0.setWidth(imageWidth)
 ip0.setHeight(imageHeight)
 ip0.setOrigin(cg.Vector2(imageWidth / 2, imageHeight / 2))
+print("Writing image to file '%s'..." % outFile0)
 ps1.writeSVG(ip0, "polygon", cg.AXIS_Y)
 
 print("All done!")

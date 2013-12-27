@@ -157,7 +157,7 @@ class Matrix4
 		 * Set elements from a 3x3 matrix. The remaining elements will be left
 		 * alone.
 		 *
-		 * \param newElements Element vector.
+		 * \param newElements Matrix (3x3).
 		 */
 		virtual void setElements(const Ionflux::GeoUtils::Matrix3& newElements);
 		

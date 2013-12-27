@@ -264,6 +264,25 @@ class Camera
 		 */
 		virtual Ionflux::GeoUtils::Matrix4 getExtrinsicMatrix();
 		
+		/** Get euler angles.
+		 *
+		 * Get the euler angles for the camera rotation (yaw, pitch and roll).
+		 * The angles will be returned as the elements of a 3-element vector.
+		 *
+		 * \param handedness Handedness of the coordinate system.
+		 * \param upAxis Up axis.
+		 * \param depthAxis Depth axis.
+		 * \param horizonAxis Horizon axis.
+		 *
+		 * \return Euler angles.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 
+		getEulerAngles(Ionflux::GeoUtils::HandednessID handedness = 
+		Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID upAxis = 
+		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID depthAxis = 
+		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID horizonAxis = 
+		Ionflux::GeoUtils::AXIS_X);
+		
 		/** Get rotation matrix.
 		 *
 		 * Calculate the rotation matrix for the camera.
@@ -310,7 +329,7 @@ class Camera
 		/** Get model view matrix.
 		 *
 		 * Get the model view matrix which can be applied to object 
-		 * coordinates to         create the camera view. mode can be either 
+		 * coordinates to create the camera view. mode can be either 
 		 * MODE_PERSPECTIVE (the default) for perspective projection, or 
 		 * MODE_ORTHO for orthogonal projection. If adjustLocation is set to 
 		 * True, the location of the camera will be offset by the direction 

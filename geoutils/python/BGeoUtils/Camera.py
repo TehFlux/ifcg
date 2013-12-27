@@ -44,7 +44,7 @@ class Camera:
             self.mm.addLocalRef(cgCam)
     
     def setFromBCamera(self, bCam):
-        """Initialize from Blender mesh."""
+        """Initialize from Blender camera."""
         if (self.cgCam is None):
             self.cgCam = cg.Camera.create()
             self.mm.addLocalRef(cgCam)
@@ -90,8 +90,23 @@ class Camera:
         if (len(camName) == 0):
             camName = "unnamedCamera"
         c0 = bpy.data.cameras.new(camName)
-        # TODO: Implementation.
-        return c0
+        c0.lens = c.getLens()
+    
+    def getBMatrixWorld(self):
+        """Get Blender camera world matrix."""
+        if (self.cgCam is None):
+            raise BGeoUtilsError("CGeoUtils camera not set.")
+        c = self.cgCam
+        m0 = c.getExtrinsicMatrix()
+        loc0 = m0.getC3()
+        m1 = cg.Matrix4(cg.Matrix4.UNIT)
+        m1.setElement(1, 1, -1.)
+        m1.setElement(2, 2, -1.)
+        m3 = cg.Matrix4(cg.Matrix4.UNIT)
+        m0.multiply(m1, m3)
+        m3.setC3(loc0)
+        m3.transposeIP()
+        return bgu.getBlenderMatrix(m3)
     
     def __str__(self):
         if (not self.cgCam is None):

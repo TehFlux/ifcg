@@ -131,16 +131,14 @@ Matrix4::~Matrix4()
 
 void Matrix4::setElements(const Ionflux::GeoUtils::Matrix3& newElements)
 {
-	Ionflux::ObjectBase::DoubleVector e0;
-	newElements.getElements(e0);
-	Vector::setElements(e0);
+	Matrix::setElements(newElements);
 }
 
 void Matrix4::setM3x3(const Ionflux::GeoUtils::Matrix3& newElements, double
 newX33, double newX03, double newX13, double newX23, double newX30, double 
 newX31, double newX32)
 {
-	setElements(newElements);
+	Matrix::setElements(newElements);
 	elements[3] = newX03;
 	elements[7] = newX13;
 	elements[11] = newX23;

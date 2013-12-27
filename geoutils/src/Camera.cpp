@@ -222,7 +222,7 @@ newSetupFlags, double t)
 	if (newSetupFlags != 0)
 	    setSetupFlags(*newSetupFlags);
 	CameraSetupFlags sf = setupFlags;
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	std::ostringstream status;
 	// ----- DEBUG ----> */
 	if (sf.useLens)
@@ -237,15 +237,17 @@ newSetupFlags, double t)
 	    {
 	        if (sf.useDirection)
 	        {
+	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "Direction vector and angle are both enabled but "
 	                "not consistent, recalculating direction vector.";
 	            log(Ionflux::ObjectBase::IFLogMessage(status.str(), 
 	                Ionflux::ObjectBase::VL_WARNING, this, "validate"));
+	            // ----- DEBUG ----> */
 	        }
 	        *direction = direction->normalize() * 0.5 * right->norm() 
 	            / ::tan(0.5 * angle);
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        std::cerr << "[Camera::validate] DEBUG: "
 	             "Adjusted direction vector: (" 
 	            << direction->getValueString() << ")" << std::endl;
@@ -275,7 +277,7 @@ newSetupFlags, double t)
 	if (!sf.useLookAt)
 	{
 	    *lookAt = *direction;
-	    // <---- DEBUG ----- //
+	    /* <---- DEBUG ----- //
 	    std::cerr << "[Camera::validate] DEBUG: "
 	         "Adjusted lookAt vector: (" 
 	        << lookAt->getValueString() << ")" << std::endl;
@@ -293,14 +295,16 @@ newSetupFlags, double t)
 	    {
 	        if (sf.useDirection)
 	        {
+	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "LookAt and direction vectors are both enabled but "
 	                "not consistent, recalculating direction vector.";
 	            log(Ionflux::ObjectBase::IFLogMessage(status.str(), 
 	                Ionflux::ObjectBase::VL_WARNING, this, "validate"));
+	            // ----- DEBUG ----> */
 	        }
 	        *direction = lookAtDirection.normalize() * direction->norm();
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        std::cerr << "[Camera::validate] DEBUG: "
 	             "Adjusted direction vector: (" 
 	            << direction->getValueString() << ")" << std::endl;
@@ -326,7 +330,7 @@ newSetupFlags, double t)
 	        // Orthogonalize right and up vectors.
 	        if (sf.useRight)
 	        {
-	            // <---- DEBUG ----- //
+	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "Up and right vectors are not orthogonal, "
 	                "recalculating up vector";
@@ -334,7 +338,7 @@ newSetupFlags, double t)
 	Ionflux::ObjectBase::VL_DEBUG, this, "validate"));
 	            // ----- DEBUG ----> */
 	            *up = right->ortho(*up);
-	            // <---- DEBUG ----- //
+	            /* <---- DEBUG ----- //
 	            std::cerr << "[Camera::validate] DEBUG: "
 	                 "Adjusted up vector: (" 
 	                << up->getValueString() << ")" << std::endl;
@@ -348,7 +352,7 @@ newSetupFlags, double t)
 	        } else
 	        {
 	            // Right not enabled.
-	            // <---- DEBUG ----- //
+	            /* <---- DEBUG ----- //
 	            status.str("");
 	            status << "Up and right vectors are not orthogonal, "
 	                "recalculating right vector";
@@ -356,7 +360,7 @@ newSetupFlags, double t)
 	Ionflux::ObjectBase::VL_DEBUG, this, "validate"));
 	            // ----- DEBUG ----> */
 	            *right = up->ortho(*right);
-	            // <---- DEBUG ----- //
+	            /* <---- DEBUG ----- //
 	            std::cerr << "[Camera::validate] DEBUG: "
 	                 "Adjusted right vector: (" 
 	                << right->getValueString() << ")" << std::endl;
@@ -374,7 +378,7 @@ newSetupFlags, double t)
 	        // Recalculate direction based on right and up vectors.
 	        double directionLength = direction->norm();
 	        *direction = right->cross(*up).normalize() * directionLength;
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        std::cerr << "[Camera::validate] DEBUG: "
 	             "Adjusted direction vector: (" 
 	            << direction->getValueString() << ")" << std::endl;
@@ -393,7 +397,7 @@ newSetupFlags, double t)
 	            // Orthogonalize direction and right vectors.
 	            if (sf.useRight)
 	            {
-	                // <---- DEBUG ----- //
+	                /* <---- DEBUG ----- //
 	                status.str("");
 	                status << "Direction and right vectors are not "
 	                    "orthogonal, recalculating right vector";
@@ -403,7 +407,7 @@ newSetupFlags, double t)
 	                // ----- DEBUG ----> */
 	            }
 	            *right = direction->ortho(*right);
-	            // <---- DEBUG ----- //
+	            /* <---- DEBUG ----- //
 	            std::cerr << "[Camera::validate] DEBUG: "
 	                 "Adjusted right vector: (" 
 	                << direction->getValueString() << ")" << std::endl;
@@ -420,7 +424,7 @@ newSetupFlags, double t)
 	            // Orthogonalize direction and up vectors.
 	            if (sf.useUp)
 	            {
-	                // <---- DEBUG ----- //
+	                /* <---- DEBUG ----- //
 	                status.str("");
 	                status << "Direction and up vectors are not "
 	                    "orthogonal, recalculating right vector";
@@ -430,7 +434,7 @@ newSetupFlags, double t)
 	                // ----- DEBUG ----> */
 	            }
 	            *up = direction->ortho(*up);
-	            // <---- DEBUG ----- //
+	            /* <---- DEBUG ----- //
 	            std::cerr << "[Camera::validate] DEBUG: "
 	                 "Adjusted up vector: (" 
 	                << up->getValueString() << ")" << std::endl;
@@ -460,7 +464,7 @@ newSetupFlags, double t)
 	{
 	    // Orthogonalize sky vector.
 	    *sky = direction->ortho(*sky);
-	    // <---- DEBUG ----- //
+	    /* <---- DEBUG ----- //
 	    std::cerr << "[Camera::validate] DEBUG: "
 	         "Adjusted sky vector: (" 
 	        << sky->getValueString() << ")" << std::endl;
@@ -481,21 +485,20 @@ Ionflux::GeoUtils::Matrix4 Camera::getExtrinsicMatrix()
 	checkVectors();
 	Matrix4 result;
 	result.setCol(0, *right);
-	result.setCol(1, *up);
+	result.setCol(1, up->flip());
 	result.setCol(2, direction->normalize());
 	result.setCol(3, *location);
 	result.setElement(3, 3, 1.);
 	return result;
 }
 
-Ionflux::GeoUtils::Matrix4 
-Camera::getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness, 
+Ionflux::GeoUtils::Vector3 
+Camera::getEulerAngles(Ionflux::GeoUtils::HandednessID handedness, 
 Ionflux::GeoUtils::AxisID upAxis, Ionflux::GeoUtils::AxisID depthAxis, 
 Ionflux::GeoUtils::AxisID horizonAxis)
 {
+	Vector3 result;
 	checkVectors();
-	/* NOTE: There is probably a way easier way of doing this by creating a 
-	         matrix from the orthonormalized camera axes and inverting it. */
 	Vector3 unitUp = Vector3::axis(upAxis);
 	Vector3 unitDepth = Vector3::axis(depthAxis);
 	Vector3 unitHorizon = Vector3::axis(horizonAxis);
@@ -555,8 +558,24 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	    roll *= c[0];
 	else
 	    roll *= c[1];
-	Matrix3 R(Matrix3::rotate(roll, depthAxis));
-	Matrix4 YPR(YP * R);
+	result.setElements(yaw, pitch, roll);
+	return result;
+}
+
+Ionflux::GeoUtils::Matrix4 
+Camera::getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness, 
+Ionflux::GeoUtils::AxisID upAxis, Ionflux::GeoUtils::AxisID depthAxis, 
+Ionflux::GeoUtils::AxisID horizonAxis)
+{
+	checkVectors();
+	/* NOTE: There is probably a way easier way of doing this by creating a 
+	         matrix from the orthonormalized camera axes and inverting it. */
+	Vector3 angles0 = getEulerAngles(handedness, upAxis, 
+	    depthAxis, horizonAxis);
+	Matrix3 Y(Matrix3::rotate(angles0[0], upAxis));
+	Matrix3 P(Matrix3::rotate(angles0[1], horizonAxis));
+	Matrix3 R(Matrix3::rotate(angles0[2], depthAxis));
+	Matrix4 YPR(Y * (P * R));
 	/* <---- DEBUG ----- //
 	Vector4 zDir4(Vector3::E_Z * direction->norm());
 	std::cerr << "[Camera::getRotationMatrix] DEBUG: " 
