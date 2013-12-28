@@ -15,8 +15,12 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Split GeoUtils into a basic vector math library and the rest.
+
 + BGeoUtils
   > Create a Blender version of cgeoutilstest31.
+    . render CGeoUtils object in Blender
+    . render Blender object in CGeoUtils
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -24,19 +28,6 @@ Critical stuff
 
 + MatrixMN
   > svd (use GSL)
-
-+ Mesh
-  > Generator functions
-    . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
-
-+ Add Bezier curve based objects:
-  > There should be an option to convert Bezier objects into discrete 
-    representations (i.e. Polygon3, Mesh).
-
-+ add 'hasClassInfo = true' for parent classes that have class information.
-
-+ Segfaults:
-  > cg.Matrix3.create(r - cg.Matrix3.UNIT)
 
 + BGeoUtils
   > Visualize a Vertex3Set (as a collection of small spheres)
@@ -47,9 +38,13 @@ Critical stuff
   > test UV texture coordinate and vertex color transfer between Blender 
     mesh and GeoUtils mesh
 
++ add 'hasClassInfo = true' for parent classes that have class information.
+
++ Segfaults:
+  > cg.Matrix3.create(r - cg.Matrix3.UNIT)
+
 + Testing
   > Mesh::fiber()
-  > Camera
   > TransformableObject and derived classes
     . Face, Mesh, TransformableGroup, Object3, Vertex3, 
       Vertex3Set, Polygon3, Polygon3Set, Shape3, SVG, Image
@@ -62,7 +57,15 @@ Critical stuff
   > XML I/O (polymorphic)
     . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
 
++ Mesh
+  > Generator functions
+    . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
+
++ BoundingBox lookups use too much RAM.
+
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
+
++ Use getValueString() instead of getString()
 
 + VectorSet, VectorSetSet assignment should create a deep copy.
 
@@ -85,10 +88,6 @@ Critical stuff
 + extractXMLVertices() adds a vertex to close the path by default, which 
   breaks getBarycenter() for low vertex counts.
 
-+ Use getValueString() instead of getString()
-
-+ BoundingBox lookups use too much RAM.
-
 + Line3
   > intersectPlane(), intersectionInPoly()
     The line may lie within the plane. How is this handled?
@@ -106,12 +105,7 @@ Critical stuff
   > The binormal vector may not be orthogonal to tangent vector, although 
     the docs for getTangentBase() claim this.
     . test the fix
-
-+ Transform nodes
-  > Scale
-    . Add a centering mode that scales only the distance to the origin 
-      of individual objects in the group (i.e. objects are actually translated 
-      along the location vector. none of the current modes achieves this).
+  > calculate the intersection line of two planes
 
 + Implement proper SVG path parsing in extractSVGVertices.
   > Handle cubic splines in a sensible way (discretize them).
@@ -122,12 +116,7 @@ Critical stuff
     and maybe sets).
   > Extend getContainingLeaf() so that it returns a set of all leaves that 
     contain the target object.
-
-+ Upgrade the class templates.
-  > Merge local changes back to the other projects (if applicable).
-    . handling of null proxy object in clear...()
-  > Merge changes from Dievas (persistence).
-
+                             
 + Make sure all pointers to managed objects are initialized to 0 before 
   set...() is called in a constructor.
 
@@ -151,6 +140,12 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ Transform nodes
+  > Scale
+    . Add a centering mode that scales only the distance to the origin 
+      of individual objects in the group (i.e. objects are actually translated 
+      along the location vector. none of the current modes achieves this).
 
 + TransformableObject
   > onTransformChanged(), onVIChanged() is apparently not used by any 
