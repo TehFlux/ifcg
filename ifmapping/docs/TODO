@@ -1,6 +1,6 @@
 ================================================================================
 IFMapping - Ionflux Mapping Library
-Copyright © 2010 Jörn P. Meier
+Copyright © 2010-2013 Jörn P. Meier
 mail@ionflux.org
 --------------------------------------------------------------------------------
 TODO
@@ -17,6 +17,10 @@ New
 
 + ArcLength is rather slow.
   > Sample adaptively and cache intermediate results.
+    . PointSample: Stores parameter value, point coordinates, arc length
+    . Segment: Set of two PointSamples; allows querying of endpoint 
+      coordinates and arc length; may be split into child segments (which 
+      are referenced by the segment); interpolation of segment data
 
 --------------------------------------------------------------------------------
 Critical stuff
