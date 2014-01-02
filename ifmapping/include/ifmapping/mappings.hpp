@@ -56,6 +56,7 @@
 #include "ifmapping/PointMapping.hpp"
 #include "ifmapping/EvalCoord.hpp"
 #include "ifmapping/PointCoord.hpp"
+#include "ifmapping/PointSample.hpp"
 #include "ifmapping/BezierCurve.hpp"
 #include "ifmapping/BezierSpline.hpp"
 #include "ifmapping/ArcLength.hpp"

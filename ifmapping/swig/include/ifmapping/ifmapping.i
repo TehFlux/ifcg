@@ -545,6 +545,8 @@ namespace Ionflux
 namespace Mapping
 {
 
+class PointSample;
+
 class PointMappingClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -589,12 +591,79 @@ class PointMapping
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+        virtual Ionflux::Mapping::PointSample* 
+        getSample(Ionflux::Mapping::MappingValue value, bool 
+        calculateArcLength = false, Ionflux::Mapping::MappingValue 
+        relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
         virtual Ionflux::Mapping::Point 
         operator()(Ionflux::Mapping::MappingValue value);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value) = 0;
 		static Ionflux::Mapping::PointMapping* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+};
+
+}
+
+}
+
+
+%{
+#include "ifmapping/PointSample.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class PointSampleClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        PointSampleClassInfo();
+        virtual ~PointSampleClassInfo();
+};
+
+class PointSample
+: virtual public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        PointSample();
+		PointSample(const Ionflux::Mapping::PointSample& other);
+        PointSample(Ionflux::Mapping::MappingValue initParam, 
+        Ionflux::Mapping::Point* initCoords = 0, 
+        Ionflux::Mapping::MappingValue initArcLength = 0.);
+        virtual ~PointSample();
+        virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
+		virtual Ionflux::Mapping::PointSample* copy() const;
+		static Ionflux::Mapping::PointSample* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::PointSample* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::PointSample* 
+		create(Ionflux::Mapping::MappingValue initParam, Ionflux::Mapping::Point*
+		initCoords = 0, Ionflux::Mapping::MappingValue initArcLength = 0., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setParam(Ionflux::Mapping::MappingValue newParam);
+        virtual Ionflux::Mapping::MappingValue getParam() const;
+        virtual void setCoords(Ionflux::Mapping::Point* newCoords);
+        virtual Ionflux::Mapping::Point* getCoords() const;
+        virtual void setArcLength(Ionflux::Mapping::MappingValue 
+        newArcLength);
+        virtual Ionflux::Mapping::MappingValue getArcLength() const;
 };
 
 }
@@ -2746,6 +2815,55 @@ class BezierSplineXMLFactory
 		static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
+#include "ifmapping/xmlio/PointSampleXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class PointSampleXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        PointSampleXMLFactoryClassInfo();
+        virtual ~PointSampleXMLFactoryClassInfo();
+};
+
+class PointSampleXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        PointSampleXMLFactory();
+		PointSampleXMLFactory(const Ionflux::Mapping::XMLUtils::PointSampleXMLFactory& other);
+        virtual ~PointSampleXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::PointSample& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::Mapping::PointSample* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::PointSampleXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::PointSampleXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::PointSampleXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
 

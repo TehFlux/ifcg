@@ -169,6 +169,7 @@ $Mapping
 $MappingSet
 $ChainableMapping
 $PointMapping
+$PointSample
 $EvalCoord
 $PointMappingSet
 $Constant
@@ -211,6 +212,7 @@ $PointXMLFactory
 $PointSetXMLFactory
 $BezierCurveXMLFactory
 $BezierSplineXMLFactory
+$PointSampleXMLFactory
 
 %template(MappingVector) std::vector<Ionflux::Mapping::Mapping*>;
 %template(PieceVector) std::vector<Ionflux::Mapping::Piece*>;

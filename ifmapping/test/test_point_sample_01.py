@@ -2,7 +2,7 @@ import IFObjectBase as ib
 import IFMapping as im
 import math as m
 
-testName = "Arc length (01)"
+testName = "Point sample (01)"
 enableMemDebug = True
 
 print("IFMapping test: %s" % testName)
@@ -11,6 +11,7 @@ print("IFMapping test: %s" % testName)
 mm = ib.IFObject()
 if (enableMemDebug):
     mmh = ib.IFMMEventHandler.getInstance()
+    mmh.clearLogFile()
     mmh.setLogFileName('temp/memdebug.log')
 
 relativeError0 = 1e-5
@@ -27,14 +28,10 @@ spline0.loadFromXMLFile(inFile0)
 
 print("  spline: [%s]" % spline0.getValueString())
 
-m0 = im.ArcLength.create(spline0, 0., 1., t0, relativeError0)
-mm.addLocalRef(m0)
+p0 = spline0.getSample(t1, True)
+mm.addLocalRef(p0)
 
-s0 = m0(t1)
-p0 = spline0.evalArcLength(s0)
-
-print("  arc length (t = %d): %f" % (t1, s0))
-print("  spline point (s = %f): (%s)" % (s0, p0.getValueString()))
+print("  point sample: (%s)" % p0.getValueString())
 
 if (enableMemDebug):
     mm.removeAllLocalRefs()

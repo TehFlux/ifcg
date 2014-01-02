@@ -43,6 +43,7 @@ ifmappingLibHeaders = ['include/ifmapping/constants.hpp',
 	'include/ifmapping/Point.hpp', 
 	'include/ifmapping/PointCoord.hpp', 
 	'include/ifmapping/PointMapping.hpp', 
+	'include/ifmapping/PointSample.hpp', 
 	'include/ifmapping/EvalCoord.hpp', 
 	'include/ifmapping/PointMappingSet.hpp', 
 	'include/ifmapping/PointSet.hpp', 
@@ -92,6 +93,7 @@ ifmappingLibSources = ['build/utils.cpp',
 	'build/Point.cpp', 
 	'build/PointCoord.cpp', 
 	'build/PointMapping.cpp', 
+	'build/PointSample.cpp', 
 	'build/EvalCoord.cpp', 
 	'build/PointMappingSet.cpp', 
 	'build/PointSet.cpp', 
@@ -140,6 +142,7 @@ ifmappingLibClasses = [
 	'Point', 
 	'PointCoord', 
 	'PointMapping', 
+	'PointSample', 
 	'EvalCoord', 
 	'PointMappingSet', 
 	'PointSet', 
@@ -165,6 +168,7 @@ ifmappingLibXMLClasses = [
     'Point', 
     'PointSet', 
     'BezierCurve', 
-    'BezierSpline'
+    'BezierSpline', 
+    'PointSample'
 ]
 

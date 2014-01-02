@@ -30,6 +30,7 @@
 #include <sstream>
 #include "ifmapping/utils.hpp"
 #include "ifmapping/MappingError.hpp"
+#include "ifobject/IFMMEvent.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -60,6 +61,10 @@ RootFinder::RootFinder()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
+    refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -68,11 +73,18 @@ RootFinder::RootFinder(const Ionflux::Mapping::RootFinder& other)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
+	refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	*this = other;
 }
 
 RootFinder::~RootFinder()
 {
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 

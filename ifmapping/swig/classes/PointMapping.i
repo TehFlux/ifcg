@@ -34,6 +34,8 @@ namespace Ionflux
 namespace Mapping
 {
 
+class PointSample;
+
 class PointMappingClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -78,6 +80,13 @@ class PointMapping
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+        virtual Ionflux::Mapping::PointSample* 
+        getSample(Ionflux::Mapping::MappingValue value, bool 
+        calculateArcLength = false, Ionflux::Mapping::MappingValue 
+        relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
         virtual Ionflux::Mapping::Point 
         operator()(Ionflux::Mapping::MappingValue value);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue

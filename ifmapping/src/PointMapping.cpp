@@ -29,9 +29,11 @@
 #include <sstream>
 #include "ifmapping/utils.hpp"
 #include "ifmapping/PointCoord.hpp"
+#include "ifmapping/PointSample.hpp"
 #include "ifmapping/ArcLength.hpp"
 #include "ifmapping/BrentLinearRootFinder.hpp"
 #include "ifmapping/MappingError.hpp"
+#include "ifobject/IFMMEvent.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -66,11 +68,18 @@ PointMapping::PointMapping()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
+    refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
 PointMapping::~PointMapping()
 {
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -79,12 +88,14 @@ PointMapping::getParamCoord(Ionflux::Mapping::MappingValue value,
 Ionflux::Mapping::CoordinateID coord, Ionflux::Mapping::MappingValue 
 precision)
 {
-	Ionflux::Mapping::PointCoord* fc = 
-	    Ionflux::Mapping::PointCoord::create(this, coord, -value);
-	Ionflux::Mapping::BrentLinearRootFinder rf;
-	rf.setFunc(fc);
-	Ionflux::Mapping::MappingValue t = rf(0. - precision, 
-	    1. + precision, precision);
+	addRef();
+	PointCoord* fc = PointCoord::create(this, coord, -value);
+	BrentLinearRootFinder* rf = BrentLinearRootFinder::create();
+	addLocalRef(rf);
+	rf->setFunc(fc);
+	MappingValue t = (*rf)(0. - precision, 1. + precision, precision);
+	removeLocalRef(rf);
+	removeRef();
 	return t;
 }
 
@@ -106,13 +117,16 @@ Ionflux::Mapping::MappingValue precision)
 {
 	if (value == 0.)
 	    return 0.;
-	Ionflux::Mapping::ArcLength* fc = 
-	    Ionflux::Mapping::ArcLength::create(
+	addRef();
+	ArcLength* fc = ArcLength::create(
 	        this, -value, 1., 0., relativeError, maxNumIterations);
-	Ionflux::Mapping::BrentLinearRootFinder rf;
-	rf.setFunc(fc);
-	Ionflux::Mapping::MappingValue t = rf(0. - precision, 
+	BrentLinearRootFinder* rf = BrentLinearRootFinder::create();
+	addLocalRef(rf);
+	rf->setFunc(fc);
+	Ionflux::Mapping::MappingValue t = (*rf)(0. - precision, 
 	    1. + precision, precision);
+	removeLocalRef(rf);
+	removeRef();
 	return t;
 }
 
@@ -125,6 +139,28 @@ Ionflux::Mapping::MappingValue precision)
 	Ionflux::Mapping::MappingValue t = getParamArcLength(
 	    value, relativeError, maxNumIterations, precision);
 	return call(t);
+}
+
+Ionflux::Mapping::PointSample* 
+PointMapping::getSample(Ionflux::Mapping::MappingValue value, bool 
+calculateArcLength, Ionflux::Mapping::MappingValue relativeError, 
+Ionflux::Mapping::MappingValue maxNumIterations)
+{
+	MappingValue l0 = 0.;
+	if (calculateArcLength)
+	{
+	    addRef();
+	    ArcLength* fc = ArcLength::create(this, 0., 1., 0., 
+	        relativeError, maxNumIterations);
+	    addLocalRef(fc);
+	    l0 = (*fc)(value);
+	    removeLocalRef(fc);
+	    removeRef();
+	}
+	Point* p0 = Point::create();
+	*p0 = call(value);
+	PointSample* s0 = PointSample::create(value, p0, l0);
+	return s0;
 }
 
 Ionflux::Mapping::Point 

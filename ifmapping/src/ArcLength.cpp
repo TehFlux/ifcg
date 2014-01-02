@@ -30,6 +30,7 @@
 #include <cmath>
 #include "ifmapping/MappingError.hpp"
 #include "ifmapping/utils.hpp"
+#include "ifobject/IFMMEvent.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -63,6 +64,10 @@ ArcLength::ArcLength()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
+    refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -71,6 +76,10 @@ ArcLength::ArcLength(const Ionflux::Mapping::ArcLength& other)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
+	refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	*this = other;
 }
 
@@ -84,11 +93,18 @@ relativeError(initRelativeError), maxNumIterations(initMaxNumIterations)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
+	refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	setFunc(initFunc);
 }
 
 ArcLength::~ArcLength()
 {
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 

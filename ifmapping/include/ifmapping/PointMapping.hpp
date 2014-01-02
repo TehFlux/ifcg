@@ -38,6 +38,8 @@ namespace Ionflux
 namespace Mapping
 {
 
+class PointSample;
+
 /// Class information for class PointMapping.
 class PointMappingClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -157,6 +159,28 @@ class PointMapping
 		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
 		Ionflux::Mapping::MappingValue precision = 
 		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+		
+		/** Get sample.
+		 *
+		 * Get a sample of the point mapping at the specified parameter value.
+		 * If the optional \c calculateArcLength argument is set to \c true, 
+		 * the arc length will be calculated for the sample. Otherwise, the 
+		 * arc length will be set to zero. The caller is responsible for 
+		 * managing the returned object.
+		 *
+		 * \param value Value.
+		 * \param calculateArcLength calculate arc length.
+		 * \param relativeError Relative error.
+		 * \param maxNumIterations Maximum number of iterations.
+		 *
+		 * \return New point sample object.
+		 */
+		virtual Ionflux::Mapping::PointSample* 
+		getSample(Ionflux::Mapping::MappingValue value, bool calculateArcLength =
+		false, Ionflux::Mapping::MappingValue relativeError = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
+		Ionflux::Mapping::MappingValue maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
 		
 		/** Evaluate the mapping.
 		 *
