@@ -70,6 +70,9 @@ struct Sample
 typedef std::vector<Ionflux::Mapping::BezierCurve*> BezierCurveVector;
 typedef std::vector<Ionflux::Mapping::BezierSpline*> BezierSplineVector;
 typedef std::vector<Ionflux::Mapping::BezierSplineKey*> BezierSplineKeyVector;
+typedef std::vector<Ionflux::Mapping::Segment*> SegmentVector;
+
+typedef int SamplingMode;
 
 // constants.hpp
 
@@ -82,6 +85,12 @@ const Ionflux::Mapping::Range DEFAULT_CLAMP_RANGE = { 0., 1. };
 const unsigned int MAX_ITERATIONS = 10000;
 
 const Ionflux::Mapping::MappingValue DEFAULT_TOLERANCE = 1e-6;
+
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_PARAM = 0;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_ARC_LENGTH = 1;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_X = 2;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Y = 3;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Z = 4;
 
 // utils.hpp
 
@@ -105,6 +114,8 @@ bool gtOrEq(Ionflux::Mapping::MappingValue v0,
     Ionflux::Mapping::MappingValue t = Ionflux::Mapping::DEFAULT_TOLERANCE);
 
 std::string coordToString(Ionflux::Mapping::CoordinateID coord);
+std::string getSamplingModeString(Ionflux::Mapping::SamplingMode 
+    samplingMode);
 double clamp(double v, const Ionflux::Mapping::Range& r = 
     Ionflux::Mapping::DEFAULT_CLAMP_RANGE);
 double wrap(double v, const Ionflux::Mapping::Range& r = 
@@ -564,6 +575,7 @@ class PointMapping
 		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
         
         PointMapping();
+		PointMapping(const Ionflux::Mapping::PointMapping& other);
         virtual ~PointMapping();
         virtual Ionflux::Mapping::MappingValue 
         getParamCoord(Ionflux::Mapping::MappingValue value, 
@@ -578,16 +590,16 @@ class PointMapping
         virtual Ionflux::Mapping::MappingValue 
         getParamArcLength(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::MappingValue relativeError = 
-        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
         virtual Ionflux::Mapping::Point 
         evalArcLength(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::MappingValue relativeError = 
-        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
@@ -595,15 +607,25 @@ class PointMapping
         getSample(Ionflux::Mapping::MappingValue value, bool 
         calculateArcLength = false, Ionflux::Mapping::MappingValue 
         relativeError = 
-        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
         virtual Ionflux::Mapping::Point 
         operator()(Ionflux::Mapping::MappingValue value);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
-        value) = 0;
+        value);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
+		virtual Ionflux::Mapping::PointMapping* copy() const;
 		static Ionflux::Mapping::PointMapping* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::PointMapping* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
 
 }
@@ -640,6 +662,9 @@ class PointSample
         Ionflux::Mapping::Point* initCoords = 0, 
         Ionflux::Mapping::MappingValue initArcLength = 0.);
         virtual ~PointSample();
+        virtual Ionflux::Mapping::MappingValue 
+        getValue(Ionflux::Mapping::SamplingMode samplingMode = 
+        Ionflux::Mapping::SAMPLING_MODE_PARAM);
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
@@ -664,6 +689,134 @@ class PointSample
         virtual void setArcLength(Ionflux::Mapping::MappingValue 
         newArcLength);
         virtual Ionflux::Mapping::MappingValue getArcLength() const;
+};
+
+}
+
+}
+
+
+%{
+#include "ifmapping/Segment.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class PointSample;
+
+class SegmentClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        SegmentClassInfo();
+        virtual ~SegmentClassInfo();
+};
+
+class Segment
+: public Ionflux::Mapping::PointMapping
+{
+    public:
+		static const Ionflux::Mapping::MappingValue DEFAULT_ERROR_THRESHOLD;
+        
+        Segment();
+		Segment(const Ionflux::Mapping::Segment& other);
+        Segment(Ionflux::Mapping::PointMapping* initFunc, 
+        Ionflux::Mapping::MappingValue t0 = 0., 
+        Ionflux::Mapping::MappingValue t1 = 1.);
+        Segment(Ionflux::Mapping::PointMapping* initFunc, 
+        Ionflux::Mapping::PointSample* initP0, 
+        Ionflux::Mapping::PointSample* initP1 = 0);
+        virtual ~Segment();
+        virtual Ionflux::Mapping::MappingValue getLength(bool recursive = 
+        false, unsigned int maxDepth = 0, unsigned int depth = 0) const;
+        virtual Ionflux::Mapping::MappingValue getLengthError(bool 
+        relativeError = true, unsigned int maxDepth = 1, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE) const;
+        virtual void split(unsigned int numSplits = 2, bool recursive = 
+        false, bool relativeError = true, Ionflux::Mapping::MappingValue 
+        errorThreshold = 
+        Ionflux::Mapping::Segment::DEFAULT_ERROR_THRESHOLD, unsigned int 
+        maxDepth = 0, unsigned int depth = 0, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE);
+        virtual Ionflux::Mapping::Segment* 
+        findSegment(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::SamplingMode samplingMode = 
+        Ionflux::Mapping::SAMPLING_MODE_PARAM, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE);
+        virtual Ionflux::Mapping::PointSample* 
+        getSample0(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::SamplingMode samplingMode = 
+        Ionflux::Mapping::SAMPLING_MODE_PARAM, bool recursive = false, 
+        unsigned int maxDepth = 0, unsigned int depth = 0, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE);
+        virtual std::string getValueString() const;
+        virtual Ionflux::Mapping::MappingValue 
+        getParamCoord(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::CoordinateID coord = Ionflux::Mapping::C_X, 
+        Ionflux::Mapping::MappingValue precision = 
+        Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+        virtual Ionflux::Mapping::MappingValue 
+        getParamArcLength(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::MappingValue relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
+        Ionflux::Mapping::MappingValue precision = 
+        Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
+        virtual Ionflux::Mapping::PointSample* 
+        getSample(Ionflux::Mapping::MappingValue value, bool 
+        calculateArcLength = false, Ionflux::Mapping::MappingValue 
+        relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
+        virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
+        value);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
+		virtual Ionflux::Mapping::Segment* copy() const;
+		static Ionflux::Mapping::Segment* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::Mapping::Segment* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::Mapping::Segment* create(Ionflux::Mapping::PointMapping* 
+		initFunc, Ionflux::Mapping::MappingValue t0 = 0., 
+		Ionflux::Mapping::MappingValue t1 = 1., Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::Mapping::Segment* create(Ionflux::Mapping::PointMapping* 
+		initFunc, Ionflux::Mapping::PointSample* initP0, 
+		Ionflux::Mapping::PointSample* initP1 = 0, Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+        virtual void setFunc(Ionflux::Mapping::PointMapping* newFunc);
+        virtual Ionflux::Mapping::PointMapping* getFunc() const;
+        virtual void setP0(Ionflux::Mapping::PointSample* newP0);
+        virtual Ionflux::Mapping::PointSample* getP0() const;
+        virtual void setP1(Ionflux::Mapping::PointSample* newP1);
+        virtual Ionflux::Mapping::PointSample* getP1() const;        
+        virtual unsigned int getNumSegments() const;
+        virtual Ionflux::Mapping::Segment* getSegment(unsigned int 
+        elementIndex = 0) const;
+		virtual int findSegment(Ionflux::Mapping::Segment* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::Mapping::Segment*>& getSegments();
+        virtual void addSegment(Ionflux::Mapping::Segment* addElement);
+		virtual Ionflux::Mapping::Segment* addSegment();
+		virtual void addSegments(std::vector<Ionflux::Mapping::Segment*>& 
+		newSegments);
+		virtual void addSegments(Ionflux::Mapping::Segment* newSegments);        
+        virtual void removeSegment(Ionflux::Mapping::Segment* 
+        removeElement);
+		virtual void removeSegmentIndex(unsigned int removeIndex);
+		virtual void clearSegments();
 };
 
 }
@@ -2728,6 +2881,55 @@ class PointSetXMLFactory
 
 
 %{
+#include "ifmapping/xmlio/PointMappingXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class PointMappingXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        PointMappingXMLFactoryClassInfo();
+        virtual ~PointMappingXMLFactoryClassInfo();
+};
+
+class PointMappingXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        PointMappingXMLFactory();
+		PointMappingXMLFactory(const Ionflux::Mapping::XMLUtils::PointMappingXMLFactory& other);
+        virtual ~PointMappingXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::PointMapping& target, const std::string& 
+        elementName = "") const;
+        virtual Ionflux::Mapping::PointMapping* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
+%{
 #include "ifmapping/xmlio/BezierCurveXMLFactory.hpp"
 %}
 
@@ -2874,6 +3076,55 @@ class PointSampleXMLFactory
 }
 
 
+%{
+#include "ifmapping/xmlio/SegmentXMLFactory.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+namespace XMLUtils
+{
+
+class SegmentXMLFactoryClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        SegmentXMLFactoryClassInfo();
+        virtual ~SegmentXMLFactoryClassInfo();
+};
+
+class SegmentXMLFactory
+: public Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory
+{
+    public:
+        
+        SegmentXMLFactory();
+		SegmentXMLFactory(const Ionflux::Mapping::XMLUtils::SegmentXMLFactory& other);
+        virtual ~SegmentXMLFactory();
+        virtual std::string getObjectXMLElementName() const;
+        virtual std::string getObjectClassName() const;
+        virtual void initObject(const std::string& data, 
+        Ionflux::Mapping::Segment& target, const std::string& elementName =
+        "") const;
+        virtual Ionflux::Mapping::Segment* createObject() const;
+		virtual Ionflux::Mapping::XMLUtils::SegmentXMLFactory* copy() const;
+		static Ionflux::Mapping::XMLUtils::SegmentXMLFactory* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::XMLUtils::SegmentXMLFactory* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+};
+
+}
+
+}
+
+}
+
+
 %template(MappingVector) std::vector<Ionflux::Mapping::Mapping*>;
 %template(PieceVector) std::vector<Ionflux::Mapping::Piece*>;
 %template(PointVector) std::vector<Ionflux::Mapping::Point*>;
@@ -2882,4 +3133,5 @@ class PointSampleXMLFactory
 %template(BezierSplineVector) std::vector<Ionflux::Mapping::BezierSpline*>;
 %template(BezierSplineKeyVector) std::vector<Ionflux::Mapping::BezierSplineKey*>;
 %template(PointMappingVector) std::vector<Ionflux::Mapping::PointMapping*>;
+%template(SegmentVector) std::vector<Ionflux::Mapping::Segment*>;
 

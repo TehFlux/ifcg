@@ -44,6 +44,7 @@ ifmappingLibHeaders = ['include/ifmapping/constants.hpp',
 	'include/ifmapping/PointCoord.hpp', 
 	'include/ifmapping/PointMapping.hpp', 
 	'include/ifmapping/PointSample.hpp', 
+	'include/ifmapping/Segment.hpp', 
 	'include/ifmapping/EvalCoord.hpp', 
 	'include/ifmapping/PointMappingSet.hpp', 
 	'include/ifmapping/PointSet.hpp', 
@@ -60,7 +61,8 @@ ifmappingLibHeaders = ['include/ifmapping/constants.hpp',
 	'include/ifmapping/ArcLength.hpp'
 ]
 
-ifmappingLibSources = ['build/utils.cpp',
+ifmappingLibSources = [
+    'build/utils.cpp',
 	'build/xmlutils.cpp',
 	'build/Accept.cpp', 
 	'build/AnimatedSpline.cpp', 
@@ -94,6 +96,7 @@ ifmappingLibSources = ['build/utils.cpp',
 	'build/PointCoord.cpp', 
 	'build/PointMapping.cpp', 
 	'build/PointSample.cpp', 
+	'build/Segment.cpp', 
 	'build/EvalCoord.cpp', 
 	'build/PointMappingSet.cpp', 
 	'build/PointSet.cpp', 
@@ -143,6 +146,7 @@ ifmappingLibClasses = [
 	'PointCoord', 
 	'PointMapping', 
 	'PointSample', 
+	'Segment', 
 	'EvalCoord', 
 	'PointMappingSet', 
 	'PointSet', 
@@ -167,8 +171,10 @@ ifmappingNoiseLibClasses = [
 ifmappingLibXMLClasses = [
     'Point', 
     'PointSet', 
+    'PointMapping', 
     'BezierCurve', 
     'BezierSpline', 
-    'PointSample'
+    'PointSample', 
+    'Segment'
 ]
 

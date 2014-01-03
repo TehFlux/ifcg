@@ -117,6 +117,17 @@ class BezierSpline;
  */
 std::string coordToString(Ionflux::Mapping::CoordinateID coord);
 
+/** Get sampling mode string representation.
+ * 
+ * Get a string representation for a sampling mode.
+ * 
+ * \param samplingMode sampling mode.
+ *
+ * \return String representation.
+ */
+std::string getSamplingModeString(Ionflux::Mapping::SamplingMode 
+    samplingMode);
+
 /** Clamp value.
  * 
  * Clamp a value to a range.

@@ -29,9 +29,11 @@
 
 #include "ifmapping/xmlio/PointXMLFactory.hpp"
 #include "ifmapping/xmlio/PointSetXMLFactory.hpp"
+#include "ifmapping/xmlio/PointMappingXMLFactory.hpp"
 #include "ifmapping/xmlio/BezierCurveXMLFactory.hpp"
 #include "ifmapping/xmlio/BezierSplineXMLFactory.hpp"
 #include "ifmapping/xmlio/PointSampleXMLFactory.hpp"
+#include "ifmapping/xmlio/SegmentXMLFactory.hpp"
 
 /** \file xml_factories.hpp
  * \brief XML object factories.

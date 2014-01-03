@@ -115,6 +115,18 @@ class PointSample
 		 */
 		virtual ~PointSample();
 		
+		/** Get value.
+		 *
+		 * Get a value of the sample according to the specified sampling mode.
+		 *
+		 * \param samplingMode sampling mode.
+		 *
+		 * \return Sample value.
+		 */
+		virtual Ionflux::Mapping::MappingValue 
+		getValue(Ionflux::Mapping::SamplingMode samplingMode = 
+		Ionflux::Mapping::SAMPLING_MODE_PARAM);
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.

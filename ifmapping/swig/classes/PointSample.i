@@ -53,6 +53,9 @@ class PointSample
         Ionflux::Mapping::Point* initCoords = 0, 
         Ionflux::Mapping::MappingValue initArcLength = 0.);
         virtual ~PointSample();
+        virtual Ionflux::Mapping::MappingValue 
+        getValue(Ionflux::Mapping::SamplingMode samplingMode = 
+        Ionflux::Mapping::SAMPLING_MODE_PARAM);
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;

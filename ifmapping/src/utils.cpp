@@ -91,6 +91,22 @@ std::string coordToString(Ionflux::Mapping::CoordinateID coord)
     return "<unknown>";
 }
 
+std::string getSamplingModeString(Ionflux::Mapping::SamplingMode 
+    samplingMode)
+{
+    if (samplingMode == SAMPLING_MODE_PARAM)
+        return "SAMPLING_MODE_PARAM";
+    if (samplingMode == SAMPLING_MODE_ARC_LENGTH)
+        return "SAMPLING_MODE_ARC_LENGTH";
+    if (samplingMode == SAMPLING_MODE_POINT_COORD_X)
+        return "SAMPLING_MODE_POINT_COORD_X";
+    if (samplingMode == SAMPLING_MODE_POINT_COORD_Y)
+        return "SAMPLING_MODE_POINT_COORD_Y";
+    if (samplingMode == SAMPLING_MODE_POINT_COORD_Z)
+        return "SAMPLING_MODE_POINT_COORD_Z";
+    return "<unknown>";
+}
+
 double clamp(double v, const Ionflux::Mapping::Range& r)
 {
     if (v < r.lower)

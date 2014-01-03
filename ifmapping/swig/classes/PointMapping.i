@@ -53,6 +53,7 @@ class PointMapping
 		static const unsigned int DEFAULT_MAX_NUM_ITERATIONS;
         
         PointMapping();
+		PointMapping(const Ionflux::Mapping::PointMapping& other);
         virtual ~PointMapping();
         virtual Ionflux::Mapping::MappingValue 
         getParamCoord(Ionflux::Mapping::MappingValue value, 
@@ -67,16 +68,16 @@ class PointMapping
         virtual Ionflux::Mapping::MappingValue 
         getParamArcLength(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::MappingValue relativeError = 
-        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
         virtual Ionflux::Mapping::Point 
         evalArcLength(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::MappingValue relativeError = 
-        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
         Ionflux::Mapping::MappingValue precision = 
         Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
@@ -84,15 +85,25 @@ class PointMapping
         getSample(Ionflux::Mapping::MappingValue value, bool 
         calculateArcLength = false, Ionflux::Mapping::MappingValue 
         relativeError = 
-        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-        Ionflux::Mapping::MappingValue maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
         virtual Ionflux::Mapping::Point 
         operator()(Ionflux::Mapping::MappingValue value);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
-        value) = 0;
+        value);
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
+		virtual Ionflux::Mapping::PointMapping* copy() const;
 		static Ionflux::Mapping::PointMapping* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::Mapping::PointMapping* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
 
 }

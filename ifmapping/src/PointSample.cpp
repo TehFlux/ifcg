@@ -109,6 +109,43 @@ PointSample::~PointSample()
 	// TODO: Nothing ATM. ;-)
 }
 
+Ionflux::Mapping::MappingValue 
+PointSample::getValue(Ionflux::Mapping::SamplingMode samplingMode)
+{
+	MappingValue result = 0.;
+	if (samplingMode == SAMPLING_MODE_PARAM)
+	    result = getParam();
+	else
+	if (samplingMode == SAMPLING_MODE_ARC_LENGTH)
+	    result = getArcLength();
+	else
+	if ((samplingMode == SAMPLING_MODE_POINT_COORD_X) 
+	    || (samplingMode == SAMPLING_MODE_POINT_COORD_Y) 
+	    || (samplingMode == SAMPLING_MODE_POINT_COORD_Z))
+	{
+	    Point* p0 = getCoords();
+	    if (p0 != 0)
+	    {
+	        if (samplingMode == SAMPLING_MODE_POINT_COORD_X)
+	            result = p0->getCoord(0);
+	        else 
+	        if (samplingMode == SAMPLING_MODE_POINT_COORD_Y)
+	            result = p0->getCoord(1);
+	        else 
+	        if (samplingMode == SAMPLING_MODE_POINT_COORD_Z)
+	            result = p0->getCoord(2);
+	    }
+	} else
+	{
+	    std::ostringstream status;
+	    status << "Unknown sampling mode (samplingMode = " 
+	        << samplingMode << ")";
+	    throw MappingError(getErrorString(status.str(), 
+	        "getValue"));
+	}
+	return result;
+}
+
 std::string PointSample::getValueString() const
 {
 	std::ostringstream status;

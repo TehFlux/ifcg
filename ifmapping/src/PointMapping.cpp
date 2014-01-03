@@ -34,6 +34,11 @@
 #include "ifmapping/BrentLinearRootFinder.hpp"
 #include "ifmapping/MappingError.hpp"
 #include "ifobject/IFMMEvent.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "ifmapping/xmlutils.hpp"
+#include "ifmapping/xmlio/PointMappingXMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -64,6 +69,8 @@ const unsigned int PointMapping::DEFAULT_MAX_NUM_ITERATIONS = 14;
 const PointMappingClassInfo PointMapping::pointMappingClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* PointMapping::CLASS_INFO = &PointMapping::pointMappingClassInfo;
 
+const std::string PointMapping::XML_ELEMENT_NAME = "pmap";
+
 PointMapping::PointMapping()
 {
 	// NOTE: The following line is required for run-time type information.
@@ -73,6 +80,17 @@ PointMapping::PointMapping()
         handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
             Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
+}
+
+PointMapping::PointMapping(const Ionflux::Mapping::PointMapping& other)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	refData->mmDebug = true;
+    if (refData->mmDebug)
+        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	*this = other;
 }
 
 PointMapping::~PointMapping()
@@ -111,9 +129,8 @@ precision)
 
 Ionflux::Mapping::MappingValue 
 PointMapping::getParamArcLength(Ionflux::Mapping::MappingValue value, 
-Ionflux::Mapping::MappingValue relativeError, 
-Ionflux::Mapping::MappingValue maxNumIterations, 
-Ionflux::Mapping::MappingValue precision)
+Ionflux::Mapping::MappingValue relativeError, unsigned int 
+maxNumIterations, Ionflux::Mapping::MappingValue precision)
 {
 	if (value == 0.)
 	    return 0.;
@@ -132,9 +149,8 @@ Ionflux::Mapping::MappingValue precision)
 
 Ionflux::Mapping::Point 
 PointMapping::evalArcLength(Ionflux::Mapping::MappingValue value, 
-Ionflux::Mapping::MappingValue relativeError, 
-Ionflux::Mapping::MappingValue maxNumIterations, 
-Ionflux::Mapping::MappingValue precision)
+Ionflux::Mapping::MappingValue relativeError, unsigned int 
+maxNumIterations, Ionflux::Mapping::MappingValue precision)
 {
 	Ionflux::Mapping::MappingValue t = getParamArcLength(
 	    value, relativeError, maxNumIterations, precision);
@@ -143,8 +159,8 @@ Ionflux::Mapping::MappingValue precision)
 
 Ionflux::Mapping::PointSample* 
 PointMapping::getSample(Ionflux::Mapping::MappingValue value, bool 
-calculateArcLength, Ionflux::Mapping::MappingValue relativeError, 
-Ionflux::Mapping::MappingValue maxNumIterations)
+calculateArcLength, Ionflux::Mapping::MappingValue relativeError, unsigned 
+int maxNumIterations)
 {
 	MappingValue l0 = 0.;
 	if (calculateArcLength)
@@ -170,10 +186,90 @@ PointMapping::operator()(Ionflux::Mapping::MappingValue value)
 	return call(value);;
 }
 
+Ionflux::Mapping::Point PointMapping::call(Ionflux::Mapping::MappingValue 
+value)
+{
+	// TODO: Implementation.
+	return Point();
+}
+
+Ionflux::Mapping::PointMapping& PointMapping::operator=(const 
+Ionflux::Mapping::PointMapping& other)
+{
+if (this == &other)
+    return *this;
+	return *this;
+}
+
+Ionflux::Mapping::PointMapping* PointMapping::copy() const
+{
+    PointMapping* newPointMapping = create();
+    *newPointMapping = *this;
+    return newPointMapping;
+}
+
 Ionflux::Mapping::PointMapping* 
 PointMapping::upcast(Ionflux::ObjectBase::IFObject* other)
 {
     return dynamic_cast<PointMapping*>(other);
+}
+
+Ionflux::Mapping::PointMapping* 
+PointMapping::create(Ionflux::ObjectBase::IFObject* parentObject)
+{
+    PointMapping* newObject = new PointMapping();
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+std::string PointMapping::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string PointMapping::getXMLAttributeData() const
+{
+	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+	std::ostringstream d0;
+	if (a0.size() > 0)
+	    d0 << a0;
+	return d0.str();
+}
+
+void PointMapping::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void PointMapping::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+PointMapping::getXMLObjectFactory()
+{
+	static Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::Mapping::XMLUtils::PointMappingXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

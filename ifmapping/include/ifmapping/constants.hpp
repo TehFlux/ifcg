@@ -52,6 +52,17 @@ const unsigned int MAX_ITERATIONS = 10000;
 /// Default tolerance.
 const Ionflux::Mapping::MappingValue DEFAULT_TOLERANCE = 1e-6;
 
+/// Sampling mode: parameter value.
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_PARAM = 0;
+/// Sampling mode: arc length.
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_ARC_LENGTH = 1;
+/// Sampling mode: point coordinate (X).
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_X = 2;
+/// Sampling mode: point coordinate (Y).
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Y = 3;
+/// Sampling mode: point coordinate (Z).
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Z = 4;
+
 }
 
 }

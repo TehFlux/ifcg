@@ -65,6 +65,7 @@ class BezierCurve;
 class BezierSpline;
 class BezierSplineKey;
 class PointMapping;
+class Segment;
 
 /// Vector of points.
 typedef std::vector<Ionflux::Mapping::Point*> PointVector;
@@ -94,6 +95,11 @@ typedef std::vector<Ionflux::Mapping::BezierCurve*> BezierCurveVector;
 typedef std::vector<Ionflux::Mapping::BezierSpline*> BezierSplineVector;
 /// Bezier spline key vector.
 typedef std::vector<Ionflux::Mapping::BezierSplineKey*> BezierSplineKeyVector;
+/// Vector of segments.
+typedef std::vector<Ionflux::Mapping::Segment*> SegmentVector;
+
+/// Sampling mode.
+typedef int SamplingMode;
 
 }
 

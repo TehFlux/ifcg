@@ -40,6 +40,13 @@ namespace Mapping
 
 class PointSample;
 
+namespace XMLUtils
+{
+
+class PointMappingXMLFactory;
+
+}
+
 /// Class information for class PointMapping.
 class PointMappingClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -75,12 +82,22 @@ class PointMapping
 		static const PointMappingClassInfo pointMappingClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
 		 * Construct new PointMapping object.
 		 */
 		PointMapping();
+		
+		/** Constructor.
+		 *
+		 * Construct new PointMapping object.
+		 *
+		 * \param other Other object.
+		 */
+		PointMapping(const Ionflux::Mapping::PointMapping& other);
 		
 		/** Destructor.
 		 *
@@ -134,8 +151,8 @@ class PointMapping
 		virtual Ionflux::Mapping::MappingValue 
 		getParamArcLength(Ionflux::Mapping::MappingValue value, 
 		Ionflux::Mapping::MappingValue relativeError = 
-		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-		Ionflux::Mapping::MappingValue maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned int 
+		maxNumIterations = 
 		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
 		Ionflux::Mapping::MappingValue precision = 
 		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
@@ -154,8 +171,8 @@ class PointMapping
 		virtual Ionflux::Mapping::Point 
 		evalArcLength(Ionflux::Mapping::MappingValue value, 
 		Ionflux::Mapping::MappingValue relativeError = 
-		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-		Ionflux::Mapping::MappingValue maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned int 
+		maxNumIterations = 
 		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS, 
 		Ionflux::Mapping::MappingValue precision = 
 		Ionflux::Mapping::PointMapping::DEFAULT_PRECISION);
@@ -178,8 +195,8 @@ class PointMapping
 		virtual Ionflux::Mapping::PointSample* 
 		getSample(Ionflux::Mapping::MappingValue value, bool calculateArcLength =
 		false, Ionflux::Mapping::MappingValue relativeError = 
-		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, 
-		Ionflux::Mapping::MappingValue maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned int 
+		maxNumIterations = 
 		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
 		
 		/** Evaluate the mapping.
@@ -198,9 +215,30 @@ class PointMapping
 		 * Evaluate the mapping with the specified parameter.
 		 *
 		 * \param value Value.
+		 *
+		 * \return Point.
 		 */
 		virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue 
-		value) = 0;
+		value);
+		
+		/** Assignment operator.
+		 *
+		 * Assign an object.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The object itself.
+		 */
+		virtual Ionflux::Mapping::PointMapping& operator=(const 
+		Ionflux::Mapping::PointMapping& other);
+		
+		/** Copy.
+		 *
+		 * Create a copy of the object.
+		 *
+		 * \return Newly allocated copy of the object.
+		 */
+		virtual Ionflux::Mapping::PointMapping* copy() const;
 		
 		/** Upcast.
 		 *
@@ -212,6 +250,62 @@ class PointMapping
 		 */
 		static Ionflux::Mapping::PointMapping* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
+		
+		/** Create instance.
+		 *
+		 * Create a new instance of the class. If the optional parent object 
+		 * is specified, a local reference for the new object will be added 
+		 * to the parent object.
+		 *
+		 * \param parentObject Parent object.
+		 *
+		 * \return Pointer to the new instance.
+		 */
+		static Ionflux::Mapping::PointMapping* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		virtual std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		virtual std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 };
 
 }

@@ -70,6 +70,9 @@ struct Sample
 typedef std::vector<Ionflux::Mapping::BezierCurve*> BezierCurveVector;
 typedef std::vector<Ionflux::Mapping::BezierSpline*> BezierSplineVector;
 typedef std::vector<Ionflux::Mapping::BezierSplineKey*> BezierSplineKeyVector;
+typedef std::vector<Ionflux::Mapping::Segment*> SegmentVector;
+
+typedef int SamplingMode;
 
 // constants.hpp
 
@@ -82,6 +85,12 @@ const Ionflux::Mapping::Range DEFAULT_CLAMP_RANGE = { 0., 1. };
 const unsigned int MAX_ITERATIONS = 10000;
 
 const Ionflux::Mapping::MappingValue DEFAULT_TOLERANCE = 1e-6;
+
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_PARAM = 0;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_ARC_LENGTH = 1;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_X = 2;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Y = 3;
+const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Z = 4;
 
 // utils.hpp
 
@@ -105,6 +114,8 @@ bool gtOrEq(Ionflux::Mapping::MappingValue v0,
     Ionflux::Mapping::MappingValue t = Ionflux::Mapping::DEFAULT_TOLERANCE);
 
 std::string coordToString(Ionflux::Mapping::CoordinateID coord);
+std::string getSamplingModeString(Ionflux::Mapping::SamplingMode 
+    samplingMode);
 double clamp(double v, const Ionflux::Mapping::Range& r = 
     Ionflux::Mapping::DEFAULT_CLAMP_RANGE);
 double wrap(double v, const Ionflux::Mapping::Range& r = 
@@ -170,6 +181,7 @@ $MappingSet
 $ChainableMapping
 $PointMapping
 $PointSample
+$Segment
 $EvalCoord
 $PointMappingSet
 $Constant
@@ -210,9 +222,11 @@ $ArcLength
 
 $PointXMLFactory
 $PointSetXMLFactory
+$PointMappingXMLFactory
 $BezierCurveXMLFactory
 $BezierSplineXMLFactory
 $PointSampleXMLFactory
+$SegmentXMLFactory
 
 %template(MappingVector) std::vector<Ionflux::Mapping::Mapping*>;
 %template(PieceVector) std::vector<Ionflux::Mapping::Piece*>;
@@ -222,4 +236,5 @@ $PointSampleXMLFactory
 %template(BezierSplineVector) std::vector<Ionflux::Mapping::BezierSpline*>;
 %template(BezierSplineKeyVector) std::vector<Ionflux::Mapping::BezierSplineKey*>;
 %template(PointMappingVector) std::vector<Ionflux::Mapping::PointMapping*>;
+%template(SegmentVector) std::vector<Ionflux::Mapping::Segment*>;
 

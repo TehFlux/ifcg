@@ -347,10 +347,9 @@ std::string BezierCurve::getXMLElementName() const
 
 std::string BezierCurve::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::Mapping::PointSet::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0;
+	d0 << Ionflux::Mapping::PointMapping::getXMLAttributeData();
+	d0 << " " << Ionflux::Mapping::PointSet::getXMLAttributeData();
 	return d0.str();
 }
 
@@ -359,8 +358,10 @@ indentLevel) const
 {
 	std::ostringstream d0;
 	std::string bc0;
-	Ionflux::Mapping::PointSet::getXMLChildData(bc0, indentLevel);
+	Ionflux::Mapping::PointMapping::getXMLChildData(bc0, indentLevel);
 	d0 << bc0;
+	Ionflux::Mapping::PointSet::getXMLChildData(bc0, indentLevel);
+	d0 << "\n" << bc0;
 	target = d0.str();
 }
 
@@ -379,6 +380,8 @@ BezierCurve::getXMLObjectFactory()
         fac0 = Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory::create();
         fac0->addRef();
         Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 0;
+        bFac = Ionflux::Mapping::PointMapping::getXMLObjectFactory();
+        bFac->addFactory(fac0);
         bFac = Ionflux::Mapping::PointSet::getXMLObjectFactory();
         bFac->addFactory(fac0);
     }
