@@ -21,6 +21,9 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ Vertex3Set::addPoints(): Add Ionflux::Mapping::Points from a PointSet 
+  as vertices.
+
 + Add a template for multiple splines and polygons in test/template.
 
 + Split GeoUtils into a basic vector math library and the rest.
@@ -34,7 +37,10 @@ Critical stuff
   > svd (use GSL)
 
 + BGeoUtils
-  > Visualize a Vertex3Set (as a collection of small spheres)
+  > Visualization
+    . Vertex3Set (as a collection of small spheres)
+    . Edge (as a cylinder)
+    . Mesh (as a collection of small spheres and cylinders)
   > export a scene (TransformableGroup containing Camera and Objects)
   > add an operator to export/import an object (Object3 XML I/O)
   > Blender Object.matrix_basis seems to require M^T as input but 

@@ -15,12 +15,18 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Viewer
+  > using Ogre 3D
+
 + Segment
+  > findSegment(): Use binary search (optionally)
   > getLeafSegments(): Get a segment containing only the leaf segments of 
     the segment hierarchy.
   > getLeafPoints(): Get the set of points defined by the leaf segments of 
     the segment hierarchy.
-  > testing
+  > Testing
+    . SVG visualization of a spline and leaf segments as a polygon 
+      (use GeoUtils; see related TODO items in Altjira and GeoUtils)
 
 --------------------------------------------------------------------------------
 Critical stuff
