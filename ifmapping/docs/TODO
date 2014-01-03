@@ -15,11 +15,12 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ ArcLength is rather slow.
-  > Sample adaptively and cache intermediate results.
-    . Segment: Set of two PointSamples; allows querying of endpoint 
-      coordinates and arc length; may be split into child segments (which 
-      are referenced by the segment); interpolation of segment data
++ Segment
+  > getLeafSegments(): Get a segment containing only the leaf segments of 
+    the segment hierarchy.
+  > getLeafPoints(): Get the set of points defined by the leaf segments of 
+    the segment hierarchy.
+  > testing
 
 --------------------------------------------------------------------------------
 Critical stuff

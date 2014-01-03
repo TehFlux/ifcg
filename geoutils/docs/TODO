@@ -15,16 +15,20 @@ Up next
 New
 --------------------------------------------------------------------------------
 
+
+
+--------------------------------------------------------------------------------
+Critical stuff
+--------------------------------------------------------------------------------
+
++ Add a template for multiple splines and polygons in test/template.
+
 + Split GeoUtils into a basic vector math library and the rest.
 
 + BGeoUtils
   > Create a Blender version of cgeoutilstest31.
     . render CGeoUtils object in Blender
     . render Blender object in CGeoUtils
-
---------------------------------------------------------------------------------
-Critical stuff
---------------------------------------------------------------------------------
 
 + MatrixMN
   > svd (use GSL)
