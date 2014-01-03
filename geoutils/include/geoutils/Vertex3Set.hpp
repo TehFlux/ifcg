@@ -27,6 +27,7 @@
  * 
  * ========================================================================== */
 
+#include "ifmapping/PointSet.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
@@ -115,6 +116,15 @@ class Vertex3Set
 		 * Destruct Vertex3Set object.
 		 */
 		virtual ~Vertex3Set();
+		
+		/** Add points.
+		 *
+		 * Create a new vertex for each point in the point set and add them to
+		 * the vertex set.
+		 *
+		 * \param points Point set.
+		 */
+		virtual void addPoints(Ionflux::Mapping::PointSet& points);
 		
 		/** Get barycenter.
 		 *

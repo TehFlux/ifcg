@@ -53,6 +53,7 @@ class Vertex3Set
 		Vertex3Set(const Ionflux::GeoUtils::Vertex3Set& other);
         Vertex3Set(Ionflux::GeoUtils::Vertex3Vector& initVertices);
         virtual ~Vertex3Set();
+        virtual void addPoints(Ionflux::Mapping::PointSet& points);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual void applyTransform(bool recursive = false);
         virtual Ionflux::GeoUtils::Vertex3Set& scale(const 

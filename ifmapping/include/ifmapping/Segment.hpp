@@ -37,6 +37,7 @@ namespace Ionflux
 namespace Mapping
 {
 
+class PointSet;
 class PointSample;
 
 namespace XMLUtils
@@ -139,7 +140,8 @@ class Segment
 		 *
 		 * Get an estimate for the length of the segment, based on the 
 		 * endpoint coordinates. If the optional \c recursive argument is set 
-		 * to \c true, child segments will be queried to estimate the length.
+		 * to \c true, child segments will be queried recursively to estimate 
+		 * the length.
 		 *
 		 * \param recursive estimate length recursively.
 		 * \param maxDepth maximum depth for recursive length estimation.
@@ -168,7 +170,11 @@ class Segment
 		/** Split.
 		 *
 		 * Split the segment by creating a specified number of connected child
-		 * segments.
+		 * segments. If \c recursive is set to \c true, segments will be split
+		 * recursively until either the length error between the last and the 
+		 * first-to-last depth level is below the threshold for all leaf 
+		 * segments, or until the maximum recursion depth is reached, 
+		 * whichever comes first.
 		 *
 		 * \param numSplits number of child segments to be created.
 		 * \param recursive split recursively.
@@ -222,6 +228,22 @@ class Segment
 		Ionflux::Mapping::SAMPLING_MODE_PARAM, bool recursive = false, unsigned 
 		int maxDepth = 0, unsigned int depth = 0, double t = 
 		Ionflux::Mapping::DEFAULT_TOLERANCE);
+		
+		/** Get leaf segments.
+		 *
+		 * Get leaf segments from the hierarchy.
+		 *
+		 * \param target Where to store the leaf segments.
+		 */
+		virtual void getLeafSegments(Ionflux::Mapping::Segment& target);
+		
+		/** Get leaf points.
+		 *
+		 * Get leaf points from the hierarchy.
+		 *
+		 * \param target Where to store the leaf points.
+		 */
+		virtual void getLeafPoints(Ionflux::Mapping::PointSet& target);
 		
 		/** Get string representation of value.
 		 *

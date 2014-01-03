@@ -15,22 +15,17 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Viewer
-  > using Ogre 3D
 
-+ Segment
-  > findSegment(): Use binary search (optionally)
-  > getLeafSegments(): Get a segment containing only the leaf segments of 
-    the segment hierarchy.
-  > getLeafPoints(): Get the set of points defined by the leaf segments of 
-    the segment hierarchy.
-  > Testing
-    . SVG visualization of a spline and leaf segments as a polygon 
-      (use GeoUtils; see related TODO items in Altjira and GeoUtils)
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Segment
+  > findSegment(): Use binary search (optionally)
+  > Testing
+    . SVG visualization of a spline and leaf segments as a polygon 
+      (use GeoUtils; see related TODO items in Altjira and GeoUtils)
 
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
@@ -48,9 +43,6 @@ Critical stuff
 Important stuff
 --------------------------------------------------------------------------------
 
-+ Add mappings:
-  > Spherical
-
 + Create classes for Range and Sample and get rid of the functions that 
   operate mainly on the structs.
 
@@ -65,6 +57,7 @@ Nice to have
 --------------------------------------------------------------------------------
 
 + Add mappings:
+  > Spherical
   > Select (select a result mapping based on comparison of two mapping 
     values)
   > FiFo (return parameter values from previous calls)

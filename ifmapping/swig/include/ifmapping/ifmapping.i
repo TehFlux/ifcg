@@ -706,6 +706,7 @@ namespace Ionflux
 namespace Mapping
 {
 
+class PointSet;
 class PointSample;
 
 class SegmentClassInfo
@@ -753,6 +754,8 @@ class Segment
         Ionflux::Mapping::SAMPLING_MODE_PARAM, bool recursive = false, 
         unsigned int maxDepth = 0, unsigned int depth = 0, double t = 
         Ionflux::Mapping::DEFAULT_TOLERANCE);
+        virtual void getLeafSegments(Ionflux::Mapping::Segment& target);
+        virtual void getLeafPoints(Ionflux::Mapping::PointSet& target);
         virtual std::string getValueString() const;
         virtual Ionflux::Mapping::MappingValue 
         getParamCoord(Ionflux::Mapping::MappingValue value, 

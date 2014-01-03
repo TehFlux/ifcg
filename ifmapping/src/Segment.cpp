@@ -31,6 +31,7 @@
 #include "ifobject/objectutils.hpp"
 #include "ifmapping/utils.hpp"
 #include "ifmapping/MappingError.hpp"
+#include "ifmapping/PointSet.hpp"
 #include "ifmapping/PointSample.hpp"
 #include "ifobject/IFMMEvent.hpp"
 #include "ifobject/utils.hpp"
@@ -347,6 +348,48 @@ maxDepth, unsigned int depth, double t)
 	result = PointSample::create(t0 + it0 * (t1 - t0), np0, 
 	    l0 + it0 * (l1 - l0));
 	return result;
+}
+
+void Segment::getLeafSegments(Ionflux::Mapping::Segment& target)
+{
+	unsigned int numSegments0 = getNumSegments();
+	if (numSegments0 == 0)
+	{
+	    // Current segment is a leaf segment.
+	    target.addSegment(this);
+	    return;
+	}
+	// Recursively add leaf segments.
+	for (SegmentVector::const_iterator i = segments.begin(); 
+	    i != segments.end(); i++)
+	{
+	    Segment* s0 = *i;
+	    if (s0 != 0)
+	        s0->getLeafSegments(target);
+	}
+}
+
+void Segment::getLeafPoints(Ionflux::Mapping::PointSet& target)
+{
+	addRef();
+	Segment* s0 = Segment::create();
+	addLocalRef(s0);
+	getLeafSegments(*s0);
+	unsigned int numSegments0 = s0->getNumSegments();
+	for (unsigned int i = 0; i < numSegments0; i++)
+	{
+	    Segment* cs0 = s0->getSegment(i);
+	    if (cs0 != 0)
+	    {
+	        PointSample* ps0 = cs0->getP0();
+	        PointSample* ps1 = cs0->getP1();
+	        target.addPoint(ps0->getCoords());
+	        if (i == (numSegments0 - 1))
+	            target.addPoint(ps1->getCoords());
+	    }
+	}
+	removeLocalRef(s0);
+	removeRef();
 }
 
 std::string Segment::getValueString() const

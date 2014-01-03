@@ -15,28 +15,26 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Viewer
+  > use Ogre 3D
+  > Python scripting
 
++ Polygon3
+  > initialize from Ionflux::Mapping::Segment
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Vertex3Set::addPoints(): Add Ionflux::Mapping::Points from a PointSet 
-  as vertices.
-
 + Add a template for multiple splines and polygons in test/template.
-
-+ Split GeoUtils into a basic vector math library and the rest.
-
-+ BGeoUtils
-  > Create a Blender version of cgeoutilstest31.
-    . render CGeoUtils object in Blender
-    . render Blender object in CGeoUtils
 
 + MatrixMN
   > svd (use GSL)
 
 + BGeoUtils
+  > Create a Blender version of cgeoutilstest31.
+    . render CGeoUtils object in Blender
+    . render Blender object in CGeoUtils
   > Visualization
     . Vertex3Set (as a collection of small spheres)
     . Edge (as a cylinder)
@@ -150,6 +148,8 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ Split GeoUtils into a basic vector math library and the rest.
 
 + Transform nodes
   > Scale

@@ -126,6 +126,20 @@ void Vertex3Set::recalculateBounds()
 	}
 }
 
+void Vertex3Set::addPoints(Ionflux::Mapping::PointSet& points)
+{
+	unsigned int numPoints0 = points.getNumPoints();
+	for (unsigned int i = 0; i < numPoints0; i++)
+	{
+	    Ionflux::Mapping::Point* p0 = points.getPoint(i);
+	    if (p0 != 0)
+	    {
+	        Vertex3* v0 = addVertex();
+	        v0->setCoords(*p0);
+	    }
+	}
+}
+
 Ionflux::GeoUtils::Vector3 Vertex3Set::getBarycenter()
 {
 	Vector3 vSum;
@@ -464,10 +478,8 @@ std::string Vertex3Set::getXMLElementName() const
 
 std::string Vertex3Set::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::GeoUtils::TransformableObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0;
+	d0 << Ionflux::GeoUtils::TransformableObject::getXMLAttributeData();
 	return d0.str();
 }
 
