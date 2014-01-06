@@ -28,6 +28,7 @@
  * ========================================================================== */
 
 #include "ifmapping/BezierSpline.hpp"
+#include "ifmapping/Segment.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/Vertex3.hpp"
@@ -500,6 +501,15 @@ class Polygon3
 		 */
 		virtual void sample(Ionflux::Mapping::PointMapping& mapping, unsigned int
 		numSamples = 20, double tMin = 0., double tMax = 1.);
+		
+		/** Initialize from segment.
+		 *
+		 * Initialize the polygon from a segment hierarchy. A vertex is added 
+		 * for each leaf point of the segment hierarchy.
+		 *
+		 * \param segment Segment.
+		 */
+		virtual void initFromSegment(Ionflux::Mapping::Segment& segment);
 		
 		/** Create Bezier spline.
 		 *

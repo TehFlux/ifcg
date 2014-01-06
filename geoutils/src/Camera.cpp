@@ -917,11 +917,9 @@ std::string Camera::getXMLElementName() const
 
 std::string Camera::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::GeoUtils::TransformableObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0 << " ";
-	d0 << "angle=\"" << angle << "\"";
+	d0 << Ionflux::GeoUtils::TransformableObject::getXMLAttributeData();
+	d0 << " " << "angle=\"" << angle << "\"";
 	d0 << " " << "lens=\"" << lens << "\"";
 	return d0.str();
 }

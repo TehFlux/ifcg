@@ -33,6 +33,7 @@
 #include <iomanip>
 #include "ifobject/objectutils.hpp"
 #include "ifmapping/BezierCurve.hpp"
+#include "ifmapping/PointSet.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/utils.hpp"
 #include "geoutils/Line3.hpp"
@@ -815,6 +816,20 @@ numSamples, double tMin, double tMax)
 	    Ionflux::Mapping::Point p0(mapping(t));
 	    addVertex(Vertex3::create(p0));
 	    t += dt;
+	}
+	createEdges(false);
+}
+
+void Polygon3::initFromSegment(Ionflux::Mapping::Segment& segment)
+{
+	clearData();
+	Ionflux::Mapping::PointSet points0;
+	segment.getLeafPoints(points0);
+	unsigned int numPoints0 = points0.getNumPoints();
+	for (unsigned int i = 0; i < numPoints0; i++)
+	{
+	    Ionflux::Mapping::Point* p0 = points0.getPoint(i);
+	    addVertex(Vertex3::create(*p0));
 	}
 	createEdges(false);
 }

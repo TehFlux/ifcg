@@ -119,6 +119,7 @@ class Polygon3
         spline);
         virtual void sample(Ionflux::Mapping::PointMapping& mapping, 
         unsigned int numSamples = 20, double tMin = 0., double tMax = 1.);
+        virtual void initFromSegment(Ionflux::Mapping::Segment& segment);
         virtual void createSpline(Ionflux::Mapping::BezierSpline& target);
         virtual void createSplineInterp(Ionflux::Mapping::BezierSpline& 
         target, double smoothness = 0.2);
