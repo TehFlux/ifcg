@@ -21,12 +21,6 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Segment
-  > findSegment(): Use binary search (optionally)
-  > Testing
-    . SVG visualization of a spline and leaf segments as a polygon 
-      (use GeoUtils; see related TODO items in Altjira and GeoUtils)
-
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 + All uses of 'new' within the library should be checked for 0 return values.

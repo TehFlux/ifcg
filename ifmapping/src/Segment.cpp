@@ -217,6 +217,12 @@ maxDepth, unsigned int depth, double t)
 	    "Point sample (1)");
 	MappingValue t0 = p0->getParam();
 	MappingValue t1 = p1->getParam();
+	/* <---- DEBUG ----- //
+	std::cerr << "[Segment::split] DEBUG: "
+	    "p0 = [" << p0->getValueString() << "], ["
+	    << "p1 = [" << p1->getValueString() << "]"
+	    << std::endl;
+	// <---- DEBUG ----- */
 	if (eq(t1, t0, t))
 	{
 	    std::ostringstream status;
@@ -231,9 +237,9 @@ maxDepth, unsigned int depth, double t)
 	for (unsigned int i = 0; i < numSplits; i++)
 	{
 	    PointSample* nps0 = func->getSample(
-	        static_cast<MappingValue>(i) * dt, false);
+	        static_cast<MappingValue>(i) * dt + t0, false);
 	    PointSample* nps1 = func->getSample(
-	        static_cast<MappingValue>(i + 1) * dt, false);
+	        static_cast<MappingValue>(i + 1) * dt + t0, false);
 	    Point* np0 = nps0->getCoords();
 	    Point* np1 = nps1->getCoords();
 	    nps0->setArcLength(l0);
@@ -241,6 +247,12 @@ maxDepth, unsigned int depth, double t)
 	    nps1->setArcLength(l0 + dl0);
 	    l0 += dl0;
 	    Segment* s0 = Segment::create(func, nps0, nps1);
+	    /* <---- DEBUG ----- //
+	    std::cerr << "[Segment::split] DEBUG: "
+	        "(depth = " << depth << ", maxDepth = " << maxDepth 
+	        << ") s0 = " << s0->getValueString() 
+	        << std::endl;
+	    // <---- DEBUG ----- */
 	    addSegment(s0);
 	}
 	if (recursive)
@@ -249,12 +261,25 @@ maxDepth, unsigned int depth, double t)
 	    MappingValue e0 = getLengthError(relativeError, 1, t);
 	    if (e0 > errorThreshold)
 	    {
-	        for (SegmentVector::iterator i = segments.begin(); 
-	            i != segments.end(); i++)
+	        unsigned int numSegments0 = getNumSegments();
+	        for (unsigned int i = 0; i < numSegments0; i++)
 	        {
-	            Segment* s0 = *i;
+	            Segment* s0 = getSegment(i);
+	            Segment* s1 = 0;
 	            if (s0 != 0)
 	            {
+	                if (i > 0)
+	                {
+	                    // Update the arc length estimate.
+	                    s1 = getSegment(i - 1);
+	                    if (s1 != 0)
+	                    {
+	                        PointSample* ps0 = s0->getP0();
+	                        PointSample* ps1 = s1->getP0();
+	                        ps0->setArcLength(ps1->getArcLength() 
+	                            + s1->getLength(true));
+	                    }
+	                }
 	                s0->split(numSplits, recursive, relativeError, 
 	                    errorThreshold, maxDepth, depth + 1, t);
 	            }
@@ -265,35 +290,72 @@ maxDepth, unsigned int depth, double t)
 
 Ionflux::Mapping::Segment* 
 Segment::findSegment(Ionflux::Mapping::MappingValue value, 
-Ionflux::Mapping::SamplingMode samplingMode, double t)
+Ionflux::Mapping::SamplingMode samplingMode, Ionflux::Mapping::SearchMethod
+searchMethod, int startIndex, int endIndex, double t)
 {
 	unsigned int numSegments0 = getNumSegments();
 	if (numSegments0 == 0)
 	    return 0;
-	if (ltOrEq(value, 0., t))
-	    return getSegment(0);
-	if (gtOrEq(value, 1., t))
-	    return getSegment(numSegments0 - 1);
-	Segment* result = 0;
-	unsigned int k = 0;
-	Segment* s0 = 0;
-	bool found = false;
-	// Find the relevant child segment.
-	while ((k < numSegments0) 
-	    && !found)
+	if (endIndex < 0)
+	    endIndex = numSegments0 - 1;
+	if (startIndex < 0)
+	    startIndex = 0;
+	if (startIndex >= endIndex)
+	    return getSegment(startIndex);
+	if (samplingMode == SAMPLING_MODE_PARAM)
 	{
-	    s0 = getSegment(k);
+	    if (ltOrEq(value, 0., t))
+	        return getSegment(startIndex);
+	    if (gtOrEq(value, 1., t))
+	        return getSegment(endIndex);
+	}
+	// Find the relevant child segment.
+	Segment* result = 0;
+	Segment* s0 = 0;
+	if (((endIndex - startIndex) == 1)
+	    || (searchMethod == SEARCH_LINEAR))
+	{
+	    // linear search
+	    unsigned int k = startIndex;
+	    bool found = false;
+	    while ((k < numSegments0) 
+	        && !found)
+	    {
+	        s0 = getSegment(k);
+	        if (s0 != 0)
+	        {
+	            PointSample* ps0 = s0->getP0();
+	            PointSample* ps1 = s0->getP1();
+	            MappingValue v0 = ps0->getValue(samplingMode);
+	            MappingValue v1 = ps1->getValue(samplingMode);
+	            if (gtOrEq(value, v0, t)
+	                && ltOrEq(value, v1, t))
+	                found = true;
+	            else
+	                k++;
+	        }
+	    }
+	} else
+	{
+	    // binary search
+	    unsigned int si0 = (startIndex + endIndex) / 2;
+	    s0 = getSegment(si0);
 	    if (s0 != 0)
 	    {
 	        PointSample* ps0 = s0->getP0();
 	        PointSample* ps1 = s0->getP1();
 	        MappingValue v0 = ps0->getValue(samplingMode);
 	        MappingValue v1 = ps1->getValue(samplingMode);
-	        if (gtOrEq(value, v0, t)
-	            && ltOrEq(value, v1, t))
-	            found = true;
-	        else
-	            k++;
+	        if (lt(value, v0, t))
+	        {
+	            s0 = findSegment(value, samplingMode, 
+	                searchMethod, startIndex, si0 - 1, t);
+	        } else
+	        if (gt(value, v1, t))
+	        {
+	            s0 = findSegment(value, samplingMode, 
+	                searchMethod, si0 + 1, endIndex, t);
+	        }
 	    }
 	}
 	if (s0 != 0)
@@ -313,8 +375,9 @@ Ionflux::Mapping::SamplingMode samplingMode, double t)
 
 Ionflux::Mapping::PointSample* 
 Segment::getSample0(Ionflux::Mapping::MappingValue value, 
-Ionflux::Mapping::SamplingMode samplingMode, bool recursive, unsigned int 
-maxDepth, unsigned int depth, double t)
+Ionflux::Mapping::SamplingMode samplingMode, Ionflux::Mapping::SearchMethod
+searchMethod, bool recursive, unsigned int maxDepth, unsigned int depth, 
+double t)
 {
 	unsigned int numSegments0 = getNumSegments();
 	PointSample* result = 0;
@@ -324,9 +387,10 @@ maxDepth, unsigned int depth, double t)
 	    && (numSegments0 >= 2))
 	{
 	    // Sample child segments recursively.
-	    Segment* s0 = findSegment(value, samplingMode, t);
-	    result = s0->getSample0(value, samplingMode, recursive, 
-	        maxDepth, depth + 1, t);
+	    Segment* s0 = findSegment(value, samplingMode, 
+	        searchMethod, 0, -1, t);
+	    result = s0->getSample0(value, samplingMode, searchMethod, 
+	        recursive, maxDepth, depth + 1, t);
 	    return result;
 	}
 	// Sample this segment.
@@ -404,20 +468,24 @@ std::string Segment::getValueString() const
 	    status << "[" << p1->getValueString() << "]";
 	else
 	    status << "<none>";
-	status << "; [";
+	status << "; ";
 	bool e0 = true;
-	for (SegmentVector::const_iterator i = segments.begin(); 
-	    i != segments.end(); i++)
-	{
-	    if (!e0)
-	        status << ", ";
-	    else
-	        e0 = false;
-	    status << "[" << (*i)->getValueString() << "]";
-	}
 	if (segments.size() == 0)
 	    status << "<none>";
-	status << "]";
+	else
+	{
+	    status << "[";
+	    for (SegmentVector::const_iterator i = segments.begin(); 
+	        i != segments.end(); i++)
+	    {
+	        if (!e0)
+	            status << ", ";
+	        else
+	            e0 = false;
+	        status << "[" << (*i)->getValueString() << "]";
+	    }
+	    status << "]";
+	}
 	return status.str();
 }
 
@@ -432,7 +500,7 @@ precision)
 	else
 	if (coord == C_Z)
 	    m0 = SAMPLING_MODE_POINT_COORD_Z;
-	PointSample* ps0 = getSample0(value, m0, true);
+	PointSample* ps0 = getSample0(value, m0, SEARCH_LINEAR, true);
 	addLocalRef(ps0);
 	MappingValue result = ps0->getParam();
 	removeLocalRef(ps0);
@@ -447,9 +515,9 @@ maxNumIterations, Ionflux::Mapping::MappingValue precision)
 	if (value == 0.)
 	    return 0.;
 	PointSample* ps0 = getSample0(value, 
-	    SAMPLING_MODE_ARC_LENGTH, true);
+	    SAMPLING_MODE_ARC_LENGTH, SEARCH_BINARY, true);
 	addLocalRef(ps0);
-	MappingValue result = ps0->getArcLength();
+	MappingValue result = ps0->getParam();
 	removeLocalRef(ps0);
 	return result;
 }
@@ -459,7 +527,8 @@ Segment::getSample(Ionflux::Mapping::MappingValue value, bool
 calculateArcLength, Ionflux::Mapping::MappingValue relativeError, unsigned 
 int maxNumIterations)
 {
-	PointSample* result = getSample0(value, SAMPLING_MODE_PARAM, true);
+	PointSample* result = getSample0(value, SAMPLING_MODE_PARAM, 
+	    SEARCH_BINARY, true);
 	if (!calculateArcLength)
 	    result->setArcLength(0);
 	return result;
@@ -467,7 +536,8 @@ int maxNumIterations)
 
 Ionflux::Mapping::Point Segment::call(Ionflux::Mapping::MappingValue value)
 {
-	PointSample* ps0 = getSample0(value, SAMPLING_MODE_PARAM, true);
+	PointSample* ps0 = getSample0(value, SAMPLING_MODE_PARAM, 
+	    SEARCH_BINARY, true);
 	addLocalRef(ps0);
 	Point* pps0 = ps0->getCoords();
 	Point result(*pps0);

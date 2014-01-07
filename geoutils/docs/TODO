@@ -15,12 +15,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Viewer
-  > use Ogre 3D
-  > Python scripting
 
-+ Polygon3
-  > initialize from Ionflux::Mapping::Segment
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -148,6 +143,10 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ Viewer
+  > use Ogre 3D
+  > Python scripting
 
 + Split GeoUtils into a basic vector math library and the rest.
 

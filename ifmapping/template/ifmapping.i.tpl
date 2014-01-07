@@ -73,6 +73,7 @@ typedef std::vector<Ionflux::Mapping::BezierSplineKey*> BezierSplineKeyVector;
 typedef std::vector<Ionflux::Mapping::Segment*> SegmentVector;
 
 typedef int SamplingMode;
+typedef int SearchMethod;
 
 // constants.hpp
 
@@ -91,6 +92,9 @@ const Ionflux::Mapping::SamplingMode SAMPLING_MODE_ARC_LENGTH = 1;
 const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_X = 2;
 const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Y = 3;
 const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Z = 4;
+
+const Ionflux::Mapping::SearchMethod SEARCH_LINEAR = 0;
+const Ionflux::Mapping::SearchMethod SEARCH_BINARY = 1;
 
 // utils.hpp
 

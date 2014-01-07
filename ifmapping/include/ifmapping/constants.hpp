@@ -63,6 +63,11 @@ const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Y = 3;
 /// Sampling mode: point coordinate (Z).
 const Ionflux::Mapping::SamplingMode SAMPLING_MODE_POINT_COORD_Z = 4;
 
+/// Search method: linear.
+const Ionflux::Mapping::SearchMethod SEARCH_LINEAR = 0;
+/// Search method: binary.
+const Ionflux::Mapping::SearchMethod SEARCH_BINARY = 1;
+
 }
 
 }

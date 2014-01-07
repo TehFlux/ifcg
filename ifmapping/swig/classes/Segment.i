@@ -74,13 +74,17 @@ class Segment
         virtual Ionflux::Mapping::Segment* 
         findSegment(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::SamplingMode samplingMode = 
-        Ionflux::Mapping::SAMPLING_MODE_PARAM, double t = 
-        Ionflux::Mapping::DEFAULT_TOLERANCE);
+        Ionflux::Mapping::SAMPLING_MODE_PARAM, 
+        Ionflux::Mapping::SearchMethod searchMethod = 
+        Ionflux::Mapping::SEARCH_LINEAR, int startIndex = 0, int endIndex =
+        -1, double t = Ionflux::Mapping::DEFAULT_TOLERANCE);
         virtual Ionflux::Mapping::PointSample* 
         getSample0(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::SamplingMode samplingMode = 
-        Ionflux::Mapping::SAMPLING_MODE_PARAM, bool recursive = false, 
-        unsigned int maxDepth = 0, unsigned int depth = 0, double t = 
+        Ionflux::Mapping::SAMPLING_MODE_PARAM, 
+        Ionflux::Mapping::SearchMethod searchMethod = 
+        Ionflux::Mapping::SEARCH_LINEAR, bool recursive = false, unsigned 
+        int maxDepth = 0, unsigned int depth = 0, double t = 
         Ionflux::Mapping::DEFAULT_TOLERANCE);
         virtual void getLeafSegments(Ionflux::Mapping::Segment& target);
         virtual void getLeafPoints(Ionflux::Mapping::PointSet& target);

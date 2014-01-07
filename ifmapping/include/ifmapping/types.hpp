@@ -100,6 +100,8 @@ typedef std::vector<Ionflux::Mapping::Segment*> SegmentVector;
 
 /// Sampling mode.
 typedef int SamplingMode;
+/// Search method.
+typedef int SearchMethod;
 
 }
 
