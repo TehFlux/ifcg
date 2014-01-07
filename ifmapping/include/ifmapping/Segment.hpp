@@ -200,6 +200,7 @@ class Segment
 		 * \param searchMethod searchMethod.
 		 * \param startIndex start index.
 		 * \param endIndex end index.
+		 * \param recursive find segment recursively.
 		 * \param t Tolerance.
 		 *
 		 * \return Segment.
@@ -209,7 +210,8 @@ class Segment
 		Ionflux::Mapping::SamplingMode samplingMode = 
 		Ionflux::Mapping::SAMPLING_MODE_PARAM, Ionflux::Mapping::SearchMethod 
 		searchMethod = Ionflux::Mapping::SEARCH_LINEAR, int startIndex = 0, int 
-		endIndex = -1, double t = Ionflux::Mapping::DEFAULT_TOLERANCE);
+		endIndex = -1, bool recursive = false, double t = 
+		Ionflux::Mapping::DEFAULT_TOLERANCE);
 		
 		/** Get sample.
 		 *

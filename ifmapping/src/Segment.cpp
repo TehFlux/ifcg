@@ -234,6 +234,7 @@ maxDepth, unsigned int depth, double t)
 	MappingValue l0 = p0->getArcLength();
 	/* Resample the mapping at the split points and create 
 	   new segments. */
+	clearSegments();
 	for (unsigned int i = 0; i < numSplits; i++)
 	{
 	    PointSample* nps0 = func->getSample(
@@ -291,7 +292,7 @@ maxDepth, unsigned int depth, double t)
 Ionflux::Mapping::Segment* 
 Segment::findSegment(Ionflux::Mapping::MappingValue value, 
 Ionflux::Mapping::SamplingMode samplingMode, Ionflux::Mapping::SearchMethod
-searchMethod, int startIndex, int endIndex, double t)
+searchMethod, int startIndex, int endIndex, bool recursive, double t)
 {
 	unsigned int numSegments0 = getNumSegments();
 	if (numSegments0 == 0)
@@ -300,61 +301,71 @@ searchMethod, int startIndex, int endIndex, double t)
 	    endIndex = numSegments0 - 1;
 	if (startIndex < 0)
 	    startIndex = 0;
-	if (startIndex >= endIndex)
-	    return getSegment(startIndex);
-	if (samplingMode == SAMPLING_MODE_PARAM)
-	{
-	    if (ltOrEq(value, 0., t))
-	        return getSegment(startIndex);
-	    if (gtOrEq(value, 1., t))
-	        return getSegment(endIndex);
-	}
-	// Find the relevant child segment.
 	Segment* result = 0;
 	Segment* s0 = 0;
-	if (((endIndex - startIndex) == 1)
-	    || (searchMethod == SEARCH_LINEAR))
+	if (startIndex >= endIndex)
 	{
-	    // linear search
-	    unsigned int k = startIndex;
-	    bool found = false;
-	    while ((k < numSegments0) 
-	        && !found)
+	    s0 = getSegment(startIndex);
+	} else
+	if ((samplingMode == SAMPLING_MODE_PARAM) 
+	    && (p0 != 0) 
+	    && (p1 != 0))
+	{
+	    /* shortcut if the parameter is outside the range 
+	       for the segment */
+	    if (ltOrEq(value, p0->getParam(), t))
+	        s0 = getSegment(startIndex);
+	    else
+	    if (gtOrEq(value, p1->getParam(), t))
+	        s0 = getSegment(endIndex);
+	}
+	if (s0 == 0)
+	{
+	    // Find the relevant child segment.
+	    if (((endIndex - startIndex) == 1)
+	        || (searchMethod == SEARCH_LINEAR))
 	    {
-	        s0 = getSegment(k);
+	        // linear search
+	        unsigned int k = startIndex;
+	        bool found = false;
+	        while ((k < numSegments0) 
+	            && !found)
+	        {
+	            s0 = getSegment(k);
+	            if (s0 != 0)
+	            {
+	                PointSample* ps0 = s0->getP0();
+	                PointSample* ps1 = s0->getP1();
+	                MappingValue v0 = ps0->getValue(samplingMode);
+	                MappingValue v1 = ps1->getValue(samplingMode);
+	                if (gtOrEq(value, v0, t)
+	                    && ltOrEq(value, v1, t))
+	                    found = true;
+	                else
+	                    k++;
+	            }
+	        }
+	    } else
+	    {
+	        // binary search
+	        unsigned int si0 = (startIndex + endIndex) / 2;
+	        s0 = getSegment(si0);
 	        if (s0 != 0)
 	        {
 	            PointSample* ps0 = s0->getP0();
 	            PointSample* ps1 = s0->getP1();
 	            MappingValue v0 = ps0->getValue(samplingMode);
 	            MappingValue v1 = ps1->getValue(samplingMode);
-	            if (gtOrEq(value, v0, t)
-	                && ltOrEq(value, v1, t))
-	                found = true;
-	            else
-	                k++;
-	        }
-	    }
-	} else
-	{
-	    // binary search
-	    unsigned int si0 = (startIndex + endIndex) / 2;
-	    s0 = getSegment(si0);
-	    if (s0 != 0)
-	    {
-	        PointSample* ps0 = s0->getP0();
-	        PointSample* ps1 = s0->getP1();
-	        MappingValue v0 = ps0->getValue(samplingMode);
-	        MappingValue v1 = ps1->getValue(samplingMode);
-	        if (lt(value, v0, t))
-	        {
-	            s0 = findSegment(value, samplingMode, 
-	                searchMethod, startIndex, si0 - 1, t);
-	        } else
-	        if (gt(value, v1, t))
-	        {
-	            s0 = findSegment(value, samplingMode, 
-	                searchMethod, si0 + 1, endIndex, t);
+	            if (lt(value, v0, t))
+	            {
+	                s0 = findSegment(value, samplingMode, 
+	                    searchMethod, startIndex, si0 - 1, false, t);
+	            } else
+	            if (gt(value, v1, t))
+	            {
+	                s0 = findSegment(value, samplingMode, 
+	                    searchMethod, si0 + 1, endIndex, false, t);
+	            }
 	        }
 	    }
 	}
@@ -369,6 +380,17 @@ searchMethod, int startIndex, int endIndex, double t)
 	        << samplingMode << ")).";
 	    throw MappingError(getErrorString(status.str(), 
 	        "findSegment"));
+	}
+	if (recursive)
+	{
+	    if (result != 0)
+	    {
+	        // recursive search
+	        s0 = result->findSegment(value, samplingMode, 
+	            searchMethod, 0, -1, true, t);
+	        if (s0 != 0)
+	            result = s0;
+	    }
 	}
 	return result;
 }
@@ -388,7 +410,7 @@ double t)
 	{
 	    // Sample child segments recursively.
 	    Segment* s0 = findSegment(value, samplingMode, 
-	        searchMethod, 0, -1, t);
+	        searchMethod, 0, -1, false, t);
 	    result = s0->getSample0(value, samplingMode, searchMethod, 
 	        recursive, maxDepth, depth + 1, t);
 	    return result;

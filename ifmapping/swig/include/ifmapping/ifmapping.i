@@ -753,7 +753,8 @@ class Segment
         Ionflux::Mapping::SAMPLING_MODE_PARAM, 
         Ionflux::Mapping::SearchMethod searchMethod = 
         Ionflux::Mapping::SEARCH_LINEAR, int startIndex = 0, int endIndex =
-        -1, double t = Ionflux::Mapping::DEFAULT_TOLERANCE);
+        -1, bool recursive = false, double t = 
+        Ionflux::Mapping::DEFAULT_TOLERANCE);
         virtual Ionflux::Mapping::PointSample* 
         getSample0(Ionflux::Mapping::MappingValue value, 
         Ionflux::Mapping::SamplingMode samplingMode = 
