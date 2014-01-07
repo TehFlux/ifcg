@@ -15,12 +15,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Segment
-  > split(): It should be possible to obtain the length of the preceding 
-    segment by looking at the P1 boundary point of the closest preceding 
-    leaf segment (instead of summing over lengths of all leaf segments).
-  > add a property for the current arc length estimate (calculated using 
-    recursive getLength())
++ Testing
+  > Segment::split(): arc length estimate
 
 --------------------------------------------------------------------------------
 Critical stuff
