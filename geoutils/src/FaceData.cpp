@@ -220,11 +220,9 @@ std::string FaceData::getXMLElementName() const
 
 std::string FaceData::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::GeoUtils::VectorSet::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0 << " ";
-	d0 << "datatype=\"" << dataType << "\"";
+	d0 << Ionflux::GeoUtils::VectorSet::getXMLAttributeData();
+	d0 << " " << "datatype=\"" << dataType << "\"";
 	return d0.str();
 }
 

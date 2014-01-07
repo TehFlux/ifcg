@@ -179,6 +179,23 @@ int maxNumIterations)
 	return s0;
 }
 
+Ionflux::Mapping::MappingValue 
+PointMapping::getArcLength(Ionflux::Mapping::MappingValue value, 
+Ionflux::Mapping::MappingValue relativeError, unsigned int 
+maxNumIterations)
+{
+	if (value == 0.)
+	    return 0.;
+	addRef();
+	ArcLength* fc = ArcLength::create(
+	    this, 0., 1., 0., relativeError, maxNumIterations);
+	addLocalRef(fc);
+	MappingValue result = (*fc)(value);
+	removeLocalRef(fc);
+	removeRef();
+	return result;
+}
+
 Ionflux::Mapping::Point 
 PointMapping::operator()(Ionflux::Mapping::MappingValue value)
 {
@@ -234,10 +251,8 @@ std::string PointMapping::getXMLElementName() const
 
 std::string PointMapping::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0;
+	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
 	return d0.str();
 }
 

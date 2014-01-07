@@ -65,9 +65,11 @@ class Segment
         virtual Ionflux::Mapping::MappingValue getLengthError(bool 
         relativeError = true, unsigned int maxDepth = 1, double t = 
         Ionflux::Mapping::DEFAULT_TOLERANCE) const;
-        virtual void split(unsigned int numSplits = 2, bool recursive = 
-        false, bool relativeError = true, Ionflux::Mapping::MappingValue 
-        errorThreshold = 
+        virtual Ionflux::Mapping::MappingValue updateArcLength(bool 
+        recursive = false, unsigned int maxDepth = 0);
+        virtual void split(unsigned int numSplitSegments = 2, bool 
+        recursive = false, bool relativeError = true, 
+        Ionflux::Mapping::MappingValue errorThreshold = 
         Ionflux::Mapping::Segment::DEFAULT_ERROR_THRESHOLD, unsigned int 
         maxDepth = 0, unsigned int depth = 0, double t = 
         Ionflux::Mapping::DEFAULT_TOLERANCE);
@@ -107,6 +109,12 @@ class Segment
         getSample(Ionflux::Mapping::MappingValue value, bool 
         calculateArcLength = false, Ionflux::Mapping::MappingValue 
         relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
+        virtual Ionflux::Mapping::MappingValue 
+        getArcLength(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::MappingValue relativeError = 
         Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
         int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
@@ -153,6 +161,9 @@ class Segment
         removeElement);
 		virtual void removeSegmentIndex(unsigned int removeIndex);
 		virtual void clearSegments();
+        virtual void setArcLength(Ionflux::Mapping::MappingValue 
+        newArcLength);
+        virtual Ionflux::Mapping::MappingValue getArcLength() const;
 };
 
 }

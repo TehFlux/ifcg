@@ -81,6 +81,8 @@ class Segment
 		Ionflux::Mapping::PointSample* p1;
 		/// Child segments.
 		std::vector<Ionflux::Mapping::Segment*> segments;
+		/// arc length estimate.
+		Ionflux::Mapping::MappingValue arcLength;
 		
 	public:
 		/// Default error thteshold.
@@ -167,6 +169,22 @@ class Segment
 		= true, unsigned int maxDepth = 1, double t = 
 		Ionflux::Mapping::DEFAULT_TOLERANCE) const;
 		
+		/** Update arc length estimate.
+		 *
+		 * Update the estimate for the arc length of the segment, based on the
+		 * endpoints or (if available) the child segments. This uses 
+		 * getLength() to estimate the arc length. If either of the boundary 
+		 * points is zero and \c recursive is set to \c false, the arc length 
+		 * estimate will be set to zero.
+		 *
+		 * \param recursive estimate length recursively.
+		 * \param maxDepth maximum depth for recursive length estimation.
+		 *
+		 * \return Arc length estimate.
+		 */
+		virtual Ionflux::Mapping::MappingValue updateArcLength(bool recursive = 
+		false, unsigned int maxDepth = 0);
+		
 		/** Split.
 		 *
 		 * Split the segment by creating a specified number of connected child
@@ -176,7 +194,7 @@ class Segment
 		 * segments, or until the maximum recursion depth is reached, 
 		 * whichever comes first.
 		 *
-		 * \param numSplits number of child segments to be created.
+		 * \param numSplitSegments number of child segments to be created.
 		 * \param recursive split recursively.
 		 * \param relativeError use relative error.
 		 * \param errorThreshold error threshold.
@@ -184,10 +202,10 @@ class Segment
 		 * \param depth current recursion depth.
 		 * \param t Tolerance.
 		 */
-		virtual void split(unsigned int numSplits = 2, bool recursive = false, 
-		bool relativeError = true, Ionflux::Mapping::MappingValue errorThreshold 
-		= Ionflux::Mapping::Segment::DEFAULT_ERROR_THRESHOLD, unsigned int 
-		maxDepth = 0, unsigned int depth = 0, double t = 
+		virtual void split(unsigned int numSplitSegments = 2, bool recursive = 
+		false, bool relativeError = true, Ionflux::Mapping::MappingValue 
+		errorThreshold = Ionflux::Mapping::Segment::DEFAULT_ERROR_THRESHOLD, 
+		unsigned int maxDepth = 0, unsigned int depth = 0, double t = 
 		Ionflux::Mapping::DEFAULT_TOLERANCE);
 		
 		/** Find segment.
@@ -322,6 +340,23 @@ class Segment
 		virtual Ionflux::Mapping::PointSample* 
 		getSample(Ionflux::Mapping::MappingValue value, bool calculateArcLength =
 		false, Ionflux::Mapping::MappingValue relativeError = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned int 
+		maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
+		
+		/** Get arc length.
+		 *
+		 * Get the arc length at the specified parameter value.
+		 *
+		 * \param value Parameter value.
+		 * \param relativeError Relative error.
+		 * \param maxNumIterations Maximum number of iterations.
+		 *
+		 * \return Parameter value for the specified arc length.
+		 */
+		virtual Ionflux::Mapping::MappingValue 
+		getArcLength(Ionflux::Mapping::MappingValue value, 
+		Ionflux::Mapping::MappingValue relativeError = 
 		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned int 
 		maxNumIterations = 
 		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
@@ -582,6 +617,20 @@ class Segment
 		 * Clear all segments.
 		 */
 		virtual void clearSegments();
+		
+		/** Get arc length estimate.
+		 *
+		 * \return Current value of arc length estimate.
+		 */
+		virtual Ionflux::Mapping::MappingValue getArcLength() const;
+		
+		/** Set arc length estimate.
+		 *
+		 * Set new value of arc length estimate.
+		 *
+		 * \param newArcLength New value of arc length estimate.
+		 */
+		virtual void setArcLength(Ionflux::Mapping::MappingValue newArcLength);
 };
 
 }

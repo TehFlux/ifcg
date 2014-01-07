@@ -199,6 +199,23 @@ class PointMapping
 		maxNumIterations = 
 		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
 		
+		/** Get arc length.
+		 *
+		 * Get the arc length at the specified parameter value.
+		 *
+		 * \param value Parameter value.
+		 * \param relativeError Relative error.
+		 * \param maxNumIterations Maximum number of iterations.
+		 *
+		 * \return Parameter value for the specified arc length.
+		 */
+		virtual Ionflux::Mapping::MappingValue 
+		getArcLength(Ionflux::Mapping::MappingValue value, 
+		Ionflux::Mapping::MappingValue relativeError = 
+		Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned int 
+		maxNumIterations = 
+		Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
+		
 		/** Evaluate the mapping.
 		 *
 		 * Evaluate the mapping with the specified parameter.

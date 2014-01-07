@@ -70,7 +70,7 @@ const Ionflux::ObjectBase::IFClassInfo* Segment::CLASS_INFO = &Segment::segmentC
 const std::string Segment::XML_ELEMENT_NAME = "ps";
 
 Segment::Segment()
-: func(0), p0(0), p1(0)
+: func(0), p0(0), p1(0), arcLength(0.)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -82,7 +82,7 @@ Segment::Segment()
 }
 
 Segment::Segment(const Ionflux::Mapping::Segment& other)
-: func(0), p0(0), p1(0)
+: func(0), p0(0), p1(0), arcLength(0.)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -95,7 +95,7 @@ Segment::Segment(const Ionflux::Mapping::Segment& other)
 
 Segment::Segment(Ionflux::Mapping::PointMapping* initFunc, 
 Ionflux::Mapping::MappingValue t0, Ionflux::Mapping::MappingValue t1)
-: func(0), p0(0), p1(0)
+: func(0), p0(0), p1(0), arcLength(0.)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -108,6 +108,7 @@ Ionflux::Mapping::MappingValue t0, Ionflux::Mapping::MappingValue t1)
 	    setFunc(initFunc);
 	    setP0(initFunc->getSample(t0, false));
 	    setP1(initFunc->getSample(t1, false));
+	    updateArcLength();
 	}
 }
 
@@ -128,6 +129,7 @@ initP1)
 	    setP0(initP0);
 	if (initP1 != 0)
 	    setP1(initP1);
+	updateArcLength();
 }
 
 Segment::~Segment()
@@ -142,15 +144,15 @@ Segment::~Segment()
 Ionflux::Mapping::MappingValue Segment::getLength(bool recursive, unsigned 
 int maxDepth, unsigned int depth) const
 {
-	Ionflux::ObjectBase::nullPointerCheck(p0, this, "getLength", 
-	    "Point sample (0)");
-	Ionflux::ObjectBase::nullPointerCheck(p1, this, "getLength", 
-	    "Point sample (1)");
 	MappingValue result = 0.;
 	unsigned int numSegments0 = getNumSegments();
 	if (!recursive 
 	    || (numSegments0 < 2))
 	{
+	    Ionflux::ObjectBase::nullPointerCheck(p0, this, "getLength", 
+	        "Point sample (0)");
+	    Ionflux::ObjectBase::nullPointerCheck(p1, this, "getLength", 
+	        "Point sample (1)");
 	    Point* pp0 = p0->getCoords();
 	    Point* pp1 = p1->getCoords();
 	    result = pp0->distance(*pp1);
@@ -195,15 +197,29 @@ unsigned int maxDepth, double t) const
 	return result;
 }
 
-void Segment::split(unsigned int numSplits, bool recursive, bool 
+Ionflux::Mapping::MappingValue Segment::updateArcLength(bool recursive, 
+unsigned int maxDepth)
+{
+	MappingValue l0 = 0.;
+	if (!recursive
+	   && ((p0 == 0) || (p1 == 0)))
+	{
+	    l0 = 0.;
+	} else
+	    l0 = getLength(recursive, maxDepth);
+	setArcLength(l0);
+	return l0;
+}
+
+void Segment::split(unsigned int numSplitSegments, bool recursive, bool 
 relativeError, Ionflux::Mapping::MappingValue errorThreshold, unsigned int 
 maxDepth, unsigned int depth, double t)
 {
-	if (numSplits < 2)
+	if (numSplitSegments < 2)
 	{
 	    std::ostringstream status;
 	    status << "Number of splits must be at least two "
-	        "(numSplits = " << numSplits << ").";
+	        "(numSplitSegments = " << numSplitSegments << ").";
 	    throw MappingError(getErrorString(status.str(), "split"));
 	}
 	if ((maxDepth != 0) 
@@ -230,12 +246,16 @@ maxDepth, unsigned int depth, double t)
 	        << t0 << ", t1 = " << t1 << ").";
 	    throw MappingError(getErrorString(status.str(), "split"));
 	}
-	MappingValue dt = (t1 - t0) / numSplits;
-	MappingValue l0 = p0->getArcLength();
 	/* Resample the mapping at the split points and create 
 	   new segments. */
 	clearSegments();
-	for (unsigned int i = 0; i < numSplits; i++)
+	// dt: parameter step.
+	MappingValue dt = (t1 - t0) / numSplitSegments;
+	// l0: arc length at first boundary point.
+	MappingValue l0 = p0->getArcLength();
+	// l1: current best arc length estimate for this segment.
+	MappingValue l1 = 0.;
+	for (unsigned int i = 0; i < numSplitSegments; i++)
 	{
 	    PointSample* nps0 = func->getSample(
 	        static_cast<MappingValue>(i) * dt + t0, false);
@@ -243,10 +263,12 @@ maxDepth, unsigned int depth, double t)
 	        static_cast<MappingValue>(i + 1) * dt + t0, false);
 	    Point* np0 = nps0->getCoords();
 	    Point* np1 = nps1->getCoords();
-	    nps0->setArcLength(l0);
+	    nps0->setArcLength(l0 + l1);
+	    /* Set the initial arc length estimate for each new segment to 
+	       the  point distance between the samples. */
 	    MappingValue dl0 = np0->distance(*np1);
-	    nps1->setArcLength(l0 + dl0);
-	    l0 += dl0;
+	    nps1->setArcLength(l0 + l1 + dl0);
+	    l1 += dl0;
 	    Segment* s0 = Segment::create(func, nps0, nps1);
 	    /* <---- DEBUG ----- //
 	    std::cerr << "[Segment::split] DEBUG: "
@@ -263,30 +285,31 @@ maxDepth, unsigned int depth, double t)
 	    if (e0 > errorThreshold)
 	    {
 	        unsigned int numSegments0 = getNumSegments();
+	        l1 = 0.;
 	        for (unsigned int i = 0; i < numSegments0; i++)
 	        {
 	            Segment* s0 = getSegment(i);
-	            Segment* s1 = 0;
 	            if (s0 != 0)
 	            {
 	                if (i > 0)
 	                {
-	                    // Update the arc length estimate.
-	                    s1 = getSegment(i - 1);
-	                    if (s1 != 0)
-	                    {
-	                        PointSample* ps0 = s0->getP0();
-	                        PointSample* ps1 = s1->getP0();
-	                        ps0->setArcLength(ps1->getArcLength() 
-	                            + s1->getLength(true));
-	                    }
+	                    /* Update the arc length estimate for the 
+	                       first boundary point of the current child 
+	                       segment. */
+	                    PointSample* ps0 = s0->getP0();
+	                    ps0->setArcLength(l0 + l1);
 	                }
-	                s0->split(numSplits, recursive, relativeError, 
+	                s0->split(numSplitSegments, recursive, relativeError, 
 	                    errorThreshold, maxDepth, depth + 1, t);
+	                l1 += s0->getArcLength();
 	            }
 	        }
 	    }
 	}
+	/* Update the arc length estimate of the last boundary point 
+	   of this segment and the total arc length estimate. */
+	p1->setArcLength(l0 + l1);
+	setArcLength(l1);
 }
 
 Ionflux::Mapping::Segment* 
@@ -556,6 +579,25 @@ int maxNumIterations)
 	return result;
 }
 
+Ionflux::Mapping::MappingValue 
+Segment::getArcLength(Ionflux::Mapping::MappingValue value, 
+Ionflux::Mapping::MappingValue relativeError, unsigned int 
+maxNumIterations)
+{
+	if (value == 1.)
+	    return getArcLength();
+	MappingValue result = 0;
+	PointSample* ps0 = getSample0(value, SAMPLING_MODE_PARAM, 
+	    SEARCH_BINARY, true);
+	if (ps0 != 0)
+	{
+	    addLocalRef(ps0);
+	    result = ps0->getArcLength();
+	    removeLocalRef(ps0);
+	}
+	return result;
+}
+
 Ionflux::Mapping::Point Segment::call(Ionflux::Mapping::MappingValue value)
 {
 	PointSample* ps0 = getSample0(value, SAMPLING_MODE_PARAM, 
@@ -726,6 +768,16 @@ void Segment::clearSegments()
 	segments.clear();
 }
 
+void Segment::setArcLength(Ionflux::Mapping::MappingValue newArcLength)
+{
+	arcLength = newArcLength;
+}
+
+Ionflux::Mapping::MappingValue Segment::getArcLength() const
+{
+    return arcLength;
+}
+
 Ionflux::Mapping::Segment& Segment::operator=(const 
 Ionflux::Mapping::Segment& other)
 {
@@ -806,6 +858,7 @@ std::string Segment::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::Mapping::PointMapping::getXMLAttributeData();
+	d0 << " " << "l=\"" << arcLength << "\"";
 	return d0.str();
 }
 

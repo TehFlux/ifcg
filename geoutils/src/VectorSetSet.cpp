@@ -310,10 +310,8 @@ std::string VectorSetSet::getXMLElementName() const
 
 std::string VectorSetSet::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0;
+	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
 	return d0.str();
 }
 

@@ -25,7 +25,7 @@
 # 02111-1307 USA
 # 
 # ==========================================================================
-__all__ = [ "Data", "Object", "Camera", "Material", "utils" ]
+__all__ = [ "Data", "Object", "Camera", "Material", "Operator", "utils" ]
 
 class BGeoUtilsError(Exception):
     """Exception base class for the Blender GeoUtils module."""

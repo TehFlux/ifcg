@@ -88,6 +88,12 @@ class PointMapping
         Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
         int maxNumIterations = 
         Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
+        virtual Ionflux::Mapping::MappingValue 
+        getArcLength(Ionflux::Mapping::MappingValue value, 
+        Ionflux::Mapping::MappingValue relativeError = 
+        Ionflux::Mapping::PointMapping::DEFAULT_RELATIVE_ERROR, unsigned 
+        int maxNumIterations = 
+        Ionflux::Mapping::PointMapping::DEFAULT_MAX_NUM_ITERATIONS);
         virtual Ionflux::Mapping::Point 
         operator()(Ionflux::Mapping::MappingValue value);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue

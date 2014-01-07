@@ -275,11 +275,9 @@ std::string Edge::getXMLElementName() const
 
 std::string Edge::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0 << " ";
-	d0 << "v0=\"" << v0 << "\"";
+	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
+	d0 << " " << "v0=\"" << v0 << "\"";
 	d0 << " " << "v1=\"" << v1 << "\"";
 	return d0.str();
 }

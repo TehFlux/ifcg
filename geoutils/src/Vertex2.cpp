@@ -337,11 +337,9 @@ std::string Vertex2::getXMLElementName() const
 
 std::string Vertex2::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0 << " ";
-	d0 << "x=\"" << x << "\"";
+	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
+	d0 << " " << "x=\"" << x << "\"";
 	d0 << " " << "y=\"" << y << "\"";
 	return d0.str();
 }

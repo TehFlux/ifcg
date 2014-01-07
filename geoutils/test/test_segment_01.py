@@ -18,7 +18,8 @@ outFile0 = 'temp' + os.path.sep + 'test_segment_01_01.svg'
 imageWidth = 1000
 imageHeight = 1000
 numStyles = 10
-numSplitLevels0 = 7
+numSplitSegments0 = 2
+numSplitLevels0 = 10
 
 d0 = im.getAttrValue(inFile0, "path", "spline01", "d")
 #print("  path data: %s" % d0)
@@ -50,14 +51,18 @@ mm.addLocalRef(seg0)
 
 print("    seg0: [%s]" % seg0.getValueString())
 
-seg0.split(2, True, True, im.Segment.DEFAULT_ERROR_THRESHOLD, 
+print("  Splitting segments (numSplitSegments = %d)..." 
+    % numSplitSegments0)
+
+seg0.split(numSplitSegments0, True, True, 
+    im.Segment.DEFAULT_ERROR_THRESHOLD, 
     numSplitLevels0)
 
 seg1 = im.Segment.create()
 mm.addLocalRef(seg1)
 seg0.getLeafSegments(seg1)
 
-print("    seg1: [%s]" % seg1.getValueString())
+#print("    seg1: [%s]" % seg1.getValueString())
 
 p1 = cg.Polygon3.create()
 mm.addLocalRef(p1)
@@ -143,5 +148,33 @@ ip0.setWidth(imageWidth)
 ip0.setHeight(imageHeight)
 ip0.setOrigin(cg.Vector2(imageWidth / 2, imageHeight / 2))
 ps0.writeSVG(ip0, "polygon", cg.AXIS_Y)
+
+print("  Calculating arc length...")
+
+t0 = 1.
+
+print("    t0 = %f" % t0)
+
+l0 = spline0.getArcLength(t0)
+l1 = seg0.getArcLength(t0)
+l2 = seg1.getLength(t0)
+
+print("    (spline0) l0 = %f" % l0)
+print("    (seg0)    l1 = %f" % l1)
+print("    (seg1)    l2 = %f" % l2)
+
+print("  Estimating parameters for arc length...")
+
+x0 = 725.
+
+print("    x0 = %f" % x0)
+
+l0 = spline0.getParamArcLength(x0)
+l1 = seg0.getParamArcLength(x0)
+l2 = seg1.getParamArcLength(x0)
+
+print("    (spline0) l0 = %f" % l0)
+print("    (seg0)    l1 = %f" % l1)
+print("    (seg1)    l2 = %f" % l2)
 
 print("All done!")

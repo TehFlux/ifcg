@@ -557,10 +557,8 @@ std::string Vector3::getXMLElementName() const
 
 std::string Vector3::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::GeoUtils::Vector::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0;
+	d0 << Ionflux::GeoUtils::Vector::getXMLAttributeData();
 	return d0.str();
 }
 

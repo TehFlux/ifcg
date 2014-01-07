@@ -1095,10 +1095,8 @@ std::string Face::getXMLElementName() const
 
 std::string Face::getXMLAttributeData() const
 {
-	std::string a0(Ionflux::GeoUtils::TransformableObject::getXMLAttributeData());
 	std::ostringstream d0;
-	if (a0.size() > 0)
-	    d0 << a0;
+	d0 << Ionflux::GeoUtils::TransformableObject::getXMLAttributeData();
 	return d0.str();
 }
 
