@@ -67,6 +67,8 @@ class Vector3
         virtual void setElements(double newX0, double newX1, double newX2);
         virtual void setElements(const Ionflux::GeoUtils::Vector2& 
         newElements);
+        virtual void setElements(const Ionflux::GeoUtils::Vector& other, 
+        unsigned int sourceOffset = 0, unsigned int targetOffset = 0);
         virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, 
         double newZ = 1.);
         virtual void setElements(const Ionflux::Mapping::Point& 

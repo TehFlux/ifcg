@@ -272,9 +272,12 @@ class Matrix3
 		 * vector. If the matrix is not a rotation matrix, the result is 
 		 * undefined.
 		 *
+		 * \param t Tolerance.
+		 *
 		 * \return Axis/angle vector.
 		 */
-		virtual Ionflux::GeoUtils::Vector4 getAxisAngle() const;
+		virtual Ionflux::GeoUtils::Vector4 getAxisAngle(double t = 
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
 		
 		/** Get number of elements.
 		 *

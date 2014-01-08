@@ -141,6 +141,12 @@ void Vector3::setElements(const Ionflux::GeoUtils::Vector2& newElements)
 	elements[1] = newElements.getX1();
 }
 
+void Vector3::setElements(const Ionflux::GeoUtils::Vector& other, unsigned 
+int sourceOffset, unsigned int targetOffset)
+{
+	Vector::setElements(other, sourceOffset, targetOffset);
+}
+
 void Vector3::setV2(const Ionflux::GeoUtils::Vector2& newElements, double 
 newZ)
 {

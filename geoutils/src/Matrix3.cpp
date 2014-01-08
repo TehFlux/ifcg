@@ -264,14 +264,14 @@ Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) const
 	Ionflux::GeoUtils::svd(*this, u, s, v);
 }
 
-Ionflux::GeoUtils::Vector4 Matrix3::getAxisAngle() const
+Ionflux::GeoUtils::Vector4 Matrix3::getAxisAngle(double t) const
 {
 	Matrix3 m0(*this - UNIT);
 	Matrix3 u;
 	Vector3 s;
 	Matrix3 v;
 	m0.svd(u, s, v);
-	if (!Ionflux::GeoUtils::eq(s[2], 0.))
+	if (!Ionflux::GeoUtils::eq(s[2], 0., t))
 	{
 	    std::ostringstream status;
 	    status << "Unexpected singular value (2): " << s[2] 
@@ -279,7 +279,15 @@ Ionflux::GeoUtils::Vector4 Matrix3::getAxisAngle() const
 	    throw GeoUtilsError(getErrorString(status.str(), 
 	        "getAxisAngle"));
 	}
-	double angle0 = ::acos(0.5 * (trace() - 1.));
+	double a0 = 0.5 * (trace() - 1.);
+	double angle0 = 0.;
+	if (ltOrEq(a0, -1.))
+	    angle0 = M_PI;
+	else
+	if (gtOrEq(a0, 1.))
+	    angle0 = 0;
+	else
+	    angle0 = ::acos(a0);
 	return Vector4(v.getC2(), angle0);
 }
 

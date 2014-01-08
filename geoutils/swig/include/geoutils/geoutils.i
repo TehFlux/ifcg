@@ -1026,6 +1026,8 @@ class Vector3
         virtual void setElements(double newX0, double newX1, double newX2);
         virtual void setElements(const Ionflux::GeoUtils::Vector2& 
         newElements);
+        virtual void setElements(const Ionflux::GeoUtils::Vector& other, 
+        unsigned int sourceOffset = 0, unsigned int targetOffset = 0);
         virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, 
         double newZ = 1.);
         virtual void setElements(const Ionflux::Mapping::Point& 
@@ -1458,7 +1460,8 @@ class Matrix3
         virtual void svd(Ionflux::GeoUtils::Matrix3& u, 
         Ionflux::GeoUtils::Vector3& s, Ionflux::GeoUtils::Matrix3& v) 
         const;
-        virtual Ionflux::GeoUtils::Vector4 getAxisAngle() const;
+        virtual Ionflux::GeoUtils::Vector4 getAxisAngle(double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual unsigned int getNumElements() const;
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
