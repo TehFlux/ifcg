@@ -51,7 +51,7 @@ class MatrixMN
         
         MatrixMN();
 		MatrixMN(const Ionflux::GeoUtils::MatrixMN& other);
-        MatrixMN(unsigned int initNumCols, unsigned int initNumRows);
+        MatrixMN(unsigned int initNumRows, unsigned int initNumCols);
         MatrixMN(unsigned int initNumCols, unsigned int initNumRows, double
         x0, double x1 = 0., double x2 = 0., double x3 = 0., double x4 = 0.,
         double x5 = 0., double x6 = 0., double x7 = 0., double x8 = 0., 
@@ -79,8 +79,8 @@ class MatrixMN
 		other);
 		static Ionflux::GeoUtils::MatrixMN* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
-		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
-		unsigned int initNumRows, Ionflux::ObjectBase::IFObject* parentObject = 
+		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumRows, 
+		unsigned int initNumCols, Ionflux::ObjectBase::IFObject* parentObject = 
 		0);
 		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
 		unsigned int initNumRows, double x0, double x1 = 0., double x2 = 0., 

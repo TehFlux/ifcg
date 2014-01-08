@@ -78,7 +78,7 @@ MatrixMN::MatrixMN(const Ionflux::GeoUtils::MatrixMN& other)
 	*this = other;
 }
 
-MatrixMN::MatrixMN(unsigned int initNumCols, unsigned int initNumRows)
+MatrixMN::MatrixMN(unsigned int initNumRows, unsigned int initNumCols)
 : numRows(initNumRows), numCols(initNumCols)
 {
 	// NOTE: The following line is required for run-time type information.
@@ -221,10 +221,10 @@ MatrixMN::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
-Ionflux::GeoUtils::MatrixMN* MatrixMN::create(unsigned int initNumCols, 
-unsigned int initNumRows, Ionflux::ObjectBase::IFObject* parentObject)
+Ionflux::GeoUtils::MatrixMN* MatrixMN::create(unsigned int initNumRows, 
+unsigned int initNumCols, Ionflux::ObjectBase::IFObject* parentObject)
 {
-    MatrixMN* newObject = new MatrixMN(initNumCols, initNumRows);
+    MatrixMN* newObject = new MatrixMN(initNumRows, initNumCols);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object.");

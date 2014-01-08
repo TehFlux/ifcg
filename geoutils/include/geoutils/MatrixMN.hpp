@@ -97,10 +97,10 @@ class MatrixMN
 		 *
 		 * Construct new MatrixMN object.
 		 *
+		 * \param initNumRows Number of rows.
 		 * \param initNumCols Number of columns.
-		 * \param initNumRows Number of columns.
 		 */
-		MatrixMN(unsigned int initNumCols, unsigned int initNumRows);
+		MatrixMN(unsigned int initNumRows, unsigned int initNumCols);
 		
 		/** Constructor.
 		 *
@@ -238,12 +238,12 @@ class MatrixMN
 		 *
 		 * Create a new MatrixMN object.
 		 *
+		 * \param initNumRows Number of rows.
 		 * \param initNumCols Number of columns.
-		 * \param initNumRows Number of columns.
 		 * \param parentObject Parent object.
 		 */
-		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumCols, 
-		unsigned int initNumRows, Ionflux::ObjectBase::IFObject* parentObject = 
+		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumRows, 
+		unsigned int initNumCols, Ionflux::ObjectBase::IFObject* parentObject = 
 		0);
         
 		/** Create instance.

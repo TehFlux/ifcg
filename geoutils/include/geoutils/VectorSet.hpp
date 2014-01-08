@@ -108,6 +108,20 @@ class VectorSet
 		 */
 		virtual ~VectorSet();
 		
+		/** Make vector orientations consistent.
+		 *
+		 * Make vector orientations consistent. This function flips vectors as
+		 * necessary to make neighbouring vectors consistently oriented, with 
+		 * the minimum amount of flips necessary. If the optional \c flipData 
+		 * argument is specified, information about which elements have been 
+		 * flipped will be stored in that vector.
+		 *
+		 * \param flipData Where to store flip data.
+		 * \param t Tolerance.
+		 */
+		virtual void makeOrientationsConsistent(Ionflux::GeoUtils::Vector* 
+		flipData = 0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+		
 		/** Comparison operator: equality.
 		 *
 		 * Compare equality.

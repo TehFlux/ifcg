@@ -53,6 +53,8 @@ class VectorSet
 		VectorSet(const Ionflux::GeoUtils::VectorSet& other);
         VectorSet(Ionflux::GeoUtils::VectorVector& initVectors);
         virtual ~VectorSet();
+        virtual void makeOrientationsConsistent(Ionflux::GeoUtils::Vector* 
+        flipData = 0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual bool operator==(const Ionflux::GeoUtils::VectorSet& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) 

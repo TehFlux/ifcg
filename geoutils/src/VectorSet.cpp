@@ -32,6 +32,7 @@
 #include <iomanip>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vector.hpp"
+#include "geoutils/MatrixMN.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "ifobject/xmlutils_private.hpp"
@@ -89,6 +90,83 @@ VectorSet::~VectorSet()
 {
 	clearVectors();
 	// TODO: Nothing ATM. ;-)
+}
+
+void VectorSet::makeOrientationsConsistent(Ionflux::GeoUtils::Vector* 
+flipData, double t)
+{
+	unsigned int numVecs0 = getNumVectors();
+	/* Calculate flipping cost for both cases.
+	   Cost matrix:
+	     column 0: cost if first vector is flipped
+	     column 1: cost if first vector is not flipped
+	 */
+	MatrixMN m0(numVecs0, 2);
+	// Total cost for both cases.
+	double tc0 = 0.;
+	double tc1 = 0.;
+	for (unsigned int i = 0; i < numVecs0; i++)
+	{
+	    Vector* v0 = getVector(i);
+	    if (i == 0)
+	    {
+	        // first vector
+	        m0.setElement(i, 0, 0.);
+	        m0.setElement(i, 1, 1.);
+	        tc1 += 1.;
+	    } else 
+	    {
+	        Vector* v1 = getVector(i - 1);
+	        double o0 = v0->dot(*v1);
+	        double c0 = m0.getElement(i - 1, 0);
+	        double c1 = m0.getElement(i - 1, 1);
+	        double vv0 = 0.;
+	        double vv1 = 0.;
+	        if (lt(o0, 0., t))
+	        {
+	            /* Default orientation is inconsistent: 
+	               either one of the vectors needs to be flipped. */
+	            if (c0 == 0.)
+	                vv0 = 1.;
+	            else
+	                vv0 = 0.;
+	            if (c1 == 0.)
+	                vv1 = 1.;
+	            else
+	                vv1 = 0.;
+	        } else
+	        {
+	            /* Default orientation is consistent: 
+	               flip both of the vectors, or none of them. */
+	            if (c0 == 0.)
+	                vv0 = 0.;
+	            else
+	                vv0 = 1.;
+	            if (c1 == 0.)
+	                vv1 = 0.;
+	            else
+	                vv1 = 1.;
+	        }
+	        m0.setElement(i, 0, vv0);
+	        m0.setElement(i, 1, vv1);
+	        if (vv0 == 1.)
+	            tc0 += 1.;
+	        if (vv1 == 1.)
+	            tc1 += 1.;
+	    }
+	}
+	// Flip vectors according to best case.
+	unsigned int col0 = 0;
+	if (tc1 < tc0)
+	    col0 = 1;
+	for (unsigned int i = 0; i < numVecs0; i++)
+	{
+	    Vector* v0 = getVector(i);
+	    if (m0.getElement(i, col0) == 1.)
+	        v0->flipIP();
+	}
+	if (flipData != 0)
+	    m0.getCol(col0, *flipData);
 }
 
 bool VectorSet::operator==(const Ionflux::GeoUtils::VectorSet& other) const
