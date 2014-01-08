@@ -233,6 +233,20 @@ double Vector3::angle(const Ionflux::GeoUtils::Vector3& other) const
 	return ::acos(t);
 }
 
+double Vector3::angle(const Ionflux::GeoUtils::Vector3& other, const 
+Ionflux::GeoUtils::Vector3& axis0, double t) const
+{
+	Vector3 pv0(axis0.ortho(*this));
+	Vector3 pv1(axis0.ortho(other));
+	pv0.normalizeIP();
+	pv1.normalizeIP();
+	Vector3 ov0(pv0.cross(pv1));
+	double sign0 = 1.;
+	if (Ionflux::GeoUtils::lt(ov0.dot(axis0), 0., t))
+	    sign0 = -1.;
+	return sign0 * pv0.angle(pv1);
+}
+
 Ionflux::GeoUtils::Vector3 Vector3::slerp(const Ionflux::GeoUtils::Vector3&
 other, double t) const
 {

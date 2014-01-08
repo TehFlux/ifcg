@@ -271,6 +271,23 @@ class Vector3
 		 */
 		virtual double angle(const Ionflux::GeoUtils::Vector3& other) const;
 		
+		/** Calculate angle.
+		 *
+		 * Calculate the shortest angle of rotation around the specified axis 
+		 * that maps the normalized projection into the plane defined by the 
+		 * rotation axis vector of this vector (v0) to the normalized 
+		 * projection into that plane of the other vector (v1).
+		 *
+		 * \param other Vector.
+		 * \param axis0 Axis.
+		 * \param t Tolerance.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual double angle(const Ionflux::GeoUtils::Vector3& other, const 
+		Ionflux::GeoUtils::Vector3& axis0, double t = 
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+		
 		/** Spherical linear interpolation.
 		 *
 		 * Interpolate vectors using spherical linear interpolation.

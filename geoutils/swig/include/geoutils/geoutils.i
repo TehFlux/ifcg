@@ -1043,6 +1043,9 @@ class Vector3
         virtual Ionflux::GeoUtils::Vector3 ortho() const;
         virtual double angle(const Ionflux::GeoUtils::Vector3& other) 
         const;
+        virtual double angle(const Ionflux::GeoUtils::Vector3& other, const
+        Ionflux::GeoUtils::Vector3& axis0, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual Ionflux::GeoUtils::Vector3 slerp(const 
         Ionflux::GeoUtils::Vector3& other, double t) const;
         virtual Ionflux::GeoUtils::Vector3 permute(int px, int py, int pz) 
