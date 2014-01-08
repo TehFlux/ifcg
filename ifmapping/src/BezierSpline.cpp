@@ -89,13 +89,17 @@ BezierSpline::~BezierSpline()
 unsigned int BezierSpline::getSegmentIndex(Ionflux::Mapping::MappingValue 
 t) const
 {
-	unsigned int numSegments = segments.size();
-	int si = static_cast<int>(floor(t * numSegments));
+	unsigned int numSegments0 = getNumSegments();
+	if (numSegments0 == 0)
+	    throw MappingError(getErrorString(
+	        "Spline does not have any segments.", 
+	        "getSegmentIndex"));
+	int si = static_cast<int>(floor(t * numSegments0));
 	if (si < 0)
 	    si = 0;
 	else
-	if (static_cast<unsigned int>(si) >= numSegments)
-	    si = numSegments - 1;
+	if (static_cast<unsigned int>(si) >= numSegments0)
+	    si = numSegments0 - 1;
 	return static_cast<unsigned int>(si);
 }
 
@@ -141,10 +145,10 @@ void BezierSpline::initFromSVG(const std::string& rawData)
 Ionflux::Mapping::Point BezierSpline::call(Ionflux::Mapping::MappingValue 
 value)
 {
-	unsigned int numSegments = segments.size();
+	unsigned int numSegments0 = getNumSegments();
 	unsigned int si = getSegmentIndex(value);
-	Ionflux::Mapping::BezierCurve* s = segments[si];
-	double d = 1. / numSegments;
+	Ionflux::Mapping::BezierCurve* s = getSegment(si);
+	double d = 1. / numSegments0;
 	return (*s)((value - d * si) / d);
 }
 
