@@ -15,7 +15,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ Vector::angle(): Add a version that also accepts an axis of rotation and 
+  finds the true shortest angle of rotation between the vectors.
 
 --------------------------------------------------------------------------------
 Critical stuff
