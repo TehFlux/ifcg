@@ -437,6 +437,14 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
 
 // Classes
 
+%rename(mult2) operator*(double, const Ionflux::GeoUtils::Vector2&);
+%rename(mult2x2) operator*(double, const Ionflux::GeoUtils::Matrix2&);
+%rename(mult3) operator*(double, const Ionflux::GeoUtils::Vector3&);
+%rename(mult4) operator*(double, const Ionflux::GeoUtils::Vector4&);
+%rename(mult3x3) operator*(double, const Ionflux::GeoUtils::Matrix3&);
+%rename(mult4x4) operator*(double, const Ionflux::GeoUtils::Matrix4&);
+%rename(multN) operator*(double, const Ionflux::GeoUtils::VectorN&);
+
 }
 
 }
@@ -1766,9 +1774,6 @@ namespace GeoUtils
     }
 }
 
-%rename(mult2) operator*(double, const Ionflux::GeoUtils::Vector2&);
-%rename(mult2x2) operator*(double, const Ionflux::GeoUtils::Matrix2&);
-
 %extend Vector3 {
     double __getitem__(int index)
     {
@@ -1779,8 +1784,6 @@ namespace GeoUtils
         return $self->setElement(index, value);
     }
 }
-
-%rename(mult3) operator*(double, const Ionflux::GeoUtils::Vector3&);
 
 %extend Vector4 {
     double __getitem__(int index)
@@ -1793,10 +1796,6 @@ namespace GeoUtils
     }
 }
 
-%rename(mult4) operator*(double, const Ionflux::GeoUtils::Vector4&);
-%rename(mult3x3) operator*(double, const Ionflux::GeoUtils::Matrix3&);
-%rename(mult4x4) operator*(double, const Ionflux::GeoUtils::Matrix4&);
-
 %extend VectorN {
     double __getitem__(int index)
     {
@@ -1807,8 +1806,6 @@ namespace GeoUtils
         return $self->setElement(index, value);
     }
 }
-
-%rename(multN) operator*(double, const Ionflux::GeoUtils::VectorN&);
 
 }
 
