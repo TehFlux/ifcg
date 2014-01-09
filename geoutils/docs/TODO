@@ -47,7 +47,6 @@ Critical stuff
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
 
 + Testing
-  > Mesh::fiber()
   > TransformableObject and derived classes
     . Face, Mesh, TransformableGroup, Object3, Vertex3, 
       Vertex3Set, Polygon3, Polygon3Set, Shape3, SVG, Image

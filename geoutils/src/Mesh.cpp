@@ -890,6 +890,8 @@ lSubDivs, double length, double radius)
 	Vertex3Vector verts0;
 	double dPhi = 2. * M_PI / aSubDivs;
 	double ds = length / lSubDivs;
+	// Bottom center vertex.
+	verts0.push_back(Vertex::create(0., 0., -s));
 	// Hull vertices.
 	for (unsigned int i = 0; i <= lSubDivs; i++)
 	{
@@ -901,9 +903,8 @@ lSubDivs, double length, double radius)
 	        verts0.push_back(Vertex::create(x, y, z));
 	    }
 	}
-	// Center vertices.
+	// Top center vertex.
 	verts0.push_back(Vertex::create(0., 0., s));
-	verts0.push_back(Vertex::create(0., 0., -s));
 	m0->addVertices(verts0);
 	// Faces.
 	FaceVector faces0;
@@ -914,45 +915,45 @@ lSubDivs, double length, double radius)
 	    {
 	        if (j < (aSubDivs - 1))
 	            faces0.push_back(Face::create(
-	                i * aSubDivs + j, 
-	                (i + 1) * aSubDivs + j, 
-	                (i + 1) * aSubDivs + j + 1, 
-	                i * aSubDivs + j, 
+	                1 + i * aSubDivs + j, 
+	                1 + (i + 1) * aSubDivs + j, 
+	                1 + (i + 1) * aSubDivs + j + 1, 
+	                1 + i * aSubDivs + j + 1, 
 	                m0->getVertexSource()));
 	        else
 	            faces0.push_back(Face::create(
-	                i * aSubDivs + j, 
-	                (i + 1) * aSubDivs + j, 
-	                (i + 1) * aSubDivs, 
-	                i * aSubDivs, 
+	                1 + i * aSubDivs + j, 
+	                1 + (i + 1) * aSubDivs + j, 
+	                1 + (i + 1) * aSubDivs, 
+	                1 + i * aSubDivs, 
 	                m0->getVertexSource()));
 	    }
 	}
-	// Top faces.
-	unsigned int i0 = verts0.size() - 2;
+	// Bottom faces.
+	unsigned int i0 = 0;
 	for (unsigned int i = 0; i < aSubDivs; i++)
 	{
 	    if (i < (aSubDivs - 1))
 	        faces0.push_back(Face::create(
-	            i0, i, i + 1, Face::VERTEX_INDEX_NONE, 
+	            i0, i + 1, i + 2, Face::VERTEX_INDEX_NONE, 
 	            m0->getVertexSource()));
 	    else
 	        faces0.push_back(Face::create(
-	            i0, i, 0, Face::VERTEX_INDEX_NONE, 
+	            i0, i + 1, 1, Face::VERTEX_INDEX_NONE, 
 	            m0->getVertexSource()));
 	}
-	// Bottom faces.
+	// Top faces.
 	i0 = verts0.size() - 1;
 	unsigned int k0 = aSubDivs * lSubDivs;
 	for (unsigned int i = 0; i < aSubDivs; i++)
 	{
 	    if (i < (aSubDivs - 1))
 	        faces0.push_back(Face::create(
-	            i0, k0 + i + 1, k0 + i, Face::VERTEX_INDEX_NONE, 
+	            i0, k0 + i + 2, k0 + i + 1, Face::VERTEX_INDEX_NONE, 
 	            m0->getVertexSource()));
 	    else
 	        faces0.push_back(Face::create(
-	            i0, k0, k0 + i, Face::VERTEX_INDEX_NONE, 
+	            i0, k0 + 1, k0 + i + 1, Face::VERTEX_INDEX_NONE, 
 	            m0->getVertexSource()));
 	}
 	m0->addFaces(faces0);
