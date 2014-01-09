@@ -104,6 +104,16 @@ class Matrix
 		 *
 		 * Get the element at the specified index.
 		 *
+		 * \param index Index.
+		 *
+		 * \return Element at the specified index.
+		 */
+		virtual double getElement(unsigned int index) const;
+		
+		/** Get element.
+		 *
+		 * Get the element at the specified index.
+		 *
 		 * \param rowIndex Row index.
 		 * \param colIndex Column index.
 		 *

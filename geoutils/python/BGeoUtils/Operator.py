@@ -135,7 +135,9 @@ class SaveMesh(bpy.types.Operator):
             n0 = o0.name
         gm0 = bgd.Mesh(n0)
         gm0.setFromBMesh(bm0)
-        gm0.cgMesh.writeToXMLFile(self.filepath)
+        gm0.cgData.writeToXMLFile(self.filepath)
+        self.report({'INFO'}, "Saved mesh '%s' to file '%s'." 
+            % (n0, self.filepath))
         return {'FINISHED'}
     
     def invoke(self, context, event):
@@ -157,6 +159,10 @@ class LoadMesh(bpy.types.Operator):
         name = "Create vertex colors", default = False)
     
     def execute(self, context):
+        # register XML object factories
+        cg.Vector2.getXMLObjectFactory()
+        cg.Vector3.getXMLObjectFactory()
+        cg.FaceData.getXMLObjectFactory()
         cgm0 = cg.Mesh.create()
         cgm0.loadFromXMLFile(self.filepath)
         if (self.name != ""):
@@ -170,6 +176,8 @@ class LoadMesh(bpy.types.Operator):
             self.createVertexColors)
         o0 = bgo.Object(n0, gm0)
         o0.createBObject()
+        self.report({'INFO'}, "Mesh '%s' loaded from file '%s'." 
+            % (n0, self.filepath))
         return {'FINISHED'}
     
     def invoke(self, context, event):

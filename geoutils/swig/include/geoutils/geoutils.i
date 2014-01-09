@@ -749,6 +749,7 @@ class Matrix
         Matrix();
 		Matrix(const Ionflux::GeoUtils::Matrix& other);
         virtual ~Matrix();
+        virtual double getElement(unsigned int index) const;
         virtual double getElement(unsigned int rowIndex, unsigned int 
         colIndex) const;
         virtual void setElement(unsigned int index, double value);

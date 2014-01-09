@@ -39,8 +39,8 @@ outFile0 = 'temp/colorband01.png'
 numColors = 100
 cellWidth = 20
 cellHeight = 20
-paddingX = 0.05
-paddingY = 0.05
+paddingX = 0.0
+paddingY = 0.0
 
 numCols = int(math.ceil(math.sqrt(numColors)))
 numRows = int(math.ceil(float(numColors) / numCols))

@@ -85,6 +85,12 @@ Matrix::~Matrix()
 	// TODO: Nothing ATM. ;-)
 }
 
+double Matrix::getElement(unsigned int index) const
+{
+	// TODO: Implementation.
+	return Vector::getElement(index);
+}
+
 double Matrix::getElement(unsigned int rowIndex, unsigned int colIndex) 
 const
 {

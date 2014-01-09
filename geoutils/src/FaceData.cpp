@@ -222,7 +222,9 @@ std::string FaceData::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::GeoUtils::VectorSet::getXMLAttributeData();
-	d0 << " " << "datatype=\"" << dataType << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "datatype=\"" << dataType << "\"";
 	return d0.str();
 }
 

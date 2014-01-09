@@ -858,7 +858,9 @@ std::string Segment::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::Mapping::PointMapping::getXMLAttributeData();
-	d0 << " " << "l=\"" << arcLength << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "l=\"" << arcLength << "\"";
 	return d0.str();
 }
 

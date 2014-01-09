@@ -349,7 +349,9 @@ std::string BezierCurve::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::Mapping::PointMapping::getXMLAttributeData();
-	d0 << " " << Ionflux::Mapping::PointSet::getXMLAttributeData();
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << Ionflux::Mapping::PointSet::getXMLAttributeData();
 	return d0.str();
 }
 
