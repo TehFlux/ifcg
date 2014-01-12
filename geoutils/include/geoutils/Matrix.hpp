@@ -305,13 +305,21 @@ class Matrix
 		 */
 		virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
 		
-		/** Get string representation of value.
+		/** Get number of rows.
 		 *
-		 * Get a string representation of the value of the object
+		 * Get the number of rows in the matrix
 		 *
-		 * \return String representation.
+		 * \return Number of rows.
 		 */
-		virtual std::string getValueString() const;
+		virtual unsigned int getNumRows() const;
+		
+		/** Get number of columns.
+		 *
+		 * Get the number of columns in the matrix
+		 *
+		 * \return Number of columns.
+		 */
+		virtual unsigned int getNumCols() const;
 		
 		/** Get string representation of value.
 		 *
@@ -331,6 +339,14 @@ class Matrix
 		int precision = 3, const std::string& colSep = " ", const std::string& 
 		rowSep = "\n", const std::string& rowPrefix = "") const;
 		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
+		
 		/** Get number of elements.
 		 *
 		 * Get the number of elements in the vector
@@ -338,22 +354,6 @@ class Matrix
 		 * \return Number of elements.
 		 */
 		virtual unsigned int getNumElements() const;
-		
-		/** Get number of rows.
-		 *
-		 * Get the number of rows in the matrix
-		 *
-		 * \return Number of rows.
-		 */
-		virtual unsigned int getNumRows() const;
-		
-		/** Get number of columns.
-		 *
-		 * Get the number of columns in the matrix
-		 *
-		 * \return Number of columns.
-		 */
-		virtual unsigned int getNumCols() const;
 		
 		/** Assignment operator.
 		 *

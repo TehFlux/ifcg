@@ -382,6 +382,31 @@ double Vector::operator*(const Ionflux::GeoUtils::Vector& other) const
 	return dot(other);
 }
 
+unsigned int Vector::getNumElements() const
+{
+	// TODO: Implementation.
+	return NUM_ELEMENTS;
+}
+
+std::string Vector::getValueStringF(unsigned int fieldWidth, unsigned int 
+precision, const std::string& colSep) const
+{
+	std::ostringstream status;
+	unsigned int numElements0 = getNumElements();
+	bool e0 = true;
+	for (unsigned int i = 0; i < numElements0; i++)
+	{
+	    if (!e0)
+	        status << colSep;
+	    else
+	        e0 = false;
+	    status << std::setw(fieldWidth) << std::setfill(' ') 
+	        << std::setprecision(precision) << right 
+	        << elements[i];
+	}
+	return status.str();
+}
+
 std::string Vector::getValueString() const
 {
 	std::ostringstream status;
@@ -396,12 +421,6 @@ std::string Vector::getValueString() const
 	    status << elements[i];
 	}
 	return status.str();
-}
-
-unsigned int Vector::getNumElements() const
-{
-	// TODO: Implementation.
-	return NUM_ELEMENTS;
 }
 
 Ionflux::GeoUtils::Vector& Vector::operator=(const 

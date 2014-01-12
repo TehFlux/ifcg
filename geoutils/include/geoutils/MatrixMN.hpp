@@ -170,6 +170,14 @@ class MatrixMN
 		 */
 		virtual Ionflux::GeoUtils::MatrixMN invert() const;
 		
+		/** Get number of elements.
+		 *
+		 * Get the number of elements in the matrix
+		 *
+		 * \return Number of elements.
+		 */
+		virtual unsigned int getNumElements() const;
+		
 		/** QR solve.
 		 *
 		 * Solve the system R x = Q^T b.
@@ -182,14 +190,6 @@ class MatrixMN
 		static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
 		Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
 		Ionflux::GeoUtils::VectorN& x);
-		
-		/** Get number of elements.
-		 *
-		 * Get the number of elements in the matrix
-		 *
-		 * \return Number of elements.
-		 */
-		virtual unsigned int getNumElements() const;
 		
 		/** Assignment operator.
 		 *

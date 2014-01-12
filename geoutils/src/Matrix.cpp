@@ -442,32 +442,16 @@ void Matrix::permuteColsIP(const Ionflux::GeoUtils::Vector& p)
 	removeLocalRef(m0);
 }
 
-std::string Matrix::getValueString() const
+unsigned int Matrix::getNumRows() const
 {
-	std::ostringstream status;
-	unsigned int numRows = getNumRows();
-	unsigned int numCols = getNumCols();
-	bool e0 = true;
-	bool e1 = true;
-	for (unsigned int i = 0; i < numRows; i++)
-	{
-	    if (!e0)
-	        status << "; ";
-	    else
-	        e0 = false;
-	    status << "(";
-	    e1 = true;
-	    for (unsigned int k = 0; k < numCols; k++)
-	    {
-	        if (!e1)
-	            status << ", ";
-	        else
-	            e1 = false;
-	        status << elements[i * numCols + k];
-	    }
-	    status << ")";
-	}
-	return status.str();
+	// TODO: Implementation.
+	return NUM_ROWS;
+}
+
+unsigned int Matrix::getNumCols() const
+{
+	// TODO: Implementation.
+	return NUM_COLS;
 }
 
 std::string Matrix::getValueStringF(unsigned int fieldWidth, unsigned int 
@@ -502,22 +486,38 @@ std::string& rowPrefix) const
 	return status.str();
 }
 
+std::string Matrix::getValueString() const
+{
+	std::ostringstream status;
+	unsigned int numRows = getNumRows();
+	unsigned int numCols = getNumCols();
+	bool e0 = true;
+	bool e1 = true;
+	for (unsigned int i = 0; i < numRows; i++)
+	{
+	    if (!e0)
+	        status << "; ";
+	    else
+	        e0 = false;
+	    status << "(";
+	    e1 = true;
+	    for (unsigned int k = 0; k < numCols; k++)
+	    {
+	        if (!e1)
+	            status << ", ";
+	        else
+	            e1 = false;
+	        status << elements[i * numCols + k];
+	    }
+	    status << ")";
+	}
+	return status.str();
+}
+
 unsigned int Matrix::getNumElements() const
 {
 	// TODO: Implementation.
 	return NUM_ELEMENTS;
-}
-
-unsigned int Matrix::getNumRows() const
-{
-	// TODO: Implementation.
-	return NUM_ROWS;
-}
-
-unsigned int Matrix::getNumCols() const
-{
-	// TODO: Implementation.
-	return NUM_COLS;
 }
 
 Ionflux::GeoUtils::Matrix& Matrix::operator=(const 

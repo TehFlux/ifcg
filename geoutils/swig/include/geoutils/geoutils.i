@@ -624,8 +624,10 @@ class Vector
         const;
         virtual double operator*(const Ionflux::GeoUtils::Vector& other) 
         const;
-        virtual std::string getValueString() const;
         virtual unsigned int getNumElements() const;
+        virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
+        unsigned int precision = 3, const std::string& colSep = " ") const;
+        virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -794,14 +796,14 @@ class Matrix
         Ionflux::GeoUtils::Matrix& target);
         virtual void permuteRowsIP(const Ionflux::GeoUtils::Vector& p);
         virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
-        virtual std::string getValueString() const;
+        virtual unsigned int getNumRows() const;
+        virtual unsigned int getNumCols() const;
         virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
         unsigned int precision = 3, const std::string& colSep = " ", const 
         std::string& rowSep = "\n", const std::string& rowPrefix = "") 
         const;
+        virtual std::string getValueString() const;
         virtual unsigned int getNumElements() const;
-        virtual unsigned int getNumRows() const;
-        virtual unsigned int getNumCols() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -1711,10 +1713,10 @@ class MatrixMN
         virtual Ionflux::GeoUtils::VectorN solve(const 
         Ionflux::GeoUtils::VectorN& b) const;
         virtual Ionflux::GeoUtils::MatrixMN invert() const;
+        virtual unsigned int getNumElements() const;
         static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
         Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& 
         b, Ionflux::GeoUtils::VectorN& x);
-        virtual unsigned int getNumElements() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -6849,6 +6851,10 @@ class VectorSet
         virtual bool operator==(const Ionflux::GeoUtils::VectorSet& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) 
+        const;
+        virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
+        unsigned int precision = 3, const std::string& colSep = " ", const 
+        std::string& rowSep = "\n", const std::string& rowPrefix = "") 
         const;
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;

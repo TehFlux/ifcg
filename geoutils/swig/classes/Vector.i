@@ -86,8 +86,10 @@ class Vector
         const;
         virtual double operator*(const Ionflux::GeoUtils::Vector& other) 
         const;
-        virtual std::string getValueString() const;
         virtual unsigned int getNumElements() const;
+        virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
+        unsigned int precision = 3, const std::string& colSep = " ") const;
+        virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

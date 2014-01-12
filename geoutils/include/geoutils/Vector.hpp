@@ -343,14 +343,6 @@ class Vector
 		 */
 		virtual double operator*(const Ionflux::GeoUtils::Vector& other) const;
 		
-		/** Get string representation of value.
-		 *
-		 * Get a string representation of the value of the object
-		 *
-		 * \return String representation.
-		 */
-		virtual std::string getValueString() const;
-		
 		/** Get number of elements.
 		 *
 		 * Get the number of elements in the vector
@@ -358,6 +350,29 @@ class Vector
 		 * \return Number of elements.
 		 */
 		virtual unsigned int getNumElements() const;
+		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object. This 
+		 * returns a string in which the numbers are formatted according to 
+		 * the specified parameters.
+		 *
+		 * \param fieldWidth field width.
+		 * \param precision decimal precision.
+		 * \param colSep column separator.
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueStringF(unsigned int fieldWidth = 5, unsigned
+		int precision = 3, const std::string& colSep = " ") const;
+		
+		/** Get string representation of value.
+		 *
+		 * Get a string representation of the value of the object
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueString() const;
 		
 		/** Assignment operator.
 		 *

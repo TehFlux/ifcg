@@ -151,17 +151,17 @@ Ionflux::GeoUtils::MatrixMN MatrixMN::invert() const
 	return result;
 }
 
+unsigned int MatrixMN::getNumElements() const
+{
+	// TODO: Implementation.
+	return getNumCols() * getNumRows();
+}
+
 void MatrixMN::qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
 Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
 Ionflux::GeoUtils::VectorN& x)
 {
 	Ionflux::GeoUtils::qrSolve(q, r, b, x);
-}
-
-unsigned int MatrixMN::getNumElements() const
-{
-	// TODO: Implementation.
-	return getNumCols() * getNumRows();
 }
 
 void MatrixMN::setNumRows(unsigned int newNumRows)

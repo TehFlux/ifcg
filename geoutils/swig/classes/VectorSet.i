@@ -59,6 +59,10 @@ class VectorSet
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) 
         const;
+        virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
+        unsigned int precision = 3, const std::string& colSep = " ", const 
+        std::string& rowSep = "\n", const std::string& rowPrefix = "") 
+        const;
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;

@@ -193,6 +193,30 @@ bool VectorSet::operator!=(const Ionflux::GeoUtils::VectorSet& other) const
 	return !(*this == other);;
 }
 
+std::string VectorSet::getValueStringF(unsigned int fieldWidth, unsigned 
+int precision, const std::string& colSep, const std::string& rowSep, const 
+std::string& rowPrefix) const
+{
+	std::ostringstream status;
+	unsigned int numVectors0 = getNumVectors();
+	bool e0 = true;
+	for (unsigned int i = 0; i < numVectors0; i++)
+	{
+	    Vector* v0 = getVector(i);
+	    if (v0 != 0)
+	    {
+	        if (!e0)
+	            status << rowSep;
+	        else
+	            e0 = false;
+	        if (rowPrefix != "")
+	            status << rowPrefix;
+	        status << v0->getValueStringF(fieldWidth, precision, colSep);
+	    }
+	}
+	return status.str();
+}
+
 std::string VectorSet::getValueString() const
 {
 	ostringstream status;
