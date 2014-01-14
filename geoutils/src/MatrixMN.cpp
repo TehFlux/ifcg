@@ -164,6 +164,22 @@ Ionflux::GeoUtils::VectorN& x)
 	Ionflux::GeoUtils::qrSolve(q, r, b, x);
 }
 
+Ionflux::GeoUtils::MatrixMN MatrixMN::operator*(const 
+Ionflux::GeoUtils::Matrix& other) const
+{
+	MatrixMN result(getNumRows(), other.getNumCols());
+	other.multiply(*this, result);
+	return result;
+}
+
+Ionflux::GeoUtils::VectorN MatrixMN::operator*(const 
+Ionflux::GeoUtils::VectorN& v) const
+{
+	VectorN result(v.getNumElements());
+	Matrix::transform(v, result);
+	return result;
+}
+
 void MatrixMN::setNumRows(unsigned int newNumRows)
 {
 	numRows = newNumRows;

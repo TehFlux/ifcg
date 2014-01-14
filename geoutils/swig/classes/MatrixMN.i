@@ -67,6 +67,10 @@ class MatrixMN
         static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
         Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& 
         b, Ionflux::GeoUtils::VectorN& x);
+        virtual Ionflux::GeoUtils::MatrixMN operator*(const 
+        Ionflux::GeoUtils::Matrix& other) const;
+        virtual Ionflux::GeoUtils::VectorN operator*(const 
+        Ionflux::GeoUtils::VectorN& v) const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

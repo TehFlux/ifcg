@@ -100,6 +100,9 @@ class VectorN
         virtual unsigned int getNumElements() const;
 };
 
+Ionflux::GeoUtils::VectorN operator*(double c, const 
+Ionflux::GeoUtils::VectorN& v);
+
 }
 
 }

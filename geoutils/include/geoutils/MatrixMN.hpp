@@ -191,6 +191,28 @@ class MatrixMN
 		Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& b, 
 		Ionflux::GeoUtils::VectorN& x);
 		
+		/** Multiply matrices.
+		 *
+		 * Multiply matrices.
+		 *
+		 * \param other Matrix.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::MatrixMN operator*(const 
+		Ionflux::GeoUtils::Matrix& other) const;
+		
+		/** Transform a vector.
+		 *
+		 * Transform a vector.
+		 *
+		 * \param v Vector.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual Ionflux::GeoUtils::VectorN operator*(const 
+		Ionflux::GeoUtils::VectorN& v) const;
+		
 		/** Assignment operator.
 		 *
 		 * Assign an object.

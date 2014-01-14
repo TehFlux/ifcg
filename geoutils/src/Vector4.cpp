@@ -153,6 +153,12 @@ newZ, double newW)
 	elements[3] = newW;
 }
 
+void Vector4::setElements(const Ionflux::GeoUtils::Vector& other, unsigned 
+int sourceOffset, unsigned int targetOffset)
+{
+	Vector::setElements(other, sourceOffset, targetOffset);
+}
+
 void Vector4::setV3(const Ionflux::GeoUtils::Vector3& newElements, double 
 newW)
 {

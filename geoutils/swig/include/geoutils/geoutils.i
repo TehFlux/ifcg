@@ -791,9 +791,9 @@ class Matrix
         virtual void transposeIP();
         virtual double trace() const;
         virtual void transform(const Ionflux::GeoUtils::Vector& v, 
-        Ionflux::GeoUtils::Vector& target);
+        Ionflux::GeoUtils::Vector& target) const;
         virtual void multiply(const Ionflux::GeoUtils::Matrix& other, 
-        Ionflux::GeoUtils::Matrix& target);
+        Ionflux::GeoUtils::Matrix& target) const;
         virtual void permuteRowsIP(const Ionflux::GeoUtils::Vector& p);
         virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
         virtual unsigned int getNumRows() const;
@@ -1264,6 +1264,8 @@ class Vector4
         newElements);
         virtual void setV2(const Ionflux::GeoUtils::Vector2& newElements, 
         double newZ = 0., double newW = 1.);
+        virtual void setElements(const Ionflux::GeoUtils::Vector& other, 
+        unsigned int sourceOffset = 0, unsigned int targetOffset = 0);
         virtual void setV3(const Ionflux::GeoUtils::Vector3& newElements, 
         double newW = 1.);
         virtual Ionflux::GeoUtils::Vector4 flip() const;
@@ -1412,6 +1414,9 @@ class VectorN
         virtual void setNumElements(unsigned int newNumElements);
         virtual unsigned int getNumElements() const;
 };
+
+Ionflux::GeoUtils::VectorN operator*(double c, const 
+Ionflux::GeoUtils::VectorN& v);
 
 }
 
@@ -1568,8 +1573,10 @@ class Matrix4
         Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0);
         Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0);
         virtual ~Matrix4();
-        virtual void setElements(const Ionflux::GeoUtils::Matrix3& 
-        newElements);
+        virtual void setElements(const Ionflux::GeoUtils::Matrix& other, 
+        unsigned int sourceRowOffset = 0, unsigned int sourceColOffset = 0,
+        unsigned int targetRowOffset = 0, unsigned int targetColOffset = 
+        0);
         virtual void setM3x3(const Ionflux::GeoUtils::Matrix3& newElements,
         double newX33 = 1., double newX03 = 0., double newX13 = 0., double 
         newX23 = 0., double newX30 = 0., double newX31 = 0., double newX32 
@@ -1717,6 +1724,10 @@ class MatrixMN
         static void qrSolve(const Ionflux::GeoUtils::MatrixMN& q, const 
         Ionflux::GeoUtils::MatrixMN& r, const Ionflux::GeoUtils::VectorN& 
         b, Ionflux::GeoUtils::VectorN& x);
+        virtual Ionflux::GeoUtils::MatrixMN operator*(const 
+        Ionflux::GeoUtils::Matrix& other) const;
+        virtual Ionflux::GeoUtils::VectorN operator*(const 
+        Ionflux::GeoUtils::VectorN& v) const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

@@ -314,7 +314,7 @@ double Matrix::trace() const
 }
 
 void Matrix::transform(const Ionflux::GeoUtils::Vector& v, 
-Ionflux::GeoUtils::Vector& target)
+Ionflux::GeoUtils::Vector& target) const
 {
 	unsigned int numRows = getNumRows();
 	unsigned int numCols = getNumCols();
@@ -351,7 +351,7 @@ Ionflux::GeoUtils::Vector& target)
 }
 
 void Matrix::multiply(const Ionflux::GeoUtils::Matrix& other, 
-Ionflux::GeoUtils::Matrix& target)
+Ionflux::GeoUtils::Matrix& target) const
 {
 	unsigned int numRows = getNumRows();
 	unsigned int numCols = getNumCols();

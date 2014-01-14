@@ -358,6 +358,13 @@ VectorN::getXMLObjectFactory()
     return fac0;
 }
 
+Ionflux::GeoUtils::VectorN operator*(double c, const 
+Ionflux::GeoUtils::VectorN& v)
+{
+	// TODO: Implementation.
+	return v * c;
+}
+
 }
 
 }

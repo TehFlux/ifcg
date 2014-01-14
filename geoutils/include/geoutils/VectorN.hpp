@@ -389,6 +389,18 @@ class VectorN
 		virtual void setNumElements(unsigned int newNumElements);
 };
 
+/** Multiply vector by scalar.
+ *
+ * Multiply vector by a scalar.
+ *
+ * \param c Scalar factor.
+ * \param v Vector.
+ *
+ * \return Result of the calculation.
+ */
+Ionflux::GeoUtils::VectorN operator*(double c, const 
+Ionflux::GeoUtils::VectorN& v);
+
 }
 
 }

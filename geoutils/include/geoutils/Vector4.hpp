@@ -190,6 +190,20 @@ class Vector4
 		
 		/** Set elements.
 		 *
+		 * Set elements from a vector. The sizes of the target and source 
+		 * vectors may differ. In this case, only the relevant number of 
+		 * elements will be considered. The optional offsets may be specified 
+		 * to set a certain subset of elements.
+		 *
+		 * \param other Vector.
+		 * \param sourceOffset Source offset.
+		 * \param targetOffset Target offset.
+		 */
+		virtual void setElements(const Ionflux::GeoUtils::Vector& other, unsigned
+		int sourceOffset = 0, unsigned int targetOffset = 0);
+		
+		/** Set elements.
+		 *
 		 * Set elements from a 3-element vector. The W-coordinate will be set 
 		 * to the optional second parameter (which defaults to 1).
 		 *

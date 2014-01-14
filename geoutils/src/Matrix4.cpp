@@ -129,9 +129,11 @@ Matrix4::~Matrix4()
 	// TODO: Nothing ATM. ;-)
 }
 
-void Matrix4::setElements(const Ionflux::GeoUtils::Matrix3& newElements)
+void Matrix4::setElements(const Ionflux::GeoUtils::Matrix& other, unsigned 
+int sourceRowOffset, unsigned int sourceColOffset, unsigned int 
+targetRowOffset, unsigned int targetColOffset)
 {
-	Matrix::setElements(newElements);
+	Matrix::setElements(other);
 }
 
 void Matrix4::setM3x3(const Ionflux::GeoUtils::Matrix3& newElements, double

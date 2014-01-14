@@ -154,12 +154,20 @@ class Matrix4
 		
 		/** Set elements.
 		 *
-		 * Set elements from a 3x3 matrix. The remaining elements will be left
-		 * alone.
+		 * Set elements from a matrix. The dimensions of the target and source
+		 * matrices may differ. In this case, only the relevant number of 
+		 * elements will be considered. The optional offsets may be specified 
+		 * to set a certain subset of elements.
 		 *
-		 * \param newElements Matrix (3x3).
+		 * \param other Matrix.
+		 * \param sourceRowOffset Source row offset.
+		 * \param sourceColOffset Source column offset.
+		 * \param targetRowOffset Target row offset.
+		 * \param targetColOffset Target column offset.
 		 */
-		virtual void setElements(const Ionflux::GeoUtils::Matrix3& newElements);
+		virtual void setElements(const Ionflux::GeoUtils::Matrix& other, unsigned
+		int sourceRowOffset = 0, unsigned int sourceColOffset = 0, unsigned int 
+		targetRowOffset = 0, unsigned int targetColOffset = 0);
 		
 		/** Set elements.
 		 *

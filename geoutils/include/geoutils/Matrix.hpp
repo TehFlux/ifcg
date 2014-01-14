@@ -275,7 +275,7 @@ class Matrix
 		 * \param target Where to store the result.
 		 */
 		virtual void transform(const Ionflux::GeoUtils::Vector& v, 
-		Ionflux::GeoUtils::Vector& target);
+		Ionflux::GeoUtils::Vector& target) const;
 		
 		/** Multiply.
 		 *
@@ -285,7 +285,7 @@ class Matrix
 		 * \param target Where to store the result.
 		 */
 		virtual void multiply(const Ionflux::GeoUtils::Matrix& other, 
-		Ionflux::GeoUtils::Matrix& target);
+		Ionflux::GeoUtils::Matrix& target) const;
 		
 		/** Permute rows (in-place).
 		 *

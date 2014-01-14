@@ -84,9 +84,9 @@ class Matrix
         virtual void transposeIP();
         virtual double trace() const;
         virtual void transform(const Ionflux::GeoUtils::Vector& v, 
-        Ionflux::GeoUtils::Vector& target);
+        Ionflux::GeoUtils::Vector& target) const;
         virtual void multiply(const Ionflux::GeoUtils::Matrix& other, 
-        Ionflux::GeoUtils::Matrix& target);
+        Ionflux::GeoUtils::Matrix& target) const;
         virtual void permuteRowsIP(const Ionflux::GeoUtils::Vector& p);
         virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
         virtual unsigned int getNumRows() const;

@@ -62,8 +62,10 @@ class Matrix4
         Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0);
         Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0);
         virtual ~Matrix4();
-        virtual void setElements(const Ionflux::GeoUtils::Matrix3& 
-        newElements);
+        virtual void setElements(const Ionflux::GeoUtils::Matrix& other, 
+        unsigned int sourceRowOffset = 0, unsigned int sourceColOffset = 0,
+        unsigned int targetRowOffset = 0, unsigned int targetColOffset = 
+        0);
         virtual void setM3x3(const Ionflux::GeoUtils::Matrix3& newElements,
         double newX33 = 1., double newX03 = 0., double newX13 = 0., double 
         newX23 = 0., double newX30 = 0., double newX31 = 0., double newX32 
