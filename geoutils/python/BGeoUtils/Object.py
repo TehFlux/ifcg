@@ -110,6 +110,12 @@ class Object:
         o0.location = [v[0], v[1], v[2]]
         o0.update_tag({'OBJECT', 'DATA'})
     
+    def setScale(self, v):
+        """Set object scale."""
+        o0 = bpy.data.objects.get(self.name)
+        o0.scale = [v[0], v[1], v[2]]
+        o0.update_tag({'OBJECT', 'DATA'})
+    
     def translate(self, v):
         """Translate."""
         o0 = bpy.data.objects.get(self.name)
