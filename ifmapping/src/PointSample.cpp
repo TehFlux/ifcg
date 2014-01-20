@@ -259,8 +259,12 @@ std::string PointSample::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
-	d0 << " " << "t=\"" << param << "\"";
-	d0 << " " << "l=\"" << arcLength << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "t=\"" << param << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "l=\"" << arcLength << "\"";
 	return d0.str();
 }
 

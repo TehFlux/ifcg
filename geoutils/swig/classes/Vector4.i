@@ -62,6 +62,7 @@ class Vector4
         Vector4(double initX0, double initX1, double initX2, double 
         initX3);
         Vector4(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Vector4(const Ionflux::GeoUtils::Vector& initElements0);
         Vector4(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 0., double initW = 1.);
         Vector4(const Ionflux::GeoUtils::Vector3& initElements0, double 
@@ -124,6 +125,9 @@ class Vector4
 		static Ionflux::GeoUtils::Vector4* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		static Ionflux::GeoUtils::Vector4* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 0., double 
 		initW = 1., Ionflux::ObjectBase::IFObject* parentObject = 0);

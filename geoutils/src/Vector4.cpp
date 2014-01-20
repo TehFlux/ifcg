@@ -109,6 +109,14 @@ Vector4::Vector4(const Ionflux::ObjectBase::DoubleVector& initElements0)
 	Vector::setElements(initElements0);
 }
 
+Vector4::Vector4(const Ionflux::GeoUtils::Vector& initElements0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	initElements();
+	setElements(initElements0);
+}
+
 Vector4::Vector4(const Ionflux::GeoUtils::Vector2& initElements0, double 
 initZ, double initW)
 {
@@ -425,6 +433,20 @@ double initX2, double initX3, Ionflux::ObjectBase::IFObject* parentObject)
 Ionflux::GeoUtils::Vector4* Vector4::create(const 
 Ionflux::ObjectBase::DoubleVector& initElements0, 
 Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Vector4* newObject = new Vector4(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Vector4* Vector4::create(const 
+Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+parentObject)
 {
     Vector4* newObject = new Vector4(initElements0);
     if (newObject == 0)

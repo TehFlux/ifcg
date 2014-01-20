@@ -130,6 +130,14 @@ class Vector3
 		 * Construct new Vector3 object.
 		 *
 		 * \param initElements0 Element vector.
+		 */
+		Vector3(const Ionflux::GeoUtils::Vector& initElements0);
+		
+		/** Constructor.
+		 *
+		 * Construct new Vector3 object.
+		 *
+		 * \param initElements0 Element vector.
 		 * \param initZ Z coordinate.
 		 */
 		Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double initZ = 
@@ -572,6 +580,17 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector3 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         
 		/** Create instance.
 		 *

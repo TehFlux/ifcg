@@ -131,6 +131,14 @@ class Matrix3
 		 */
 		Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements0);
 		
+		/** Constructor.
+		 *
+		 * Construct new Matrix3 object.
+		 *
+		 * \param initElements0 matrix.
+		 */
+		Matrix3(const Ionflux::GeoUtils::Matrix& initElements0);
+		
 		/** Destructor.
 		 *
 		 * Destruct Matrix3 object.
@@ -187,6 +195,30 @@ class Matrix3
 		 * \return Result of the calculation.
 		 */
 		virtual Ionflux::GeoUtils::Matrix3 invert() const;
+		
+		/** Multiply matrices (left).
+		 *
+		 * Multiply the specified matrix to the left of the matrix. The result
+		 * is stored in the matrix itself.
+		 *
+		 * \param other Matrix.
+		 *
+		 * \return The matrix itself.
+		 */
+		virtual Ionflux::GeoUtils::Matrix3& multiplyLeft(const 
+		Ionflux::GeoUtils::Matrix3& other);
+		
+		/** Multiply matrices (right).
+		 *
+		 * Multiply the specified matrix to the right of the matrix. The 
+		 * result is stored in the matrix itself.
+		 *
+		 * \param other Matrix.
+		 *
+		 * \return The matrix itself.
+		 */
+		virtual Ionflux::GeoUtils::Matrix3& multiplyRight(const 
+		Ionflux::GeoUtils::Matrix3& other);
 		
 		/** Multiply matrices.
 		 *
@@ -436,6 +468,17 @@ class Matrix3
 		static Ionflux::GeoUtils::Matrix3* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Matrix3 object.
+		 *
+		 * \param initElements0 matrix.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Matrix3* create(const 
+		Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         
 		/** Get XML element name.
 		 *

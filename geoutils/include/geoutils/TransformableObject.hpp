@@ -228,6 +228,23 @@ class TransformableObject
 		virtual Ionflux::GeoUtils::TransformableObject& rotate(double phi, 
 		Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
 		
+		/** Swap axes.
+		 *
+		 * Swap axes.
+		 *
+		 * \param x Axis (x).
+		 * \param y Axis (y).
+		 * \param z Axis (z).
+		 * \param w Axis (w).
+		 *
+		 * \return The transformed object.
+		 */
+		virtual Ionflux::GeoUtils::TransformableObject& 
+		swapAxes(Ionflux::GeoUtils::AxisID x = Ionflux::GeoUtils::AXIS_X, 
+		Ionflux::GeoUtils::AxisID y = Ionflux::GeoUtils::AXIS_Y, 
+		Ionflux::GeoUtils::AxisID z = Ionflux::GeoUtils::AXIS_Z, 
+		Ionflux::GeoUtils::AxisID w = Ionflux::GeoUtils::AXIS_W);
+		
 		/** Normalize.
 		 *
 		 * Normalize the object, i.e. scale to unit size.

@@ -1030,6 +1030,7 @@ class Vector3
 		Vector3(const Ionflux::GeoUtils::Vector3& other);
         Vector3(double initX0, double initX1, double initX2);
         Vector3(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Vector3(const Ionflux::GeoUtils::Vector& initElements0);
         Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 1.);
         Vector3(const Ionflux::Mapping::Point& initElements0);
@@ -1110,6 +1111,9 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
@@ -1253,6 +1257,7 @@ class Vector4
         Vector4(double initX0, double initX1, double initX2, double 
         initX3);
         Vector4(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Vector4(const Ionflux::GeoUtils::Vector& initElements0);
         Vector4(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 0., double initW = 1.);
         Vector4(const Ionflux::GeoUtils::Vector3& initElements0, double 
@@ -1315,6 +1320,9 @@ class Vector4
 		static Ionflux::GeoUtils::Vector4* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		static Ionflux::GeoUtils::Vector4* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 0., double 
 		initW = 1., Ionflux::ObjectBase::IFObject* parentObject = 0);
@@ -1457,6 +1465,7 @@ class Matrix3
         initX10, double initX11, double initX12, double initX20, double 
         initX21, double initX22);
         Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Matrix3(const Ionflux::GeoUtils::Matrix& initElements0);
         virtual ~Matrix3();
         virtual Ionflux::GeoUtils::Matrix3 transpose() const;
         virtual Ionflux::GeoUtils::Matrix3 permuteColumns(int px, int py, 
@@ -1466,6 +1475,10 @@ class Matrix3
         virtual Ionflux::GeoUtils::Vector3 solve(const 
         Ionflux::GeoUtils::Vector3& v) const;
         virtual Ionflux::GeoUtils::Matrix3 invert() const;
+        virtual Ionflux::GeoUtils::Matrix3& multiplyLeft(const 
+        Ionflux::GeoUtils::Matrix3& other);
+        virtual Ionflux::GeoUtils::Matrix3& multiplyRight(const 
+        Ionflux::GeoUtils::Matrix3& other);
         virtual Ionflux::GeoUtils::Matrix3 operator*(const 
         Ionflux::GeoUtils::Matrix3& other) const;
         virtual Ionflux::GeoUtils::Vector3 operator*(const 
@@ -1513,6 +1526,9 @@ class Matrix3
 		static Ionflux::GeoUtils::Matrix3* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Matrix3* create(const 
+		Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setR0(const Ionflux::GeoUtils::Vector3& newR0);
         virtual Ionflux::GeoUtils::Vector3 getR0() const;
         virtual void setR1(const Ionflux::GeoUtils::Vector3& newR1);
@@ -1571,6 +1587,7 @@ class Matrix4
         initX23, double initX30, double initX31, double initX32, double 
         initX33);
         Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Matrix4(const Ionflux::GeoUtils::Matrix& initElements0);
         Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0);
         virtual ~Matrix4();
         virtual void setElements(const Ionflux::GeoUtils::Matrix& other, 
@@ -1652,6 +1669,9 @@ class Matrix4
 		static Ionflux::GeoUtils::Matrix4* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Matrix4* create(const 
+		Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		static Ionflux::GeoUtils::Matrix4* create(const 
 		Ionflux::GeoUtils::Matrix3& initElements0, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
@@ -1969,6 +1989,11 @@ class TransformableObject
         Ionflux::GeoUtils::Vector3& t);
         virtual Ionflux::GeoUtils::TransformableObject& rotate(double phi, 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+        virtual Ionflux::GeoUtils::TransformableObject& 
+        swapAxes(Ionflux::GeoUtils::AxisID x = Ionflux::GeoUtils::AXIS_X, 
+        Ionflux::GeoUtils::AxisID y = Ionflux::GeoUtils::AXIS_Y, 
+        Ionflux::GeoUtils::AxisID z = Ionflux::GeoUtils::AXIS_Z, 
+        Ionflux::GeoUtils::AxisID w = Ionflux::GeoUtils::AXIS_W);
         virtual Ionflux::GeoUtils::TransformableObject& normalize();
         virtual Ionflux::GeoUtils::TransformableObject& 
         center(Ionflux::GeoUtils::CenteringMethod method = 
@@ -4650,6 +4675,11 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::Vector3& t);
         virtual Ionflux::GeoUtils::Mesh& rotate(double phi, 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+        virtual Ionflux::GeoUtils::Mesh& swapAxes(Ionflux::GeoUtils::AxisID
+        x = Ionflux::GeoUtils::AXIS_X, Ionflux::GeoUtils::AxisID y = 
+        Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID z = 
+        Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID w = 
+        Ionflux::GeoUtils::AXIS_W);
         virtual Ionflux::GeoUtils::Mesh& normalize();
         virtual Ionflux::GeoUtils::Mesh& 
         center(Ionflux::GeoUtils::CenteringMethod method = 

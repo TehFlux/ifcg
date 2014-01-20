@@ -58,6 +58,7 @@ class Matrix3
         initX10, double initX11, double initX12, double initX20, double 
         initX21, double initX22);
         Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Matrix3(const Ionflux::GeoUtils::Matrix& initElements0);
         virtual ~Matrix3();
         virtual Ionflux::GeoUtils::Matrix3 transpose() const;
         virtual Ionflux::GeoUtils::Matrix3 permuteColumns(int px, int py, 
@@ -67,6 +68,10 @@ class Matrix3
         virtual Ionflux::GeoUtils::Vector3 solve(const 
         Ionflux::GeoUtils::Vector3& v) const;
         virtual Ionflux::GeoUtils::Matrix3 invert() const;
+        virtual Ionflux::GeoUtils::Matrix3& multiplyLeft(const 
+        Ionflux::GeoUtils::Matrix3& other);
+        virtual Ionflux::GeoUtils::Matrix3& multiplyRight(const 
+        Ionflux::GeoUtils::Matrix3& other);
         virtual Ionflux::GeoUtils::Matrix3 operator*(const 
         Ionflux::GeoUtils::Matrix3& other) const;
         virtual Ionflux::GeoUtils::Vector3 operator*(const 
@@ -114,6 +119,9 @@ class Matrix3
 		static Ionflux::GeoUtils::Matrix3* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Matrix3* create(const 
+		Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual void setR0(const Ionflux::GeoUtils::Vector3& newR0);
         virtual Ionflux::GeoUtils::Vector3 getR0() const;
         virtual void setR1(const Ionflux::GeoUtils::Vector3& newR1);

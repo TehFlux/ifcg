@@ -136,6 +136,14 @@ class Vector4
 		 * Construct new Vector4 object.
 		 *
 		 * \param initElements0 Element vector.
+		 */
+		Vector4(const Ionflux::GeoUtils::Vector& initElements0);
+		
+		/** Constructor.
+		 *
+		 * Construct new Vector4 object.
+		 *
+		 * \param initElements0 Element vector.
 		 * \param initZ Z coordinate.
 		 * \param initW W coordinate.
 		 */
@@ -466,6 +474,17 @@ class Vector4
 		static Ionflux::GeoUtils::Vector4* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Vector4 object.
+		 *
+		 * \param initElements0 Element vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Vector4* create(const 
+		Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         
 		/** Create instance.
 		 *

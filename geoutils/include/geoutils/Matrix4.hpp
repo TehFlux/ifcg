@@ -142,6 +142,14 @@ class Matrix4
 		 *
 		 * Construct new Matrix4 object.
 		 *
+		 * \param initElements0 matrix.
+		 */
+		Matrix4(const Ionflux::GeoUtils::Matrix& initElements0);
+		
+		/** Constructor.
+		 *
+		 * Construct new Matrix4 object.
+		 *
 		 * \param initElements0 Element matrix.
 		 */
 		Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0);
@@ -570,6 +578,17 @@ class Matrix4
 		static Ionflux::GeoUtils::Matrix4* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Matrix4 object.
+		 *
+		 * \param initElements0 matrix.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Matrix4* create(const 
+		Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         
 		/** Create instance.
 		 *

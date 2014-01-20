@@ -60,6 +60,7 @@ class Matrix4
         initX23, double initX30, double initX31, double initX32, double 
         initX33);
         Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Matrix4(const Ionflux::GeoUtils::Matrix& initElements0);
         Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0);
         virtual ~Matrix4();
         virtual void setElements(const Ionflux::GeoUtils::Matrix& other, 
@@ -141,6 +142,9 @@ class Matrix4
 		static Ionflux::GeoUtils::Matrix4* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Matrix4* create(const 
+		Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		static Ionflux::GeoUtils::Matrix4* create(const 
 		Ionflux::GeoUtils::Matrix3& initElements0, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);

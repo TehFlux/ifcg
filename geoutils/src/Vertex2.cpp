@@ -339,8 +339,12 @@ std::string Vertex2::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
-	d0 << " " << "x=\"" << x << "\"";
-	d0 << " " << "y=\"" << y << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "x=\"" << x << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "y=\"" << y << "\"";
 	return d0.str();
 }
 

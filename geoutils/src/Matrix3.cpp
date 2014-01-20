@@ -109,6 +109,14 @@ Matrix3::Matrix3(const Ionflux::ObjectBase::DoubleVector& initElements0)
 	Vector::setElements(initElements0);
 }
 
+Matrix3::Matrix3(const Ionflux::GeoUtils::Matrix& initElements0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	initElements();
+	setElements(initElements0);
+}
+
 Matrix3::~Matrix3()
 {
 	// TODO: Nothing ATM. ;-)
@@ -197,6 +205,20 @@ Ionflux::GeoUtils::Matrix3 Matrix3::invert() const
 	result.setC1(y);
 	result.setC2(z);
 	return result;
+}
+
+Ionflux::GeoUtils::Matrix3& Matrix3::multiplyLeft(const 
+Ionflux::GeoUtils::Matrix3& other)
+{
+	*this = other * (*this);
+	return *this;
+}
+
+Ionflux::GeoUtils::Matrix3& Matrix3::multiplyRight(const 
+Ionflux::GeoUtils::Matrix3& other)
+{
+	*this = (*this) * other;
+	return *this;
 }
 
 Ionflux::GeoUtils::Matrix3 Matrix3::operator*(const 
@@ -489,6 +511,20 @@ parentObject)
 Ionflux::GeoUtils::Matrix3* Matrix3::create(const 
 Ionflux::ObjectBase::DoubleVector& initElements0, 
 Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix3* newObject = new Matrix3(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix3* Matrix3::create(const 
+Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+parentObject)
 {
     Matrix3* newObject = new Matrix3(initElements0);
     if (newObject == 0)

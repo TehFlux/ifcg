@@ -116,6 +116,14 @@ Matrix4::Matrix4(const Ionflux::ObjectBase::DoubleVector& initElements0)
 	Vector::setElements(initElements0);
 }
 
+Matrix4::Matrix4(const Ionflux::GeoUtils::Matrix& initElements0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	initElements();
+	setElements(initElements0);
+}
+
 Matrix4::Matrix4(const Ionflux::GeoUtils::Matrix3& initElements0)
 {
 	// NOTE: The following line is required for run-time type information.
@@ -620,6 +628,20 @@ initX33, Ionflux::ObjectBase::IFObject* parentObject)
 Ionflux::GeoUtils::Matrix4* Matrix4::create(const 
 Ionflux::ObjectBase::DoubleVector& initElements0, 
 Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix4* newObject = new Matrix4(initElements0);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Matrix4* Matrix4::create(const 
+Ionflux::GeoUtils::Matrix& initElements0, Ionflux::ObjectBase::IFObject* 
+parentObject)
 {
     Matrix4* newObject = new Matrix4(initElements0);
     if (newObject == 0)

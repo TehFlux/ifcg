@@ -441,6 +441,14 @@ axis)
 	return *this;
 }
 
+Ionflux::GeoUtils::Mesh& Mesh::swapAxes(Ionflux::GeoUtils::AxisID x, 
+Ionflux::GeoUtils::AxisID y, Ionflux::GeoUtils::AxisID z, 
+Ionflux::GeoUtils::AxisID w)
+{
+	TransformableObject::swapAxes(x, y, z, w);
+	return *this;
+}
+
 Ionflux::GeoUtils::Mesh& Mesh::normalize()
 {
 	TransformableObject::normalize();

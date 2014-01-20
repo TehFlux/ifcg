@@ -60,6 +60,7 @@ class Vector3
 		Vector3(const Ionflux::GeoUtils::Vector3& other);
         Vector3(double initX0, double initX1, double initX2);
         Vector3(const Ionflux::ObjectBase::DoubleVector& initElements0);
+        Vector3(const Ionflux::GeoUtils::Vector& initElements0);
         Vector3(const Ionflux::GeoUtils::Vector2& initElements0, double 
         initZ = 1.);
         Vector3(const Ionflux::Mapping::Point& initElements0);
@@ -140,6 +141,9 @@ class Vector3
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::ObjectBase::DoubleVector& initElements0, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Vector3* create(const 
+		Ionflux::GeoUtils::Vector& initElements0, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
 		static Ionflux::GeoUtils::Vector3* create(const 
 		Ionflux::GeoUtils::Vector2& initElements0, double initZ = 1., 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);

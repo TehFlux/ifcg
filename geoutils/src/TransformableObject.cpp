@@ -183,6 +183,16 @@ phi, Ionflux::GeoUtils::AxisID axis)
 	return *this;
 }
 
+Ionflux::GeoUtils::TransformableObject& 
+TransformableObject::swapAxes(Ionflux::GeoUtils::AxisID x, 
+Ionflux::GeoUtils::AxisID y, Ionflux::GeoUtils::AxisID z, 
+Ionflux::GeoUtils::AxisID w)
+{
+	Matrix4 r0 = Matrix4::swapAxes(x, y, z, w);
+	transform(r0);
+	return *this;
+}
+
 Ionflux::GeoUtils::TransformableObject& TransformableObject::normalize()
 {
 	Range3 bounds = getBounds();

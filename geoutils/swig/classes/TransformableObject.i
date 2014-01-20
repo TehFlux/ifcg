@@ -68,6 +68,11 @@ class TransformableObject
         Ionflux::GeoUtils::Vector3& t);
         virtual Ionflux::GeoUtils::TransformableObject& rotate(double phi, 
         Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+        virtual Ionflux::GeoUtils::TransformableObject& 
+        swapAxes(Ionflux::GeoUtils::AxisID x = Ionflux::GeoUtils::AXIS_X, 
+        Ionflux::GeoUtils::AxisID y = Ionflux::GeoUtils::AXIS_Y, 
+        Ionflux::GeoUtils::AxisID z = Ionflux::GeoUtils::AXIS_Z, 
+        Ionflux::GeoUtils::AxisID w = Ionflux::GeoUtils::AXIS_W);
         virtual Ionflux::GeoUtils::TransformableObject& normalize();
         virtual Ionflux::GeoUtils::TransformableObject& 
         center(Ionflux::GeoUtils::CenteringMethod method = 
