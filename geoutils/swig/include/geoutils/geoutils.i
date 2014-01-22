@@ -589,6 +589,7 @@ class Vector
         Vector();
 		Vector(const Ionflux::GeoUtils::Vector& other);
         virtual ~Vector();
+        virtual void cleanup();
         virtual void zero();
         virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
         newElements);

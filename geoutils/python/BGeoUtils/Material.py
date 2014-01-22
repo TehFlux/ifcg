@@ -154,16 +154,19 @@ class MaterialMap:
         self.getSimpleMaterial('Blue', 0., 0., 1.)
         self.getSimpleMaterial('Magenta', 1., 0., 1.)
         self.getSimpleMaterial('Cyan', 0., 1., 1.)
+        self.getSimpleMaterial('Yellow', 1., 1., 0.)
         self.getSimpleMaterial('GlowingRed', 1., 0., 0., emit = 1.)
         self.getSimpleMaterial('GlowingGreen', 0., 1., 0., emit = 1.)
         self.getSimpleMaterial('GlowingBlue', 0., 0., 1., emit = 1.)
         self.getSimpleMaterial('GlowingMagenta', 1., 0., 1., emit = 1.)
         self.getSimpleMaterial('GlowingCyan', 0., 1., 1., emit = 1.)
+        self.getSimpleMaterial('GlowingYellow', 1., 1., 0., emit = 1.)
         self.getSimpleMaterial('GlowingRed3', 1., 0., 0., emit = 0.3)
         self.getSimpleMaterial('GlowingGreen3', 0., 1., 0., emit = 0.3)
         self.getSimpleMaterial('GlowingBlue3', 0., 0., 1., emit = 0.3)
         self.getSimpleMaterial('GlowingMagenta3', 1., 0., 1., emit = 0.3)
         self.getSimpleMaterial('GlowingCyan3', 0., 1., 1., emit = 0.3)
+        self.getSimpleMaterial('GlowingYellow3', 1., 1., 0., emit = 0.3)
         self.getSimpleMaterial('WireGlowingRed', 1., 0., 0., emit = 1., 
             mType = 'WIRE')
         self.getSimpleMaterial('WireGlowingGreen', 0., 1., 0., emit = 1., 
@@ -171,6 +174,8 @@ class MaterialMap:
         self.getSimpleMaterial('WireGlowingBlue', 0., 0., 1., emit = 1., 
             mType = 'WIRE')
         self.getSimpleMaterial('WireGlowingMagenta', 1., 0., 1., emit = 1., 
+            mType = 'WIRE')
+        self.getSimpleMaterial('WireGlowingYellow', 1., 1., 0., emit = 1., 
             mType = 'WIRE')
     
     def getMaterial(self, name):

@@ -105,6 +105,14 @@ void Vector::initElements()
 	}
 }
 
+void Vector::cleanup()
+{
+	if (elements == 0)
+	    return;
+	delete[] elements;
+	elements = 0;
+}
+
 void Vector::zero()
 {
 	if (elements == 0)
@@ -371,7 +379,7 @@ double Vector::operator[](unsigned int index) const
 	{
 	    std::ostringstream status;
 	    status << "Index out of range: " << index;
-	    throw GeoUtilsError(getErrorString(status.str(), "setElement"));
+	    throw GeoUtilsError(getErrorString(status.str(), "operator[]"));
 	}
 	return elements[index];
 }

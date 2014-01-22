@@ -106,6 +106,12 @@ class Vector
 		 */
 		virtual ~Vector();
 		
+		/** Cleanup.
+		 *
+		 * Release all storage allocated for the vector.
+		 */
+		virtual void cleanup();
+		
 		/** Zero elements.
 		 *
 		 * Set elements to zero.

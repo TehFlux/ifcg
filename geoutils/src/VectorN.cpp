@@ -324,6 +324,9 @@ std::string VectorN::getXMLAttributeData() const
 {
 	std::ostringstream d0;
 	d0 << Ionflux::GeoUtils::Vector::getXMLAttributeData();
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "n=\"" << numElements << "\"";
 	return d0.str();
 }
 
