@@ -31,6 +31,7 @@
 #include "ifmapping/constants.hpp"
 #include "ifmapping/utils.hpp"
 #include "ifmapping/xmlutils.hpp"
+#include "ifmapping/xml_factories.hpp"
 #include "ifmapping/mappings.hpp"
 #include "ifmapping/rootfinders.hpp"
 #include "ifmapping/Piece.hpp"
