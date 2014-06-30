@@ -157,6 +157,11 @@ RandomDensity::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int RandomDensity::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

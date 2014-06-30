@@ -190,6 +190,11 @@ NoiseMapTransform::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int NoiseMapTransform::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -365,6 +365,11 @@ Render::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Render::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

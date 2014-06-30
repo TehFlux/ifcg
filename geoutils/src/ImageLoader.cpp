@@ -319,6 +319,11 @@ ImageLoader::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ImageLoader::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

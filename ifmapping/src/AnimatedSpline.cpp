@@ -259,6 +259,11 @@ Ionflux::Mapping::AnimatedSpline* AnimatedSpline::copy() const
     return newAnimatedSpline;
 }
 
+unsigned int AnimatedSpline::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

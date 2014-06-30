@@ -123,6 +123,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int ArcCos::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

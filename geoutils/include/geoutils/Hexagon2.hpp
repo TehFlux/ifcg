@@ -127,6 +127,14 @@ class Hexagon2
 		 */
 		virtual Ionflux::GeoUtils::Hexagon2* copy() const;
 		
+		/** Get allocated size in memory.
+		 *
+		 * Get the allocated size in memory for the object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		virtual unsigned int getMemSize() const;
+		
 		/** Get base length.
 		 *
 		 * \return Current value of base length.

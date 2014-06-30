@@ -444,6 +444,14 @@ class Camera
 		initLens = 24., Ionflux::GeoUtils::CameraSetupFlags initSetupFlags = 
 		Ionflux::GeoUtils::Camera::DEFAULT_SETUP_FLAGS, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		
+		/** Get allocated size in memory.
+		 *
+		 * Get the allocated size in memory for the object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		virtual unsigned int getMemSize() const;
         
 		/** Get XML element name.
 		 *

@@ -250,6 +250,11 @@ initArcLength, Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int PointSample::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string PointSample::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

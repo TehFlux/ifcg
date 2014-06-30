@@ -170,6 +170,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Linear::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

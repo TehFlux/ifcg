@@ -58,7 +58,8 @@ class Multiply
 		static Ionflux::Mapping::Multiply* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Multiply* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumFuncs() const;
         virtual Ionflux::Mapping::Mapping* getFunc(unsigned int 
         elementIndex = 0) const;

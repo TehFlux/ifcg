@@ -239,6 +239,11 @@ Translate::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Translate::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

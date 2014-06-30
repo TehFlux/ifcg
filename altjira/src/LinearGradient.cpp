@@ -139,6 +139,11 @@ LinearGradient::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int LinearGradient::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -142,6 +142,11 @@ SecantRootFinder::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int SecantRootFinder::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

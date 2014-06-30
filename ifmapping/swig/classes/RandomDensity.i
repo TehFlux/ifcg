@@ -63,6 +63,7 @@ class RandomDensity
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::RandomDensity* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMaxIters(unsigned int newMaxIters);
         virtual unsigned int getMaxIters() const;
 };

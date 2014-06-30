@@ -213,6 +213,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int FaceData::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string FaceData::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

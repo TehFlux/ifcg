@@ -321,6 +321,11 @@ Scale::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Scale::getMemSize() const
+{
+    return sizeof *this;
+}
+
 void Scale::setParam(Ionflux::ObjectBase::IFParamID paramID, 
 Ionflux::Mapping::MappingValue paramValue)
 {

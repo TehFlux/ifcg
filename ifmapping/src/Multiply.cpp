@@ -233,6 +233,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Multiply::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

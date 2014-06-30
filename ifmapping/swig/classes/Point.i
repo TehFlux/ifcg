@@ -102,6 +102,7 @@ class Point
 		other);
 		static Ionflux::Mapping::Point* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::Point* create(Ionflux::Mapping::MappingValue 
 		initX, Ionflux::Mapping::MappingValue initY, 
 		Ionflux::Mapping::MappingValue initZ, Ionflux::ObjectBase::IFObject* 

@@ -223,6 +223,11 @@ Duplicate::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Duplicate::getMemSize() const
+{
+    return sizeof *this;
+}
+
 void Duplicate::setParam(Ionflux::ObjectBase::IFParamID paramID, 
 Ionflux::Mapping::MappingValue paramValue)
 {

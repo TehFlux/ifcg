@@ -255,6 +255,11 @@ LoadSVG::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int LoadSVG::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

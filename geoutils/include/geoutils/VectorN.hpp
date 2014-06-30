@@ -330,6 +330,14 @@ class VectorN
 		0., double x5 = 0., double x6 = 0., double x7 = 0., double x8 = 0., 
 		double x9 = 0., double x10 = 0., double x11 = 0., double x12 = 0., 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		
+		/** Get allocated size in memory.
+		 *
+		 * Get the allocated size in memory for the object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		virtual unsigned int getMemSize() const;
         
 		/** Get XML element name.
 		 *

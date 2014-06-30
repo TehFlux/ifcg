@@ -415,6 +415,11 @@ BezierSpline::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BezierSpline::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string BezierSpline::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

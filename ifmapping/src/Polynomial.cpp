@@ -239,6 +239,11 @@ Polynomial::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Polynomial::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

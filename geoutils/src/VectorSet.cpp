@@ -400,6 +400,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int VectorSet::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string VectorSet::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

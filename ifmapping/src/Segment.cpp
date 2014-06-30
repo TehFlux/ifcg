@@ -849,6 +849,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Segment::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Segment::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

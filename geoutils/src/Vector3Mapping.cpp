@@ -108,6 +108,11 @@ Vector3Mapping::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<Vector3Mapping*>(other);
 }
 
+unsigned int Vector3Mapping::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

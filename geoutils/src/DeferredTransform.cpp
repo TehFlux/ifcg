@@ -604,6 +604,11 @@ DeferredTransform::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int DeferredTransform::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string DeferredTransform::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

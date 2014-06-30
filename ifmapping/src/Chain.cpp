@@ -232,6 +232,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Chain::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

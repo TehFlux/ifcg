@@ -644,6 +644,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Image::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

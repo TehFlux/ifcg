@@ -206,6 +206,11 @@ ParamControl::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ParamControl::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

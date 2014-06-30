@@ -60,6 +60,7 @@ class Cos
 		other);
 		static Ionflux::Mapping::Cos* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

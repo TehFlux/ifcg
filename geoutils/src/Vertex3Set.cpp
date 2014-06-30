@@ -471,6 +471,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Vertex3Set::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Vertex3Set::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

@@ -766,6 +766,11 @@ TransformGraph::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int TransformGraph::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

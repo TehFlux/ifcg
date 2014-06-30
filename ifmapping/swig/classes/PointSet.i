@@ -68,6 +68,7 @@ class PointSet
 		other);
 		static Ionflux::Mapping::PointSet* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::PointSet* create(const 
 		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);        

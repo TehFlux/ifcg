@@ -67,6 +67,7 @@ class ArcLength
 		other);
 		static Ionflux::Mapping::ArcLength* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::ArcLength* 
 		create(Ionflux::Mapping::PointMapping* initFunc, 
 		Ionflux::Mapping::MappingValue initOffset = 0., 

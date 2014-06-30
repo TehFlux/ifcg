@@ -60,7 +60,8 @@ class MappingSet
 		static Ionflux::Mapping::MappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::MappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumMappings() const;
         virtual Ionflux::Mapping::Mapping* getMapping(unsigned int 
         elementIndex = 0) const;

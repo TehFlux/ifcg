@@ -59,6 +59,7 @@ class BezierSplineKey
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierSplineKey* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setT(Ionflux::Mapping::MappingValue newT);
         virtual Ionflux::Mapping::MappingValue getT() const;
 };

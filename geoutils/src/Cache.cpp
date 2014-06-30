@@ -178,6 +178,11 @@ Cache::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Cache::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

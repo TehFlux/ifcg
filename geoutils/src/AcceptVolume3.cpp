@@ -168,6 +168,11 @@ AcceptVolume3::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int AcceptVolume3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

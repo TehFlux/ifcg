@@ -220,6 +220,11 @@ BlendSrcOver::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BlendSrcOver::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

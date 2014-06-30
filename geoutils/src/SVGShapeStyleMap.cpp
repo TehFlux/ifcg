@@ -161,6 +161,11 @@ SVGShapeStyleMap::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int SVGShapeStyleMap::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

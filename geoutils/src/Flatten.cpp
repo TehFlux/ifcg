@@ -143,6 +143,11 @@ Flatten::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Flatten::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -266,6 +266,11 @@ x10, double x11, double x12, Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int MatrixMN::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string MatrixMN::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

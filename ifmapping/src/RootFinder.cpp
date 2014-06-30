@@ -223,6 +223,11 @@ RootFinder::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<RootFinder*>(other);
 }
 
+unsigned int RootFinder::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

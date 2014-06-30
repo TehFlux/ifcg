@@ -470,6 +470,11 @@ Batch::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Batch::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

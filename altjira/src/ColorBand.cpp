@@ -519,6 +519,11 @@ ColorBand::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ColorBand::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -215,6 +215,11 @@ BlendPlus::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BlendPlus::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

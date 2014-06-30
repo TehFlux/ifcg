@@ -182,6 +182,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Shape3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Shape3::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

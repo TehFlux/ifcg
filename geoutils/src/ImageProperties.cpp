@@ -168,6 +168,11 @@ ImageProperties::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ImageProperties::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -482,6 +482,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Vector::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Vector::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

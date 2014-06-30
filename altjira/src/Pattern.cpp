@@ -164,6 +164,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Pattern::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

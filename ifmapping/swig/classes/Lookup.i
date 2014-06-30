@@ -71,7 +71,8 @@ class Lookup
 		static Ionflux::Mapping::Lookup* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Lookup* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumEntries() const;
         virtual Ionflux::Mapping::MappingValue getEntry(unsigned int 
         elementIndex = 0) const;

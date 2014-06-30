@@ -67,6 +67,7 @@ class EvalCoord
 		other);
 		static Ionflux::Mapping::EvalCoord* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFunc(Ionflux::Mapping::PointMapping* newFunc);
         virtual Ionflux::Mapping::PointMapping* getFunc() const;
         virtual void setCoord(Ionflux::Mapping::CoordinateID newCoord);

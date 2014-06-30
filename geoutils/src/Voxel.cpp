@@ -201,6 +201,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Voxel::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

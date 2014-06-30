@@ -146,6 +146,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Split::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

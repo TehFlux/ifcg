@@ -121,6 +121,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Sin::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

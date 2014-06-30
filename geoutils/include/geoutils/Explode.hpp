@@ -166,6 +166,14 @@ class Explode
 		static Ionflux::GeoUtils::TransformNodes::Explode* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
+		/** Get allocated size in memory.
+		 *
+		 * Get the allocated size in memory for the object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		virtual unsigned int getMemSize() const;
+		
 		/** Get number of elements per group.
 		 *
 		 * \return Current value of number of elements per group.

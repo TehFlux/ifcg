@@ -229,6 +229,11 @@ NoiseMap::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int NoiseMap::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

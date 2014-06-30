@@ -60,6 +60,7 @@ class ArcSin
 		other);
 		static Ionflux::Mapping::ArcSin* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

@@ -254,6 +254,11 @@ BlendChannel::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BlendChannel::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

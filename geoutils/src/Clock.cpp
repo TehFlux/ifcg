@@ -166,6 +166,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Clock::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

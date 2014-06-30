@@ -244,6 +244,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Plane3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

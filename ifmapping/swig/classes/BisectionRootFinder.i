@@ -64,6 +64,7 @@ class BisectionRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BisectionRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

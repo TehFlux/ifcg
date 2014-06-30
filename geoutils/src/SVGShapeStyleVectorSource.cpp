@@ -226,6 +226,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int SVGShapeStyleVectorSource::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

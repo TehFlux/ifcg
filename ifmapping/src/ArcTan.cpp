@@ -123,6 +123,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int ArcTan::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

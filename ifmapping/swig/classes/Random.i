@@ -60,6 +60,7 @@ class Random
 		other);
 		static Ionflux::Mapping::Random* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

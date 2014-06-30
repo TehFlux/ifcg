@@ -203,6 +203,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Gradient::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

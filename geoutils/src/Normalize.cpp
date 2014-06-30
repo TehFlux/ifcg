@@ -152,6 +152,11 @@ Normalize::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Normalize::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

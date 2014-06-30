@@ -66,6 +66,7 @@ class Linear
 		other);
 		static Ionflux::Mapping::Linear* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setLower(Ionflux::Mapping::MappingValue newLower);
         virtual Ionflux::Mapping::MappingValue getLower() const;
         virtual void setUpper(Ionflux::Mapping::MappingValue newUpper);

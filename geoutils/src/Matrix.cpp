@@ -555,6 +555,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Matrix::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Matrix::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

@@ -359,6 +359,11 @@ Piecewise::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Piecewise::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

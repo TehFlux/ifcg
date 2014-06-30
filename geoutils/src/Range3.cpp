@@ -378,6 +378,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Range3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

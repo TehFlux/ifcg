@@ -487,6 +487,11 @@ TransformableGroup::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int TransformableGroup::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string TransformableGroup::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

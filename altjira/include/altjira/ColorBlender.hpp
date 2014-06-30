@@ -192,6 +192,14 @@ class ColorBlender
 		virtual Ionflux::Altjira::ColorBlender& operator=(const 
 		Ionflux::Altjira::ColorBlender& other);
 		
+		/** Get allocated size in memory.
+		 *
+		 * Get the allocated size in memory for the object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		virtual unsigned int getMemSize() const;
+		
 		/** Get color 0.
 		 *
 		 * \return Current value of color 0.

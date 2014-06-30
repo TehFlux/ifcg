@@ -134,6 +134,11 @@ Ionflux::GeoUtils::Hexagon2* Hexagon2::copy() const
     return newHexagon2;
 }
 
+unsigned int Hexagon2::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

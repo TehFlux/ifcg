@@ -168,6 +168,11 @@ FaceCompare::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int FaceCompare::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

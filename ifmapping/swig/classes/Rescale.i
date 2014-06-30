@@ -61,6 +61,7 @@ class Rescale
 		virtual Ionflux::Mapping::Rescale* copy() const;
 		static Ionflux::Mapping::Rescale* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFunc(Ionflux::Mapping::Mapping* newFunc);
         virtual Ionflux::Mapping::Mapping* getFunc() const;        
         virtual unsigned int getNumArgs() const;

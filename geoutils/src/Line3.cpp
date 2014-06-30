@@ -300,6 +300,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Line3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

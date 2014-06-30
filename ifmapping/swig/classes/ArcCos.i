@@ -60,6 +60,7 @@ class ArcCos
 		other);
 		static Ionflux::Mapping::ArcCos* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

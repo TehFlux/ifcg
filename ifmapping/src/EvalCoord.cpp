@@ -225,6 +225,11 @@ EvalCoord::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int EvalCoord::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -393,6 +393,11 @@ WriteSVG::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int WriteSVG::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

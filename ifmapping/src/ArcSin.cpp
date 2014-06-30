@@ -123,6 +123,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int ArcSin::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -150,6 +150,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Power::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

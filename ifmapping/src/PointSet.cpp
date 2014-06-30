@@ -301,6 +301,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int PointSet::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string PointSet::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

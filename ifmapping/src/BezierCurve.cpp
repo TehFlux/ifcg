@@ -340,6 +340,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BezierCurve::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string BezierCurve::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

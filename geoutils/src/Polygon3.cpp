@@ -1266,6 +1266,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Polygon3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Polygon3::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

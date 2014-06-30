@@ -124,6 +124,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Random::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

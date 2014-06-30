@@ -172,6 +172,11 @@ BoxBoundsItemCompare::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BoxBoundsItemCompare::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

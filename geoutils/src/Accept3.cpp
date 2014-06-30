@@ -174,6 +174,11 @@ Accept3::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<Accept3*>(other);
 }
 
+unsigned int Accept3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

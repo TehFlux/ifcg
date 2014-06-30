@@ -363,6 +363,11 @@ WritePNG::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int WritePNG::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

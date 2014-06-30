@@ -667,6 +667,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Matrix4::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Matrix4::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

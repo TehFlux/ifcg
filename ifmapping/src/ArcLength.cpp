@@ -281,6 +281,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ArcLength::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

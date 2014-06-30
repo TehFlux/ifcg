@@ -145,6 +145,11 @@ Wrap::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Wrap::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

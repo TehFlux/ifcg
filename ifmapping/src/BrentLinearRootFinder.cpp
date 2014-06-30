@@ -227,6 +227,11 @@ BrentLinearRootFinder::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BrentLinearRootFinder::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

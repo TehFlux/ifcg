@@ -275,6 +275,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Lookup::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -162,6 +162,11 @@ Clone::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Clone::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

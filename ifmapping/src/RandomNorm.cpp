@@ -150,6 +150,11 @@ RandomNorm::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int RandomNorm::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

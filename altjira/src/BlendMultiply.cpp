@@ -226,6 +226,11 @@ BlendMultiply::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BlendMultiply::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -97,6 +97,11 @@ ImageSource::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<ImageSource*>(other);
 }
 
+unsigned int ImageSource::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

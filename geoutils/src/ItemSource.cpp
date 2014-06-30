@@ -84,6 +84,11 @@ if (this == &other)
 	return *this;
 }
 
+unsigned int ItemSource::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

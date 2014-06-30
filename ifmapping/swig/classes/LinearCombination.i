@@ -62,7 +62,8 @@ class LinearCombination
 		static Ionflux::Mapping::LinearCombination* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::LinearCombination* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumPieces() const;
         virtual Ionflux::Mapping::Piece* getPiece(unsigned int elementIndex
         = 0) const;

@@ -159,6 +159,11 @@ AcceptLength3::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int AcceptLength3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

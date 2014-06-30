@@ -163,6 +163,11 @@ Source::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Source::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

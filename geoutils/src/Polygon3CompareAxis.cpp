@@ -158,6 +158,11 @@ Polygon3CompareAxis::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Polygon3CompareAxis::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

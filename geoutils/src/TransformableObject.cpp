@@ -434,6 +434,11 @@ TransformableObject::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int TransformableObject::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string TransformableObject::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

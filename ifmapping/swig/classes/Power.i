@@ -61,6 +61,7 @@ class Power
 		other);
 		static Ionflux::Mapping::Power* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setExponent(int newExponent);
         virtual int getExponent() const;
 };

@@ -235,6 +235,11 @@ PointMappingSet::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int PointMappingSet::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -67,6 +67,7 @@ class Piece
 		other);
 		static Ionflux::Mapping::Piece* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMapping(Ionflux::Mapping::Mapping* newMapping);
         virtual Ionflux::Mapping::Mapping* getMapping() const;
         virtual void setParam(Ionflux::Mapping::MappingValue newParam);

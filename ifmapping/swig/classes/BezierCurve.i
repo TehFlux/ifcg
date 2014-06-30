@@ -78,6 +78,7 @@ class BezierCurve
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierCurve* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::BezierCurve* create(const 
 		Ionflux::Mapping::Point& initP0, const Ionflux::Mapping::Point& initP1, 
 		const Ionflux::Mapping::Point& initP2, const Ionflux::Mapping::Point& 

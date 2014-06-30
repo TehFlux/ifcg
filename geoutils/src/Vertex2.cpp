@@ -330,6 +330,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Vertex2::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Vertex2::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

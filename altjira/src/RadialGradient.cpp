@@ -141,6 +141,11 @@ RadialGradient::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int RadialGradient::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

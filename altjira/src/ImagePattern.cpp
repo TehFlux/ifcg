@@ -299,6 +299,11 @@ ImagePattern::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ImagePattern::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

@@ -244,6 +244,11 @@ PointMapping::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int PointMapping::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string PointMapping::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

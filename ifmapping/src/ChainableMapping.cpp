@@ -182,6 +182,11 @@ ChainableMapping::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<ChainableMapping*>(other);
 }
 
+unsigned int ChainableMapping::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

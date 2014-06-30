@@ -59,6 +59,7 @@ class InverseFalloff
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::InverseFalloff* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setExponent(Ionflux::Mapping::MappingValue 
         newExponent);
         virtual Ionflux::Mapping::MappingValue getExponent() const;

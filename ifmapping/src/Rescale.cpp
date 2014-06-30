@@ -281,6 +281,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Rescale::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

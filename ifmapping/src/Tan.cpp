@@ -121,6 +121,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Tan::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

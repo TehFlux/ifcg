@@ -240,6 +240,11 @@ BlendDarken::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BlendDarken::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

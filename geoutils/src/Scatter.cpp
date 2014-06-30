@@ -519,6 +519,11 @@ Scatter::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Scatter::getMemSize() const
+{
+    return sizeof *this;
+}
+
 void Scatter::setParam(Ionflux::ObjectBase::IFParamID paramID, 
 Ionflux::Mapping::MappingValue paramValue)
 {

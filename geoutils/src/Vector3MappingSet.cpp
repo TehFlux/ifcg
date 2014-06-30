@@ -238,6 +238,11 @@ Vector3MappingSet::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Vector3MappingSet::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

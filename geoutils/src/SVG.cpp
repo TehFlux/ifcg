@@ -237,6 +237,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int SVG::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

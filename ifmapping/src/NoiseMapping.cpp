@@ -196,6 +196,11 @@ NoiseMapping::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int NoiseMapping::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

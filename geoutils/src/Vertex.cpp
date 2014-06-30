@@ -254,6 +254,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Vertex::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

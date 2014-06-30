@@ -547,6 +547,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Drawable::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

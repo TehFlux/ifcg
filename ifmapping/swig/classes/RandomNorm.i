@@ -62,6 +62,7 @@ class RandomNorm
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::RandomNorm* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMean(Ionflux::Mapping::MappingValue newMean);
         virtual Ionflux::Mapping::MappingValue getMean() const;
         virtual void setStdDev(Ionflux::Mapping::MappingValue newStdDev);

@@ -87,7 +87,8 @@ class BezierSpline
 		static Ionflux::Mapping::BezierSpline* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierSpline* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumSegments() const;
         virtual Ionflux::Mapping::BezierCurve* getSegment(unsigned int 
         elementIndex = 0) const;

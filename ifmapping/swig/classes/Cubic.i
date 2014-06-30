@@ -59,6 +59,7 @@ class Cubic
 		other);
 		static Ionflux::Mapping::Cubic* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

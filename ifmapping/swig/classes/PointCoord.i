@@ -62,6 +62,7 @@ class PointCoord
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointCoord* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::PointCoord* 
 		create(Ionflux::Mapping::PointMapping* initFunc, 
 		Ionflux::Mapping::CoordinateID initCoord = Ionflux::Mapping::C_X, 

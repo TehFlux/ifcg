@@ -208,6 +208,11 @@ Iterate::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Iterate::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

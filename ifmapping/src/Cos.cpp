@@ -121,6 +121,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Cos::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

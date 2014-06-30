@@ -64,6 +64,7 @@ class SecantRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::SecantRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

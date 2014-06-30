@@ -210,6 +210,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int PointCoord::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

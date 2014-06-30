@@ -230,6 +230,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int ImageSet::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

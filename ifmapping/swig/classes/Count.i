@@ -63,6 +63,7 @@ class Count
 		other);
 		static Ionflux::Mapping::Count* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setCounter(Ionflux::Mapping::MappingValue newCounter);
         virtual Ionflux::Mapping::MappingValue getCounter() const;
         virtual void setAdjustment(Ionflux::Mapping::MappingValue 

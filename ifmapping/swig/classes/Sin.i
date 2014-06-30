@@ -60,6 +60,7 @@ class Sin
 		other);
 		static Ionflux::Mapping::Sin* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

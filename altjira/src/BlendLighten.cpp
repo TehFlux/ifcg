@@ -241,6 +241,11 @@ BlendLighten::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BlendLighten::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

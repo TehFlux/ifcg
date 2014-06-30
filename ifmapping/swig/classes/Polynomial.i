@@ -63,7 +63,8 @@ class Polynomial
 		static Ionflux::Mapping::Polynomial* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::Polynomial* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumCoefficients() const;
         virtual Ionflux::Mapping::MappingValue getCoefficient(unsigned int 
         elementIndex = 0) const;

@@ -274,6 +274,11 @@ Connection::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<Connection*>(other);
 }
 
+unsigned int Connection::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

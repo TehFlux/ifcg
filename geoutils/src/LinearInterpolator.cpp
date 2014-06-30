@@ -158,6 +158,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int LinearInterpolator::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

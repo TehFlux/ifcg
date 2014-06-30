@@ -161,6 +161,11 @@ MatrixTransform::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int MatrixTransform::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

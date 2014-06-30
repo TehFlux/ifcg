@@ -61,6 +61,7 @@ class Constant
 		other);
 		static Ionflux::Mapping::Constant* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setConstValue(Ionflux::Mapping::MappingValue 
         newConstValue);
         virtual Ionflux::Mapping::MappingValue getConstValue() const;

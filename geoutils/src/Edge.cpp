@@ -268,6 +268,11 @@ initVertices, Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Edge::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Edge::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

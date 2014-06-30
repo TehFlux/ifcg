@@ -67,6 +67,7 @@ class BrentLinearRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BrentLinearRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

@@ -63,6 +63,7 @@ class NoiseMapTransform
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::Noise::NoiseMapTransform* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFunc(Ionflux::Mapping::Mapping* newFunc);
         virtual Ionflux::Mapping::Mapping* getFunc() const;
         virtual void setScale(Ionflux::Mapping::MappingValue newScale);

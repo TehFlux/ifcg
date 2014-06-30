@@ -318,6 +318,11 @@ Rotate::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Rotate::getMemSize() const
+{
+    return sizeof *this;
+}
+
 void Rotate::setParam(Ionflux::ObjectBase::IFParamID paramID, 
 Ionflux::Mapping::MappingValue paramValue)
 {

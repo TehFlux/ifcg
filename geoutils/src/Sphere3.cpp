@@ -263,6 +263,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Sphere3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

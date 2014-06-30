@@ -411,6 +411,11 @@ Ionflux::GeoUtils::Polygon2* Polygon2::copy() const
     return newPolygon2;
 }
 
+unsigned int Polygon2::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

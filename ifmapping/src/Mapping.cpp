@@ -96,6 +96,11 @@ other)
     return dynamic_cast<Mapping*>(other);
 }
 
+unsigned int Mapping::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

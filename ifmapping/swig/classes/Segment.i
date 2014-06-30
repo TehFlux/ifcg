@@ -132,6 +132,7 @@ class Segment
 		other);
 		static Ionflux::Mapping::Segment* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::Segment* create(Ionflux::Mapping::PointMapping* 
 		initFunc, Ionflux::Mapping::MappingValue t0 = 0., 
 		Ionflux::Mapping::MappingValue t1 = 1., Ionflux::ObjectBase::IFObject* 

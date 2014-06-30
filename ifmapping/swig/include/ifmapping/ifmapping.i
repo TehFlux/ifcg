@@ -221,6 +221,7 @@ class Piece
 		other);
 		static Ionflux::Mapping::Piece* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMapping(Ionflux::Mapping::Mapping* newMapping);
         virtual Ionflux::Mapping::Mapping* getMapping() const;
         virtual void setParam(Ionflux::Mapping::MappingValue newParam);
@@ -310,6 +311,7 @@ class Point
 		other);
 		static Ionflux::Mapping::Point* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::Point* create(Ionflux::Mapping::MappingValue 
 		initX, Ionflux::Mapping::MappingValue initY, 
 		Ionflux::Mapping::MappingValue initZ, Ionflux::ObjectBase::IFObject* 
@@ -374,6 +376,7 @@ class PointSet
 		other);
 		static Ionflux::Mapping::PointSet* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::PointSet* create(const 
 		Ionflux::Mapping::PointVector& initPoints, Ionflux::ObjectBase::IFObject*
 		parentObject = 0);        
@@ -474,7 +477,8 @@ class MappingSet
 		static Ionflux::Mapping::MappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::MappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumMappings() const;
         virtual Ionflux::Mapping::Mapping* getMapping(unsigned int 
         elementIndex = 0) const;
@@ -636,6 +640,7 @@ class PointMapping
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointMapping* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -688,6 +693,7 @@ class PointSample
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointSample* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::PointSample* 
 		create(Ionflux::Mapping::MappingValue initParam, Ionflux::Mapping::Point*
 		initCoords = 0, Ionflux::Mapping::MappingValue initArcLength = 0., 
@@ -814,6 +820,7 @@ class Segment
 		other);
 		static Ionflux::Mapping::Segment* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::Segment* create(Ionflux::Mapping::PointMapping* 
 		initFunc, Ionflux::Mapping::MappingValue t0 = 0., 
 		Ionflux::Mapping::MappingValue t1 = 1., Ionflux::ObjectBase::IFObject* 
@@ -895,6 +902,7 @@ class EvalCoord
 		other);
 		static Ionflux::Mapping::EvalCoord* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFunc(Ionflux::Mapping::PointMapping* newFunc);
         virtual Ionflux::Mapping::PointMapping* getFunc() const;
         virtual void setCoord(Ionflux::Mapping::CoordinateID newCoord);
@@ -956,7 +964,8 @@ class PointMappingSet
 		static Ionflux::Mapping::PointMappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointMappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumMappings() const;
         virtual Ionflux::Mapping::PointMapping* getMapping(unsigned int 
         elementIndex = 0) const;
@@ -1014,6 +1023,7 @@ class Constant
 		other);
 		static Ionflux::Mapping::Constant* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setConstValue(Ionflux::Mapping::MappingValue 
         newConstValue);
         virtual Ionflux::Mapping::MappingValue getConstValue() const;
@@ -1066,6 +1076,7 @@ class Linear
 		other);
 		static Ionflux::Mapping::Linear* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setLower(Ionflux::Mapping::MappingValue newLower);
         virtual Ionflux::Mapping::MappingValue getLower() const;
         virtual void setUpper(Ionflux::Mapping::MappingValue newUpper);
@@ -1112,6 +1123,7 @@ class Cubic
 		other);
 		static Ionflux::Mapping::Cubic* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1156,6 +1168,7 @@ class Rescale
 		virtual Ionflux::Mapping::Rescale* copy() const;
 		static Ionflux::Mapping::Rescale* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFunc(Ionflux::Mapping::Mapping* newFunc);
         virtual Ionflux::Mapping::Mapping* getFunc() const;        
         virtual unsigned int getNumArgs() const;
@@ -1211,6 +1224,7 @@ class InverseFalloff
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::InverseFalloff* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setExponent(Ionflux::Mapping::MappingValue 
         newExponent);
         virtual Ionflux::Mapping::MappingValue getExponent() const;
@@ -1277,7 +1291,8 @@ class Piecewise
 		static Ionflux::Mapping::Piecewise* upcast(Ionflux::ObjectBase::IFObject*
 		other);
 		static Ionflux::Mapping::Piecewise* create(Ionflux::ObjectBase::IFObject*
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumPieces() const;
         virtual Ionflux::Mapping::Piece* getPiece(unsigned int elementIndex
         = 0) const;
@@ -1329,7 +1344,8 @@ class Multiply
 		static Ionflux::Mapping::Multiply* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Multiply* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumFuncs() const;
         virtual Ionflux::Mapping::Mapping* getFunc(unsigned int 
         elementIndex = 0) const;
@@ -1385,7 +1401,8 @@ class LinearCombination
 		static Ionflux::Mapping::LinearCombination* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::LinearCombination* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumPieces() const;
         virtual Ionflux::Mapping::Piece* getPiece(unsigned int elementIndex
         = 0) const;
@@ -1437,7 +1454,8 @@ class Chain
 		static Ionflux::Mapping::Chain* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Chain* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumFuncs() const;
         virtual Ionflux::Mapping::Mapping* getFunc(unsigned int 
         elementIndex = 0) const;
@@ -1492,6 +1510,7 @@ class Power
 		other);
 		static Ionflux::Mapping::Power* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setExponent(int newExponent);
         virtual int getExponent() const;
 };
@@ -1537,6 +1556,7 @@ class Exp
 		other);
 		static Ionflux::Mapping::Exp* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1580,6 +1600,7 @@ class Sin
 		other);
 		static Ionflux::Mapping::Sin* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1623,6 +1644,7 @@ class Cos
 		other);
 		static Ionflux::Mapping::Cos* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1666,6 +1688,7 @@ class Tan
 		other);
 		static Ionflux::Mapping::Tan* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1709,6 +1732,7 @@ class ArcSin
 		other);
 		static Ionflux::Mapping::ArcSin* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1752,6 +1776,7 @@ class ArcCos
 		other);
 		static Ionflux::Mapping::ArcCos* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1795,6 +1820,7 @@ class ArcTan
 		other);
 		static Ionflux::Mapping::ArcTan* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1841,7 +1867,8 @@ class Polynomial
 		static Ionflux::Mapping::Polynomial* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::Polynomial* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumCoefficients() const;
         virtual Ionflux::Mapping::MappingValue getCoefficient(unsigned int 
         elementIndex = 0) const;
@@ -1898,6 +1925,7 @@ class Random
 		other);
 		static Ionflux::Mapping::Random* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -1943,6 +1971,7 @@ class RandomNorm
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::RandomNorm* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMean(Ionflux::Mapping::MappingValue newMean);
         virtual Ionflux::Mapping::MappingValue getMean() const;
         virtual void setStdDev(Ionflux::Mapping::MappingValue newStdDev);
@@ -1993,6 +2022,7 @@ class RandomDensity
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::RandomDensity* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMaxIters(unsigned int newMaxIters);
         virtual unsigned int getMaxIters() const;
 };
@@ -2041,6 +2071,7 @@ class Count
 		other);
 		static Ionflux::Mapping::Count* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setCounter(Ionflux::Mapping::MappingValue newCounter);
         virtual Ionflux::Mapping::MappingValue getCounter() const;
         virtual void setAdjustment(Ionflux::Mapping::MappingValue 
@@ -2102,7 +2133,8 @@ class Lookup
 		static Ionflux::Mapping::Lookup* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Mapping::Lookup* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumEntries() const;
         virtual Ionflux::Mapping::MappingValue getEntry(unsigned int 
         elementIndex = 0) const;
@@ -2161,6 +2193,7 @@ class Accept
 		other);
 		static Ionflux::Mapping::Accept* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMaxIters(unsigned int newMaxIters);
         virtual unsigned int getMaxIters() const;
         virtual void setAcceptRange(const Ionflux::Mapping::Range& 
@@ -2227,6 +2260,7 @@ class BezierCurve
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierCurve* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::BezierCurve* create(const 
 		Ionflux::Mapping::Point& initP0, const Ionflux::Mapping::Point& initP1, 
 		const Ionflux::Mapping::Point& initP2, const Ionflux::Mapping::Point& 
@@ -2314,7 +2348,8 @@ class BezierSpline
 		static Ionflux::Mapping::BezierSpline* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierSpline* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumSegments() const;
         virtual Ionflux::Mapping::BezierCurve* getSegment(unsigned int 
         elementIndex = 0) const;
@@ -2375,6 +2410,7 @@ class PointCoord
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::PointCoord* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::PointCoord* 
 		create(Ionflux::Mapping::PointMapping* initFunc, 
 		Ionflux::Mapping::CoordinateID initCoord = Ionflux::Mapping::C_X, 
@@ -2431,6 +2467,7 @@ class BezierSplineKey
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BezierSplineKey* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setT(Ionflux::Mapping::MappingValue newT);
         virtual Ionflux::Mapping::MappingValue getT() const;
 };
@@ -2585,6 +2622,7 @@ class BisectionRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BisectionRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2632,6 +2670,7 @@ class SecantRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::SecantRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2680,6 +2719,7 @@ class DekkerRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::DekkerRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2730,6 +2770,7 @@ class BrentLinearRootFinder
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::BrentLinearRootFinder* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2780,6 +2821,7 @@ class ArcLength
 		other);
 		static Ionflux::Mapping::ArcLength* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::ArcLength* 
 		create(Ionflux::Mapping::PointMapping* initFunc, 
 		Ionflux::Mapping::MappingValue initOffset = 0., 
@@ -2851,6 +2893,7 @@ class PointXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::PointXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2900,6 +2943,7 @@ class PointSetXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::PointSetXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2949,6 +2993,7 @@ class PointMappingXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -2998,6 +3043,7 @@ class BezierCurveXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -3047,6 +3093,7 @@ class BezierSplineXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -3096,6 +3143,7 @@ class PointSampleXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::PointSampleXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -3145,6 +3193,7 @@ class SegmentXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Mapping::XMLUtils::SegmentXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

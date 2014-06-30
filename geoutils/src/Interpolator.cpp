@@ -221,6 +221,11 @@ setV1(other.getV1());
 	return *this;
 }
 
+unsigned int Interpolator::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

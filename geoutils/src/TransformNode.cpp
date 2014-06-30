@@ -584,6 +584,11 @@ TransformNode::upcast(Ionflux::ObjectBase::IFObject* other)
     return dynamic_cast<TransformNode*>(other);
 }
 
+unsigned int TransformNode::getMemSize() const
+{
+    return sizeof *this;
+}
+
 void TransformNode::setParam(Ionflux::ObjectBase::IFParamID paramID, 
 Ionflux::Mapping::MappingValue paramValue)
 {

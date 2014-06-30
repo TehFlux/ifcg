@@ -198,6 +198,11 @@ setTargetOpacity(other.getTargetOpacity());
 	return *this;
 }
 
+unsigned int ColorBlender::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

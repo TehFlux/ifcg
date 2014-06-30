@@ -497,6 +497,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Color::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

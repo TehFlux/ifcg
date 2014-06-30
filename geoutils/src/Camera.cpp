@@ -910,6 +910,11 @@ Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Camera::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Camera::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

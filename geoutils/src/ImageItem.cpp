@@ -328,6 +328,11 @@ ImageItem::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int ImageItem::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

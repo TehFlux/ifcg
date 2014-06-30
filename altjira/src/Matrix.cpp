@@ -319,6 +319,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Matrix::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

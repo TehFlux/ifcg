@@ -161,6 +161,11 @@ BezierSplineKey::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int BezierSplineKey::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

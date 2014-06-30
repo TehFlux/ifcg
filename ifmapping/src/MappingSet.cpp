@@ -231,6 +231,11 @@ MappingSet::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int MappingSet::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

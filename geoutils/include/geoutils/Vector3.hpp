@@ -613,6 +613,14 @@ class Vector3
 		 */
 		static Ionflux::GeoUtils::Vector3* create(const Ionflux::Mapping::Point& 
 		initElements0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		
+		/** Get allocated size in memory.
+		 *
+		 * Get the allocated size in memory for the object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		virtual unsigned int getMemSize() const;
         
 		/** Get XML element name.
 		 *

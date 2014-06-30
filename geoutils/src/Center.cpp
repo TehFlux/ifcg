@@ -196,6 +196,11 @@ Center::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Center::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

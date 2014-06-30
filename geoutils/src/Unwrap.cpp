@@ -168,6 +168,11 @@ Unwrap::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Unwrap::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

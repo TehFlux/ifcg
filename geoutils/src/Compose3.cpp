@@ -226,6 +226,11 @@ Compose3::create(Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Compose3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }

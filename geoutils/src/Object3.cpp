@@ -292,6 +292,11 @@ initMesh, Ionflux::ObjectBase::IFObject* parentObject)
     return newObject;
 }
 
+unsigned int Object3::getMemSize() const
+{
+    return sizeof *this;
+}
+
 std::string Object3::getXMLElementName() const
 {
 	return XML_ELEMENT_NAME;

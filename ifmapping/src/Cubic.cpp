@@ -122,6 +122,11 @@ parentObject)
     return newObject;
 }
 
+unsigned int Cubic::getMemSize() const
+{
+    return sizeof *this;
+}
+
 }
 
 }
