@@ -41,10 +41,11 @@ GeoUtils depends on the following packages:
 
 + Ionflux Object Base System (http://sf.net/projects/iftools)
 + Ionflux Template Processor (http://sf.net/projects/iftools)
-+ IFMapping - Ionflux Mapping Library 
-  (http://xi.ionflux.org/projects/stuff)
++ IFMapping - Ionflux Mapping Library (http://sf.net/projects/ifcg)
 + Altjira - Ionflux' Image Processing Library (optional, required for 
-  pixel based image output, http://xi.ionflux.org/projects/stuff)
+  pixel based image output, http://sf.net/projects/ifcg)
++ Autodesk FBX SDK (optional, required for FBX file I/O, 
+  http://www.autodesk.com/products/fbx/overview)
 
 Make sure you get a recent SVN version of Ionflux Object Base System. 
 Older packages will most likely not work.

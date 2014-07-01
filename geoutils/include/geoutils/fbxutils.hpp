@@ -1,11 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_FBX_TYPES
-#define IONFLUX_GEOUTILS_FBX_TYPES
+#ifndef IONFLUX_GEOUTILS_FBX_UTILS
+#define IONFLUX_GEOUTILS_FBX_UTILS
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009-2014 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * fbxtypes.hpp                     FBX types.
+ * fbxutils.hpp                FBX utility functions.
  * =========================================================================
  *
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -27,17 +27,8 @@
  * 
  * ========================================================================== */
 
-#include <vector>
-#include <fbxsdk/fbxsdk_version.h>
-
-namespace FBXSDK_NAMESPACE
-{
- 
-class FbxManager;
-class FbxScene;
-class FbxNode;
-
-}
+#include <string>
+#include "geoutils/fbxtypes.hpp"
 
 namespace Ionflux
 {
@@ -45,19 +36,15 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-class FBXNode;
-
-/// FBX node attribute type.
-typedef int FBXNodeAttributeType;
-
-/// Vector of FBX nodes.
-typedef std::vector<Ionflux::GeoUtils::FBXNode*> FBXNodeVector;
+/// Get a string representation for a node attribute type.
+std::string getFBXNodeAttributeTypeString(
+    Ionflux::GeoUtils::FBXNodeAttributeType attrType);
 
 }
 
 }
 
-/** \file types.hpp
- * \brief Types (header).
+/** \file fbxutils.hpp
+ * \brief FBX utility functions (header).
  */
 #endif

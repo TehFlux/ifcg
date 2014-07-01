@@ -10,6 +10,7 @@
 #include "ifobject/ifobjectbase.hpp"
 #include "ifmapping/ifmapping.hpp"
 #include "geoutils/geoutils.hpp"
+#include "geoutils/fbxutils.hpp"
 #include <assert.h>
 using namespace std;
 %}
@@ -30,5 +31,42 @@ using namespace std;
     }
 }
 
-$FBXScene
+// fbxtypes.hpp
 
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class FBXNode;
+
+typedef int FBXNodeAttributeType;
+
+typedef std::vector<Ionflux::GeoUtils::FBXNode*> FBXNodeVector;
+
+}
+
+}
+
+// fbxutils.hpp
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+std::string getFBXNodeAttributeTypeString(
+    Ionflux::GeoUtils::FBXNodeAttributeType attrType);
+
+}
+
+}
+
+$FBXManager
+$FBXScene
+$FBXNode
+$FBXNodeSet
+
+%template(FBXNodeVector) std::vector<Ionflux::GeoUtils::FBXNode*>;

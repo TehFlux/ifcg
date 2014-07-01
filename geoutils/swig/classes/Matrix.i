@@ -89,6 +89,7 @@ class Matrix
         Ionflux::GeoUtils::Matrix& target) const;
         virtual void permuteRowsIP(const Ionflux::GeoUtils::Vector& p);
         virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
+        virtual void setIdentity();
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
         virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
@@ -109,6 +110,7 @@ class Matrix
 		other);
 		static Ionflux::GeoUtils::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

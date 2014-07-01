@@ -31,8 +31,11 @@
 #include <sstream>
 #include <iomanip>
 #include <fbxsdk.h>
+#include "ifobject/utils.hpp"
 #include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/FBXManager.hpp"
+#include "geoutils/FBXNode.hpp"
 
 namespace Ionflux
 {
@@ -56,61 +59,59 @@ const FBXSceneClassInfo FBXScene::fBXSceneClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* FBXScene::CLASS_INFO = &FBXScene::fBXSceneClassInfo;
 
 FBXScene::FBXScene()
-: fbxManager(0), fbxScene(0)
+: fbxManager(0), impl(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	initFBXManager();
+	// TODO: Nothing ATM. ;-)
 }
 
 FBXScene::FBXScene(const Ionflux::GeoUtils::FBXScene& other)
-: fbxManager(0), fbxScene(0)
+: fbxManager(0), impl(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	*this = other;
 }
 
+FBXScene::FBXScene(Ionflux::GeoUtils::FBXManager* initFbxManager)
+: fbxManager(0), impl(0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	if (initFbxManager != 0)
+	    setFbxManager(initFbxManager);
+}
+
 FBXScene::~FBXScene()
 {
-	if (fbxManager != 0)
+	if (impl != 0)
 	{
-	    fbxManager->Destroy();
-	    fbxManager = 0;
+	    impl->Destroy();
+	    impl = 0;
 	}
-	fbxScene = 0;
 }
 
-void FBXScene::initFBXManager()
-{
-	FbxManager* fbxm = FbxManager::Create();
-	if (fbxm == 0)
-	    throw GeoUtilsError(getErrorString(
-	        "Could not create FBX manager.", "initFBXManager"));
-	FbxIOSettings* ios = FbxIOSettings::Create(fbxm, IOSROOT);
-	fbxm->SetIOSettings(ios);
-	setFbxManager(fbxm);
-}
-
-void FBXScene::initFBXScene()
+void FBXScene::initImpl()
 {
 	Ionflux::ObjectBase::nullPointerCheck(fbxManager, this, 
 	    "initFBXScene", "FBX manager");
 	std::string sceneName(id);
 	if (sceneName.size() == 0)
 	    sceneName = "Unnamed Scene";
-	FbxScene* fbxs = FbxScene::Create(fbxManager, sceneName.c_str());
+	FbxScene* fbxs = FbxScene::Create(fbxManager->getImpl(), 
+	    sceneName.c_str());
 	if (fbxs == 0)
 	    throw GeoUtilsError(getErrorString(
 	        "Could not create FBX scene.", "initFBXScene"));
-	setFbxScene(fbxs);
+	setImpl(fbxs);
 }
 
 void FBXScene::initMetaData()
 {
-	Ionflux::ObjectBase::nullPointerCheck(fbxScene, this, 
+	Ionflux::ObjectBase::nullPointerCheck(impl, this, 
 	    "initMetadata", "FBX scene");
-	FbxDocumentInfo* sceneInfo = fbxScene->GetSceneInfo();
+	FbxDocumentInfo* sceneInfo = impl->GetSceneInfo();
 	if (sceneInfo != 0)
 	{
 	    setTitle(sceneInfo->mTitle.Buffer());
@@ -126,35 +127,56 @@ bool FBXScene::loadFromFile(const std::string& fileName)
 {
 	Ionflux::ObjectBase::nullPointerCheck(fbxManager, this, 
 	    "loadFromFile", "FBX manager");
-	if (fbxScene == 0)
-	    initFBXScene();
-	Ionflux::ObjectBase::nullPointerCheck(fbxScene, this, 
+	if (impl == 0)
+	    initImpl();
+	Ionflux::ObjectBase::nullPointerCheck(impl, this, 
 	    "loadFromFile", "FBX scene");
-	FbxImporter* imp = FbxImporter::Create(fbxManager, "");
-	bool result = imp->Initialize(fileName.c_str(), -1, 
-	    fbxManager->GetIOSettings());
+	FbxManager* mImpl = fbxManager->getImpl();
+	FbxImporter* imp0 = FbxImporter::Create(mImpl, "");
+	bool result = imp0->Initialize(fileName.c_str(), -1, 
+	    mImpl->GetIOSettings());
 	if (!result)
 	{
-	    FbxString es0 = imp->GetStatus().GetErrorString();
+	    FbxString es0 = imp0->GetStatus().GetErrorString();
 	    std::ostringstream status;
 	    status << "Error importing file '" << fileName << ": " 
 	        << es0.Buffer();
 	    throw GeoUtilsError(getErrorString(status.str(), 
 	        "loadFromFile"));
 	}
-	result = imp->Import(fbxScene);
+	result = imp0->Import(impl);
 	if (!result)
 	{
-	    FbxString es0 = imp->GetStatus().GetErrorString();
+	    FbxString es0 = imp0->GetStatus().GetErrorString();
 	    std::ostringstream status;
 	    status << "Error importing file '" << fileName << ": " 
 	        << es0.Buffer();
 	    throw GeoUtilsError(getErrorString(status.str(), 
 	        "loadFromFile"));
 	}
-	imp->Destroy();
+	imp0->Destroy();
 	initMetaData();
 	return true;
+}
+
+Ionflux::GeoUtils::FBXNode* FBXScene::getRootNode() const
+{
+	if (impl == 0)
+	    return 0;
+	FBXNode* r0 = FBXNode::create(impl->GetRootNode());
+	return r0;
+}
+
+void FBXScene::listNodes(bool recursive, unsigned int indentWidth, char 
+indentChar) const
+{
+	FBXNode* r0 = getRootNode();
+	if (r0 == 0)
+	    return;
+	addLocalRef(r0);
+	std::cout << "[root: " << r0->getValueString() << "]" << std::endl;
+	r0->listChildNodes(recursive, indentWidth, indentChar, 1);
+	removeLocalRef(r0);
 }
 
 std::string FBXScene::getValueString() const
@@ -163,32 +185,34 @@ std::string FBXScene::getValueString() const
 	return "";
 }
 
-void FBXScene::setFbxManager(FBXSDK_NAMESPACE::FbxManager* newFbxManager)
+void FBXScene::setFbxManager(Ionflux::GeoUtils::FBXManager* newFbxManager)
 {
-	if (newFbxManager == fbxManager)
-	    return;
+	if (fbxManager == newFbxManager)
+		return;
+    if (newFbxManager != 0)
+        addLocalRef(newFbxManager);
 	if (fbxManager != 0)
-	    fbxManager->Destroy();
+		removeLocalRef(fbxManager);
 	fbxManager = newFbxManager;
 }
 
-FBXSDK_NAMESPACE::FbxManager* FBXScene::getFbxManager() const
+Ionflux::GeoUtils::FBXManager* FBXScene::getFbxManager() const
 {
     return fbxManager;
 }
 
-void FBXScene::setFbxScene(FBXSDK_NAMESPACE::FbxScene* newFbxScene)
+void FBXScene::setImpl(FBXSDK_NAMESPACE::FbxScene* newImpl)
 {
-	if (newFbxScene == fbxScene)
+	if (newImpl == impl)
 	    return;
-	if (fbxScene != 0)
-	    fbxScene->Destroy();
-	fbxScene = newFbxScene;
+	if (impl != 0)
+	    impl->Destroy();
+	impl = newImpl;
 }
 
-FBXSDK_NAMESPACE::FbxScene* FBXScene::getFbxScene() const
+FBXSDK_NAMESPACE::FbxScene* FBXScene::getImpl() const
 {
-    return fbxScene;
+    return impl;
 }
 
 void FBXScene::setTitle(const std::string& newTitle)
@@ -257,7 +281,7 @@ Ionflux::GeoUtils::FBXScene& other)
     if (this == &other)
         return *this;
     setFbxManager(other.fbxManager);
-    setFbxScene(other.fbxScene);
+    setImpl(other.impl);
 	return *this;
 }
 

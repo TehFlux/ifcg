@@ -1,13 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_FBX_TYPES
-#define IONFLUX_GEOUTILS_FBX_TYPES
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2014 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * fbxtypes.hpp                     FBX types.
+ * FBXManager.i                    FBX Manager (interface).
  * =========================================================================
- *
+ * 
  * This file is part of GeoUtils - Ionflux' Geometry Library.
  * 
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
@@ -26,18 +24,9 @@
  * 02111-1307 USA
  * 
  * ========================================================================== */
-
-#include <vector>
-#include <fbxsdk/fbxsdk_version.h>
-
-namespace FBXSDK_NAMESPACE
-{
- 
-class FbxManager;
-class FbxScene;
-class FbxNode;
-
-}
+%{
+#include "geoutils/FBXManager.hpp"
+%}
 
 namespace Ionflux
 {
@@ -45,19 +34,31 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-class FBXNode;
+class FBXManagerClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        FBXManagerClassInfo();
+        virtual ~FBXManagerClassInfo();
+};
 
-/// FBX node attribute type.
-typedef int FBXNodeAttributeType;
-
-/// Vector of FBX nodes.
-typedef std::vector<Ionflux::GeoUtils::FBXNode*> FBXNodeVector;
+class FBXManager
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        FBXManager();
+		FBXManager(const Ionflux::GeoUtils::FBXManager& other);
+        virtual ~FBXManager();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::FBXManager* copy() const;
+		static Ionflux::GeoUtils::FBXManager* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::FBXManager* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
+};
 
 }
 
 }
-
-/** \file types.hpp
- * \brief Types (header).
- */
-#endif

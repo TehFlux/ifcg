@@ -442,6 +442,21 @@ void Matrix::permuteColsIP(const Ionflux::GeoUtils::Vector& p)
 	removeLocalRef(m0);
 }
 
+void Matrix::setIdentity()
+{
+	unsigned int numRows = getNumRows();
+	unsigned int numCols = getNumCols();
+	for (unsigned int i = 0; i < numRows; i++)
+	    for (unsigned int k = 0; k < numCols; k++)
+	    {
+	        unsigned int i0 = i * numCols + k;
+	        if (i == k)
+	            elements[i0] = 1.;
+	        else
+	            elements[i0] = 0.;
+	    }
+}
+
 unsigned int Matrix::getNumRows() const
 {
 	// TODO: Implementation.

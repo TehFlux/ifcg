@@ -305,6 +305,12 @@ class Matrix
 		 */
 		virtual void permuteColsIP(const Ionflux::GeoUtils::Vector& p);
 		
+		/** Set matrix to identity.
+		 *
+		 * Set the matrix to the identity matrix.
+		 */
+		virtual void setIdentity();
+		
 		/** Get number of rows.
 		 *
 		 * Get the number of rows in the matrix

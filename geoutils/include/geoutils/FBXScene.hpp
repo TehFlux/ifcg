@@ -27,6 +27,7 @@
  * 
  * ========================================================================== */
 
+#include "ifobject/constants.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
@@ -38,6 +39,9 @@ namespace Ionflux
 
 namespace GeoUtils
 {
+
+class FBXManager;
+class FBXNode;
 
 /// Class information for class FBXScene.
 class FBXSceneClassInfo
@@ -64,9 +68,9 @@ class FBXScene
 		
 	protected:
 		/// FBX manager.
-		FBXSDK_NAMESPACE::FbxManager* fbxManager;
-		/// FBX scene.
-		FBXSDK_NAMESPACE::FbxScene* fbxScene;
+		Ionflux::GeoUtils::FBXManager* fbxManager;
+		/// FBX scene implementation.
+		FBXSDK_NAMESPACE::FbxScene* impl;
 		/// title.
 		std::string title;
 		/// subject.
@@ -80,17 +84,11 @@ class FBXScene
 		/// comment.
 		std::string comment;
 		
-		/** Initialize the FBX manager.
-		 *
-		 * Initialize the FBX manager.
-		 */
-		virtual void initFBXManager();
-		
-		/** Initialize the FBX scene.
+		/** Initialize the FBX scene implementation.
 		 *
 		 * Initialize the FBX scene.
 		 */
-		virtual void initFBXScene();
+		virtual void initImpl();
 		
 		/** Initialize metadata.
 		 *
@@ -166,6 +164,14 @@ class FBXScene
 		 */
 		FBXScene(const Ionflux::GeoUtils::FBXScene& other);
 		
+		/** Constructor.
+		 *
+		 * Construct new FBXScene object.
+		 *
+		 * \param initFbxManager FBX manager.
+		 */
+		FBXScene(Ionflux::GeoUtils::FBXManager* initFbxManager);
+		
 		/** Destructor.
 		 *
 		 * Destruct FBXScene object.
@@ -181,6 +187,26 @@ class FBXScene
 		 * \return \c true on success, \c false otherwise.
 		 */
 		virtual bool loadFromFile(const std::string& fileName);
+		
+		/** Get the root node.
+		 *
+		 * Get the root node of the scene. The caller is responsible for 
+		 * managing the returned object.
+		 *
+		 * \return Root node, or 0 if the root node does not exist..
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* getRootNode() const;
+		
+		/** List nodes.
+		 *
+		 * List the nodes in the scene
+		 *
+		 * \param recursive List nodes recursively.
+		 * \param indentWidth Indentation width.
+		 * \param indentChar Indentation character.
+		 */
+		virtual void listNodes(bool recursive = true, unsigned int indentWidth = 
+		Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char indentChar = ' ') const;
 		
 		/** Get string representation of value.
 		 *
@@ -245,7 +271,7 @@ class FBXScene
 		 *
 		 * \return Current value of fBX manager.
 		 */
-		virtual FBXSDK_NAMESPACE::FbxManager* getFbxManager() const;
+		virtual Ionflux::GeoUtils::FBXManager* getFbxManager() const;
 		
 		/** Set fBX manager.
 		 *
@@ -253,21 +279,21 @@ class FBXScene
 		 *
 		 * \param newFbxManager New value of fBX manager.
 		 */
-		virtual void setFbxManager(FBXSDK_NAMESPACE::FbxManager* newFbxManager);
+		virtual void setFbxManager(Ionflux::GeoUtils::FBXManager* newFbxManager);
 		
-		/** Get fBX scene.
+		/** Get fBX scene implementation.
 		 *
-		 * \return Current value of fBX scene.
+		 * \return Current value of fBX scene implementation.
 		 */
-		virtual FBXSDK_NAMESPACE::FbxScene* getFbxScene() const;
+		virtual FBXSDK_NAMESPACE::FbxScene* getImpl() const;
 		
-		/** Set fBX scene.
+		/** Set fBX scene implementation.
 		 *
-		 * Set new value of fBX scene.
+		 * Set new value of fBX scene implementation.
 		 *
-		 * \param newFbxScene New value of fBX scene.
+		 * \param newImpl New value of fBX scene implementation.
 		 */
-		virtual void setFbxScene(FBXSDK_NAMESPACE::FbxScene* newFbxScene);
+		virtual void setImpl(FBXSDK_NAMESPACE::FbxScene* newImpl);
 		
 		/** Get title.
 		 *

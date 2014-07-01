@@ -365,15 +365,27 @@ altjiraGeoUtilsLibXMLClasses = [
 # GeoUtils/FBX library
 fbxGeoUtilsLibHeaders = [
     'include/geoutils/fbxtypes.hpp',
-    'include/geoutils/FBXScene.hpp'
+    'include/geoutils/fbxutils.hpp',
+    'include/geoutils/fbxutils_private.hpp',
+    'include/geoutils/FBXManager.hpp', 
+    'include/geoutils/FBXScene.hpp', 
+    'include/geoutils/FBXNode.hpp', 
+    'include/geoutils/FBXNodeSet.hpp'
 ]
 
 fbxGeoUtilsLibSources = [
-    'build/FBXScene.cpp'
+    'build/fbxutils.cpp', 
+    'build/FBXManager.cpp', 
+    'build/FBXScene.cpp', 
+    'build/FBXNode.cpp', 
+    'build/FBXNodeSet.cpp'
 ]
 
 fbxGeoUtilsLibClasses = [
-    'FBXScene'
+    'FBXManager', 
+    'FBXScene', 
+    'FBXNode', 
+    'FBXNodeSet'
 ]
 
 fbxGeoUtilsLibXMLClasses = [

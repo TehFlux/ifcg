@@ -1,11 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_FBX_TYPES
-#define IONFLUX_GEOUTILS_FBX_TYPES
+#ifndef IONFLUX_GEOUTILS_FBX_UTILS_PRIVATE
+#define IONFLUX_GEOUTILS_FBX_UTILS_PRIVATE
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009-2014 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * fbxtypes.hpp                     FBX types.
+ * fbxutils_private.hpp                FBX utility functions (private).
  * =========================================================================
  *
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -27,17 +27,9 @@
  * 
  * ========================================================================== */
 
-#include <vector>
-#include <fbxsdk/fbxsdk_version.h>
-
-namespace FBXSDK_NAMESPACE
-{
- 
-class FbxManager;
-class FbxScene;
-class FbxNode;
-
-}
+#include <fbxsdk.h>
+#include "geoutils/Vector3.hpp"
+#include "geoutils/Matrix4.hpp"
 
 namespace Ionflux
 {
@@ -45,19 +37,21 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-class FBXNode;
+/// Get a node attribute type from an implementation value.
+Ionflux::GeoUtils::FBXNodeAttributeType getFBXNodeAttributeType(
+    FBXSDK_NAMESPACE::FbxNodeAttribute::EType attrType);
 
-/// FBX node attribute type.
-typedef int FBXNodeAttributeType;
+/// Convert an FBX vector to a GeoUtils vector (3D).
+Ionflux::GeoUtils::Vector3 getVector(FBXSDK_NAMESPACE::FbxDouble3 v);
 
-/// Vector of FBX nodes.
-typedef std::vector<Ionflux::GeoUtils::FBXNode*> FBXNodeVector;
+/// Convert an FBX matrix to a GeoUtils matrix (4x4).
+Ionflux::GeoUtils::Matrix4 getMatrix(FBXSDK_NAMESPACE::FbxAMatrix m);
 
 }
 
 }
 
-/** \file types.hpp
- * \brief Types (header).
+/** \file fbxutils_private.hpp
+ * \brief FBX utility functions (private) (header).
  */
 #endif

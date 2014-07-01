@@ -1,0 +1,332 @@
+/* ==========================================================================
+ * GeoUtils - Ionflux' Geometry Library
+ * Copyright © 2009-2013 Jörn P. Meier
+ * mail@ionflux.org
+ * --------------------------------------------------------------------------
+ * FBXNode.cpp                     FBX Node (implementation).
+ * =========================================================================
+ * 
+ * This file is part of GeoUtils - Ionflux' Geometry Library.
+ * 
+ * GeoUtils - Ionflux' Geometry Library is free software; you can 
+ * redistribute it and/or modify it under the terms of the GNU General 
+ * Public License as published by the Free Software Foundation; either 
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * GeoUtils - Ionflux' Geometry Library is distributed in the hope that it 
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with GeoUtils - Ionflux' Geometry Library; if not, write to the Free 
+ * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
+ * 02111-1307 USA
+ * 
+ * ========================================================================== */
+
+#include "geoutils/FBXNode.hpp"
+#include <cmath>
+#include <cstdlib>
+#include <sstream>
+#include <iomanip>
+#include <fbxsdk.h>
+#include "ifobject/utils.hpp"
+#include "ifobject/objectutils.hpp"
+#include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/Matrix4.hpp"
+#include "geoutils/fbxutils.hpp"
+#include "geoutils/fbxutils_private.hpp"
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+FBXNodeClassInfo::FBXNodeClassInfo()
+{
+	name = "FBXNode";
+	desc = "FBX Node";
+	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
+}
+
+FBXNodeClassInfo::~FBXNodeClassInfo()
+{
+}
+
+// public member constants
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_UNKNOWN = 0;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_NULL = 1;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_MARKER = 2;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_SKELETON = 3;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_MESH = 4;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_NURBS = 5;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_PATCH = 6;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_CAMERA = 7;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_CAMERASTEREO = 8;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_CAMERASWITCHER = 9;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_LIGHT = 10;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_OPTICALREFERENCE = 11;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_OPTICALMARKER = 12;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_NURBSCURVE = 13;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_TRIMNURBSSURFACE = 14;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_BOUNDARY = 15;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_NURBSSURFACE = 16;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_SHAPE = 17;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_LODGROUP = 18;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_SUBDIV = 19;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_CACHEDEFFECT = 20;
+const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_LINE = 21;
+
+// run-time type information instance constants
+const FBXNodeClassInfo FBXNode::fBXNodeClassInfo;
+const Ionflux::ObjectBase::IFClassInfo* FBXNode::CLASS_INFO = &FBXNode::fBXNodeClassInfo;
+
+FBXNode::FBXNode()
+: impl(0), transformMatrix(0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	// TODO: Nothing ATM. ;-)
+}
+
+FBXNode::FBXNode(const Ionflux::GeoUtils::FBXNode& other)
+: impl(0), transformMatrix(0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	*this = other;
+}
+
+FBXNode::FBXNode(FBXSDK_NAMESPACE::FbxNode* initImpl)
+: impl(0), transformMatrix(0)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	if (initImpl != 0)
+	    setImpl(initImpl);
+}
+
+FBXNode::~FBXNode()
+{
+	impl = 0;
+}
+
+void FBXNode::update()
+{
+	if (impl == 0)
+	    return;
+	Matrix4 M0(getMatrix(impl->EvaluateLocalTransform()));
+	if (M0.eq(Matrix4::UNIT))
+	{
+	    if (transformMatrix != 0)
+	        setTransformMatrix(0);
+	    return;
+	}
+	Matrix4* m1 = transformMatrix;
+	if (m1 == 0)
+	{
+	    m1 = Matrix4::create();
+	    setTransformMatrix(m1);
+	}
+	m1->setElements(M0);
+	/*
+	Vector3 t0 = getVector(impl->LclTranslation.Get());
+	Vector3 r0 = getVector(impl->LclRotation.Get());
+	Vector3 s0 = getVector(impl->LclScaling.Get());
+	if (t0.eq(Vector3::ZERO) 
+	    && r0.eq(Vector3::ZERO) 
+	    && s0.eq(Vector3::E_SUM))
+	{
+	    if (transformMatrix != 0)
+	        setTransformMatrix(0);
+	    return;
+	}
+	Matrix4* m0 = transformMatrix;
+	if (m0 == 0)
+	{
+	    m0 = Matrix4::create();
+	    setTransformMatrix(m0);
+	}
+	m0->setIdentity();
+	if (!s0.eq(Vector3::E_SUM))
+	{
+	    Matrix4 S0(Matrix4::scale(s0));
+	    m0->multiplyLeft(S0);
+	}
+	if (!r0.eq(Vector3::ZERO))
+	{
+	    Matrix4 R0(Matrix3::rotate(r0.norm(), r0.normalize()));
+	    m0->multiplyLeft(R0);
+	}
+	if (!t0.eq(Vector3::ZERO))
+	{
+	    Matrix4 T0(Matrix4::translate(t0));
+	    m0->multiplyLeft(T0);
+	}
+	*/
+}
+
+Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::getAttributeType() const
+{
+	if (impl == 0)
+	    return TYPE_UNKNOWN;
+	FbxNodeAttribute* attr0 = impl->GetNodeAttribute();
+	if (attr0 == 0)
+	    return TYPE_NULL;
+	return getFBXNodeAttributeType(attr0->GetAttributeType());
+}
+
+std::string FBXNode::getName() const
+{
+	if (impl == 0)
+	    return "";
+	std::string result(impl->GetName());
+	return result;
+}
+
+int FBXNode::getNumChildNodes() const
+{
+	if (impl == 0)
+	    return 0;
+	return impl->GetChildCount();
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::getChildNode(int index) const
+{
+	if (impl == 0)
+	    return 0;
+	FbxNode* c0 = impl->GetChild(index);
+	if (c0 == 0)
+	    return 0;
+	FBXNode* result = FBXNode::create(c0);
+	return result;
+}
+
+void FBXNode::listChildNodes(bool recursive, unsigned int indentWidth, char
+indentChar, unsigned int depth) const
+{
+	std::string indent = Ionflux::ObjectBase::getIndent(depth, 
+	    indentWidth, indentChar);
+	int numChildNodes = getNumChildNodes();
+	for (int i = 0; i < numChildNodes; i++)
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	    {
+	        addLocalRef(n0);
+	        std::cout << indent << "[" << n0->getValueString() << "]" 
+	            << std::endl;
+	        if (recursive)
+	        {
+	            n0->listChildNodes(true, indentWidth, indentChar, 
+	                depth + 1);
+	        }
+	        removeLocalRef(n0);
+	    }
+	}
+}
+
+std::string FBXNode::getValueString() const
+{
+	std::ostringstream status;
+	status << getFBXNodeAttributeTypeString(getAttributeType());
+	std::string n0(getName());
+	if (n0.size() > 0)
+	    status << "; '" << n0 << "'";
+	if (transformMatrix != 0)
+	    status << "; [" << transformMatrix->getValueString() << "]";
+	return status.str();
+}
+
+void FBXNode::setImpl(FBXSDK_NAMESPACE::FbxNode* newImpl)
+{
+	if (newImpl == impl)
+	    return;
+	impl = newImpl;
+	update();
+}
+
+FBXSDK_NAMESPACE::FbxNode* FBXNode::getImpl() const
+{
+    return impl;
+}
+
+void FBXNode::setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
+newTransformMatrix)
+{
+	if (transformMatrix == newTransformMatrix)
+		return;
+    if (newTransformMatrix != 0)
+        addLocalRef(newTransformMatrix);
+	if (transformMatrix != 0)
+		removeLocalRef(transformMatrix);
+	transformMatrix = newTransformMatrix;
+}
+
+Ionflux::GeoUtils::Matrix4* FBXNode::getTransformMatrix() const
+{
+    return transformMatrix;
+}
+
+Ionflux::GeoUtils::FBXNode& FBXNode::operator=(const 
+Ionflux::GeoUtils::FBXNode& other)
+{
+    if (this == &other)
+        return *this;
+    setImpl(other.impl);
+	return *this;
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::copy() const
+{
+    FBXNode* newFBXNode = create();
+    *newFBXNode = *this;
+    return newFBXNode;
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::upcast(Ionflux::ObjectBase::IFObject* 
+other)
+{
+    return dynamic_cast<FBXNode*>(other);
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::create(Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    FBXNode* newObject = new FBXNode();
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::create(FBXSDK_NAMESPACE::FbxNode* 
+initImpl, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    FBXNode* newObject = new FBXNode(initImpl);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+unsigned int FBXNode::getMemSize() const
+{
+    return sizeof *this;
+}
+
+}
+
+}
+
+/** \file FBXNode.cpp
+ * \brief FBX Node implementation.
+ */
