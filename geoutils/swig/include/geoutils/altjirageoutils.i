@@ -3,7 +3,7 @@
 %include <std_set.i>
 %include <exception.i>
 %module AltjiraGeoUtils
-%import "geoutils.i"
+%import "geoutils/geoutils.i"
 %import "altjira/altjira.i"
 %import "altjira/altjiradraw.i"
 %{

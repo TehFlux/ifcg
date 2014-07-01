@@ -90,6 +90,7 @@
 #include "geoutils/Vector3MappingSet.hpp"
 #include "geoutils/Voxel.hpp"
 #include "geoutils/xmlutils.hpp"
+#include "geoutils/xml_factories.hpp"
 
 /** \file geoutils.hpp
  * \brief GeoUtils library (header).

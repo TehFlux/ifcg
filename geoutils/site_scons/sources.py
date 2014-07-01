@@ -362,3 +362,20 @@ altjiraGeoUtilsLibClasses = [
 altjiraGeoUtilsLibXMLClasses = [
 ]
 
+# GeoUtils/FBX library
+fbxGeoUtilsLibHeaders = [
+    'include/geoutils/fbxtypes.hpp',
+    'include/geoutils/FBXScene.hpp'
+]
+
+fbxGeoUtilsLibSources = [
+    'build/FBXScene.cpp'
+]
+
+fbxGeoUtilsLibClasses = [
+    'FBXScene'
+]
+
+fbxGeoUtilsLibXMLClasses = [
+]
+

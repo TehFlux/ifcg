@@ -1,11 +1,11 @@
-#ifndef IONFLUX_ALTJIRA_GEOUTILS
-#define IONFLUX_ALTJIRA_GEOUTILS
+#ifndef IONFLUX_GEOUTILS_FBX_TYPES
+#define IONFLUX_GEOUTILS_FBX_TYPES
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009 Jörn P. Meier
+ * Copyright © 2009-2014 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * altjirageoutils.hpp                     Altjira/GeoUtils library.
+ * fbxtypes.hpp                     FBX types.
  * =========================================================================
  *
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -27,17 +27,17 @@
  * 
  * ========================================================================== */
 
-#include "geoutils/imageutils.hpp"
-#include "geoutils/Image.hpp"
-#include "geoutils/ImageItem.hpp"
-#include "geoutils/ImageSource.hpp"
-#include "geoutils/ImageLoader.hpp"
-#include "geoutils/WritePNG.hpp"
-#include "geoutils/LoadSVG.hpp"
-#include "geoutils/Render.hpp"
-#include "geoutils/SVG.hpp"
+#include <fbxsdk/fbxsdk_version.h>
 
-/** \file geoutils.hpp
- * \brief Altjira/GeoUtils library (header).
+namespace FBXSDK_NAMESPACE
+{
+ 
+class FbxManager;
+class FbxScene;
+
+}
+
+/** \file types.hpp
+ * \brief Types (header).
  */
 #endif

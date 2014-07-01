@@ -138,6 +138,7 @@ class Polygon3
 		other);
 		static Ionflux::GeoUtils::Polygon3* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Polygon3* 
 		create(Ionflux::GeoUtils::Vertex3Vector* initVertices, 
 		Ionflux::GeoUtils::EdgeVector* initEdges = 0, 

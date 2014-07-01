@@ -21,7 +21,7 @@ prefix = '/home/flux4/usr'
 debug = True
 
 # Python version.
-pythonVersion = "3.3"
+pythonVersion = "3.4"
 # Python site packages path.
 pythonSitePackagesPath = ('/python' + pythonVersion + '/lib/python' 
     + pythonVersion + '/site-packages')
@@ -33,12 +33,14 @@ ifobjectTemplatePath = '/home/flux4/svn/iftools/trunk/ifobject/template'
 # The SWIG interface template file.
 swigInterfaceTemplateFile = [
     'template/' + baseName + '.i.tpl', 
-    'template/altjira' + baseName + '.i.tpl'
+    'template/altjira' + baseName + '.i.tpl', 
+    'template/' + baseName + 'fbx.i.tpl'
 ]
 # The SWIG interface file.
 swigInterfaceFile = [
-    'swig/include/' + baseName + '.i', 
-    'swig/include/altjira' + baseName + '.i'
+    'swig/include/' + baseName + '/' + baseName + '.i', 
+    'swig/include/' + baseName + '/altjira'  + baseName + '.i', 
+    'swig/include/' + baseName + '/'  + baseName + 'fbx.i'
 ]
 
 # Paths.
@@ -53,8 +55,10 @@ CPPPATH = [
     '/home/flux4/svn/ifcg/trunk/ifmapping/swig/include', 
     '/home/flux4/svn/ifcg/trunk/altjira/include', 
     '/home/flux4/svn/ifcg/trunk/altjira/swig/include', 
+    '/home/flux4/svn/ifcg/trunk/geoutils/swig/include', 
     prefix + '/include', 
-    prefix + '/include/noise' 
+    prefix + '/include/noise', 
+    '/home/flux4/usr/fbx20151/include'
 ]
 LIBPATH = [
     prefix + '/python' + pythonVersion + '/lib', prefix + '/lib', 
@@ -62,6 +66,7 @@ LIBPATH = [
     '/home/flux4/svn/iftools/trunk/iftemplate/lib', 
     '/home/flux4/svn/ifcg/trunk/ifmapping/lib', 
     '/home/flux4/svn/ifcg/trunk/altjira/lib', 
-    prefix + '/noise/lib'
+    prefix + '/noise/lib', 
+    '/home/flux4/usr/fbx20151/lib/gcc4/x64/debug'
 ]
 
