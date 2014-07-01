@@ -57,6 +57,7 @@ class FBXScene
         FBXScene();
 		FBXScene(const Ionflux::GeoUtils::FBXScene& other);
         virtual ~FBXScene();
+        virtual bool loadFromFile(const std::string& fileName);
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::FBXScene* copy() const;
 		static Ionflux::GeoUtils::FBXScene* upcast(Ionflux::ObjectBase::IFObject*
@@ -64,6 +65,12 @@ class FBXScene
 		static Ionflux::GeoUtils::FBXScene* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
 		virtual unsigned int getMemSize() const;
+        virtual std::string getTitle() const;
+        virtual std::string getSubject() const;
+        virtual std::string getAuthor() const;
+        virtual std::string getKeywords() const;
+        virtual std::string getRevision() const;
+        virtual std::string getComment() const;
 };
 
 }

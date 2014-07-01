@@ -67,6 +67,18 @@ class FBXScene
 		FBXSDK_NAMESPACE::FbxManager* fbxManager;
 		/// FBX scene.
 		FBXSDK_NAMESPACE::FbxScene* fbxScene;
+		/// title.
+		std::string title;
+		/// subject.
+		std::string subject;
+		/// author.
+		std::string author;
+		/// keywords.
+		std::string keywords;
+		/// revision.
+		std::string revision;
+		/// comment.
+		std::string comment;
 		
 		/** Initialize the FBX manager.
 		 *
@@ -80,15 +92,59 @@ class FBXScene
 		 */
 		virtual void initFBXScene();
 		
-		/** Load scene from file.
+		/** Initialize metadata.
 		 *
-		 * Load a scene from the specified file.
-		 *
-		 * \param fileName File name.
-		 *
-		 * \return \c true on success, \c false otherwise.
+		 * Initialize the metadata properties.
 		 */
-		virtual bool loadFromFile(const std::string& fileName);
+		virtual void initMetaData();
+		
+		/** Set title.
+		 *
+		 * Set new value of title.
+		 *
+		 * \param newTitle New value of title.
+		 */
+		virtual void setTitle(const std::string& newTitle);
+		
+		/** Set subject.
+		 *
+		 * Set new value of subject.
+		 *
+		 * \param newSubject New value of subject.
+		 */
+		virtual void setSubject(const std::string& newSubject);
+		
+		/** Set author.
+		 *
+		 * Set new value of author.
+		 *
+		 * \param newAuthor New value of author.
+		 */
+		virtual void setAuthor(const std::string& newAuthor);
+		
+		/** Set keywords.
+		 *
+		 * Set new value of keywords.
+		 *
+		 * \param newKeywords New value of keywords.
+		 */
+		virtual void setKeywords(const std::string& newKeywords);
+		
+		/** Set revision.
+		 *
+		 * Set new value of revision.
+		 *
+		 * \param newRevision New value of revision.
+		 */
+		virtual void setRevision(const std::string& newRevision);
+		
+		/** Set comment.
+		 *
+		 * Set new value of comment.
+		 *
+		 * \param newComment New value of comment.
+		 */
+		virtual void setComment(const std::string& newComment);
 		
 	public:
 		/// Class information instance.
@@ -115,6 +171,16 @@ class FBXScene
 		 * Destruct FBXScene object.
 		 */
 		virtual ~FBXScene();
+		
+		/** Load scene from file.
+		 *
+		 * Load a scene from the specified file.
+		 *
+		 * \param fileName File name.
+		 *
+		 * \return \c true on success, \c false otherwise.
+		 */
+		virtual bool loadFromFile(const std::string& fileName);
 		
 		/** Get string representation of value.
 		 *
@@ -202,6 +268,42 @@ class FBXScene
 		 * \param newFbxScene New value of fBX scene.
 		 */
 		virtual void setFbxScene(FBXSDK_NAMESPACE::FbxScene* newFbxScene);
+		
+		/** Get title.
+		 *
+		 * \return Current value of title.
+		 */
+		virtual std::string getTitle() const;
+		
+		/** Get subject.
+		 *
+		 * \return Current value of subject.
+		 */
+		virtual std::string getSubject() const;
+		
+		/** Get author.
+		 *
+		 * \return Current value of author.
+		 */
+		virtual std::string getAuthor() const;
+		
+		/** Get keywords.
+		 *
+		 * \return Current value of keywords.
+		 */
+		virtual std::string getKeywords() const;
+		
+		/** Get revision.
+		 *
+		 * \return Current value of revision.
+		 */
+		virtual std::string getRevision() const;
+		
+		/** Get comment.
+		 *
+		 * \return Current value of comment.
+		 */
+		virtual std::string getComment() const;
 };
 
 }

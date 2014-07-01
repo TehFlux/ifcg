@@ -106,6 +106,22 @@ void FBXScene::initFBXScene()
 	setFbxScene(fbxs);
 }
 
+void FBXScene::initMetaData()
+{
+	Ionflux::ObjectBase::nullPointerCheck(fbxScene, this, 
+	    "initMetadata", "FBX scene");
+	FbxDocumentInfo* sceneInfo = fbxScene->GetSceneInfo();
+	if (sceneInfo != 0)
+	{
+	    setTitle(sceneInfo->mTitle.Buffer());
+	    setSubject(sceneInfo->mSubject.Buffer());
+	    setAuthor(sceneInfo->mAuthor.Buffer());
+	    setKeywords(sceneInfo->mKeywords.Buffer());
+	    setRevision(sceneInfo->mRevision.Buffer());
+	    setComment(sceneInfo->mComment.Buffer());
+	}
+}
+
 bool FBXScene::loadFromFile(const std::string& fileName)
 {
 	Ionflux::ObjectBase::nullPointerCheck(fbxManager, this, 
@@ -137,6 +153,7 @@ bool FBXScene::loadFromFile(const std::string& fileName)
 	        "loadFromFile"));
 	}
 	imp->Destroy();
+	initMetaData();
 	return true;
 }
 
@@ -172,6 +189,66 @@ void FBXScene::setFbxScene(FBXSDK_NAMESPACE::FbxScene* newFbxScene)
 FBXSDK_NAMESPACE::FbxScene* FBXScene::getFbxScene() const
 {
     return fbxScene;
+}
+
+void FBXScene::setTitle(const std::string& newTitle)
+{
+	title = newTitle;
+}
+
+std::string FBXScene::getTitle() const
+{
+    return title;
+}
+
+void FBXScene::setSubject(const std::string& newSubject)
+{
+	subject = newSubject;
+}
+
+std::string FBXScene::getSubject() const
+{
+    return subject;
+}
+
+void FBXScene::setAuthor(const std::string& newAuthor)
+{
+	author = newAuthor;
+}
+
+std::string FBXScene::getAuthor() const
+{
+    return author;
+}
+
+void FBXScene::setKeywords(const std::string& newKeywords)
+{
+	keywords = newKeywords;
+}
+
+std::string FBXScene::getKeywords() const
+{
+    return keywords;
+}
+
+void FBXScene::setRevision(const std::string& newRevision)
+{
+	revision = newRevision;
+}
+
+std::string FBXScene::getRevision() const
+{
+    return revision;
+}
+
+void FBXScene::setComment(const std::string& newComment)
+{
+	comment = newComment;
+}
+
+std::string FBXScene::getComment() const
+{
+    return comment;
 }
 
 Ionflux::GeoUtils::FBXScene& FBXScene::operator=(const 
