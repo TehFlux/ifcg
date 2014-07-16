@@ -59,6 +59,8 @@ class Range3
         rz);
         Range3(double xMin, double xMax, double yMin, double yMax, double 
         zMin, double zMax);
+        Range3(const Ionflux::GeoUtils::Vector3& initMin, double 
+        edgeLength);
         virtual ~Range3();
         virtual void extend(const Ionflux::GeoUtils::Range3& other);
         virtual void extend(const Ionflux::GeoUtils::Vector3& v);
@@ -95,6 +97,7 @@ class Range3
 		other);
 		static Ionflux::GeoUtils::Range3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setX(const Ionflux::GeoUtils::Range& newX);
         virtual Ionflux::GeoUtils::Range getX() const;
         virtual void setY(const Ionflux::GeoUtils::Range& newY);

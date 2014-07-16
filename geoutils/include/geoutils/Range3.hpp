@@ -136,6 +136,15 @@ class Range3
 		Range3(double xMin, double xMax, double yMin, double yMax, double zMin, 
 		double zMax);
 		
+		/** Constructor.
+		 *
+		 * Construct new Range3 object.
+		 *
+		 * \param initMin Minimum vector.
+		 * \param edgeLength Edge length.
+		 */
+		Range3(const Ionflux::GeoUtils::Vector3& initMin, double edgeLength);
+		
 		/** Destructor.
 		 *
 		 * Destruct Range3 object.

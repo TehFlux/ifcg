@@ -114,6 +114,19 @@ zMin, double zMax)
 	// TODO: Nothing ATM. ;-)
 }
 
+Range3::Range3(const Ionflux::GeoUtils::Vector3& initMin, double 
+edgeLength)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	setBounds(initMin);
+	if (edgeLength > 0)
+	{
+	    Vector3 e0(edgeLength, edgeLength, edgeLength);
+	    extend(initMin + e0);
+	}
+}
+
 Range3::~Range3()
 {
 	// TODO: Nothing ATM. ;-)
