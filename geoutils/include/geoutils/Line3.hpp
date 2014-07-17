@@ -163,6 +163,16 @@ class Line3
 		 */
 		virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) const;
 		
+		/** Evaluate the line.
+		 *
+		 * Evaluate the line with the specified parameter.
+		 *
+		 * \param value Value.
+		 *
+		 * \return Value of the mapping at the specified parameter.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 eval(double value);
+		
 		/** Evaluate the mapping.
 		 *
 		 * Evaluate the mapping with the specified parameter.

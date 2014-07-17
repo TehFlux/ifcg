@@ -62,6 +62,7 @@ class Line3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) 
         const;
+        virtual Ionflux::GeoUtils::Vector3 eval(double value);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value);
         virtual std::string getValueString() const;
@@ -73,6 +74,7 @@ class Line3
 		other);
 		static Ionflux::GeoUtils::Line3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Line3* create(const Ionflux::GeoUtils::Vector3&
 		initP, const Ionflux::GeoUtils::Vector3& initU, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);

@@ -195,9 +195,15 @@ bool Line3::operator!=(const Ionflux::GeoUtils::Line3& other) const
 	return !(*this == other);;
 }
 
+Ionflux::GeoUtils::Vector3 Line3::eval(double value)
+{
+	// TODO: Implementation.
+	return p + value * u;
+}
+
 Ionflux::Mapping::Point Line3::call(Ionflux::Mapping::MappingValue value)
 {
-	Vector3 result(p + value * u);
+	Vector3 result(eval(value));
 	return result.getPoint();
 }
 

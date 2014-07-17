@@ -34,6 +34,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Line3;
+
 class Range3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -78,6 +80,10 @@ class Range3
         getAxisRange(Ionflux::GeoUtils::AxisID axis) const;
         virtual void setBounds(const Ionflux::GeoUtils::Vector3& v);
         virtual void setBounds(const Ionflux::GeoUtils::Range3& other);
+        virtual void setBounds(const Ionflux::GeoUtils::Vector3& v, const 
+        Ionflux::GeoUtils::Vector3* r);
+        virtual void setBounds(const Ionflux::GeoUtils::Vector3& v, double 
+        edgeLength);
         virtual Ionflux::GeoUtils::RangeCompResult3 compare3(const 
         Ionflux::GeoUtils::Range3& other, double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
@@ -86,6 +92,13 @@ class Range3
         Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual bool isInRange(const Ionflux::GeoUtils::Vector3& v, double 
         t = Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual bool intersect(const Ionflux::GeoUtils::Line3& line, 
+        Ionflux::GeoUtils::AxisID axis, 
+        Ionflux::GeoUtils::AAPlanePairIntersection& result, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+        virtual bool intersect(const Ionflux::GeoUtils::Line3& line, 
+        Ionflux::GeoUtils::AAPlanePairIntersection& result, double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual Ionflux::GeoUtils::AxisTriple getAxisOrder() const;
         virtual bool operator==(const Ionflux::GeoUtils::Range3& other) 
         const;
@@ -98,6 +111,23 @@ class Range3
 		static Ionflux::GeoUtils::Range3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 		virtual unsigned int getMemSize() const;
+		static Ionflux::GeoUtils::Range3* create(const 
+		Ionflux::GeoUtils::Vector3& initCenter, const Ionflux::GeoUtils::Vector3*
+		initRadius = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Range3* create(const Ionflux::GeoUtils::Range& 
+		initX, const Ionflux::GeoUtils::Range& initY, const 
+		Ionflux::GeoUtils::Range& initZ, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Range3* create(const 
+		Ionflux::GeoUtils::Vector2& rx, const Ionflux::GeoUtils::Vector2& ry, 
+		const Ionflux::GeoUtils::Vector2& rz, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		static Ionflux::GeoUtils::Range3* create(double xMin, double xMax, double
+		yMin, double yMax, double zMin, double zMax, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::Range3* create(const 
+		Ionflux::GeoUtils::Vector3& initMin, double edgeLength, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setX(const Ionflux::GeoUtils::Range& newX);
         virtual Ionflux::GeoUtils::Range getX() const;
         virtual void setY(const Ionflux::GeoUtils::Range& newY);

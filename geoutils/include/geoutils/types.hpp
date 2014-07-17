@@ -308,6 +308,17 @@ typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
 /// Face data type ID.
 typedef int FaceDataTypeID;
 
+/// Axis-aligned plane pair intersection.
+struct AAPlanePairIntersection
+{
+    // Valid flag.
+    bool valid;
+    // Intersection parameter for the near plane.
+    double tNear;
+    // Intersection parameter for the far plane.
+    double tFar;
+};
+
 }
 
 }

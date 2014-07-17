@@ -41,6 +41,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class Line3;
+
 /// Class information for class Range3.
 class Range3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -267,6 +269,29 @@ class Range3
 		 */
 		virtual void setBounds(const Ionflux::GeoUtils::Range3& other);
 		
+		/** Set bounds.
+		 *
+		 * Set bounds of the range to a single point, as specified by the 
+		 * vector. If the optional \c r is specified, the range will be 
+		 * extended using \c r as the radius vector.
+		 *
+		 * \param v Vector.
+		 * \param r Radius vector.
+		 */
+		virtual void setBounds(const Ionflux::GeoUtils::Vector3& v, const 
+		Ionflux::GeoUtils::Vector3* r);
+		
+		/** Set bounds.
+		 *
+		 * Set bounds of the range to include a box with the specified minimum
+		 * vector and edge length.
+		 *
+		 * \param v Minimum vector.
+		 * \param edgeLength Edge length.
+		 */
+		virtual void setBounds(const Ionflux::GeoUtils::Vector3& v, double 
+		edgeLength);
+		
 		/** Compare ranges (per axis).
 		 *
 		 * Compares the ranges on each axis separately. See Range3::compare() 
@@ -311,6 +336,41 @@ class Range3
 		 * \return \c true if the value is within the range, \c false otherwise.
 		 */
 		virtual bool isInRange(const Ionflux::GeoUtils::Vector3& v, double t = 
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+		
+		/** Intersect line.
+		 *
+		 * Calculate the intersection of the specified line with the bounding 
+		 * plane pair of the range along the specified axis. The result is 
+		 * stored in \c result.
+		 *
+		 * \param line Line.
+		 * \param axis Axis.
+		 * \param result Intersection result.
+		 * \param t Tolerance.
+		 *
+		 * \return \c true if the line intersects the plane pair, \c false 
+		 * otherwise.
+		 */
+		virtual bool intersect(const Ionflux::GeoUtils::Line3& line, 
+		Ionflux::GeoUtils::AxisID axis, 
+		Ionflux::GeoUtils::AAPlanePairIntersection& result, double t = 
+		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
+		
+		/** Intersect line.
+		 *
+		 * Calculate the intersection of the specified line with the the 
+		 * range. The result is stored in \c result.
+		 *
+		 * \param line Line.
+		 * \param result Intersection result.
+		 * \param t Tolerance.
+		 *
+		 * \return \c true if the line intersects the plane pair, \c false 
+		 * otherwise.
+		 */
+		virtual bool intersect(const Ionflux::GeoUtils::Line3& line, 
+		Ionflux::GeoUtils::AAPlanePairIntersection& result, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
 		
 		/** Get axis order.
@@ -392,6 +452,74 @@ class Range3
 		 */
 		static Ionflux::GeoUtils::Range3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Range3 object.
+		 *
+		 * \param initCenter Center vector.
+		 * \param initRadius Radius vector.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Range3* create(const 
+		Ionflux::GeoUtils::Vector3& initCenter, const Ionflux::GeoUtils::Vector3*
+		initRadius = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Range3 object.
+		 *
+		 * \param initX Range (x).
+		 * \param initY Range (y).
+		 * \param initZ Range (z).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Range3* create(const Ionflux::GeoUtils::Range& 
+		initX, const Ionflux::GeoUtils::Range& initY, const 
+		Ionflux::GeoUtils::Range& initZ, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Range3 object.
+		 *
+		 * \param rx Range (x).
+		 * \param ry Range (y).
+		 * \param rz Range (z).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Range3* create(const 
+		Ionflux::GeoUtils::Vector2& rx, const Ionflux::GeoUtils::Vector2& ry, 
+		const Ionflux::GeoUtils::Vector2& rz, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Range3 object.
+		 *
+		 * \param xMin Minimum value (X).
+		 * \param xMax Maximum value (X).
+		 * \param yMin Minimum value (Y).
+		 * \param yMax Maximum value (Y).
+		 * \param zMin Minimum value (Z).
+		 * \param zMax Maximum value (Z).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Range3* create(double xMin, double xMax, double
+		yMin, double yMax, double zMin, double zMax, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Range3 object.
+		 *
+		 * \param initMin Minimum vector.
+		 * \param edgeLength Edge length.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::GeoUtils::Range3* create(const 
+		Ionflux::GeoUtils::Vector3& initMin, double edgeLength, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get allocated size in memory.
 		 *

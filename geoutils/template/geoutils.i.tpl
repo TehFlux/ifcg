@@ -200,6 +200,13 @@ typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
 
 typedef int FaceDataTypeID;
 
+struct AAPlanePairIntersection
+{
+    bool valid;
+    double tNear;
+    double tFar;
+};
+
 // constants.hpp
 
 const double DEFAULT_TOLERANCE = 1.0e-6;

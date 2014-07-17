@@ -30,7 +30,9 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include <cfloat>
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/Line3.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -75,12 +77,7 @@ Ionflux::GeoUtils::Vector3* initRadius)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	setBounds(initCenter);
-	if (initRadius != 0)
-	{
-	    extend(initCenter + (*initRadius));
-	    extend(initCenter - (*initRadius));
-	}
+	setBounds(initCenter, initRadius);
 }
 
 Range3::Range3(const Ionflux::GeoUtils::Range& initX, const 
@@ -119,12 +116,7 @@ edgeLength)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-	setBounds(initMin);
-	if (edgeLength > 0)
-	{
-	    Vector3 e0(edgeLength, edgeLength, edgeLength);
-	    extend(initMin + e0);
-	}
+	setBounds(initMin, edgeLength);
 }
 
 Range3::~Range3()
@@ -224,6 +216,30 @@ void Range3::setBounds(const Ionflux::GeoUtils::Range3& other)
 	extend(other);
 }
 
+void Range3::setBounds(const Ionflux::GeoUtils::Vector3& v, const 
+Ionflux::GeoUtils::Vector3* r)
+{
+	x.setBounds(v[0], v[0]);
+	y.setBounds(v[1], v[1]);
+	z.setBounds(v[2], v[2]);
+	if (r != 0)
+	{
+	    extend(v + (*r));
+	    extend(v - (*r));
+	}
+}
+
+void Range3::setBounds(const Ionflux::GeoUtils::Vector3& v, double 
+edgeLength)
+{
+	setBounds(v);
+	if (edgeLength > 0)
+	{
+	    Vector3 e0(edgeLength, edgeLength, edgeLength);
+	    extend(v + e0);
+	}
+}
+
 Ionflux::GeoUtils::RangeCompResult3 Range3::compare3(const 
 Ionflux::GeoUtils::Range3& other, double t) const
 {
@@ -295,6 +311,74 @@ bool Range3::isInRange(const Ionflux::GeoUtils::Vector3& v, double t) const
 	return (x.isInRange(v[0], t) 
     && y.isInRange(v[1], t) 
     && z.isInRange(v[2], t));
+}
+
+bool Range3::intersect(const Ionflux::GeoUtils::Line3& line, 
+Ionflux::GeoUtils::AxisID axis, Ionflux::GeoUtils::AAPlanePairIntersection&
+result, double t) const
+{
+	Range xr = getAxisRange(axis);
+	double xv = line.getU().getElement(axis);
+	double xp = line.getP().getElement(axis);
+	result.tNear = -DBL_MAX;
+	result.tFar = DBL_MAX;
+	if (eq(xv, 0., t))
+	{
+	    // Line is parallel to the planes.
+	    if (!xr.isInRange(xp, t))
+	    {
+	        // Line origin outside the planes.
+	        result.valid = false;
+	    } else
+	    {
+	        // Line origin between the planes.
+	        result.valid = true;
+	    }
+	    return result.valid;
+	}
+	double xl = xr.getRMin();
+	double xh = xr.getRMax();
+	double t1 = (xl - xp) / xv;
+	double t2 = (xh - xp) / xv;
+	if (t1 <= t2)
+	{
+	    result.tNear = t1;
+	    result.tFar = t2;
+	} else
+	{
+	    result.tFar = t1;
+	    result.tNear = t2;
+	}
+	result.valid = true;
+	return result.valid;
+}
+
+bool Range3::intersect(const Ionflux::GeoUtils::Line3& line, 
+Ionflux::GeoUtils::AAPlanePairIntersection& result, double t) const
+{
+	/* Slab algorithm.
+	   see http://www.siggraph.org/education/materials/HyperGraph/
+	     raytrace/rtinter3.htm */
+	AAPlanePairIntersection r0;
+	result.tNear = -DBL_MAX;
+	result.tFar = DBL_MAX;
+	for (int i = 0; i < 3; i++)
+	{
+	    if (!intersect(line, i, r0, t))
+	    {
+	        result.valid = false;
+	        return false;
+	    }
+	    if (r0.tNear > result.tNear)
+	        result.tNear = r0.tNear;
+	    if (r0.tFar < result.tFar)
+	        result.tFar = r0.tFar;
+	}
+	if (lt(result.tNear, result.tFar, t))
+	    result.valid = true;
+	else
+	    result.valid = false;
+	return result.valid;
 }
 
 Ionflux::GeoUtils::AxisTriple Range3::getAxisOrder() const
@@ -384,7 +468,77 @@ parentObject)
     Range3* newObject = new Range3();
     if (newObject == 0)
     {
-        return 0;
+        throw GeoUtilsError("[Range3::create] Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Range3* Range3::create(const Ionflux::GeoUtils::Vector3&
+initCenter, const Ionflux::GeoUtils::Vector3* initRadius, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Range3* newObject = new Range3(initCenter, initRadius);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("[Range3::create] Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Range3* Range3::create(const Ionflux::GeoUtils::Range& 
+initX, const Ionflux::GeoUtils::Range& initY, const 
+Ionflux::GeoUtils::Range& initZ, Ionflux::ObjectBase::IFObject* 
+parentObject)
+{
+    Range3* newObject = new Range3(initX, initY, initZ);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("[Range3::create] Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Range3* Range3::create(const Ionflux::GeoUtils::Vector2&
+rx, const Ionflux::GeoUtils::Vector2& ry, const Ionflux::GeoUtils::Vector2&
+rz, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Range3* newObject = new Range3(rx, ry, rz);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("[Range3::create] Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Range3* Range3::create(double xMin, double xMax, double 
+yMin, double yMax, double zMin, double zMax, Ionflux::ObjectBase::IFObject*
+parentObject)
+{
+    Range3* newObject = new Range3(xMin, xMax, yMin, yMax, zMin, zMax);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("[Range3::create] Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::GeoUtils::Range3* Range3::create(const Ionflux::GeoUtils::Vector3&
+initMin, double edgeLength, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Range3* newObject = new Range3(initMin, edgeLength);
+    if (newObject == 0)
+    {
+        throw GeoUtilsError("[Range3::create] Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);
