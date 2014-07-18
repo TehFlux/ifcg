@@ -15,16 +15,14 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ add an OpenGL utility library
+  > vertex attribute arrays from Vertex3Set, Mesh
+  > shaders
+  > uniforms (Matrix3/4, Vector3/4)
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
-
-+ Add a template for multiple splines and polygons in test/template.
-
-+ MatrixMN
-  > svd (use GSL)
 
 + BGeoUtils
   > Create a Blender version of cgeoutilstest31.
@@ -142,6 +140,11 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ Add a template for multiple splines and polygons in test/template.
+
++ MatrixMN
+  > svd (use GSL)
 
 + Interpolate orientations using splines.
 
