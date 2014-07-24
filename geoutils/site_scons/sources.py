@@ -364,6 +364,7 @@ altjiraGeoUtilsLibXMLClasses = [
 
 # GeoUtils/FBX library
 fbxGeoUtilsLibHeaders = [
+    'include/geoutils/geoutilsfbx.hpp',
     'include/geoutils/fbxtypes.hpp',
     'include/geoutils/fbxutils.hpp',
     'include/geoutils/fbxutils_private.hpp',
@@ -389,5 +390,22 @@ fbxGeoUtilsLibClasses = [
 ]
 
 fbxGeoUtilsLibXMLClasses = [
+]
+
+# GeoUtils/GL library
+glGeoUtilsLibHeaders = [
+    'include/geoutils/gltypes.hpp', 
+    'include/geoutils/Program.hpp'
+]
+
+glGeoUtilsLibSources = [
+    'build/Program.cpp'
+]
+
+glGeoUtilsLibClasses = [
+    'Program'
+]
+
+glGeoUtilsLibXMLClasses = [
 ]
 

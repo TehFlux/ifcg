@@ -191,6 +191,29 @@ if (len(missingDeps) > 0):
     print "********************************************************"
     buildGeoUtilsFBX = False
 
+missingDeps = []
+buildGeoUtilsGL = True
+if (not config.CheckLibWithHeader("glfw", "GLFW/glfw3.h", 'C', 
+    autoadd = 0)):
+    missingDeps += ["GLFW"]
+if (not config.CheckLibWithHeader("GL", "GL/gl.h", 'C', autoadd = 0)):
+    missingDeps += ["OpenGL"]
+if (not config.CheckLibWithHeader("glut", "GL/glut.h", 'C', autoadd = 0)):
+    missingDeps += ["GLUT"]
+if (not config.CheckLibWithHeader("glad", "glad/glad.h", 'C', autoadd = 0)):
+    missingDeps += ["glad"]
+
+if (len(missingDeps) > 0):
+    print "********************************************************"
+    print "GeoUtils/GL will NOT be built because the following "
+    print "dependencies were not found:"
+    print " "
+    for it in missingDeps:
+        print "  " + it
+    print " "
+    print "********************************************************"
+    buildGeoUtilsGL = False
+
 buildPyModule = True
 if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
     "Python.h", 'C', autoadd = 0)):
@@ -244,8 +267,12 @@ fbxGeoUtilsEnv = geoutilsEnv.Clone()
 if (buildGeoUtilsFBX):
     fbxGeoUtilsEnv.Append(LIBS = ['fbxsdk'])
 
+glGeoUtilsEnv = geoutilsEnv.Clone()
+if (buildGeoUtilsGL):
+    glGeoUtilsEnv.Append(LIBS = ['glfw', 'GL', 'glut', 'glad'])
+
 allClasses = (geoutilsLibClasses + altjiraGeoUtilsLibClasses 
-    + fbxGeoUtilsLibClasses)
+    + fbxGeoUtilsLibClasses + glGeoUtilsLibClasses)
 allTargets = []
 
 # Source files.
@@ -277,6 +304,8 @@ if (haveIFTpl):
     ## Altjira/GeoUtils library
     # Nothing here.
     ## GeoUtils/FBX library
+    # Nothing here.
+    ## GeoUtils/GL library
     # Nothing here.
     allTargets += classXMLFactory
 else:
@@ -352,6 +381,18 @@ if (haveIFTpl):
     interfaces += [ fbxGeoUtilsEnv.Interface(
         target = lc.swigInterfaceFile[2], 
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[2]]) ]
+    # GeoUtils/GL library: classes
+    interfaceTargets = []
+    for it in glGeoUtilsLibClasses:
+        t0 = 'swig/classes/' + it + '.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            glGeoUtilsEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/' + it + '.conf'])
+        ]
+    interfaces += [ glGeoUtilsEnv.Interface(
+        target = lc.swigInterfaceFile[3], 
+        source = interfaceTargets + [lc.swigInterfaceTemplateFile[3]]) ]
     allTargets += (classInterfaces + interfaces)
 else:
     print "****************************************************************"
@@ -375,17 +416,27 @@ altjiraGeoUtilsLib = altjiraGeoUtilsLibEnv.SharedLibrary(
 
 # GeoUtils/FBX shared library
 fbxGeoUtilsLibEnv = fbxGeoUtilsEnv.Clone()
-fbxGeoUtilsLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 'ifmapping', 
-    'altjira', 'altjiradraw', 'geoutils'])
+fbxGeoUtilsLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 
+    'ifmapping', 'geoutils'])
 fbxGeoUtilsLib = fbxGeoUtilsLibEnv.SharedLibrary(
     target = "lib/geoutilsfbx", 
     source = fbxGeoUtilsLibSources)
+
+# GeoUtils/GL shared library
+glGeoUtilsLibEnv = glGeoUtilsEnv.Clone()
+glGeoUtilsLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 
+    'ifmapping', 'geoutils'])
+glGeoUtilsLib = glGeoUtilsLibEnv.SharedLibrary(
+    target = "lib/geoutilsgl", 
+    source = glGeoUtilsLibSources)
 
 targetLibs = [geoutilsLib]
 if (buildAltjiraGeoUtils):
     targetLibs += [altjiraGeoUtilsLib]
 if (buildGeoUtilsFBX):
     targetLibs += [fbxGeoUtilsLib]
+if (buildGeoUtilsGL):
+    targetLibs += [glGeoUtilsLib]
 
 # programs.
 targetBins = []
@@ -446,6 +497,21 @@ fbxGeoUtilsPyModule = fbxGeoUtilsPyModuleEnv.SharedLibrary(
     source = 'build/swig/wrapper/geoutilsfbx_wrap.cpp', 
     SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
 
+# GeoUtils/GL Python module.
+glGeoUtilsWrapper = glGeoUtilsEnv.SWIGPython(target = [ 
+        'swig/wrapper/geoutilsgl_wrap.cpp', 
+        'swig/python/GeoUtilsGL.py'], 
+    source = lc.swigInterfaceFile[3])
+
+glGeoUtilsPyModuleEnv = glGeoUtilsEnv.Clone()
+glGeoUtilsPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping', 
+    'geoutils', 'geoutilsgl', 'python' + lc.pythonVersion])
+
+glGeoUtilsPyModule = glGeoUtilsPyModuleEnv.SharedLibrary(
+    target = 'swig/python/_GeoUtilsGL', 
+    source = 'build/swig/wrapper/geoutilsgl_wrap.cpp', 
+    SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
+
 pyWrappers = [geoutilsWrapper]
 pyModules = [geoutilsPyModule]
 if (buildAltjiraGeoUtils):
@@ -454,12 +520,17 @@ if (buildAltjiraGeoUtils):
 if (buildGeoUtilsFBX):
     pyWrappers += [fbxGeoUtilsWrapper]
     pyModules += [fbxGeoUtilsPyModule]
+if (buildGeoUtilsGL):
+    pyWrappers += [glGeoUtilsWrapper]
+    pyModules += [glGeoUtilsPyModule]
 
 allHeaders = geoutilsLibHeaders + lc.swigInterfaceFile
 if (buildAltjiraGeoUtils):
     allHeaders += fbxGeoUtilsLibHeaders
 if (buildGeoUtilsFBX):
     allHeaders += fbxGeoUtilsLibHeaders
+if (buildGeoUtilsGL):
+    allHeaders += glGeoUtilsLibHeaders
 
 installBinTargets = [targetBins]
 
@@ -478,6 +549,9 @@ if (buildPyModule):
     if (buildGeoUtilsFBX):
         pyModuleTargets += ['swig/python/GeoUtilsFBX.py', 
             fbxGeoUtilsPyModule]
+    if (buildGeoUtilsGL):
+        pyModuleTargets += ['swig/python/GeoUtilsGL.py', 
+            glGeoUtilsPyModule]
     installPyModules = geoutilsEnv.Install(prefix + lc.pythonSitePackagesPath, 
         pyModuleTargets)
 

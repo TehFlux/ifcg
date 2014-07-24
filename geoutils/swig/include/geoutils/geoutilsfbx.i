@@ -10,7 +10,7 @@
 #include "ifobject/ifobjectbase.hpp"
 #include "ifmapping/ifmapping.hpp"
 #include "geoutils/geoutils.hpp"
-#include "geoutils/fbxutils.hpp"
+#include "geoutils/geoutilsfbx.hpp"
 #include <assert.h>
 using namespace std;
 %}
