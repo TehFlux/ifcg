@@ -33,9 +33,12 @@ using namespace std;
 
 // gltypes.hpp
 
-
+typedef int VertexAttributeDataTypeID;
+typedef int BufferUsageID;
+typedef int PrimitiveID;
 
 // Classes
 
 $Program
+$VertexAttribute
 

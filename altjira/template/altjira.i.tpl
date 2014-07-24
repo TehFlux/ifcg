@@ -88,6 +88,10 @@ struct GIHRankSpec
 
 typedef std::vector<Ionflux::Altjira::GIHRankSpec> GIHRankSpecVector;
 
+class Color;
+
+typedef std::vector<Ionflux::Altjira::Color*> ColorVector;
+
 // constants.hpp
 
 const Ionflux::Mapping::Range DEFAULT_CLAMP_RANGE = { 0., 1. };
@@ -226,9 +230,9 @@ typedef std::vector<Ionflux::Altjira::ColorStop> ColorStopVector;
 bool operator==(const Ionflux::Altjira::ColorStop& s0, 
     const Ionflux::Altjira::ColorStop& s1);
 
-typedef std::vector<Ionflux::Altjira::Color> ColorVector;
+typedef std::vector<Ionflux::Altjira::Color> ColorObjVector;
 
-void createColors(Ionflux::Altjira::ColorVector& target, 
+void createColors(Ionflux::Altjira::ColorObjVector& target, 
     const Ionflux::Altjira::FloatColor& c0, 
     const Ionflux::Altjira::FloatColor& c1, 
     unsigned int stepsC0 = 2, unsigned int stepsC1 = 2, 
@@ -255,6 +259,7 @@ $BlendPlus
 $BlendChannel
 $Image
 $ImageSet
+$ColorSet
 
 %template(ImageRect) Ionflux::Altjira::Rectangle<unsigned int>;
 %template(ColorStopVector) std::vector<Ionflux::Altjira::ColorStop>;

@@ -126,6 +126,11 @@ struct GIHRankSpec
 // Vector of GIMP GIH rank specifications.
 typedef std::vector<Ionflux::Altjira::GIHRankSpec> GIHRankSpecVector;
 
+class Color;
+
+// Vector of colors.
+typedef std::vector<Ionflux::Altjira::Color*> ColorVector;
+
 }
 
 }

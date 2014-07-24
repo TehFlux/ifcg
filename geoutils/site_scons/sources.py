@@ -395,15 +395,18 @@ fbxGeoUtilsLibXMLClasses = [
 # GeoUtils/GL library
 glGeoUtilsLibHeaders = [
     'include/geoutils/gltypes.hpp', 
-    'include/geoutils/Program.hpp'
+    'include/geoutils/Program.hpp', 
+    'include/geoutils/VertexAttribute.hpp'
 ]
 
 glGeoUtilsLibSources = [
-    'build/Program.cpp'
+    'build/Program.cpp', 
+    'build/VertexAttribute.cpp'
 ]
 
 glGeoUtilsLibClasses = [
-    'Program'
+    'Program', 
+    'VertexAttribute'
 ]
 
 glGeoUtilsLibXMLClasses = [

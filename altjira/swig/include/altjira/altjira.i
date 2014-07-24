@@ -88,6 +88,10 @@ struct GIHRankSpec
 
 typedef std::vector<Ionflux::Altjira::GIHRankSpec> GIHRankSpecVector;
 
+class Color;
+
+typedef std::vector<Ionflux::Altjira::Color*> ColorVector;
+
 // constants.hpp
 
 const Ionflux::Mapping::Range DEFAULT_CLAMP_RANGE = { 0., 1. };
@@ -355,9 +359,9 @@ typedef std::vector<Ionflux::Altjira::ColorStop> ColorStopVector;
 bool operator==(const Ionflux::Altjira::ColorStop& s0, 
     const Ionflux::Altjira::ColorStop& s1);
 
-typedef std::vector<Ionflux::Altjira::Color> ColorVector;
+typedef std::vector<Ionflux::Altjira::Color> ColorObjVector;
 
-void createColors(Ionflux::Altjira::ColorVector& target, 
+void createColors(Ionflux::Altjira::ColorObjVector& target, 
     const Ionflux::Altjira::FloatColor& c0, 
     const Ionflux::Altjira::FloatColor& c1, 
     unsigned int stepsC0 = 2, unsigned int stepsC1 = 2, 
@@ -1113,6 +1117,68 @@ class ImageSet
         virtual void removeImage(Ionflux::Altjira::Image* removeElement);
 		virtual void removeImageIndex(unsigned int removeIndex);
 		virtual void clearImages();
+};
+
+}
+
+}
+
+
+%{
+#include "altjira/ColorSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Altjira
+{
+
+class Color;
+
+class ColorSetClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        ColorSetClassInfo();
+        virtual ~ColorSetClassInfo();
+};
+
+class ColorSet
+: virtual public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        ColorSet();
+		ColorSet(const Ionflux::Altjira::ColorSet& other);
+        ColorSet(Ionflux::Altjira::ColorVector& initColors);
+        virtual ~ColorSet();
+        virtual bool operator==(const Ionflux::Altjira::ColorSet& other) 
+        const;
+        virtual bool operator!=(const Ionflux::Altjira::ColorSet& other) 
+        const;
+        virtual std::string getValueString() const;
+		virtual Ionflux::Altjira::ColorSet* copy() const;
+		static Ionflux::Altjira::ColorSet* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::Altjira::ColorSet* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;
+		static Ionflux::Altjira::ColorSet* create(Ionflux::Altjira::ColorVector& 
+		initColors, Ionflux::ObjectBase::IFObject* parentObject = 0);        
+        virtual unsigned int getNumColors() const;
+        virtual Ionflux::Altjira::Color* getColor(unsigned int elementIndex
+        = 0) const;
+		virtual int findColor(Ionflux::Altjira::Color* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::Altjira::Color*>& getColors();
+        virtual void addColor(Ionflux::Altjira::Color* addElement);
+		virtual Ionflux::Altjira::Color* addColor();
+		virtual void addColors(std::vector<Ionflux::Altjira::Color*>& newColors);
+		virtual void addColors(Ionflux::Altjira::ColorSet* newColors);        
+        virtual void removeColor(Ionflux::Altjira::Color* removeElement);
+		virtual void removeColorIndex(unsigned int removeIndex);
+		virtual void clearColors();
 };
 
 }

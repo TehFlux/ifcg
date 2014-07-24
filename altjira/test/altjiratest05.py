@@ -49,7 +49,7 @@ print("Testing colors...")
 
 print("  Creating colors...")
 
-colors = ai.ColorVector()
+colors = ai.ColorObjVector()
 c0 = ai.createFloatColor(0., 0.3, 0.3, 1., ai.Color.SPACE_HSV)
 c1 = ai.createFloatColor(1., 1., 1., 1., ai.Color.SPACE_HSV)
 ai.createColors(colors, c0, c1, 10, 5, 5)

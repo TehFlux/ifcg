@@ -59,7 +59,7 @@ print("  number of color stops: " + str(cb0.getNumColorStops()))
 
 print("Sampling color band...")
 
-colors = ai.ColorVector()
+colors = ai.ColorObjVector()
 
 t0 = time.time()
 for i in range(0, numColors):

@@ -632,7 +632,7 @@ bool operator==(const Ionflux::Altjira::ColorStop& s0,
     return (s0.color == s1.color) && (s0.param == s1.param);
 }
 
-void createColors(Ionflux::Altjira::ColorVector& target, 
+void createColors(Ionflux::Altjira::ColorObjVector& target, 
     const Ionflux::Altjira::FloatColor& c0, 
     const Ionflux::Altjira::FloatColor& c1, 
     unsigned int stepsC0, unsigned int stepsC1, unsigned int stepsC2, 

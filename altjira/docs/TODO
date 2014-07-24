@@ -15,13 +15,17 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ ColorSet
 
-+ Sample colors from a ColorBand and store them in a ColorSet.
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Build files
+  > update to state of the art
+  > add sources.py
+
++ Sample colors from a ColorBand and store them in a ColorSet.
 
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 

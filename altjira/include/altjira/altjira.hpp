@@ -44,6 +44,7 @@
 #include "altjira/BlendChannel.hpp"
 #include "altjira/Image.hpp"
 #include "altjira/ImageSet.hpp"
+#include "altjira/ColorSet.hpp"
 
 /** \file altjira.hpp
  * \brief Altjira library (header).

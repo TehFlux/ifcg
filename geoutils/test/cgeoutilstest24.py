@@ -56,7 +56,7 @@ vecs0 = None
 
 print("  Creating styles...")
 
-colors = ai.ColorVector()
+colors = ai.ColorObjVector()
 c0 = ai.createFloatColor(1., 0., 0., 1., ai.Color.SPACE_HSV)
 c1 = ai.createFloatColor(1., 0., 0.6, 1., ai.Color.SPACE_HSV)
 ai.createColors(colors, c0, c1, 1, 1, 10)

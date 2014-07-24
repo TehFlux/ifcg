@@ -195,7 +195,7 @@ a0 = -0.5 / math.tan(0.5 * angle)
 
 print("  Creating styles...")
 
-colors = ai.ColorVector()
+colors = ai.ColorObjVector()
 c0 = ai.createFloatColor(0.3, 0.9, 1., 0.6, ai.Color.SPACE_HSV)
 c1 = ai.createFloatColor(0.8, 0.9, 1., 0.6, ai.Color.SPACE_HSV)
 ai.createColors(colors, c0, c1, numStyles, 1, 1)

@@ -33,7 +33,14 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+/// Vertex attribute data type ID.
+typedef int VertexAttributeDataTypeID;
 
+/// OpenGL buffer usage ID.
+typedef int BufferUsageID;
+
+/// OpenGL primitive ID.
+typedef int PrimitiveID;
 
 }
 

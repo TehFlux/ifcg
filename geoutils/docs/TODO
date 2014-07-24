@@ -15,29 +15,19 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ add an OpenGL utility library
-  > vertex attribute arrays from Vertex3Set, Mesh
-  > shaders
-  > uniforms (Matrix3/4, Vector3/4)
+
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ BGeoUtils
-  > Create a Blender version of cgeoutilstest31.
-    . render CGeoUtils object in Blender
-    . render Blender object in CGeoUtils
-  > Visualization
-    . Vertex3Set (as a collection of small spheres)
-    . Edge (as a cylinder)
-    . Mesh (as a collection of small spheres and cylinders)
-  > export a scene (TransformableGroup containing Camera and Objects)
-  > add an operator to export/import an object (Object3 XML I/O)
-  > Blender Object.matrix_basis seems to require M^T as input but 
-    provides M as output. Why is that the case?
-  > test UV texture coordinate and vertex color transfer between Blender 
-    mesh and GeoUtils mesh
++ OpenGL utility library
+  > Viewer (from ifvg)
+  > Vertex array object
+    . set from Mesh
+  > uniforms 
+    . Vector3/4
+  > testing
 
 + add 'hasClassInfo = true' for parent classes that have class information.
 
@@ -140,6 +130,21 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ BGeoUtils
+  > Create a Blender version of cgeoutilstest31.
+    . render CGeoUtils object in Blender
+    . render Blender object in CGeoUtils
+  > Visualization
+    . Vertex3Set (as a collection of small spheres)
+    . Edge (as a cylinder)
+    . Mesh (as a collection of small spheres and cylinders)
+  > export a scene (TransformableGroup containing Camera and Objects)
+  > add an operator to export/import an object (Object3 XML I/O)
+  > Blender Object.matrix_basis seems to require M^T as input but 
+    provides M as output. Why is that the case?
+  > test UV texture coordinate and vertex color transfer between Blender 
+    mesh and GeoUtils mesh
 
 + Add a template for multiple splines and polygons in test/template.
 
