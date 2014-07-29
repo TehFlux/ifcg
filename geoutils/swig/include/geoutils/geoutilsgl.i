@@ -477,7 +477,6 @@ class Viewer
         virtual void closeWindow(bool closeFlag = true);
         virtual void initViewport();
         virtual void swapBuffers();
-        virtual void setDepthRange(double minDepth, double maxDepth);
         virtual void pollEvents();
         virtual void onKey(int key, int scancode, int action, int mods);
         virtual void onWindowSize(int width, int height);

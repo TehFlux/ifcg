@@ -22,8 +22,13 @@ Critical stuff
 --------------------------------------------------------------------------------
 
 + OpenGL utility library
+  > projection matrix
+    . map z to [-1; 1]
+    . adjust perspective matrix to work with range [-1; 1]
+    . aspect ratio
   > Viewer
     . mouse events
+    . projection matrix
     . camera support
   > Vertex array object
     . set from Mesh

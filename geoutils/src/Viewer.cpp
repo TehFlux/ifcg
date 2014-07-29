@@ -210,11 +210,6 @@ void Viewer::swapBuffers()
 	glfwSwapBuffers(windowImpl);
 }
 
-void Viewer::setDepthRange(double minDepth, double maxDepth)
-{
-	glDepthRange(minDepth, maxDepth);
-}
-
 void Viewer::pollEvents()
 {
 	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 

@@ -5,6 +5,7 @@ import IFObjectBase as ib
 import CGeoUtils as cg
 import GeoUtilsGL as ggl
 import Altjira as ai
+import math as m
 
 testName = "Viewer #2"
 
@@ -43,31 +44,58 @@ w = viewer.getWindowWidth()
 h = viewer.getWindowHeight()
 ar = w / h
 
-#viewer.setDepthRange(-50., 50.)
-
 print("  %s" % viewer.getString())
 
 print("Creating camera...")
 
-cam0 = cg.Camera.create()
-mm.addLocalRef(cam0)
-cam0.setOriginCam(5, -30., 0., 30., ar, 
-    cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
-m0 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
-    cg.Camera.DEFAULT_ADJUST_LOCATION, 
-    cg.HANDEDNESS_RIGHT, cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
-p1 = cam0.getPerspectiveMatrix()
+# camera matrix from triangle01.blend
+# pos = (4, -7, 3)
+# rot = ((1.1636990308761597, 0.043727900832891464, 0.5013790130615234), 
+#   'XYZ')) (66.675, 2.505, 28.727)°
+# depth = -Z, horizon = X, up = Y
+# fov = 55°
+#mv0 = cg.Matrix4.create(
+#    0.876,     -0.155,      0.457,          4,
+#     0.48,      0.367,     -0.797,         -7,
+#  -0.0437,      0.917,      0.396,          3,
+#        0,          0,          0,          1)
+mv0 = cg.Matrix4.create(
+    1, 0, 0, 0, 
+    0, 1, 0, 0, 
+    0, 0, 1, -10, 
+    0, 0, 0, 1
+)
+mm.addLocalRef(mv0)
 
-print("  %s" % cam0.getString())
+fov = 35.
+d = 1. / (2. * m.tan((fov * m.pi / 180.) / 2.))
+pm0 = cg.Matrix4.create(cg.Matrix4.UNIT)
+mm.addLocalRef(pm0)
+pm0.setElement(3, cg.AXIS_Z, -1. / d)
+pm0.setElement(3, 3, 0)
+
+print("  perspectiveMatrix: \n%s" % pm0.getValueStringF(10))
+
+#cam0 = cg.Camera.create()
+#mm.addLocalRef(cam0)
+#cam0.setOriginCam(5, 30., 0., 30., ar, 
+#    cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
+#m0 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
+#    cg.Camera.DEFAULT_ADJUST_LOCATION, 
+#    cg.HANDEDNESS_RIGHT, cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
+#p1 = cam0.getPerspectiveMatrix()
+
+#print("  %s" % cam0.getString())
 
 m1 = cg.Matrix4.swapAxes(cg.AXIS_X, cg.AXIS_Z, cg.AXIS_Y)
-s1 = cg.Matrix4.scale(1. / ar, 1., 1., 1.)
 
-mvpMatrix.setElements(m0)
+mvpMatrix.setElements(mv0)
+mvpMatrix.multiplyLeft(pm0)
+#mvpMatrix.multiplyLeft(m1)
 
 print("  mvpMatrix: \n%s" % mvpMatrix.getValueStringF(10))
 
-mvpMatrix.multiplyLeft(m1)
+s1 = cg.Matrix4.scale(1. / ar, 1., 1., 1.)
 mvpMatrix.multiplyLeft(s1)
 
 print("  mvpMatrix: \n%s" % mvpMatrix.getValueStringF(10))
