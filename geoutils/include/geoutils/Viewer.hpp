@@ -212,6 +212,15 @@ class Viewer
 		 */
 		virtual void swapBuffers();
 		
+		/** Set depth range.
+		 *
+		 * Set the depth range for rendering.
+		 *
+		 * \param minDepth minimum depth.
+		 * \param maxDepth maximum depth.
+		 */
+		virtual void setDepthRange(double minDepth, double maxDepth);
+		
 		/** Poll events.
 		 *
 		 * Poll events. Any events that have occured are added to the event 

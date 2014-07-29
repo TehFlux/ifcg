@@ -227,7 +227,7 @@ Ionflux::GeoUtils::Matrix4& value)
 	    "setUniform", "Value buffer");
 	for (int i = 0; i < n0; i++)
 	    v0[i] = value.getElement(i);
-	glUniformMatrix4fv(ul0, 1, GL_FALSE, v0);
+	glUniformMatrix4fv(ul0, 1, GL_TRUE, v0);
 	delete[] v0;
 	if (glGetError() == GL_INVALID_OPERATION)
 	{
@@ -262,7 +262,7 @@ Ionflux::GeoUtils::Matrix3& value)
 	    "setUniform", "Value buffer");
 	for (int i = 0; i < n0; i++)
 	    v0[i] = value.getElement(i);
-	glUniformMatrix3fv(ul0, 1, GL_FALSE, v0);
+	glUniformMatrix3fv(ul0, 1, GL_TRUE, v0);
 	delete[] v0;
 	if (glGetError() == GL_INVALID_OPERATION)
 	{

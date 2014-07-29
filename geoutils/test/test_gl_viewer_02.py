@@ -20,9 +20,9 @@ normalMatrix = cg.Matrix3.create(cg.Matrix3.UNIT)
 mm.addLocalRef(normalMatrix)
 
 verts = [
-    cg.Vertex3.create(-0.5, 0., -0.433), 
-    cg.Vertex3.create(0.5, 0., -0.433), 
-    cg.Vertex3.create(0., 0., 0.433)
+    cg.Vertex3.create(-0.5, -0.433, 0.), 
+    cg.Vertex3.create(0.5, -0.433, 0.), 
+    cg.Vertex3.create(0., 0.433, 0.)
 ]
 
 colors = [
@@ -43,25 +43,32 @@ w = viewer.getWindowWidth()
 h = viewer.getWindowHeight()
 ar = w / h
 
+#viewer.setDepthRange(-50., 50.)
+
 print("  %s" % viewer.getString())
 
 print("Creating camera...")
 
 cam0 = cg.Camera.create()
 mm.addLocalRef(cam0)
-cam0.setOriginCam(1., 0., 0., 0., ar, 
+cam0.setOriginCam(5, -30., 0., 30., ar, 
     cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
-m0 = cam0.getModelViewMatrix(cg.Camera.MODE_ORTHO, 
+m0 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
     cg.Camera.DEFAULT_ADJUST_LOCATION, 
     cg.HANDEDNESS_RIGHT, cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
+p1 = cam0.getPerspectiveMatrix()
 
 print("  %s" % cam0.getString())
 
 m1 = cg.Matrix4.swapAxes(cg.AXIS_X, cg.AXIS_Z, cg.AXIS_Y)
+s1 = cg.Matrix4.scale(1. / ar, 1., 1., 1.)
 
 mvpMatrix.setElements(m0)
+
+print("  mvpMatrix: \n%s" % mvpMatrix.getValueStringF(10))
+
 mvpMatrix.multiplyLeft(m1)
-mvpMatrix.setElement(2, 3, 0.)
+mvpMatrix.multiplyLeft(s1)
 
 print("  mvpMatrix: \n%s" % mvpMatrix.getValueStringF(10))
 
@@ -83,7 +90,9 @@ print("Initializing vertex attributes...")
 
 vs0 = cg.Vertex3Set.create()
 mm.addLocalRef(vs0)
+s0 = cg.Vector3(5., 5., 5.)
 for it in verts:
+    it.scale(s0)
     vs0.addVertex(it)
 
 va0 = ggl.VertexAttribute.create()
