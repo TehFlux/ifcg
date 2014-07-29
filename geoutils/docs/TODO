@@ -24,6 +24,7 @@ Critical stuff
 + OpenGL utility library
   > Viewer
     . mouse events
+    . camera support
   > Vertex array object
     . set from Mesh
   > uniforms 
