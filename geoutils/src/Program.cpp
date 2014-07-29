@@ -216,6 +216,11 @@ Ionflux::GeoUtils::Matrix4& value)
 	        "uniform block: '" << name << "'.";
 	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
 	}
+	// <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = " << value.getString() 
+	    << std::endl;
+	// ----- DEBUG ----> */
 	int n0 = value.getNumElements();
 	GLfloat* v0 = new GLfloat[n0];
 	Ionflux::ObjectBase::nullPointerCheck(v0, this, 
@@ -246,6 +251,11 @@ Ionflux::GeoUtils::Matrix3& value)
 	        "uniform block: '" << name << "'.";
 	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
 	}
+	// <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = " << value.getString() 
+	    << std::endl;
+	// ----- DEBUG ----> */
 	int n0 = value.getNumElements();
 	GLfloat* v0 = new GLfloat[n0];
 	Ionflux::ObjectBase::nullPointerCheck(v0, this, 

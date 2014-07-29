@@ -85,6 +85,8 @@ class ViewerEvent
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_SIZE;
 		/// Event ID: window position.
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_POS;
+		/// Event ID: window close.
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_CLOSE;
 		/// Class information instance.
 		static const ViewerEventClassInfo viewerEventClassInfo;
 		/// Class information.

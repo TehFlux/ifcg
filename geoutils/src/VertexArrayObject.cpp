@@ -130,7 +130,7 @@ void VertexArrayObject::update()
 	    if (va != 0)
 	    {
 	        // <---- DEBUG ----- //
-	        std::cerr << "[VertexArrayObject::update] "
+	        std::cerr << "[VertexArrayObject::update] DEBUG: "
 	            "Enabling vertex attribute: index = " << k << ", [" 
 	            << va->getValueString() << "]" << std::endl;
 	        // ----- DEBUG ----> //

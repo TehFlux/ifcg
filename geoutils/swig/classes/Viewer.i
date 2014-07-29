@@ -72,13 +72,14 @@ class Viewer
         virtual void cleanup();
         virtual void shutdown(bool shutdownNow = true);
         virtual void clear();
-        virtual void closeWindow();
+        virtual void closeWindow(bool closeFlag = true);
         virtual void initViewport();
         virtual void swapBuffers();
         virtual void pollEvents();
         virtual void onKey(int key, int scancode, int action, int mods);
         virtual void onWindowSize(int width, int height);
         virtual void onWindowPos(int posX, int posY);
+        virtual void onWindowClose();
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Viewer* getInstance();
         static void setInstance(Ionflux::GeoUtils::Viewer* viewer);

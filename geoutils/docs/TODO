@@ -22,18 +22,17 @@ Critical stuff
 --------------------------------------------------------------------------------
 
 + OpenGL utility library
+  > Viewer
+    . mouse events
   > Vertex array object
     . set from Mesh
   > uniforms 
     . Vector3/4
   > textures
     . copy GeoUtils::Image to texture
-  > testing
-    . VertexAttribute
   > shaders
     . texture (see FMViewer)
     . lighting (Lambert, Blinn-Phong)
-  > Viewer (from ifvg)
 
 + add 'hasClassInfo = true' for parent classes that have class information.
 

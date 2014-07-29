@@ -60,6 +60,7 @@ const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_NONE = 0;
 const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_KEY = 1;
 const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_WINDOW_SIZE = 2;
 const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_WINDOW_POS = 4;
+const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_WINDOW_CLOSE = 8;
 
 // run-time type information instance constants
 const ViewerEventClassInfo ViewerEvent::viewerEventClassInfo;
@@ -132,6 +133,8 @@ eventType)
 	    return "window_size";
 	if (eventType == TYPE_WINDOW_POS)
 	    return "window_pos";
+	if (eventType == TYPE_WINDOW_CLOSE)
+	    return "window_close";
 	return "<unknown>";
 }
 

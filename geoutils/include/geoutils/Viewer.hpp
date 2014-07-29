@@ -191,9 +191,13 @@ class Viewer
 		
 		/** Close viewer window.
 		 *
-		 * Close the viewer window.
+		 * Request closing the viewer window. If \c closeFlag is set to \c 
+		 * false and closing the window was requested, the closing of the 
+		 * window will be cancelled.
+		 *
+		 * \param closeFlag close flag.
 		 */
-		virtual void closeWindow();
+		virtual void closeWindow(bool closeFlag = true);
 		
 		/** Initialize viewport.
 		 *
@@ -210,7 +214,9 @@ class Viewer
 		
 		/** Poll events.
 		 *
-		 * Poll events.
+		 * Poll events. Any events that have occured are added to the event 
+		 * set of the viewer. Any previous events still in the event set when 
+		 * pollEvents() is called are cleared.
 		 */
 		virtual void pollEvents();
 		
@@ -242,6 +248,12 @@ class Viewer
 		 * \param posY position (Y).
 		 */
 		virtual void onWindowPos(int posX, int posY);
+		
+		/** Window close handler.
+		 *
+		 * Handler for window close events.
+		 */
+		virtual void onWindowClose();
 		
 		/** Get string representation of value.
 		 *
@@ -322,6 +334,14 @@ class Viewer
 		 * \param posY position (Y).
 		 */
 		static void windowPosHandlerGLFW(GLFWwindow* window, int posX, int posY);
+		
+		/** Window close handler (GLFW).
+		 *
+		 * Callback for GLFW window close events.
+		 *
+		 * \param window Window.
+		 */
+		static void windowCloseHandlerGLFW(GLFWwindow* window);
 		
 		/** Assignment operator.
 		 *

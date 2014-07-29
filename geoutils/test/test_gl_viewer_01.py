@@ -102,16 +102,6 @@ while (not viewer.getShutdownFlag()):
     va0.draw(ggl.PRIMITIVE_TRIANGLE, 1)
     viewer.swapBuffers()
     viewer.pollEvents()
-    # adjust view matrix according to aspect ratio
-    w0 = viewer.getWindowWidth()
-    h0 = viewer.getWindowHeight()
-    ar0 = w0 / h0
-    if (ar0 != ar):
-        mvpMatrix.setElement(0, 0, 1. / ar0)
-        p0.setUniform("ifvgMVPMatrix", mvpMatrix)
-        w = w0
-        h = h0
-        ar = ar0
     # fps count
     if (nFrames == checkFPSInterval):
         clock.stop()
@@ -135,6 +125,21 @@ while (not viewer.getShutdownFlag()):
                 # escape
                 viewer.closeWindow()
                 viewer.shutdown(False)
+        elif (e0.getEventType() == ggl.ViewerEvent.TYPE_WINDOW_CLOSE):
+            # handle window close event
+            viewer.shutdown(False)
+        elif (e0.getEventType() == ggl.ViewerEvent.TYPE_WINDOW_SIZE):
+            # handle window size event
+            # adjust view matrix according to aspect ratio
+            w0 = viewer.getWindowWidth()
+            h0 = viewer.getWindowHeight()
+            ar0 = w0 / h0
+            if (ar0 != ar):
+                mvpMatrix.setElement(0, 0, 1. / ar0)
+                p0.setUniform("ifvgMVPMatrix", mvpMatrix)
+                w = w0
+                h = h0
+                ar = ar0
 
 viewer.shutdown()
 mm.removeLocalRef(vao0)

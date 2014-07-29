@@ -152,6 +152,8 @@ void Viewer::init()
 	    Viewer::windowSizeHandlerGLFW);
 	glfwSetWindowPosCallback(windowImpl, 
 	    Viewer::windowPosHandlerGLFW);
+	glfwSetWindowCloseCallback(windowImpl, 
+	    Viewer::windowCloseHandlerGLFW);
 	gladLoadGLLoader(reinterpret_cast<GLADloadproc>(
 	    glfwGetProcAddress));
 }
@@ -184,11 +186,11 @@ void Viewer::clear()
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Viewer::closeWindow()
+void Viewer::closeWindow(bool closeFlag)
 {
 	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 
 	    "closeWindow", "Window");
-	glfwSetWindowShouldClose(windowImpl, GL_TRUE);
+	glfwSetWindowShouldClose(windowImpl, closeFlag);
 }
 
 void Viewer::initViewport()
@@ -216,8 +218,6 @@ void Viewer::pollEvents()
 	    setEvents(ViewerEventSet::create());
 	events->clearEvents();
 	glfwPollEvents();
-	if (glfwWindowShouldClose(windowImpl))
-	    shutdownFlag = true;
 }
 
 void Viewer::onKey(int key, int scancode, int action, int mods)
@@ -260,6 +260,15 @@ void Viewer::onWindowPos(int posX, int posY)
 	events->addEvent(e0);
 	windowPosX = posX;
 	windowPosY = posY;
+}
+
+void Viewer::onWindowClose()
+{
+	Ionflux::ObjectBase::nullPointerCheck(events, this, 
+	    "onWindowClose", "Event set");
+	ViewerEvent* e0 = ViewerEvent::create(this, 
+	    ViewerEvent::TYPE_WINDOW_CLOSE);
+	events->addEvent(e0);
 }
 
 std::string Viewer::getValueString() const
@@ -345,6 +354,17 @@ void Viewer::windowPosHandlerGLFW(GLFWwindow* window, int posX, int posY)
 	Ionflux::ObjectBase::nullPointerCheck(viewer, 
 	    "Viewer::windowSizeHandlerGLFW", "Viewer");
 	viewer->onWindowPos(posX, posY);
+}
+
+void Viewer::windowCloseHandlerGLFW(GLFWwindow* window)
+{
+	Ionflux::ObjectBase::nullPointerCheck(window, 
+	    "Viewer::windowCloseHandlerGLFW", "Window");
+	Viewer* viewer = static_cast<Viewer*>(
+	    glfwGetWindowUserPointer(window));
+	Ionflux::ObjectBase::nullPointerCheck(viewer, 
+	    "Viewer::windowCloseHandlerGLFW", "Viewer");
+	viewer->onWindowClose();
 }
 
 void Viewer::setWindowImpl(GLFWwindow* newWindowImpl)
