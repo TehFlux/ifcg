@@ -38,6 +38,10 @@ typedef int BufferUsageID;
 typedef int PrimitiveID;
 typedef int OpenGLProfileID;
 
+// glconstants.hpp
+
+// glutils.hpp
+
 // Classes
 
 $Program

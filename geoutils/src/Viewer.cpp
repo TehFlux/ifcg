@@ -282,6 +282,7 @@ void Viewer::cleanupInstance()
 std::string 
 Viewer::getOpenGLProfileString(Ionflux::GeoUtils::OpenGLProfileID profile)
 {
+	// TODO: Maybe move this out of Viewer.
 	if (profile == OPENGL_PROFILE_ANY)
 	    return "any";
 	if (profile == OPENGL_PROFILE_CORE)
@@ -336,6 +337,7 @@ void Viewer::windowPosHandlerGLFW(GLFWwindow* window, int posX, int posY)
 Ionflux::GeoUtils::OpenGLProfileID Viewer::getOpenGLProfileFromGLFW(int 
 profile)
 {
+	// TODO: Maybe move this out of Viewer.
 	if (profile == GLFW_OPENGL_ANY_PROFILE)
 	    return OPENGL_PROFILE_ANY;
 	if (profile == GLFW_OPENGL_CORE_PROFILE)
@@ -348,6 +350,7 @@ profile)
 int Viewer::getOpenGLProfileGLFW(Ionflux::GeoUtils::OpenGLProfileID 
 profile)
 {
+	// TODO: Maybe move this out of Viewer.
 	if (profile == OPENGL_PROFILE_ANY)
 	    return GLFW_OPENGL_ANY_PROFILE;
 	if (profile == OPENGL_PROFILE_CORE)
