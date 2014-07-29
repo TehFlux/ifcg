@@ -627,7 +627,7 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	if (mode == MODE_ORTHO)
 	    P = Matrix4::UNIT;
 	else
-	    P = getPerspectiveMatrix();
+	    P = getPerspectiveMatrix(depthAxis);
 	Matrix4 TR(T * R);
 	Matrix4 TRInv = TR.invert();
 	/* <---- DEBUG ----- //
@@ -642,21 +642,25 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 }
 
 void Camera::setOriginCam(double distance0, double rotX, double rotY, 
-double rotZ)
+double rotZ, double aspectRatio, Ionflux::GeoUtils::AxisID upAxis, 
+Ionflux::GeoUtils::AxisID depthAxis, Ionflux::GeoUtils::AxisID horizonAxis)
 {
 	initVectors();
 	/* <---- DEBUG ----- //
 	ostringstream status;
 	// ----- DEBUG ----> */
-	Matrix3 RX(Matrix3::rotate(rotX * M_PI / 180., AXIS_X));
-	Matrix3 RY(Matrix3::rotate(rotY * M_PI / 180., AXIS_Y));
-	Matrix3 RZ(Matrix3::rotate(rotZ * M_PI / 180., AXIS_Z));
+	Matrix3 RX(Matrix3::rotate(rotX * M_PI / 180., horizonAxis));
+	Matrix3 RY(Matrix3::rotate(rotY * M_PI / 180., depthAxis));
+	Matrix3 RZ(Matrix3::rotate(rotZ * M_PI / 180., upAxis));
 	Matrix3 R(RZ * RX * RY);
-	*location = R * (-distance0 * Vector3::E_Y);
+	Vector3 da(Vector3::axis(depthAxis));
+	Vector3 ha(Vector3::axis(horizonAxis));
+	Vector3 ua(Vector3::axis(upAxis));
+	*location = R * (-distance0 * da);
 	*lookAt = Vector3::ZERO;
-	*direction = R * Vector3::E_Y;
-	*up = R * Vector3::E_Z;
-	*right = R * (1.33 * Vector3::E_X);
+	*direction = R * Vector3::axis(depthAxis);
+	*up = R * ua;
+	*right = R * (aspectRatio * ha);
 	*sky = *up;
 	setupFlags = DEFAULT_SETUP_FLAGS;
 	/* <---- DEBUG ----- //

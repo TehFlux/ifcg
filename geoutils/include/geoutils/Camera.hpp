@@ -361,12 +361,19 @@ class Camera
 		 * rotated around the global coordinate axes as specified.
 		 *
 		 * \param distance0 Distance to origin.
-		 * \param rotX Rotation around X axis (in degrees).
-		 * \param rotY Rotation around Y axis (in degrees).
-		 * \param rotZ Rotation around Z axis (in degrees).
+		 * \param rotX Rotation around horizon axis (in degrees).
+		 * \param rotY Rotation around depth axis (in degrees).
+		 * \param rotZ Rotation around up axis (in degrees).
+		 * \param aspectRatio aspect ratio.
+		 * \param upAxis Up axis.
+		 * \param depthAxis Depth axis.
+		 * \param horizonAxis Horizon axis.
 		 */
 		virtual void setOriginCam(double distance0 = 10., double rotX = -30., 
-		double rotY = 0., double rotZ = 30.);
+		double rotY = 0., double rotZ = 30., double aspectRatio = 1.33, 
+		Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Z, 
+		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Y, 
+		Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X);
 		
 		/** Get string representation of value.
 		 *
