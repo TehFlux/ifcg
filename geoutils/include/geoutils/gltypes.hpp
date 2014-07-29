@@ -54,6 +54,14 @@ class VertexAttribute;
 typedef std::vector<Ionflux::GeoUtils::VertexAttribute*> 
     VertexAttributeVector;
 
+/// Viewer event type ID.
+typedef int ViewerEventTypeID;
+
+class ViewerEvent;
+
+/// Vector of viewer events.
+typedef std::vector<Ionflux::GeoUtils::ViewerEvent*> ViewerEventVector;
+
 }
 
 }

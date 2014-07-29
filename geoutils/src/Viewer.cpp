@@ -37,6 +37,8 @@
 #include "geoutils/utils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/glutils.hpp"
+#include "geoutils/ViewerEvent.hpp"
+#include "geoutils/ViewerEventSet.hpp"
 
 using namespace std;
 
@@ -76,7 +78,7 @@ const ViewerClassInfo Viewer::viewerClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Viewer::CLASS_INFO = &Viewer::viewerClassInfo;
 
 Viewer::Viewer()
-: windowImpl(0), windowPosX(DEFAULT_WINDOW_POS_X), windowPosY(DEFAULT_WINDOW_POS_Y), windowWidth(DEFAULT_WINDOW_WIDTH), windowHeight(DEFAULT_WINDOW_HEIGHT), windowTitle(DEFAULT_WINDOW_TITLE), clearColor(DEFAULT_CLEAR_COLOR), openGLVersionMajor(DEFAULT_OPENGL_VERSION_MAJOR), openGLVersionMinor(DEFAULT_OPENGL_VERSION_MINOR), openGLProfile(DEFAULT_OPENGL_PROFILE), shutdownFlag(false)
+: windowImpl(0), windowPosX(DEFAULT_WINDOW_POS_X), windowPosY(DEFAULT_WINDOW_POS_Y), windowWidth(DEFAULT_WINDOW_WIDTH), windowHeight(DEFAULT_WINDOW_HEIGHT), windowTitle(DEFAULT_WINDOW_TITLE), clearColor(DEFAULT_CLEAR_COLOR), openGLVersionMajor(DEFAULT_OPENGL_VERSION_MAJOR), openGLVersionMinor(DEFAULT_OPENGL_VERSION_MINOR), openGLProfile(DEFAULT_OPENGL_PROFILE), shutdownFlag(false), events(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -84,7 +86,7 @@ Viewer::Viewer()
 }
 
 Viewer::Viewer(const Ionflux::GeoUtils::Viewer& other)
-: windowImpl(0), windowPosX(DEFAULT_WINDOW_POS_X), windowPosY(DEFAULT_WINDOW_POS_Y), windowWidth(DEFAULT_WINDOW_WIDTH), windowHeight(DEFAULT_WINDOW_HEIGHT), windowTitle(DEFAULT_WINDOW_TITLE), clearColor(DEFAULT_CLEAR_COLOR), openGLVersionMajor(DEFAULT_OPENGL_VERSION_MAJOR), openGLVersionMinor(DEFAULT_OPENGL_VERSION_MINOR), openGLProfile(DEFAULT_OPENGL_PROFILE), shutdownFlag(false)
+: windowImpl(0), windowPosX(DEFAULT_WINDOW_POS_X), windowPosY(DEFAULT_WINDOW_POS_Y), windowWidth(DEFAULT_WINDOW_WIDTH), windowHeight(DEFAULT_WINDOW_HEIGHT), windowTitle(DEFAULT_WINDOW_TITLE), clearColor(DEFAULT_CLEAR_COLOR), openGLVersionMajor(DEFAULT_OPENGL_VERSION_MAJOR), openGLVersionMinor(DEFAULT_OPENGL_VERSION_MINOR), openGLProfile(DEFAULT_OPENGL_PROFILE), shutdownFlag(false), events(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -101,7 +103,7 @@ windowWidth(initWindowWidth), windowHeight(initWindowHeight),
 windowTitle(initWindowTitle), clearColor(initClearColor), 
 openGLVersionMajor(initOpenGLVersionMajor), 
 openGLVersionMinor(initOpenGLVersionMinor), 
-openGLProfile(initOpenGLProfile), shutdownFlag(false)
+openGLProfile(initOpenGLProfile), shutdownFlag(false), events(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -182,6 +184,13 @@ void Viewer::clear()
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void Viewer::closeWindow()
+{
+	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 
+	    "closeWindow", "Window");
+	glfwSetWindowShouldClose(windowImpl, GL_TRUE);
+}
+
 void Viewer::initViewport()
 {
 	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 
@@ -203,6 +212,9 @@ void Viewer::pollEvents()
 {
 	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 
 	    "pollEvents", "Window");
+	if (events == 0)
+	    setEvents(ViewerEventSet::create());
+	events->clearEvents();
 	glfwPollEvents();
 	if (glfwWindowShouldClose(windowImpl))
 	    shutdownFlag = true;
@@ -212,24 +224,40 @@ void Viewer::onKey(int key, int scancode, int action, int mods)
 {
 	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 
 	    "onKey", "Window");
-	// <---- DEBUG ----- //
+	Ionflux::ObjectBase::nullPointerCheck(events, this, 
+	    "onKey", "Event set");
+	ViewerEvent* e0 = ViewerEvent::create(this, 
+	    ViewerEvent::TYPE_KEY, key, scancode, action, mods);
+	events->addEvent(e0);
+	/* <---- DEBUG ----- //
 	if ((key == GLFW_KEY_ESCAPE)
 	    && (action == GLFW_PRESS))
 	{
-	    glfwSetWindowShouldClose(windowImpl, GL_TRUE);
-	    shutdownFlag = true;
+	    closeWindow();
+	    shutdown(false);
 	}
 	// ----- DEBUG ----> */
 }
 
 void Viewer::onWindowSize(int width, int height)
 {
+	Ionflux::ObjectBase::nullPointerCheck(events, this, 
+	    "onWindowSize", "Event set");
+	ViewerEvent* e0 = ViewerEvent::create(this, 
+	    ViewerEvent::TYPE_WINDOW_SIZE);
+	events->addEvent(e0);
 	windowWidth = width;
 	windowHeight = height;
+	initViewport();
 }
 
 void Viewer::onWindowPos(int posX, int posY)
 {
+	Ionflux::ObjectBase::nullPointerCheck(events, this, 
+	    "onWindowPos", "Event set");
+	ViewerEvent* e0 = ViewerEvent::create(this, 
+	    ViewerEvent::TYPE_WINDOW_POS);
+	events->addEvent(e0);
 	windowPosX = posX;
 	windowPosY = posY;
 }
@@ -438,6 +466,22 @@ void Viewer::setShutdownFlag(bool newShutdownFlag)
 bool Viewer::getShutdownFlag() const
 {
     return shutdownFlag;
+}
+
+void Viewer::setEvents(Ionflux::GeoUtils::ViewerEventSet* newEvents)
+{
+	if (events == newEvents)
+		return;
+    if (newEvents != 0)
+        addLocalRef(newEvents);
+	if (events != 0)
+		removeLocalRef(events);
+	events = newEvents;
+}
+
+Ionflux::GeoUtils::ViewerEventSet* Viewer::getEvents() const
+{
+    return events;
 }
 
 Ionflux::GeoUtils::Viewer& Viewer::operator=(const 

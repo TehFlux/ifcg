@@ -43,6 +43,13 @@ typedef int VertexAttributeDataTypeID;
 typedef int BufferUsageID;
 typedef int PrimitiveID;
 typedef int OpenGLProfileID;
+class VertexAttribute;
+typedef std::vector<Ionflux::GeoUtils::VertexAttribute*> 
+    VertexAttributeVector;
+typedef int ViewerEventTypeID;
+class ViewerEvent;
+typedef std::vector<Ionflux::GeoUtils::ViewerEvent*>
+    ViewerEventVector;
 
 // glconstants.hpp
 
@@ -293,6 +300,132 @@ class VertexArrayObject
 
 
 %{
+#include "geoutils/ViewerEvent.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class Viewer;
+
+class ViewerEventClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        ViewerEventClassInfo();
+        virtual ~ViewerEventClassInfo();
+};
+
+class ViewerEvent
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_NONE;
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_KEY;
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_SIZE;
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_POS;
+        
+        ViewerEvent();
+		ViewerEvent(const Ionflux::GeoUtils::ViewerEvent& other);
+        ViewerEvent(Ionflux::GeoUtils::Viewer* initViewer, 
+        Ionflux::GeoUtils::ViewerEventTypeID initEventType = TYPE_NONE, int
+        initKeyCode = 0, int initScanCode = 0, int initKeyAction = 0, int 
+        initKeyMods = 0);
+        virtual ~ViewerEvent();
+        virtual std::string getValueString() const;
+        static std::string 
+        getTypeString(Ionflux::GeoUtils::ViewerEventTypeID eventType);
+		virtual Ionflux::GeoUtils::ViewerEvent* copy() const;
+		static Ionflux::GeoUtils::ViewerEvent* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::ViewerEvent* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
+		static Ionflux::GeoUtils::ViewerEvent* create(Ionflux::GeoUtils::Viewer* 
+		initViewer, Ionflux::GeoUtils::ViewerEventTypeID initEventType = 
+		TYPE_NONE, int initKeyCode = 0, int initScanCode = 0, int initKeyAction =
+		0, int initKeyMods = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual void setViewer(Ionflux::GeoUtils::Viewer* newViewer);
+        virtual Ionflux::GeoUtils::Viewer* getViewer() const;
+        virtual void setEventType(Ionflux::GeoUtils::ViewerEventTypeID 
+        newEventType);
+        virtual Ionflux::GeoUtils::ViewerEventTypeID getEventType() const;
+        virtual void setKeyCode(int newKeyCode);
+        virtual int getKeyCode() const;
+        virtual void setScanCode(int newScanCode);
+        virtual int getScanCode() const;
+        virtual void setKeyAction(int newKeyAction);
+        virtual int getKeyAction() const;
+        virtual void setKeyMods(int newKeyMods);
+        virtual int getKeyMods() const;
+};
+
+}
+
+}
+
+
+%{
+#include "geoutils/ViewerEventSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class ViewerEvent;
+
+class ViewerEventSetClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        ViewerEventSetClassInfo();
+        virtual ~ViewerEventSetClassInfo();
+};
+
+class ViewerEventSet
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        ViewerEventSet();
+		ViewerEventSet(const Ionflux::GeoUtils::ViewerEventSet& other);
+        virtual ~ViewerEventSet();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::ViewerEventSet* copy() const;
+		static Ionflux::GeoUtils::ViewerEventSet* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::ViewerEventSet* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
+        virtual unsigned int getNumEvents() const;
+        virtual Ionflux::GeoUtils::ViewerEvent* getEvent(unsigned int 
+        elementIndex = 0) const;
+		virtual int findEvent(Ionflux::GeoUtils::ViewerEvent* needle, unsigned 
+		int occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::ViewerEvent*>& getEvents();
+        virtual void addEvent(Ionflux::GeoUtils::ViewerEvent* addElement);
+		virtual Ionflux::GeoUtils::ViewerEvent* addEvent();
+		virtual void addEvents(std::vector<Ionflux::GeoUtils::ViewerEvent*>& 
+		newEvents);
+		virtual void addEvents(Ionflux::GeoUtils::ViewerEventSet* newEvents);        
+        virtual void removeEvent(Ionflux::GeoUtils::ViewerEvent* 
+        removeElement);
+		virtual void removeEventIndex(unsigned int removeIndex);
+		virtual void clearEvents();
+};
+
+}
+
+}
+
+
+%{
 #include "geoutils/Viewer.hpp"
 %}
 
@@ -301,6 +434,8 @@ namespace Ionflux
 
 namespace GeoUtils
 {
+
+class ViewerEventSet;
 
 class ViewerClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -338,6 +473,7 @@ class Viewer
         virtual void cleanup();
         virtual void shutdown(bool shutdownNow = true);
         virtual void clear();
+        virtual void closeWindow();
         virtual void initViewport();
         virtual void swapBuffers();
         virtual void pollEvents();
@@ -385,10 +521,18 @@ class Viewer
         const;
         virtual void setShutdownFlag(bool newShutdownFlag);
         virtual bool getShutdownFlag() const;
+        virtual void setEvents(Ionflux::GeoUtils::ViewerEventSet* 
+        newEvents);
+        virtual Ionflux::GeoUtils::ViewerEventSet* getEvents() const;
 };
 
 }
 
 }
 
+
+// Templates
+
+%template(VertexAttributeVector) std::vector<Ionflux::GeoUtils::VertexAttribute*>;
+%template(ViewerEventVector) std::vector<Ionflux::GeoUtils::ViewerEvent*>;
 

@@ -40,6 +40,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class ViewerEventSet;
+
 /// Class information for class Viewer.
 class ViewerClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -86,6 +88,8 @@ class Viewer
 		Ionflux::GeoUtils::OpenGLProfileID openGLProfile;
 		/// Shutdown flag.
 		bool shutdownFlag;
+		/// Events.
+		Ionflux::GeoUtils::ViewerEventSet* events;
 		
 	public:
 		/// Default window position (X).
@@ -184,6 +188,12 @@ class Viewer
 		 * Clear the framebuffer.
 		 */
 		virtual void clear();
+		
+		/** Close viewer window.
+		 *
+		 * Close the viewer window.
+		 */
+		virtual void closeWindow();
 		
 		/** Initialize viewport.
 		 *
@@ -542,6 +552,20 @@ class Viewer
 		 * \param newShutdownFlag New value of shutdown flag.
 		 */
 		virtual void setShutdownFlag(bool newShutdownFlag);
+		
+		/** Get events.
+		 *
+		 * \return Current value of events.
+		 */
+		virtual Ionflux::GeoUtils::ViewerEventSet* getEvents() const;
+		
+		/** Set events.
+		 *
+		 * Set new value of events.
+		 *
+		 * \param newEvents New value of events.
+		 */
+		virtual void setEvents(Ionflux::GeoUtils::ViewerEventSet* newEvents);
 };
 
 }

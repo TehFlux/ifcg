@@ -133,6 +133,19 @@ class Color
 		other);
 		static Ionflux::Altjira::Color* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
+		static Ionflux::Altjira::Color* create(const ByteColor& initColor, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Altjira::Color* create(const FloatColor& initColor, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Altjira::Color* create(FloatColorValue initRed, 
+		FloatColorValue initGreen, FloatColorValue initBlue, FloatColorValue 
+		initAlpha, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Altjira::Color* create(ByteColorValue initRed, 
+		ByteColorValue initGreen, ByteColorValue initBlue, ByteColorValue 
+		initAlpha, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Altjira::Color* create(const std::string& hexColor, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setRed(double newRed);
         virtual double getRed() const;
         virtual void setGreen(double newGreen);

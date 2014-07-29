@@ -486,6 +486,64 @@ class Color
 		 */
 		static Ionflux::Altjira::Color* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Color object.
+		 *
+		 * \param initColor Initial color.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Color* create(const ByteColor& initColor, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Color object.
+		 *
+		 * \param initColor Initial color.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Color* create(const FloatColor& initColor, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Color object.
+		 *
+		 * \param initRed Initial red component.
+		 * \param initGreen Initial green component.
+		 * \param initBlue Initial blue component.
+		 * \param initAlpha Initial alpha component.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Color* create(FloatColorValue initRed, 
+		FloatColorValue initGreen, FloatColorValue initBlue, FloatColorValue 
+		initAlpha, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Color object.
+		 *
+		 * \param initRed Initial red component.
+		 * \param initGreen Initial green component.
+		 * \param initBlue Initial blue component.
+		 * \param initAlpha Initial alpha component.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Color* create(ByteColorValue initRed, 
+		ByteColorValue initGreen, ByteColorValue initBlue, ByteColorValue 
+		initAlpha, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Color object.
+		 *
+		 * \param hexColor Hex color.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Color* create(const std::string& hexColor, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get allocated size in memory.
 		 *

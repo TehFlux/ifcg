@@ -34,6 +34,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
+class ViewerEventSet;
+
 class ViewerClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -70,6 +72,7 @@ class Viewer
         virtual void cleanup();
         virtual void shutdown(bool shutdownNow = true);
         virtual void clear();
+        virtual void closeWindow();
         virtual void initViewport();
         virtual void swapBuffers();
         virtual void pollEvents();
@@ -117,6 +120,9 @@ class Viewer
         const;
         virtual void setShutdownFlag(bool newShutdownFlag);
         virtual bool getShutdownFlag() const;
+        virtual void setEvents(Ionflux::GeoUtils::ViewerEventSet* 
+        newEvents);
+        virtual Ionflux::GeoUtils::ViewerEventSet* getEvents() const;
 };
 
 }

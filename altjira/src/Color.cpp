@@ -33,6 +33,7 @@
 #include "ifmapping/utils.hpp"
 #include "altjira/utils.hpp"
 #include "altjira/imageutils.hpp"
+#include "altjira/AltjiraError.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -490,7 +491,74 @@ parentObject)
     Color* newObject = new Color();
     if (newObject == 0)
     {
-        return 0;
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Color* Color::create(const ByteColor& initColor, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Color* newObject = new Color(initColor);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Color* Color::create(const FloatColor& initColor, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Color* newObject = new Color(initColor);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Color* Color::create(FloatColorValue initRed, 
+FloatColorValue initGreen, FloatColorValue initBlue, FloatColorValue 
+initAlpha, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Color* newObject = new Color(initRed, initGreen, initBlue, initAlpha);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Color* Color::create(ByteColorValue initRed, 
+ByteColorValue initGreen, ByteColorValue initBlue, ByteColorValue 
+initAlpha, Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Color* newObject = new Color(initRed, initGreen, initBlue, initAlpha);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Color* Color::create(const std::string& hexColor, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Color* newObject = new Color(hexColor);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

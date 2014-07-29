@@ -43,6 +43,13 @@ typedef int VertexAttributeDataTypeID;
 typedef int BufferUsageID;
 typedef int PrimitiveID;
 typedef int OpenGLProfileID;
+class VertexAttribute;
+typedef std::vector<Ionflux::GeoUtils::VertexAttribute*> 
+    VertexAttributeVector;
+typedef int ViewerEventTypeID;
+class ViewerEvent;
+typedef std::vector<Ionflux::GeoUtils::ViewerEvent*>
+    ViewerEventVector;
 
 // glconstants.hpp
 
@@ -85,5 +92,12 @@ unsigned int getNumElementsPerPrimitive(
 $Program
 $VertexAttribute
 $VertexArrayObject
+$ViewerEvent
+$ViewerEventSet
 $Viewer
+
+// Templates
+
+%template(VertexAttributeVector) std::vector<Ionflux::GeoUtils::VertexAttribute*>;
+%template(ViewerEventVector) std::vector<Ionflux::GeoUtils::ViewerEvent*>;
 
