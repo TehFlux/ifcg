@@ -36,6 +36,7 @@
 #include "ifobject/objectutils.hpp"
 #include "geoutils/utils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
+#include "geoutils/glutils.hpp"
 
 using namespace std;
 
@@ -67,10 +68,7 @@ const int Viewer::DEFAULT_WINDOW_HEIGHT = 563;
 const std::string Viewer::DEFAULT_WINDOW_TITLE = "Viewer";
 const int Viewer::DEFAULT_OPENGL_VERSION_MAJOR = 3;
 const int Viewer::DEFAULT_OPENGL_VERSION_MINOR = 3;
-const Ionflux::GeoUtils::OpenGLProfileID Viewer::DEFAULT_OPENGL_PROFILE = 1;
-const Ionflux::GeoUtils::OpenGLProfileID Viewer::OPENGL_PROFILE_ANY = 0;
-const Ionflux::GeoUtils::OpenGLProfileID Viewer::OPENGL_PROFILE_CORE = 1;
-const Ionflux::GeoUtils::OpenGLProfileID Viewer::OPENGL_PROFILE_COMPAT = 2;
+const Ionflux::GeoUtils::OpenGLProfileID Viewer::DEFAULT_OPENGL_PROFILE = OPENGL_PROFILE_CORE;
 const Ionflux::Altjira::Color Viewer::DEFAULT_CLEAR_COLOR = Ionflux::Altjira::Color::GRAY_60;
 
 // run-time type information instance constants
@@ -279,19 +277,6 @@ void Viewer::cleanupInstance()
 	}
 }
 
-std::string 
-Viewer::getOpenGLProfileString(Ionflux::GeoUtils::OpenGLProfileID profile)
-{
-	// TODO: Maybe move this out of Viewer.
-	if (profile == OPENGL_PROFILE_ANY)
-	    return "any";
-	if (profile == OPENGL_PROFILE_CORE)
-	    return "core";
-	if (profile == OPENGL_PROFILE_COMPAT)
-	    return "compat";
-	return "<unknown>";
-}
-
 void Viewer::errorHandlerGLFW(int errorCode, const char* description)
 {
 	std::ostringstream status;
@@ -332,32 +317,6 @@ void Viewer::windowPosHandlerGLFW(GLFWwindow* window, int posX, int posY)
 	Ionflux::ObjectBase::nullPointerCheck(viewer, 
 	    "Viewer::windowSizeHandlerGLFW", "Viewer");
 	viewer->onWindowPos(posX, posY);
-}
-
-Ionflux::GeoUtils::OpenGLProfileID Viewer::getOpenGLProfileFromGLFW(int 
-profile)
-{
-	// TODO: Maybe move this out of Viewer.
-	if (profile == GLFW_OPENGL_ANY_PROFILE)
-	    return OPENGL_PROFILE_ANY;
-	if (profile == GLFW_OPENGL_CORE_PROFILE)
-	    return OPENGL_PROFILE_CORE;
-	if (profile == GLFW_OPENGL_COMPAT_PROFILE)
-	    return OPENGL_PROFILE_COMPAT;
-	return OPENGL_PROFILE_ANY;
-}
-
-int Viewer::getOpenGLProfileGLFW(Ionflux::GeoUtils::OpenGLProfileID 
-profile)
-{
-	// TODO: Maybe move this out of Viewer.
-	if (profile == OPENGL_PROFILE_ANY)
-	    return GLFW_OPENGL_ANY_PROFILE;
-	if (profile == OPENGL_PROFILE_CORE)
-	    return GLFW_OPENGL_CORE_PROFILE;
-	if (profile == OPENGL_PROFILE_COMPAT)
-	    return GLFW_OPENGL_COMPAT_PROFILE;
-	return GLFW_OPENGL_ANY_PROFILE;
 }
 
 void Viewer::setWindowImpl(GLFWwindow* newWindowImpl)

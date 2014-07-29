@@ -399,6 +399,7 @@ glGeoUtilsLibHeaders = [
     'include/geoutils/glutils.hpp', 
     'include/geoutils/Program.hpp', 
     'include/geoutils/VertexAttribute.hpp', 
+    'include/geoutils/VertexArrayObject.hpp', 
     'include/geoutils/Viewer.hpp'
 ]
 
@@ -406,12 +407,14 @@ glGeoUtilsLibSources = [
     'build/glutils.cpp', 
     'build/Program.cpp', 
     'build/VertexAttribute.cpp', 
+    'build/VertexArrayObject.cpp', 
     'build/Viewer.cpp'
 ]
 
 glGeoUtilsLibClasses = [
     'Program', 
     'VertexAttribute', 
+    'VertexArrayObject', 
     'Viewer'
 ]
 

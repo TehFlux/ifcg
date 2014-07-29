@@ -40,6 +40,8 @@
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/VectorSet.hpp"
 #include "geoutils/Vector.hpp"
+#include "geoutils/glutils.hpp"
+#include "geoutils/glutils_private.hpp"
 
 using namespace std;
 
@@ -59,22 +61,6 @@ VertexAttributeClassInfo::VertexAttributeClassInfo()
 VertexAttributeClassInfo::~VertexAttributeClassInfo()
 {
 }
-
-// public member constants
-const Ionflux::GeoUtils::VertexAttributeDataTypeID VertexAttribute::DATA_TYPE_FLOAT = 0;
-const Ionflux::GeoUtils::VertexAttributeDataTypeID VertexAttribute::DATA_TYPE_UINT = 1;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_STREAM_DRAW = 0;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_STREAM_READ = 1;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_STREAM_COPY = 2;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_STATIC_DRAW = 3;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_STATIC_READ = 4;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_STATIC_COPY = 5;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_DYNAMIC_DRAW = 6;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_DYNAMIC_READ = 7;
-const Ionflux::GeoUtils::BufferUsageID VertexAttribute::USAGE_DYNAMIC_COPY = 8;
-const Ionflux::GeoUtils::PrimitiveID VertexAttribute::PRIMITIVE_POINT = 0;
-const Ionflux::GeoUtils::PrimitiveID VertexAttribute::PRIMITIVE_LINE = 1;
-const Ionflux::GeoUtils::PrimitiveID VertexAttribute::PRIMITIVE_TRIANGLE = 2;
 
 // run-time type information instance constants
 const VertexAttributeClassInfo VertexAttribute::vertexAttributeClassInfo;
@@ -359,6 +345,32 @@ componentIndex)
 	return d0[elementIndex * elementSize + componentIndex];
 }
 
+unsigned int VertexAttribute::getUInt(unsigned int elementIndex, unsigned 
+int componentIndex)
+{
+	if (dataType != DATA_TYPE_UINT)
+	{
+	    std::ostringstream status;
+	    status << "Data type mismatch (dataType = " 
+	        << getDataTypeString(dataType) << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "getFloat"));
+	}
+	if (elementIndex >= numElements)
+	{
+	    std::ostringstream status;
+	    status << "Element index out of bounds: " << elementIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "getData"));
+	}
+	if (componentIndex >= elementSize)
+	{
+	    std::ostringstream status;
+	    status << "Component index out of bounds: " << componentIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "getData"));
+	}
+	GLuint* d0 = static_cast<GLuint*>(data);
+	return d0[elementIndex * elementSize + componentIndex];
+}
+
 void VertexAttribute::setData(unsigned int elementIndex, unsigned int 
 componentIndex, float value)
 {
@@ -382,6 +394,32 @@ componentIndex, float value)
 	    throw GeoUtilsError(getErrorString(status.str(), "setData"));
 	}
 	GLfloat* d0 = static_cast<GLfloat*>(data);
+	d0[elementIndex * elementSize + componentIndex] = value;
+}
+
+void VertexAttribute::setData(unsigned int elementIndex, unsigned int 
+componentIndex, unsigned int value)
+{
+	if (dataType != DATA_TYPE_UINT)
+	{
+	    std::ostringstream status;
+	    status << "Data type mismatch (dataType = " 
+	        << getDataTypeString(dataType) << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "setData"));
+	}
+	if (elementIndex >= numElements)
+	{
+	    std::ostringstream status;
+	    status << "Element index out of bounds: " << elementIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "setData"));
+	}
+	if (componentIndex >= elementSize)
+	{
+	    std::ostringstream status;
+	    status << "Component index out of bounds: " << componentIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "setData"));
+	}
+	GLuint* d0 = static_cast<GLuint*>(data);
 	d0[elementIndex * elementSize + componentIndex] = value;
 }
 
@@ -432,97 +470,6 @@ std::string VertexAttribute::getValueString() const
 	return status.str();
 }
 
-std::string 
-VertexAttribute::getDataTypeString(Ionflux::GeoUtils::VertexAttributeDataTypeID
-dataType)
-{
-	if (dataType == DATA_TYPE_FLOAT)
-	    return "float";
-	if (dataType == DATA_TYPE_UINT)
-	    return "uint";
-	return "<unknown>";
-}
-
-unsigned int 
-VertexAttribute::getNumElementsPerPrimitive(Ionflux::GeoUtils::PrimitiveID 
-primitive)
-{
-	if (primitive == PRIMITIVE_POINT)
-	    return 1;
-	if (primitive == PRIMITIVE_LINE)
-	    return 2;
-	if (primitive == PRIMITIVE_TRIANGLE)
-	    return 3;
-	std::ostringstream status;
-	status << "[VertexAttribute::getNumElementsPerPrimitive] "
-	    "Invalid primitive ID: " << primitive;
-	throw GeoUtilsError(status.str());
-	return 0;
-}
-
-GLenum 
-VertexAttribute::getOpenGLBufferUsage(Ionflux::GeoUtils::BufferUsageID 
-usage)
-{
-	// TODO: Maybe move this out of VertexAttribute.
-	if (usage == USAGE_STREAM_DRAW)
-	    return GL_STREAM_DRAW;
-	if (usage == USAGE_STREAM_READ)
-	    return GL_STREAM_READ;
-	if (usage == USAGE_STREAM_COPY)
-	    return GL_STREAM_COPY;
-	if (usage == USAGE_STATIC_DRAW)
-	    return GL_STATIC_DRAW;
-	if (usage == USAGE_STATIC_READ)
-	    return GL_STATIC_READ;
-	if (usage == USAGE_STATIC_COPY)
-	    return GL_STATIC_COPY;
-	if (usage == USAGE_DYNAMIC_DRAW)
-	    return GL_DYNAMIC_DRAW;
-	if (usage == USAGE_DYNAMIC_READ)
-	    return GL_DYNAMIC_READ;
-	if (usage == USAGE_DYNAMIC_COPY)
-	    return GL_DYNAMIC_COPY;
-	std::ostringstream status;
-	status << "[VertexAttribute::getOpenGLBufferUsage] "
-	    "Invalid buffer usage ID: " << usage;
-	throw GeoUtilsError(status.str());
-	return 0;
-}
-
-GLenum 
-VertexAttribute::getOpenGLDataType(Ionflux::GeoUtils::VertexAttributeDataTypeID
-dataType)
-{
-	// TODO: Maybe move this out of VertexAttribute.
-	if (dataType == DATA_TYPE_FLOAT)
-	    return GL_FLOAT;
-	if (dataType == DATA_TYPE_UINT)
-	    return GL_UNSIGNED_INT;
-	std::ostringstream status;
-	status << "[VertexAttribute::getOpenGLDataType] "
-	    "Invalid vertex attribute data type ID: " << dataType;
-	throw GeoUtilsError(status.str());
-	return 0;
-}
-
-GLenum VertexAttribute::getOpenGLPrimitive(Ionflux::GeoUtils::PrimitiveID 
-primitive)
-{
-	// TODO: Maybe move this out of VertexAttribute.
-	if (primitive == PRIMITIVE_POINT)
-	    return GL_POINTS;
-	if (primitive == PRIMITIVE_LINE)
-	    return GL_LINES;
-	if (primitive == PRIMITIVE_TRIANGLE)
-	    return GL_TRIANGLES;
-	std::ostringstream status;
-	status << "[VertexAttribute::getOpenGLPrimitive] "
-	    "Invalid primitive ID: " << primitive;
-	throw GeoUtilsError(status.str());
-	return 0;
-}
-
 void VertexAttribute::setData(GLvoid* newData)
 {
 	data = newData;
@@ -543,15 +490,13 @@ GLsizei VertexAttribute::getDataSize() const
     return dataSize;
 }
 
-void 
-VertexAttribute::setDataType(Ionflux::GeoUtils::VertexAttributeDataTypeID 
+void VertexAttribute::setDataType(Ionflux::GeoUtils::DataTypeID 
 newDataType)
 {
 	dataType = newDataType;
 }
 
-Ionflux::GeoUtils::VertexAttributeDataTypeID VertexAttribute::getDataType()
-const
+Ionflux::GeoUtils::DataTypeID VertexAttribute::getDataType() const
 {
     return dataType;
 }

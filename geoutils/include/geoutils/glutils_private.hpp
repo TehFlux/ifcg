@@ -1,11 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_OPENGL_UTILS
-#define IONFLUX_GEOUTILS_OPENGL_UTILS
+#ifndef IONFLUX_GEOUTILS_OPENGL_UTILS_PRIVATE
+#define IONFLUX_GEOUTILS_OPENGL_UTILS_PRIVATE
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
  * Copyright © 2009-2014 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * glutils.hpp                     OpenGL utility functions (header).
+ * glutils_private.hpp        OpenGL utility functions (private) (header).
  * =========================================================================
  *
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -27,6 +27,8 @@
  * 
  * ========================================================================== */
 #include <string>
+#include "glad/glad.h"
+#include <GLFW/glfw3.h>
 #include "geoutils/gltypes.hpp"
 #include "geoutils/glconstants.hpp"
 
@@ -36,63 +38,41 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-/** Get string representation for OpenGL profile.
+/** Get OpenGL buffer usage value.
  *
- * Get a string representation for an OpenGL profile.
+ * Get an OpenGL buffer usage value.
  *
- * \param profile OpenGL profile ID.
+ * \param usage OpenGL buffer usage ID.
  *
- * \return String representation.
+ * \return OpenGL buffer usage value.
  */
-std::string getOpenGLProfileString(
-    Ionflux::GeoUtils::OpenGLProfileID profile);
+GLenum getOpenGLBufferUsage(Ionflux::GeoUtils::BufferUsageID usage);
 
-/** Get OpenGL profile ID.
+/** Get OpenGL data type.
  *
- * Get an OpenGL profile ID for the specified GLFW OpenGL profile.
+ * Get an OpenGL data type.
  *
- * \param profile GLFW OpenGL profile.
+ * \param dataType OpenGL buffer usage ID.
  *
- * \return OpenGL profile ID.
+ * \return OpenGL buffer usage value.
  */
-Ionflux::GeoUtils::OpenGLProfileID getOpenGLProfileFromGLFW(int profile);
+GLenum getOpenGLDataType(Ionflux::GeoUtils::DataTypeID dataType);
 
-/** Get OpenGL profile ID (GLFW).
+/** Get OpenGL primitive.
  *
- * Get a GLFW OpenGL profile for the specified OpenGL profile ID.
- *
- * \param profile OpenGL profile ID.
- *
- * \return GLFW OpenGL profile.
- */
-int getOpenGLProfileGLFW(Ionflux::GeoUtils::OpenGLProfileID profile);
-
-/** Get data type string.
- *
- * Get a string representation for a vertex attribute data type ID.
- *
- * \param dataType data type.
- *
- * \return String representation.
- */
-std::string getDataTypeString(Ionflux::GeoUtils::DataTypeID dataType);
-
-/** Get number of elements per primitive.
- *
- * Get the number of elements per primitive of the specified type.
+ * Get an OpenGL primitive.
  *
  * \param primitive Primitive ID.
  *
- * \return Number of elements per primitive.
+ * \return OpenGL primitive.
  */
-unsigned int getNumElementsPerPrimitive(
-    Ionflux::GeoUtils::PrimitiveID primitive);
+GLenum getOpenGLPrimitive(Ionflux::GeoUtils::PrimitiveID primitive);
 
 }
 
 }
 
 /** \file glutils.hpp
- * \brief OpenGL utility functions (header).
+ * \brief OpenGL utility functions (private) (header).
  */
 #endif

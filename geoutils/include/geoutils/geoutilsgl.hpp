@@ -28,8 +28,11 @@
  * ========================================================================== */
 
 #include "geoutils/gltypes.hpp"
+#include "geoutils/glconstants.hpp"
+#include "geoutils/glutils.hpp"
 #include "geoutils/Program.hpp"
 #include "geoutils/VertexAttribute.hpp"
+#include "geoutils/VertexArrayObject.hpp"
 #include "geoutils/Viewer.hpp"
 
 /** \file geoutilsgl.hpp

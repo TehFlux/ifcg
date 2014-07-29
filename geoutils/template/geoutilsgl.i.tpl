@@ -31,6 +31,12 @@ using namespace std;
     }
 }
 
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 // gltypes.hpp
 
 typedef int VertexAttributeDataTypeID;
@@ -40,11 +46,44 @@ typedef int OpenGLProfileID;
 
 // glconstants.hpp
 
+const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_ANY = 0;
+const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_CORE = 1;
+const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_COMPAT = 2;
+
+const Ionflux::GeoUtils::DataTypeID DATA_TYPE_FLOAT = 0;
+const Ionflux::GeoUtils::DataTypeID DATA_TYPE_UINT = 1;
+
+const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_DRAW = 0;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_READ = 1;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_COPY = 2;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_DRAW = 3;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_READ = 4;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_COPY = 5;
+const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_DRAW = 6;
+const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_READ = 7;
+const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_COPY = 8;
+
+const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_POINT = 0;
+const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_LINE = 1;
+const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_TRIANGLE = 2;
+
 // glutils.hpp
+
+std::string getOpenGLProfileString(
+    Ionflux::GeoUtils::OpenGLProfileID profile);
+std::string getDataTypeString(
+    Ionflux::GeoUtils::DataTypeID dataType);
+unsigned int getNumElementsPerPrimitive(
+    Ionflux::GeoUtils::PrimitiveID primitive);
+
+}
+
+}
 
 // Classes
 
 $Program
 $VertexAttribute
+$VertexArrayObject
 $Viewer
 

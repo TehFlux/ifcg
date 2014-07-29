@@ -31,12 +31,54 @@ using namespace std;
     }
 }
 
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
 // gltypes.hpp
 
 typedef int VertexAttributeDataTypeID;
 typedef int BufferUsageID;
 typedef int PrimitiveID;
 typedef int OpenGLProfileID;
+
+// glconstants.hpp
+
+const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_ANY = 0;
+const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_CORE = 1;
+const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_COMPAT = 2;
+
+const Ionflux::GeoUtils::DataTypeID DATA_TYPE_FLOAT = 0;
+const Ionflux::GeoUtils::DataTypeID DATA_TYPE_UINT = 1;
+
+const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_DRAW = 0;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_READ = 1;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_COPY = 2;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_DRAW = 3;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_READ = 4;
+const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_COPY = 5;
+const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_DRAW = 6;
+const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_READ = 7;
+const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_COPY = 8;
+
+const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_POINT = 0;
+const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_LINE = 1;
+const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_TRIANGLE = 2;
+
+// glutils.hpp
+
+std::string getOpenGLProfileString(
+    Ionflux::GeoUtils::OpenGLProfileID profile);
+std::string getDataTypeString(
+    Ionflux::GeoUtils::DataTypeID dataType);
+unsigned int getNumElementsPerPrimitive(
+    Ionflux::GeoUtils::PrimitiveID primitive);
+
+}
+
+}
 
 // Classes
 
@@ -135,20 +177,6 @@ class VertexAttribute
 : public Ionflux::ObjectBase::IFObject
 {
     public:
-		static const Ionflux::GeoUtils::VertexAttributeDataTypeID DATA_TYPE_FLOAT;
-		static const Ionflux::GeoUtils::VertexAttributeDataTypeID DATA_TYPE_UINT;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_DRAW;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_READ;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_COPY;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_DRAW;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_READ;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_COPY;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_DRAW;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_READ;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_COPY;
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_POINT;
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_LINE;
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_TRIANGLE;
         
         VertexAttribute();
 		VertexAttribute(const Ionflux::GeoUtils::VertexAttribute& other);
@@ -168,17 +196,15 @@ class VertexAttribute
         newData);
         virtual float getFloat(unsigned int elementIndex, unsigned int 
         componentIndex = 0);
+        virtual unsigned int getUInt(unsigned int elementIndex, unsigned 
+        int componentIndex = 0);
         virtual void setData(unsigned int elementIndex, unsigned int 
         componentIndex, float value);
+        virtual void setData(unsigned int elementIndex, unsigned int 
+        componentIndex, unsigned int value);
         virtual void draw(Ionflux::GeoUtils::PrimitiveID primitiveID, 
         unsigned int drawNumPrimitives = 0, unsigned int startIndex = 0);
         virtual std::string getValueString() const;
-        static std::string 
-        getDataTypeString(Ionflux::GeoUtils::VertexAttributeDataTypeID 
-        dataType);
-        static unsigned int 
-        getNumElementsPerPrimitive(Ionflux::GeoUtils::PrimitiveID 
-        primitive);
 		virtual Ionflux::GeoUtils::VertexAttribute* copy() const;
 		static Ionflux::GeoUtils::VertexAttribute* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -187,13 +213,78 @@ class VertexAttribute
 		virtual unsigned int getMemSize() const;
         virtual GLvoid* getData() const;
         virtual GLsizei getDataSize() const;
-        virtual Ionflux::GeoUtils::VertexAttributeDataTypeID getDataType() 
-        const;
+        virtual Ionflux::GeoUtils::DataTypeID getDataType() const;
         virtual GLuint getBufferImpl() const;
         virtual unsigned int getNumElements() const;
         virtual unsigned int getElementSize() const;
         virtual void setNormalized(bool newNormalized);
         virtual bool getNormalized() const;
+};
+
+}
+
+}
+
+
+%{
+#include "geoutils/VertexArrayObject.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VertexAttribute;
+
+class VertexArrayObjectClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        VertexArrayObjectClassInfo();
+        virtual ~VertexArrayObjectClassInfo();
+};
+
+class VertexArrayObject
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        VertexArrayObject();
+		VertexArrayObject(const Ionflux::GeoUtils::VertexArrayObject& other);
+        virtual ~VertexArrayObject();
+        virtual void cleanup();
+        virtual void init();
+        virtual void bind();
+        virtual void update();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::VertexArrayObject* copy() const;
+		static Ionflux::GeoUtils::VertexArrayObject* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		static Ionflux::GeoUtils::VertexArrayObject* 
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
+        virtual GLuint getVaoImpl() const;        
+        virtual unsigned int getNumAttributes() const;
+        virtual Ionflux::GeoUtils::VertexAttribute* getAttribute(unsigned 
+        int elementIndex = 0) const;
+		virtual int findAttribute(Ionflux::GeoUtils::VertexAttribute* needle, 
+		unsigned int occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::VertexAttribute*>& 
+        getAttributes();
+        virtual void addAttribute(Ionflux::GeoUtils::VertexAttribute* 
+        addElement);
+		virtual Ionflux::GeoUtils::VertexAttribute* addAttribute();
+		virtual void 
+		addAttributes(std::vector<Ionflux::GeoUtils::VertexAttribute*>& 
+		newAttributes);
+		virtual void addAttributes(Ionflux::GeoUtils::VertexArrayObject* 
+		newAttributes);        
+        virtual void removeAttribute(Ionflux::GeoUtils::VertexAttribute* 
+        removeElement);
+		virtual void removeAttributeIndex(unsigned int removeIndex);
+		virtual void clearAttributes();
 };
 
 }
@@ -231,9 +322,6 @@ class Viewer
 		static const int DEFAULT_OPENGL_VERSION_MAJOR;
 		static const int DEFAULT_OPENGL_VERSION_MINOR;
 		static const Ionflux::GeoUtils::OpenGLProfileID DEFAULT_OPENGL_PROFILE;
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_ANY;
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_CORE;
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_COMPAT;
 		static const Ionflux::Altjira::Color DEFAULT_CLEAR_COLOR;
         
         Viewer();
@@ -260,8 +348,6 @@ class Viewer
         static Ionflux::GeoUtils::Viewer* getInstance();
         static void setInstance(Ionflux::GeoUtils::Viewer* viewer);
         static void cleanupInstance();
-        static std::string 
-        getOpenGLProfileString(Ionflux::GeoUtils::OpenGLProfileID profile);
 		virtual Ionflux::GeoUtils::Viewer* copy() const;
 		static Ionflux::GeoUtils::Viewer* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

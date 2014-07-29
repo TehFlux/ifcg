@@ -32,8 +32,9 @@
 #include "ifobject/types.hpp"
 #include "altjira/ColorSet.hpp"
 #include "geoutils/types.hpp"
-#include "geoutils/gltypes.hpp"
 #include "geoutils/constants.hpp"
+#include "geoutils/gltypes.hpp"
+#include "geoutils/glconstants.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -73,7 +74,7 @@ class VertexAttribute
 		/// Data buffer size.
 		GLsizei dataSize;
 		/// Data buffer type.
-		Ionflux::GeoUtils::VertexAttributeDataTypeID dataType;
+		Ionflux::GeoUtils::DataTypeID dataType;
 		/// Buffer implementation (OpenGL).
 		GLuint bufferImpl;
 		/// Number of elements.
@@ -105,8 +106,7 @@ class VertexAttribute
 		 *
 		 * \param newDataType New value of data buffer type.
 		 */
-		virtual void setDataType(Ionflux::GeoUtils::VertexAttributeDataTypeID 
-		newDataType);
+		virtual void setDataType(Ionflux::GeoUtils::DataTypeID newDataType);
 		
 		/** Set buffer implementation (OpenGL).
 		 *
@@ -133,34 +133,6 @@ class VertexAttribute
 		virtual void setElementSize(unsigned int newElementSize);
 		
 	public:
-		/// Data type ID: float.
-		static const Ionflux::GeoUtils::VertexAttributeDataTypeID DATA_TYPE_FLOAT;
-		/// Data type ID: unsigned integer.
-		static const Ionflux::GeoUtils::VertexAttributeDataTypeID DATA_TYPE_UINT;
-		/// OpenGL buffer usage ID: stream draw.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_DRAW;
-		/// OpenGL buffer usage ID: stream read.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_READ;
-		/// OpenGL buffer usage ID: stream copy.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_COPY;
-		/// OpenGL buffer usage ID: static draw.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_DRAW;
-		/// OpenGL buffer usage ID: static read.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_READ;
-		/// OpenGL buffer usage ID: static copy.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_COPY;
-		/// OpenGL buffer usage ID: dynamic draw.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_DRAW;
-		/// OpenGL buffer usage ID: dynamic read.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_READ;
-		/// OpenGL buffer usage ID: dynamic copy.
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_COPY;
-		/// OpenGL primitive ID: point.
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_POINT;
-		/// OpenGL primitive ID: line.
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_LINE;
-		/// OpenGL primitive ID: triangle.
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_TRIANGLE;
 		/// Class information instance.
 		static const VertexAttributeClassInfo vertexAttributeClassInfo;
 		/// Class information.
@@ -288,7 +260,19 @@ class VertexAttribute
 		virtual float getFloat(unsigned int elementIndex, unsigned int 
 		componentIndex = 0);
 		
-		/** Set data.
+		/** Get data (uint).
+		 *
+		 * Get the data value with the specified element and component index.
+		 *
+		 * \param elementIndex Element index.
+		 * \param componentIndex Component index.
+		 *
+		 * \return Data value.
+		 */
+		virtual unsigned int getUInt(unsigned int elementIndex, unsigned int 
+		componentIndex = 0);
+		
+		/** Set data (float).
 		 *
 		 * Set the data value with the specified element and component index.
 		 *
@@ -298,6 +282,17 @@ class VertexAttribute
 		 */
 		virtual void setData(unsigned int elementIndex, unsigned int 
 		componentIndex, float value);
+		
+		/** Set data (uint).
+		 *
+		 * Set the data value with the specified element and component index.
+		 *
+		 * \param elementIndex Element index.
+		 * \param componentIndex Component index.
+		 * \param value Value.
+		 */
+		virtual void setData(unsigned int elementIndex, unsigned int 
+		componentIndex, unsigned int value);
 		
 		/** Draw.
 		 *
@@ -321,61 +316,6 @@ class VertexAttribute
 		 * \return String representation.
 		 */
 		virtual std::string getValueString() const;
-		
-		/** Get data type string.
-		 *
-		 * Get a string representation for a vertex attribute data type ID.
-		 *
-		 * \param dataType data type.
-		 *
-		 * \return String representation.
-		 */
-		static std::string 
-		getDataTypeString(Ionflux::GeoUtils::VertexAttributeDataTypeID dataType);
-		
-		/** Get number of elements per primitive.
-		 *
-		 * Get the number of elements per primitive of the specified type.
-		 *
-		 * \param primitive Primitive ID.
-		 *
-		 * \return Number of elements per primitive.
-		 */
-		static unsigned int 
-		getNumElementsPerPrimitive(Ionflux::GeoUtils::PrimitiveID primitive);
-		
-		/** Get OpenGL buffer usage value.
-		 *
-		 * Get an OpenGL buffer usage value.
-		 *
-		 * \param usage OpenGL buffer usage ID.
-		 *
-		 * \return OpenGL buffer usage value.
-		 */
-		static GLenum getOpenGLBufferUsage(Ionflux::GeoUtils::BufferUsageID 
-		usage);
-		
-		/** Get OpenGL data type.
-		 *
-		 * Get an OpenGL data type.
-		 *
-		 * \param dataType OpenGL buffer usage ID.
-		 *
-		 * \return OpenGL buffer usage value.
-		 */
-		static GLenum 
-		getOpenGLDataType(Ionflux::GeoUtils::VertexAttributeDataTypeID dataType);
-		
-		/** Get OpenGL primitive.
-		 *
-		 * Get an OpenGL primitive.
-		 *
-		 * \param primitive Primitive ID.
-		 *
-		 * \return OpenGL primitive.
-		 */
-		static GLenum getOpenGLPrimitive(Ionflux::GeoUtils::PrimitiveID 
-		primitive);
 		
 		/** Assignment operator.
 		 *
@@ -444,7 +384,7 @@ class VertexAttribute
 		 *
 		 * \return Current value of data buffer type.
 		 */
-		virtual Ionflux::GeoUtils::VertexAttributeDataTypeID getDataType() const;
+		virtual Ionflux::GeoUtils::DataTypeID getDataType() const;
 		
 		/** Get buffer implementation (OpenGL).
 		 *

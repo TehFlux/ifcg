@@ -30,6 +30,7 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/gltypes.hpp"
+#include "geoutils/glconstants.hpp"
 #include "altjira/Color.hpp"
 #include "ifobject/IFObject.hpp"
 
@@ -103,12 +104,6 @@ class Viewer
 		static const int DEFAULT_OPENGL_VERSION_MINOR;
 		/// Default OpenGL profile.
 		static const Ionflux::GeoUtils::OpenGLProfileID DEFAULT_OPENGL_PROFILE;
-		/// OpenGL profile: any.
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_ANY;
-		/// OpenGL profile: core.
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_CORE;
-		/// OpenGL profile: compatibility.
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_COMPAT;
 		/// Default clear color.
 		static const Ionflux::Altjira::Color DEFAULT_CLEAR_COLOR;
 		/// Class information instance.
@@ -275,17 +270,6 @@ class Viewer
 		 */
 		static void cleanupInstance();
 		
-		/** Get string representation for OpenGL profile.
-		 *
-		 * Get a string representation for an OpenGL profile.
-		 *
-		 * \param profile OpenGL profile ID.
-		 *
-		 * \return String representation.
-		 */
-		static std::string 
-		getOpenGLProfileString(Ionflux::GeoUtils::OpenGLProfileID profile);
-		
 		/** Error handler (GLFW).
 		 *
 		 * Callback for GLFW errors.
@@ -328,28 +312,6 @@ class Viewer
 		 * \param posY position (Y).
 		 */
 		static void windowPosHandlerGLFW(GLFWwindow* window, int posX, int posY);
-		
-		/** Get OpenGL profile ID.
-		 *
-		 * Get an OpenGL profile ID for the specified GLFW OpenGL profile.
-		 *
-		 * \param profile GLFW OpenGL profile.
-		 *
-		 * \return OpenGL profile ID.
-		 */
-		static Ionflux::GeoUtils::OpenGLProfileID getOpenGLProfileFromGLFW(int 
-		profile);
-		
-		/** Get OpenGL profile ID (GLFW).
-		 *
-		 * Get a GLFW OpenGL profile for the specified OpenGL profile ID.
-		 *
-		 * \param profile OpenGL profile ID.
-		 *
-		 * \return GLFW OpenGL profile.
-		 */
-		static int getOpenGLProfileGLFW(Ionflux::GeoUtils::OpenGLProfileID 
-		profile);
 		
 		/** Assignment operator.
 		 *

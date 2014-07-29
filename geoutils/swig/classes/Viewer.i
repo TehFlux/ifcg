@@ -54,9 +54,6 @@ class Viewer
 		static const int DEFAULT_OPENGL_VERSION_MAJOR;
 		static const int DEFAULT_OPENGL_VERSION_MINOR;
 		static const Ionflux::GeoUtils::OpenGLProfileID DEFAULT_OPENGL_PROFILE;
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_ANY;
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_CORE;
-		static const Ionflux::GeoUtils::OpenGLProfileID OPENGL_PROFILE_COMPAT;
 		static const Ionflux::Altjira::Color DEFAULT_CLEAR_COLOR;
         
         Viewer();
@@ -83,8 +80,6 @@ class Viewer
         static Ionflux::GeoUtils::Viewer* getInstance();
         static void setInstance(Ionflux::GeoUtils::Viewer* viewer);
         static void cleanupInstance();
-        static std::string 
-        getOpenGLProfileString(Ionflux::GeoUtils::OpenGLProfileID profile);
 		virtual Ionflux::GeoUtils::Viewer* copy() const;
 		static Ionflux::GeoUtils::Viewer* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

@@ -49,20 +49,6 @@ class VertexAttribute
 : public Ionflux::ObjectBase::IFObject
 {
     public:
-		static const Ionflux::GeoUtils::VertexAttributeDataTypeID DATA_TYPE_FLOAT;
-		static const Ionflux::GeoUtils::VertexAttributeDataTypeID DATA_TYPE_UINT;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_DRAW;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_READ;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STREAM_COPY;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_DRAW;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_READ;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_STATIC_COPY;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_DRAW;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_READ;
-		static const Ionflux::GeoUtils::BufferUsageID USAGE_DYNAMIC_COPY;
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_POINT;
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_LINE;
-		static const Ionflux::GeoUtils::PrimitiveID PRIMITIVE_TRIANGLE;
         
         VertexAttribute();
 		VertexAttribute(const Ionflux::GeoUtils::VertexAttribute& other);
@@ -82,17 +68,15 @@ class VertexAttribute
         newData);
         virtual float getFloat(unsigned int elementIndex, unsigned int 
         componentIndex = 0);
+        virtual unsigned int getUInt(unsigned int elementIndex, unsigned 
+        int componentIndex = 0);
         virtual void setData(unsigned int elementIndex, unsigned int 
         componentIndex, float value);
+        virtual void setData(unsigned int elementIndex, unsigned int 
+        componentIndex, unsigned int value);
         virtual void draw(Ionflux::GeoUtils::PrimitiveID primitiveID, 
         unsigned int drawNumPrimitives = 0, unsigned int startIndex = 0);
         virtual std::string getValueString() const;
-        static std::string 
-        getDataTypeString(Ionflux::GeoUtils::VertexAttributeDataTypeID 
-        dataType);
-        static unsigned int 
-        getNumElementsPerPrimitive(Ionflux::GeoUtils::PrimitiveID 
-        primitive);
 		virtual Ionflux::GeoUtils::VertexAttribute* copy() const;
 		static Ionflux::GeoUtils::VertexAttribute* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -101,8 +85,7 @@ class VertexAttribute
 		virtual unsigned int getMemSize() const;
         virtual GLvoid* getData() const;
         virtual GLsizei getDataSize() const;
-        virtual Ionflux::GeoUtils::VertexAttributeDataTypeID getDataType() 
-        const;
+        virtual Ionflux::GeoUtils::DataTypeID getDataType() const;
         virtual GLuint getBufferImpl() const;
         virtual unsigned int getNumElements() const;
         virtual unsigned int getElementSize() const;

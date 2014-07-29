@@ -26,6 +26,7 @@
  * 02111-1307 USA
  * 
  * ========================================================================== */
+#include <vector>
 
 struct GLFWwindow;
 
@@ -35,8 +36,8 @@ namespace Ionflux
 namespace GeoUtils
 {
 
-/// Vertex attribute data type ID.
-typedef int VertexAttributeDataTypeID;
+/// OpenGL data type ID.
+typedef int DataTypeID;
 
 /// OpenGL buffer usage ID.
 typedef int BufferUsageID;
@@ -46,6 +47,12 @@ typedef int PrimitiveID;
 
 /// OpenGL profile ID.
 typedef int OpenGLProfileID;
+
+class VertexAttribute;
+
+/// Vector of vertex attributes.
+typedef std::vector<Ionflux::GeoUtils::VertexAttribute*> 
+    VertexAttributeVector;
 
 }
 
