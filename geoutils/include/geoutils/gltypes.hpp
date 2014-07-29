@@ -27,6 +27,8 @@
  * 
  * ========================================================================== */
 
+struct GLFWwindow;
+
 namespace Ionflux
 {
 
@@ -41,6 +43,9 @@ typedef int BufferUsageID;
 
 /// OpenGL primitive ID.
 typedef int PrimitiveID;
+
+/// OpenGL profile ID.
+typedef int OpenGLProfileID;
 
 }
 

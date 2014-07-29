@@ -36,9 +36,11 @@ using namespace std;
 typedef int VertexAttributeDataTypeID;
 typedef int BufferUsageID;
 typedef int PrimitiveID;
+typedef int OpenGLProfileID;
 
 // Classes
 
 $Program
 $VertexAttribute
+$Viewer
 

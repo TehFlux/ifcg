@@ -425,7 +425,7 @@ fbxGeoUtilsLib = fbxGeoUtilsLibEnv.SharedLibrary(
 # GeoUtils/GL shared library
 glGeoUtilsLibEnv = glGeoUtilsEnv.Clone()
 glGeoUtilsLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 
-    'ifmapping', 'geoutils'])
+    'ifmapping', 'altjira', 'altjiradraw', 'geoutils', 'altjirageoutils'])
 glGeoUtilsLib = glGeoUtilsLibEnv.SharedLibrary(
     target = "lib/geoutilsgl", 
     source = glGeoUtilsLibSources)

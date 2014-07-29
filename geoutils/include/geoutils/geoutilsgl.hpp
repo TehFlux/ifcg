@@ -29,6 +29,8 @@
 
 #include "geoutils/gltypes.hpp"
 #include "geoutils/Program.hpp"
+#include "geoutils/VertexAttribute.hpp"
+#include "geoutils/Viewer.hpp"
 
 /** \file geoutilsgl.hpp
  * \brief GeoUtils GL library (header).
