@@ -10,15 +10,18 @@ layout(location = 3) in vec3 cgNormal;
 layout(location = 4) in vec4 cgMultiTexCoord0;
 smooth out vec4 emitColor;
 smooth out vec4 diffuseColor;
-smooth out vec4 lightDir[numLights];
-smooth out vec3 normal;
+smooth out vec3 lightDir[numLights];
+smooth out vec3 normalVS;
+smooth out vec3 normalOS;
 smooth out vec4 texCoord0;
 void main()
 {
-    color = cgColor;
-    normal = cgNormalMatrix * cgNormal;
+    emitColor = cgEmitColor;
+    diffuseColor = cgDiffuseColor;
+    normalVS = cgNormalMatrix * cgNormal;
+    normalOS = cgNormal;
     texCoord0 = cgMultiTexCoord0;
     for (int i = 0; i < numLights; i++)
-        lightDir[i] = normalize(cgLightPos[i] - cgVertex);
+        lightDir[i] = cgLightPos[i] - cgVertex;
     gl_Position = cgMVPMatrix * vec4(cgVertex, 1);
 }

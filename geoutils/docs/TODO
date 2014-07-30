@@ -23,7 +23,7 @@ Critical stuff
 
 + OpenGL utility library
   > shaders
-    . lighting (Lambert, Blinn-Phong)
+    . lighting (Blinn-Phong)
     . texture (see FMViewer)
   > Viewer
     . change camera parameters via mouse/keyboard

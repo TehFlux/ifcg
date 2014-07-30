@@ -21,11 +21,17 @@ normalMatrix = cg.Matrix3.create(cg.Matrix3.UNIT)
 mm.addLocalRef(normalMatrix)
 
 lightPos = [
-    cg.Vector3.create(-5., 7., 12.)
+    cg.Vector3.create(2., 5., 4.)
 ]
 
 lightColor = [
     ai.Color.create(1., 1., 1., 1.)
+]
+
+# light parameters
+# (intensity, falloffExponent, falloffScale, unused)
+lightParam = [
+    cg.Vector4.create(4., 1.4, 0.2, 0.)
 ]
 
 verts = [
@@ -35,9 +41,9 @@ verts = [
 ]
 
 emitColors = [
-    ai.Color.create(0.1, 0., 0., 1.), 
-    ai.Color.create(0., 0.1, 0., 1.), 
-    ai.Color.create(0., 0., 0.1, 1.)
+    ai.Color.create(0.05, 0., 0., 1.), 
+    ai.Color.create(0., 0.05, 0., 1.), 
+    ai.Color.create(0., 0., 0.05, 1.)
 ]
 
 diffuseColors = [
@@ -210,7 +216,10 @@ print("Initializing uniforms...")
 
 # transformation matrices
 p0.setUniform("cgMVPMatrix", mvpMatrix)
-p0.setUniform("cgNormalMatrix", normalMatrix)
+try:
+    p0.setUniform("cgNormalMatrix", normalMatrix)
+except RuntimeError as e:
+    print("  (!!!) cgNormalMatrix does not seem to be used.")
 
 # light positions
 lps0 = cg.VectorSet.create()
@@ -222,7 +231,7 @@ p0.setUniform("cgLightPos", lps0)
 # light colors
 lcs0 = cg.VectorSet.create()
 mm.addLocalRef(lcs0)
-lcs1 = cg.ColorSet.create()
+lcs1 = ai.ColorSet.create()
 mm.addLocalRef(lcs1)
 for it in lightColor:
     lcs1.addColor(it)
@@ -230,6 +239,13 @@ for it in lightColor:
         it.getRed(), it.getGreen(), it.getBlue(), it.getAlpha())
     lcs0.addVector(cv0)
 p0.setUniform("cgLightColor", lcs0)
+
+# light parameters
+lps1 = cg.VectorSet.create()
+mm.addLocalRef(lps1)
+for it in lightParam:
+    lps1.addVector(it)
+p0.setUniform("cgLightParam", lps1)
 
 print("Initializing vertex attributes...")
 
@@ -246,6 +262,10 @@ for it in verts:
     print("  vertex [%03d]: (%s) -> (%s) -> (%s)" 
         % (k, it.getValueString(), v0.getValueString(), 
             v1.getValueString()))
+    l = 0
+    for it1 in lightPos:
+        ld0 = (it1 - it.getVector()).normalize()
+        print("    [%03d] lightDir = (%s)" % (l, ld0.getValueString()))
     vs0.addVertex(it)
     k += 1
 

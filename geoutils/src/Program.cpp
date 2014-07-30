@@ -106,7 +106,7 @@ Program::Program(const Ionflux::GeoUtils::Program& other)
 
 Program::Program(const std::string& initVertexShaderSource, const 
 std::string& initFragmentShaderSource)
-: vertexShaderSource(DEFAULT_VERTEX_SHADER), 
+: vertexShaderSource(initVertexShaderSource), 
 fragmentShaderSource(initFragmentShaderSource), vertexShaderImpl(0), 
 fragmentShaderImpl(0), programImpl(0)
 {
@@ -315,7 +315,7 @@ Ionflux::GeoUtils::VectorSet& value)
 	    for (int k = 0; k < n1; k++)
 	    {
 	        if (k < n2)
-	            vb0[i * n1 + k] = v0->getElement(i);
+	            vb0[i * n1 + k] = v0->getElement(k);
 	        else
 	            vb0[i * n1 + k] = 0.;
 	    }
