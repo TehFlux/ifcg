@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""GeoUtils/GL test: Viewer #2."""
+"""GeoUtils/GL test: Viewer #3."""
 import IFObjectBase as ib
 import CGeoUtils as cg
 import GeoUtilsGL as ggl
 import Altjira as ai
 import math as m
 
-testName = "Viewer #2"
+testName = "Viewer #3: Lambert shader"
 
 # memory management
 mm = ib.IFObject()
@@ -20,17 +20,42 @@ mm.addLocalRef(mvpMatrix)
 normalMatrix = cg.Matrix3.create(cg.Matrix3.UNIT)
 mm.addLocalRef(normalMatrix)
 
+lightPos = [
+    cg.Vector3.create(-5., 7., 12.)
+]
+
+lightColor = [
+    ai.Color.create(1., 1., 1., 1.)
+]
+
 verts = [
     cg.Vertex3.create(-0.5, -0.433, 0.), 
     cg.Vertex3.create(0.5, -0.433, 0.), 
     cg.Vertex3.create(0., 0.433, 0.)
 ]
 
-colors = [
+emitColors = [
+    ai.Color.create(0.1, 0., 0., 1.), 
+    ai.Color.create(0., 0.1, 0., 1.), 
+    ai.Color.create(0., 0., 0.1, 1.)
+]
+
+diffuseColors = [
     ai.Color.create(1., 0., 0., 1.), 
     ai.Color.create(0., 1., 0., 1.), 
     ai.Color.create(0., 0., 1., 1.)
 ]
+
+normals = [
+    cg.Vector3.create(0., 0., 1.), 
+    cg.Vector3.create(0., 0., 1.), 
+    cg.Vector3.create(0., 0., 1.)
+]
+
+vertexScale0 = cg.Vector3(5., 5., 5.)
+
+vertexShaderSourceFile01 = "data/shaders/lambert330.vert"
+fragmentShaderSourceFile01 = "data/shaders/lambert330.frag"
 
 print("Creating viewer...")
 
@@ -168,26 +193,52 @@ print("  using MVP matrix: \n%s" % mvpMatrix.getValueStringF(10))
 
 print("Initializing shaders...")
 
-p0 = ggl.Program()
+print("  Vertex shader:   %s" % vertexShaderSourceFile01)
+
+vertexShaderSource01 = open(vertexShaderSourceFile01, 'r').read()
+
+print("  Fragment shader: %s" % fragmentShaderSourceFile01)
+
+fragmentShaderSource01 = open(fragmentShaderSourceFile01, 'r').read()
+
+p0 = ggl.Program.create(vertexShaderSource01, fragmentShaderSource01)
+mm.addLocalRef(p0)
 p0.init()
 p0.use()
 
 print("Initializing uniforms...")
 
+# transformation matrices
 p0.setUniform("cgMVPMatrix", mvpMatrix)
-try:
-    p0.setUniform("cgNormalMatrix", normalMatrix)
-except RuntimeError as e:
-    print("  (!!!) cgNormalMatrix does not seem to be used.")
+p0.setUniform("cgNormalMatrix", normalMatrix)
+
+# light positions
+lps0 = cg.VectorSet.create()
+mm.addLocalRef(lps0)
+for it in lightPos:
+    lps0.addVector(it)
+p0.setUniform("cgLightPos", lps0)
+
+# light colors
+lcs0 = cg.VectorSet.create()
+mm.addLocalRef(lcs0)
+lcs1 = cg.ColorSet.create()
+mm.addLocalRef(lcs1)
+for it in lightColor:
+    lcs1.addColor(it)
+    cv0 = cg.Vector4.create(
+        it.getRed(), it.getGreen(), it.getBlue(), it.getAlpha())
+    lcs0.addVector(cv0)
+p0.setUniform("cgLightColor", lcs0)
 
 print("Initializing vertex attributes...")
 
+# vertices
 vs0 = cg.Vertex3Set.create()
 mm.addLocalRef(vs0)
-s0 = cg.Vector3(5., 5., 5.)
 k = 0
 for it in verts:
-    it.scale(s0)
+    it.scale(vertexScale0)
     v0 = cg.Vertex3(it)
     v1 = cg.Vertex3(it)
     v0.transform(mvpMatrix)
@@ -203,15 +254,38 @@ va0.init()
 va0.setData(vs0)
 va0.update()
 
+# emit colors
 cs0 = ai.ColorSet.create()
 mm.addLocalRef(cs0)
-for it in colors:
+for it in emitColors:
     cs0.addColor(it)
 
 va1 = ggl.VertexAttribute.create()
 va1.init()
 va1.setData(cs0)
 va1.update()
+
+# diffuse colors
+cs1 = ai.ColorSet.create()
+mm.addLocalRef(cs1)
+for it in diffuseColors:
+    cs1.addColor(it)
+
+va2 = ggl.VertexAttribute.create()
+va2.init()
+va2.setData(cs1)
+va2.update()
+
+# normals
+vs1 = cg.VectorSet.create()
+mm.addLocalRef(vs1)
+for it in normals:
+    vs1.addVector(it)
+
+va3 = ggl.VertexAttribute.create()
+va3.init()
+va3.setData(vs1)
+va3.update()
 
 print("Initializing vertex array object...")
 
@@ -220,6 +294,8 @@ mm.addLocalRef(vao0)
 vao0.init()
 vao0.addAttribute(va0)
 vao0.addAttribute(va1)
+vao0.addAttribute(va2)
+vao0.addAttribute(va3)
 vao0.update()
 
 print("Running viewer...")

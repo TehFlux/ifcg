@@ -11,7 +11,7 @@ testName = "Viewer #1"
 # memory management
 mm = ib.IFObject()
 
-print("IFVG test: %s" % testName)
+print("GeoUtils/GL test: %s" % testName)
 
 checkFPSInterval = 100
 mvpMatrix = cg.Matrix4.create(cg.Matrix4.UNIT)
@@ -54,11 +54,11 @@ w = viewer.getWindowWidth()
 h = viewer.getWindowHeight()
 ar = w / h
 mvpMatrix.setElement(0, 0, 1. / ar)
-p0.setUniform("ifvgMVPMatrix", mvpMatrix)
+p0.setUniform("cgMVPMatrix", mvpMatrix)
 try:
-    p0.setUniform("ifvgNormalMatrix", normalMatrix)
+    p0.setUniform("cgNormalMatrix", normalMatrix)
 except RuntimeError as e:
-    print("  (!!!) ifvgNormalMatrix does not seem to be used.")
+    print("  (!!!) cgNormalMatrix does not seem to be used.")
 
 print("Initializing vertex attributes...")
 
@@ -136,7 +136,7 @@ while (not viewer.getShutdownFlag()):
             ar0 = w0 / h0
             if (ar0 != ar):
                 mvpMatrix.setElement(0, 0, 1. / ar0)
-                p0.setUniform("ifvgMVPMatrix", mvpMatrix)
+                p0.setUniform("cgMVPMatrix", mvpMatrix)
                 w = w0
                 h = h0
                 ar = ar0

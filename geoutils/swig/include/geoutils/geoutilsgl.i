@@ -102,6 +102,7 @@ namespace GeoUtils
 
 class Matrix3;
 class Matrix4;
+class VectorSet;
 
 class ProgramClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -132,6 +133,8 @@ class Program
         Ionflux::GeoUtils::Matrix4& value);
         virtual void setUniform(const std::string& name, const 
         Ionflux::GeoUtils::Matrix3& value);
+        virtual void setUniform(const std::string& name, const 
+        Ionflux::GeoUtils::VectorSet& value);
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Program* copy() const;
 		static Ionflux::GeoUtils::Program* upcast(Ionflux::ObjectBase::IFObject* 

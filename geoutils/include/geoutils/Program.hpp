@@ -42,6 +42,7 @@ namespace GeoUtils
 
 class Matrix3;
 class Matrix4;
+class VectorSet;
 
 /// Class information for class Program.
 class ProgramClassInfo
@@ -55,7 +56,7 @@ class ProgramClassInfo
 };
 
 /** Program (OpenGL).
- * \ingroup ifvg
+ * \ingroup cg
  *
  * An OpenGL program. This can be used to manage vertex and fragment 
  * shaders.
@@ -183,6 +184,17 @@ class Program
 		 */
 		virtual void setUniform(const std::string& name, const 
 		Ionflux::GeoUtils::Matrix3& value);
+		
+		/** Set uniform (vector set).
+		 *
+		 * Set the uniform with the specified name within the default uniform 
+		 * block to the specified value.
+		 *
+		 * \param name Uniform name.
+		 * \param value Value.
+		 */
+		virtual void setUniform(const std::string& name, const 
+		Ionflux::GeoUtils::VectorSet& value);
 		
 		/** Get string representation of value.
 		 *

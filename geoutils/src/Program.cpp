@@ -35,6 +35,7 @@
 #include "ifobject/objectutils.hpp"
 #include "geoutils/Matrix3.hpp"
 #include "geoutils/Matrix4.hpp"
+#include "geoutils/VectorSet.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 
 using namespace std;
@@ -59,21 +60,21 @@ ProgramClassInfo::~ProgramClassInfo()
 // public member constants
 const int Program::INFO_LOG_BUFFER_SIZE = 10000;
 const std::string Program::DEFAULT_VERTEX_SHADER = "#version 330\n"
-"uniform mat4 ifvgMVPMatrix;\n"
-"uniform mat3 ifvgNormalMatrix;\n"
-"layout(location = 0) in vec3 ifvgVertex;\n"
-"layout(location = 1) in vec4 ifvgColor;\n"
-"layout(location = 2) in vec3 ifvgNormal;\n"
-"layout(location = 3) in vec4 ifvgMultiTexCoord0;\n"
+"uniform mat4 cgMVPMatrix;\n"
+"uniform mat3 cgNormalMatrix;\n"
+"layout(location = 0) in vec3 cgVertex;\n"
+"layout(location = 1) in vec4 cgColor;\n"
+"layout(location = 2) in vec3 cgNormal;\n"
+"layout(location = 3) in vec4 cgMultiTexCoord0;\n"
 "smooth out vec4 color;\n"
 "smooth out vec3 normal;\n"
 "smooth out vec4 texCoord0;\n"
 "void main()\n"
 "{\n"
-"    color = ifvgColor;\n"
-"    normal = ifvgNormalMatrix * ifvgNormal;\n"
-"    texCoord0 = ifvgMultiTexCoord0;\n"
-"    gl_Position = ifvgMVPMatrix * vec4(ifvgVertex, 1);\n"
+"    color = cgColor;\n"
+"    normal = cgNormalMatrix * cgNormal;\n"
+"    texCoord0 = cgMultiTexCoord0;\n"
+"    gl_Position = cgMVPMatrix * vec4(cgVertex, 1);\n"
 "}\n";;
 const std::string Program::FRAGMENT_SHADER_FLAT_COLOR = "#version 330\n"
 "in vec4 color;\n"
@@ -264,6 +265,70 @@ Ionflux::GeoUtils::Matrix3& value)
 	    v0[i] = value.getElement(i);
 	glUniformMatrix3fv(ul0, 1, GL_TRUE, v0);
 	delete[] v0;
+	if (glGetError() == GL_INVALID_OPERATION)
+	{
+	    std::ostringstream status;
+	    status << "Type mismatch for uniform within default block '" 
+	        << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+}
+
+void Program::setUniform(const std::string& name, const 
+Ionflux::GeoUtils::VectorSet& value)
+{
+	if (programImpl == 0)
+	    throw GeoUtilsError(getErrorString("Program not set.", "setUniform"));
+	int ul0 = glGetUniformLocation(programImpl, name.c_str());
+	if (ul0 == -1)
+	{
+	    std::ostringstream status;
+	    status << "Name does not exist within default "
+	        "uniform block: '" << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+	int n0 = value.getNumVectors();
+	if (n0 == 0)
+	    return;
+	Vector* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	    value.getVector(0), this, "setUniform", "Vector (0)");
+	int n1 = v0->getNumElements();
+	if (n1 > 4)
+	{
+	    // maximum number of supported vector components is 4
+	    n1 = 4;
+	}
+	// <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = [array of " << n0 
+	    << " vec" << n1 << "] " << value.getString() 
+	    << std::endl;
+	// ----- DEBUG ----> */
+	GLfloat* vb0 = new GLfloat[n0 * n1];
+	Ionflux::ObjectBase::nullPointerCheck(vb0, this, 
+	    "setUniform", "Value buffer");
+	for (int i = 0; i < n0; i++)
+	{
+	    v0 = Ionflux::ObjectBase::nullPointerCheck(
+	        value.getVector(i), this, "setUniform", "Vector");
+	    int n2 = v0->getNumElements();
+	    for (int k = 0; k < n1; k++)
+	    {
+	        if (k < n2)
+	            vb0[i * n1 + k] = v0->getElement(i);
+	        else
+	            vb0[i * n1 + k] = 0.;
+	    }
+	}
+	if (n1 == 2)
+	    glUniform2fv(ul0, n0, vb0);
+	else
+	if (n1 == 3)
+	    glUniform3fv(ul0, n0, vb0);
+	else
+	if (n1 == 4)
+	    glUniform4fv(ul0, n0, vb0);
+	delete[] vb0;
 	if (glGetError() == GL_INVALID_OPERATION)
 	{
 	    std::ostringstream status;
