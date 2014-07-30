@@ -615,17 +615,19 @@ adjustLocation)
 
 Ionflux::GeoUtils::Matrix4 
 Camera::getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis, double 
-near, double far)
+near, double far, double dScale)
 {
 	checkVectors();
-	return Matrix4::perspective(direction->norm(), depthAxis, near, far);
+	return Matrix4::perspective(dScale * direction->norm(), 
+    depthAxis, near, far);
 }
 
 Ionflux::GeoUtils::Matrix4 
 Camera::getModelViewMatrix(Ionflux::GeoUtils::CameraMode mode, bool 
 adjustLocation, Ionflux::GeoUtils::HandednessID handedness, 
 Ionflux::GeoUtils::AxisID upAxis, Ionflux::GeoUtils::AxisID depthAxis, 
-Ionflux::GeoUtils::AxisID horizonAxis, double near, double far)
+Ionflux::GeoUtils::AxisID horizonAxis, double near, double far, double 
+dScale)
 {
 	/* <---- DEBUG ----- //
 	ostringstream status;
@@ -636,9 +638,11 @@ Ionflux::GeoUtils::AxisID horizonAxis, double near, double far)
 	if (mode == MODE_ORTHO)
 	    P = Matrix4::UNIT;
 	else
-	    P = getPerspectiveMatrix(depthAxis, near, far);
+	    P = getPerspectiveMatrix(depthAxis, near, far, dScale);
 	Matrix4 TR(T * R);
 	Matrix4 TRInv = TR.invert();
+	double ar = right->norm();
+	Matrix4 S(Matrix4::scale(1 / ar, 1., 1., 1.));
 	/* <---- DEBUG ----- //
 	status.str("");
 	status << "T = " << T.getString() 
@@ -647,12 +651,13 @@ Ionflux::GeoUtils::AxisID horizonAxis, double near, double far)
 	log(Ionflux::ObjectBase::IFLogMessage(status.str(), 
 	Ionflux::ObjectBase::VL_DEBUG_OPT, this, "getViewMatrix"));
 	// ----- DEBUG ----> */
-	return P * TRInv;
+	return S * P * TRInv;
 }
 
 void Camera::setOriginCam(double distance0, double rotX, double rotY, 
-double rotZ, double aspectRatio, Ionflux::GeoUtils::AxisID upAxis, 
-Ionflux::GeoUtils::AxisID depthAxis, Ionflux::GeoUtils::AxisID horizonAxis)
+double rotZ, double aspectRatio, double d, Ionflux::GeoUtils::AxisID 
+upAxis, Ionflux::GeoUtils::AxisID depthAxis, Ionflux::GeoUtils::AxisID 
+horizonAxis)
 {
 	initVectors();
 	/* <---- DEBUG ----- //
@@ -667,7 +672,7 @@ Ionflux::GeoUtils::AxisID depthAxis, Ionflux::GeoUtils::AxisID horizonAxis)
 	Vector3 ua(Vector3::axis(upAxis));
 	*location = R * (-distance0 * da);
 	*lookAt = Vector3::ZERO;
-	*direction = R * Vector3::axis(depthAxis);
+	*direction = R * (d * Vector3::axis(depthAxis));
 	*up = R * ua;
 	*right = R * (aspectRatio * ha);
 	*sky = *up;
@@ -713,6 +718,21 @@ std::string Camera::getValueString() const
 	    status << "<none>";
 	status << ", angle: " << angle << ", lens: " << lens;
 	return status.str();
+}
+
+Ionflux::GeoUtils::CameraSetupFlags Camera::createSetupFlags(bool 
+useDirection, bool useRight, bool useUp, bool useLookAt, bool useSky, bool 
+useAngle, bool useLens)
+{
+	CameraSetupFlags result;
+	result.useDirection = useDirection;
+	result.useRight = useRight;
+	result.useUp = useUp;
+	result.useLookAt = useLookAt;
+	result.useSky = useSky;
+	result.useAngle = useAngle;
+	result.useLens = useLens;
+	return result;
 }
 
 void Camera::setLocation(Ionflux::GeoUtils::Vector3* newLocation)

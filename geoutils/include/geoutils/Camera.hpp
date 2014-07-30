@@ -321,12 +321,14 @@ class Camera
 		 * \param depthAxis Depth axis.
 		 * \param near near value.
 		 * \param far far value.
+		 * \param dScale perspective scale.
 		 *
 		 * \return Perspective matrix.
 		 */
 		virtual Ionflux::GeoUtils::Matrix4 
 		getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis = 
-		Ionflux::GeoUtils::AXIS_Z, double near = 0., double far = 0.);
+		Ionflux::GeoUtils::AXIS_Z, double near = 0., double far = 0., double 
+		dScale = 1.);
 		
 		/** Get model view matrix.
 		 *
@@ -345,8 +347,9 @@ class Camera
 		 * \param horizonAxis Horizon axis.
 		 * \param near near value.
 		 * \param far far value.
+		 * \param dScale perspective scale.
 		 *
-		 * \return View matrix.
+		 * \return Model/view matrix.
 		 */
 		virtual Ionflux::GeoUtils::Matrix4 
 		getModelViewMatrix(Ionflux::GeoUtils::CameraMode mode = 
@@ -356,7 +359,8 @@ class Camera
 		Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID upAxis = 
 		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID depthAxis = 
 		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID horizonAxis = 
-		Ionflux::GeoUtils::AXIS_X, double near = 0., double far = 0.);
+		Ionflux::GeoUtils::AXIS_X, double near = 0., double far = 0., double 
+		dScale = 1.);
 		
 		/** Set up camera focused at the origin.
 		 *
@@ -369,13 +373,14 @@ class Camera
 		 * \param rotY Rotation around depth axis (in degrees).
 		 * \param rotZ Rotation around up axis (in degrees).
 		 * \param aspectRatio aspect ratio.
+		 * \param d perspective factor.
 		 * \param upAxis Up axis.
 		 * \param depthAxis Depth axis.
 		 * \param horizonAxis Horizon axis.
 		 */
 		virtual void setOriginCam(double distance0 = 10., double rotX = -30., 
-		double rotY = 0., double rotZ = 30., double aspectRatio = 1.33, 
-		Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y, 
+		double rotY = 0., double rotZ = 30., double aspectRatio = 1.33, double d 
+		= 1., Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y, 
 		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, 
 		Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X);
 		
@@ -386,6 +391,25 @@ class Camera
 		 * \return String representation.
 		 */
 		virtual std::string getValueString() const;
+		
+		/** Create camera setup flags.
+		 *
+		 * Create camera setup flags
+		 *
+		 * \param useDirection use direction flag.
+		 * \param useRight use right flag.
+		 * \param useUp use up flag.
+		 * \param useLookAt use look-at flag.
+		 * \param useSky use sky flag.
+		 * \param useAngle use angle flag.
+		 * \param useLens use lens flag.
+		 *
+		 * \return Camera setup flags.
+		 */
+		static Ionflux::GeoUtils::CameraSetupFlags createSetupFlags(bool 
+		useDirection = true, bool useRight = true, bool useUp = true, bool 
+		useLookAt = false, bool useSky = false, bool useAngle = false, bool 
+		useLens = false);
 		
 		/** Assignment operator.
 		 *

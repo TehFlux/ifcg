@@ -46,8 +46,6 @@ ar = w / h
 
 print("  %s" % viewer.getString())
 
-print("Creating camera...")
-
 ## inverse of the extrinsic camera matrix
 #mv0 = cg.Matrix4.create(
 #    1, 0, 0, 0, 
@@ -55,16 +53,19 @@ print("Creating camera...")
 #    0, 0, 1, -10, 
 #    0, 0, 0, 1
 #)
-## inverse camera matrix from triangle01.blend
-## pos = (0, -1, 10)
-## rot = (0, 0, -32°)
-## fov = 65°
-#mv0 = cg.Matrix4.create(
-#     0.848,     -0.53,         0,     -0.53,
-#      0.53,     0.848,         0,     0.848,
-#         0,         0,         1,       -10,
-#         0,         0,         0,         1)
-#mm.addLocalRef(mv0)
+# inverse camera matrix from triangle01.blend
+# pos = (0, -1, 10)
+# rot = (0, 0, -32°)
+# fov = 65°
+mv0 = cg.Matrix4.create(
+     0.848,     -0.53,         0,     -0.53,
+      0.53,     0.848,         0,     0.848,
+         0,         0,         1,       -10,
+         0,         0,         0,         1)
+mm.addLocalRef(mv0)
+
+print("  camera inverse extrinsic matrix (triangle01.blend): \n%s" 
+    % mv0.getValueStringF(10))
 
 fov = 65.
 
@@ -82,7 +83,20 @@ pm0.setElement(cg.AXIS_Z, cg.AXIS_W, -2. * far * near / (d * (far - near)))
 pm0.setElement(cg.AXIS_W, cg.AXIS_Z, -1. / d)
 pm0.setElement(cg.AXIS_W, cg.AXIS_W, 0)
 
-print("  perspectiveMatrix: \n%s" % pm0.getValueStringF(10))
+print(("  calculated perspective matrix "
+    + "(fov = %f°, near = %f, far = %f): \n%s") 
+        % (fov, near, far, pm0.getValueStringF(10)))
+
+mvp0 = cg.Matrix4.create()
+mm.addLocalRef(mvp0)
+mvp0.setElements(mv0)
+mvp0.multiplyLeft(pm0)
+s1 = cg.Matrix4.scale(1. / ar, 1., 1., 1.)
+mvp0.multiplyLeft(s1)
+
+print("  calculated MVP matrix: \n%s" % mvp0.getValueStringF(10))
+
+print("Creating camera...")
 
 cam0 = cg.Camera.create()
 mm.addLocalRef(cam0)
@@ -93,67 +107,44 @@ R0 = cg.Matrix4.rotate(-32. * m.pi / 180., cg.AXIS_Z)
 CM0 = cg.Matrix4(T0 * R0)
 cam0.setVectors(
     cg.Vector3.ZERO, 
-    cg.Vector3(0., 0., 1.), 
-    cg.Vector3(0., 0., 0.), 
+    cg.Vector3.E_Z, 
+    cg.Vector3.ZERO, 
     cg.Vector3(ar, 0., 0.), 
-    cg.Vector3(0., 1., 0.), 
-    cg.Vector3(0., 1., 0.))
+    cg.Vector3.E_Y, 
+    cg.Vector3.E_Y)
 cam0.setAngle(fov * m.pi / 180.)
-sf0 = cg.CameraSetupFlags()
-sf0.useDirection = True
-sf0.useRight = True
-sf0.useUp = True
-sf0.useLookAt = False
-sf0.useSky = True
-sf0.useAngle = True
-sf0.useLens = False
+sf0 = cg.Camera.createSetupFlags(True, True, True, False, 
+    True, True, False)
 cam0.setSetupFlags(sf0)
 cam0.transform(CM0)
 cam0.applyTransform()
 cm0 = cam0.getExtrinsicMatrix()
-cm1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
-    cg.Camera.DEFAULT_ADJUST_LOCATION, 
-    cg.HANDEDNESS_RIGHT, cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, near, far)
-cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far)
-# scale perspective matrix for OpenGL value ranges
-cs0 = cg.Matrix4.scale(1., 1., -0.5, -0.5)
-cms2 = cm2.multiplyLeft(cs0)
 cmInv0 = cm0.invert()
+mvp1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
+    cg.Camera.DEFAULT_ADJUST_LOCATION, 
+    cg.HANDEDNESS_RIGHT, cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
+    near, far, -2.)
+# scale perspective matrix for OpenGL value ranges
+cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far, -2.)
 
 print("  camera inverse extrinsic matrix: \n%s" 
     % cmInv0.getValueStringF(10))
 
 print("  camera perspective matrix: \n%s" % cm2.getValueStringF(10))
 
-print("  camera perspective matrix (scaled): \n%s" 
-    % cms2.getValueStringF(10))
+print("  camera MVP matrix: \n%s" % mvp1.getValueStringF(10))
 
-print("  camera model/view matrix: \n%s" % cm1.getValueStringF(10))
+mvp2 = cg.Matrix4.create()
+mm.addLocalRef(mvp2)
+mvp2.setElements(cmInv0)
+mvp2.multiplyLeft(cm2)
 
-#m0 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
-#    cg.Camera.DEFAULT_ADJUST_LOCATION, 
-#    cg.HANDEDNESS_RIGHT, cg.AXIS_Z, cg.AXIS_Y, cg.AXIS_X)
-#p1 = cam0.getPerspectiveMatrix()
+print("  camera calculated MVP matrix: \n%s" % mvp2.getValueStringF(10))
 
-#print("  %s" % cam0.getString())
+# mvp0, mvp1, mvp2 should all have the same effect
+mvpMatrix.setElements(mvp1)
 
-## swapping axes is not necessary if we use Z as the depth axis
-#m1 = cg.Matrix4.swapAxes(cg.AXIS_X, cg.AXIS_Z, cg.AXIS_Y)
-
-#mvpMatrix.setElements(mv0)
-mvpMatrix.setElements(cmInv0)
-mvpMatrix.multiplyLeft(cms2)
-#mvpMatrix.multiplyLeft(pm0)
-#mvpMatrix.multiplyLeft(m1)
-
-print("  mvpMatrix: \n%s" % mvpMatrix.getValueStringF(10))
-
-## we still need to scale x to compensate for the aspect ratio, since the 
-## projection matrix does not contain the scaling.
-#s1 = cg.Matrix4.scale(1. / ar, 1., 1., 1.)
-#mvpMatrix.multiplyLeft(s1)
-
-#print("  mvpMatrix (scaled): \n%s" % mvpMatrix.getValueStringF(10))
+print("  using MVP matrix: \n%s" % mvpMatrix.getValueStringF(10))
 
 print("Initializing shaders...")
 
