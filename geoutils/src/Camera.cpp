@@ -515,13 +515,13 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	double c[2];
 	if (handedness == HANDEDNESS_LEFT)
 	{
-	    c[0] = -1.;
-	    c[1] = 1.;
+	    c[0] = 1.;
+	    c[1] = -1.;
 	} else
 	{
 	    // Assume right-handed coordinate system.
-	    c[0] = 1.;
-	    c[1] = -1.;
+	    c[0] = -1.;
+	    c[1] = 1.;
 	}
 	// Calculate yaw angle (global up axis rotation).
 	double yaw = 0.;
@@ -670,7 +670,7 @@ horizonAxis)
 	Vector3 da(Vector3::axis(depthAxis));
 	Vector3 ha(Vector3::axis(horizonAxis));
 	Vector3 ua(Vector3::axis(upAxis));
-	*location = R * (-distance0 * da);
+	*location = R * (distance0 * da);
 	*lookAt = Vector3::ZERO;
 	*direction = R * (d * Vector3::axis(depthAxis));
 	*up = R * ua;
@@ -733,6 +733,30 @@ useAngle, bool useLens)
 	result.useAngle = useAngle;
 	result.useLens = useLens;
 	return result;
+}
+
+double Camera::angleToD(double angle, double aspectRatio, double dScale)
+{
+	// TODO: Implementation.
+	return dScale * aspectRatio / (2. * ::tan(0.5 * angle));
+}
+
+double Camera::dToAngle(double d, double aspectRatio, double dScale)
+{
+	// TODO: Implementation.
+	return 2. * ::atan(dScale * aspectRatio / d);
+}
+
+double Camera::lensToAngle(double lens)
+{
+	// TODO: Implementation.
+	return 2. * ::atan(16. / lens);
+}
+
+double Camera::angleToLens(double angle)
+{
+	// TODO: Implementation.
+	return 16. / ::tan(0.5 * angle);
 }
 
 void Camera::setLocation(Ionflux::GeoUtils::Vector3* newLocation)

@@ -373,14 +373,14 @@ class Camera
 		 * \param rotY Rotation around depth axis (in degrees).
 		 * \param rotZ Rotation around up axis (in degrees).
 		 * \param aspectRatio aspect ratio.
-		 * \param d perspective factor.
+		 * \param d perspective value.
 		 * \param upAxis Up axis.
 		 * \param depthAxis Depth axis.
 		 * \param horizonAxis Horizon axis.
 		 */
 		virtual void setOriginCam(double distance0 = 10., double rotX = -30., 
-		double rotY = 0., double rotZ = 30., double aspectRatio = 1.33, double d 
-		= 1., Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y, 
+		double rotY = 0., double rotZ = 30., double aspectRatio = 1., double d = 
+		1., Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y, 
 		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, 
 		Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X);
 		
@@ -410,6 +410,52 @@ class Camera
 		useDirection = true, bool useRight = true, bool useUp = true, bool 
 		useLookAt = false, bool useSky = false, bool useAngle = false, bool 
 		useLens = false);
+		
+		/** Convert angle to perspective value.
+		 *
+		 * Convert a camera viewing angle (FoV) to a perspective value (d).
+		 *
+		 * \param angle angle.
+		 * \param aspectRatio aspect ratio.
+		 * \param dScale perspective value scale factor.
+		 *
+		 * \return perspective value (d).
+		 */
+		static double angleToD(double angle, double aspectRatio = 1., double 
+		dScale = 1.);
+		
+		/** Convert perspective value to angle.
+		 *
+		 * Convert a perspective value (d) to a camera viewing angle (FoV).
+		 *
+		 * \param d perspective value.
+		 * \param aspectRatio aspect ratio.
+		 * \param dScale perspective value scale factor.
+		 *
+		 * \return camera viewing angle (FoV).
+		 */
+		static double dToAngle(double d, double aspectRatio = 1., double dScale =
+		1.);
+		
+		/** Convert lens to angle.
+		 *
+		 * Convert a lens value to a camera viewing angle (FoV).
+		 *
+		 * \param lens lens.
+		 *
+		 * \return camera viewing angle (FoV).
+		 */
+		static double lensToAngle(double lens);
+		
+		/** Convert angle to lens.
+		 *
+		 * Convert a camera viewing angle (FoV) to a lens value.
+		 *
+		 * \param angle angle.
+		 *
+		 * \return lens value.
+		 */
+		static double angleToLens(double angle);
 		
 		/** Assignment operator.
 		 *

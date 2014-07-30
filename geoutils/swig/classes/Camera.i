@@ -113,8 +113,8 @@ class Camera
         horizonAxis = Ionflux::GeoUtils::AXIS_X, double near = 0., double 
         far = 0., double dScale = 1.);
         virtual void setOriginCam(double distance0 = 10., double rotX = 
-        -30., double rotY = 0., double rotZ = 30., double aspectRatio = 
-        1.33, double d = 1., Ionflux::GeoUtils::AxisID upAxis = 
+        -30., double rotY = 0., double rotZ = 30., double aspectRatio = 1.,
+        double d = 1., Ionflux::GeoUtils::AxisID upAxis = 
         Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID depthAxis = 
         Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID horizonAxis = 
         Ionflux::GeoUtils::AXIS_X);
@@ -123,6 +123,12 @@ class Camera
         useDirection = true, bool useRight = true, bool useUp = true, bool 
         useLookAt = false, bool useSky = false, bool useAngle = false, bool
         useLens = false);
+        static double angleToD(double angle, double aspectRatio = 1., 
+        double dScale = 1.);
+        static double dToAngle(double d, double aspectRatio = 1., double 
+        dScale = 1.);
+        static double lensToAngle(double lens);
+        static double angleToLens(double angle);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

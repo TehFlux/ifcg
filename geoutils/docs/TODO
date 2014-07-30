@@ -140,6 +140,9 @@ Important stuff
 
 + Camera
   > still does not work in all cases (handedness, axis order)
+    . getEulerAngles()
+  > 'direction' should be the local camera system Z axis, not the direction 
+    that the camera is looking
   > maybe just throw away and create a new implementation
   > adjustLocation mystery: the cause for this could have been the 
     erroneous 1 value at the (w, w) entry of the perspective matrix

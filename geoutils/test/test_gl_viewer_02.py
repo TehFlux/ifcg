@@ -69,10 +69,11 @@ print("  camera inverse extrinsic matrix (triangle01.blend): \n%s"
 
 fov = 65.
 
-# have to use the aspect ratio as the half-width of the image plane and 
-# also no division by 2 because the value range for OpenGL is [-1, 1], 
-# i.e. 2 in total.
-d = ar / (m.tan((fov * m.pi / 180.) / 2.))
+## have to use the aspect ratio as the half-width of the image plane and 
+## also no division by 2 because the value range for OpenGL is [-1, 1], 
+## i.e. 2 in total.
+#d = ar / (m.tan((fov * m.pi / 180.) / 2.))
+d = cg.Camera.angleToD(fov * m.pi / 180, ar, 2.)
 near = 1.
 far = 20.
 pm0 = cg.Matrix4.create(cg.Matrix4.UNIT)
@@ -100,24 +101,25 @@ print("Creating camera...")
 
 cam0 = cg.Camera.create()
 mm.addLocalRef(cam0)
-#cam0.setOriginCam(10, 0., -32., 0., 1., 
-#    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
-T0 = cg.Matrix4.translate(cg.Vector3(0., -1., 10.))
-R0 = cg.Matrix4.rotate(-32. * m.pi / 180., cg.AXIS_Z)
-CM0 = cg.Matrix4(T0 * R0)
-cam0.setVectors(
-    cg.Vector3.ZERO, 
-    cg.Vector3.E_Z, 
-    cg.Vector3.ZERO, 
-    cg.Vector3(ar, 0., 0.), 
-    cg.Vector3.E_Y, 
-    cg.Vector3.E_Y)
-cam0.setAngle(fov * m.pi / 180.)
-sf0 = cg.Camera.createSetupFlags(True, True, True, False, 
-    True, True, False)
-cam0.setSetupFlags(sf0)
-cam0.transform(CM0)
-cam0.applyTransform()
+cam0.setOriginCam(15, 60., 0., 10., 
+    ar, cg.Camera.angleToD(fov * m.pi / 180, ar), 
+    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
+#T0 = cg.Matrix4.translate(cg.Vector3(0., -1., 10.))
+#R0 = cg.Matrix4.rotate(-32. * m.pi / 180., cg.AXIS_Z)
+#CM0 = cg.Matrix4(T0 * R0)
+#cam0.setVectors(
+#    cg.Vector3.ZERO, 
+#    cg.Vector3.E_Z, 
+#    cg.Vector3.ZERO, 
+#    cg.Vector3(ar, 0., 0.), 
+#    cg.Vector3.E_Y, 
+#    cg.Vector3.E_Y)
+#cam0.setAngle(fov * m.pi / 180.)
+#sf0 = cg.Camera.createSetupFlags(True, True, True, False, 
+#    True, True, False)
+#cam0.setSetupFlags(sf0)
+#cam0.transform(CM0)
+#cam0.applyTransform()
 cm0 = cam0.getExtrinsicMatrix()
 cmInv0 = cm0.invert()
 mvp1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
@@ -126,9 +128,20 @@ mvp1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE,
     near, far, -2.)
 # scale perspective matrix for OpenGL value ranges
 cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far, -2.)
+angles0 = cam0.getEulerAngles(cg.HANDEDNESS_RIGHT, 
+    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X) * (180. / m.pi)
+
+print("  camera euler angles (YPR): (%s)" % angles0.getValueString())
+
+cm3 = cam0.getRotationMatrix(cg.HANDEDNESS_RIGHT, 
+    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
+cmInv3 = cm3.invert()
 
 print("  camera inverse extrinsic matrix: \n%s" 
     % cmInv0.getValueStringF(10))
+
+print("  camera inverse rotation matrix: \n%s" 
+    % cmInv3.getValueStringF(10))
 
 print("  camera perspective matrix: \n%s" % cm2.getValueStringF(10))
 
@@ -143,6 +156,7 @@ print("  camera calculated MVP matrix: \n%s" % mvp2.getValueStringF(10))
 
 # mvp0, mvp1, mvp2 should all have the same effect
 mvpMatrix.setElements(mvp1)
+normalMatrix.setElements(mvp1.invert().transpose())
 
 print("  using MVP matrix: \n%s" % mvpMatrix.getValueStringF(10))
 
