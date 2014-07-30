@@ -442,6 +442,7 @@ Ionflux::GeoUtils::AxisID depthAxis)
 {
 	Matrix4 result = UNIT;
 	result.setElement(3, depthAxis, 1. / d);
+	result.setElement(3, 3, 0.);
 	return result;
 }
 

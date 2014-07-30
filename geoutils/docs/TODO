@@ -21,6 +21,11 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ Camera
+  > still does not work in all cases (handedness, axis order)
+  > maybe just throw away and create a new implementation
+  > create OpenGL projection matrix
+
 + OpenGL utility library
   > projection matrix
     . map z to [-1; 1]

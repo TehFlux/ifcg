@@ -134,6 +134,7 @@ class Matrix4
 		other);
 		static Ionflux::GeoUtils::Matrix4* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Matrix4* create(double initX00, double initX01,
 		double initX02, double initX03, double initX10, double initX11, double 
 		initX12, double initX13, double initX20, double initX21, double initX22, 
