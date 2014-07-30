@@ -22,17 +22,18 @@ Critical stuff
 --------------------------------------------------------------------------------
 
 + OpenGL utility library
+  > Viewer
+    . change camera parameters via mouse/keyboard
   > shaders
     . lighting (Blinn-Phong)
     . texture (see FMViewer)
-  > Viewer
-    . change camera parameters via mouse/keyboard
   > Vertex array object
     . set from Mesh
-  > uniforms 
-    . Vector3/4
   > textures
     . copy GeoUtils::Image to texture
+  > uniforms 
+    . Vector3/4
+    . ColorSet
 
 + add 'hasClassInfo = true' for parent classes that have class information.
 
