@@ -146,26 +146,34 @@ void Camera::applyTransform(bool recursive)
 	}
 	checkVectors();
 	Matrix4 T(getTranslationMatrix());
-	Matrix4 R(getRotationMatrix(MODE_ORTHO));
+	Matrix4 R(getRotationMatrix(HANDEDNESS_RIGHT, 
+	    AXIS_Y, AXIS_Z, AXIS_X));
 	Matrix4 TR(T * R);
+	if (useTransform())
+	{
+	    Matrix4* tm0 = getTransformMatrix();
+	    TR.multiplyLeft(*tm0);
+	}
+	// TODO: Handle view/image transformation.
 	double dirLen = direction->norm();
+	double ar = right->norm();
+	CameraSetupFlags sf = setupFlags;
 	/* Calculate the correct length for the direction 
 	   vector. */
-	CameraSetupFlags sf = setupFlags;
 	if (sf.useLens)
 	{
 	    angle = 2. * ::atan(16. / lens);
 	    sf.useAngle = true;
 	}
 	if (sf.useAngle)
-	    dirLen = 0.5 * right->norm() / ::tan(0.5 * angle);
+	    dirLen = 0.5 * ar / ::tan(0.5 * angle);
 	setVectors(
 	    TR.getC3().getV3(), 
-	    TR.getC1().getV3() * dirLen, 
+	    TR.getC2().getV3() * dirLen, 
 	    *lookAt, 
-	    TR.getC0().getV3(), 
-	    TR.getC2().getV3(), 
-	    TR.getC2().getV3()
+	    TR.getC0().getV3() * ar, 
+	    TR.getC1().getV3(), 
+	    TR.getC1().getV3()
 	);
 	validate();
 	clearTransformations();
@@ -484,11 +492,11 @@ Ionflux::GeoUtils::Matrix4 Camera::getExtrinsicMatrix()
 {
 	checkVectors();
 	Matrix4 result;
-	result.setCol(0, *right);
-	result.setCol(1, up->flip());
-	result.setCol(2, direction->normalize());
-	result.setCol(3, *location);
-	result.setElement(3, 3, 1.);
+	result.setCol(AXIS_X, *right);
+	result.setCol(AXIS_Y, *up);
+	result.setCol(AXIS_Z, direction->normalize());
+	result.setCol(AXIS_W, *location);
+	result.setElement(AXIS_W, AXIS_W, 1.);
 	return result;
 }
 
@@ -606,17 +614,18 @@ adjustLocation)
 }
 
 Ionflux::GeoUtils::Matrix4 
-Camera::getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis)
+Camera::getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis, double 
+near, double far)
 {
 	checkVectors();
-	return Matrix4::perspective(direction->norm(), depthAxis);
+	return Matrix4::perspective(direction->norm(), depthAxis, near, far);
 }
 
 Ionflux::GeoUtils::Matrix4 
 Camera::getModelViewMatrix(Ionflux::GeoUtils::CameraMode mode, bool 
 adjustLocation, Ionflux::GeoUtils::HandednessID handedness, 
 Ionflux::GeoUtils::AxisID upAxis, Ionflux::GeoUtils::AxisID depthAxis, 
-Ionflux::GeoUtils::AxisID horizonAxis)
+Ionflux::GeoUtils::AxisID horizonAxis, double near, double far)
 {
 	/* <---- DEBUG ----- //
 	ostringstream status;
@@ -627,7 +636,7 @@ Ionflux::GeoUtils::AxisID horizonAxis)
 	if (mode == MODE_ORTHO)
 	    P = Matrix4::UNIT;
 	else
-	    P = getPerspectiveMatrix(depthAxis);
+	    P = getPerspectiveMatrix(depthAxis, near, far);
 	Matrix4 TR(T * R);
 	Matrix4 TRInv = TR.invert();
 	/* <---- DEBUG ----- //

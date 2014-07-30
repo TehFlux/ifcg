@@ -21,16 +21,7 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Camera
-  > still does not work in all cases (handedness, axis order)
-  > maybe just throw away and create a new implementation
-  > create OpenGL projection matrix
-
 + OpenGL utility library
-  > projection matrix
-    . map z to [-1; 1]
-    . adjust perspective matrix to work with range [-1; 1]
-    . aspect ratio
   > Viewer
     . mouse events
     . projection matrix
@@ -146,6 +137,12 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ Camera
+  > still does not work in all cases (handedness, axis order)
+  > maybe just throw away and create a new implementation
+  > adjustLocation mystery: the cause for this could have been the 
+    erroneous 1 value at the (w, w) entry of the perspective matrix
 
 + BGeoUtils
   > Create a Blender version of cgeoutilstest31.

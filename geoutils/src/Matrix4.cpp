@@ -438,12 +438,33 @@ Ionflux::GeoUtils::AxisID w)
 }
 
 Ionflux::GeoUtils::Matrix4 Matrix4::perspective(double d, 
-Ionflux::GeoUtils::AxisID depthAxis)
+Ionflux::GeoUtils::AxisID depthAxis, double near, double far)
 {
 	Matrix4 result = UNIT;
-	result.setElement(3, depthAxis, 1. / d);
-	result.setElement(3, 3, 0.);
+	if (near != far)
+	{
+	    result.setElement(depthAxis, depthAxis, 
+	        (far + near) / (d * (far - near)));
+	    result.setElement(depthAxis, AXIS_W, 
+	        2. * far * near / (d * (far - near)));
+	}
+	result.setElement(AXIS_W, depthAxis, 1. / d);
+	result.setElement(AXIS_W, AXIS_W, 0.);
 	return result;
+}
+
+Ionflux::GeoUtils::Matrix4 Matrix4::openGLProjection(double near, double 
+far, double top, double bottom, double right, double left)
+{
+	// TODO: Implementation.
+	return Matrix4(
+    2. * near / (right - left), 0., 
+        (right + left) / (right - left), 0., 
+    0., 2. * near / (top - bottom), 
+        (top + bottom) / (top - bottom), 0., 
+    0., 0., -(far + near) / (far - near), 
+        -2. * far * near / (far - near), 
+    0., 0., -1., 0.);
 }
 
 Ionflux::GeoUtils::Matrix4 Matrix4::imageTransform(double screenWidth, 

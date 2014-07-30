@@ -466,11 +466,30 @@ class Matrix4
 		 *
 		 * \param d Perspective factor.
 		 * \param depthAxis Depth axis.
+		 * \param near near value.
+		 * \param far far value.
 		 *
 		 * \return Perspective matrix.
 		 */
 		static Ionflux::GeoUtils::Matrix4 perspective(double d = 1., 
-		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Y);
+		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, double 
+		near = 0., double far = 0.);
+		
+		/** Create OpenGL projection matrix.
+		 *
+		 * Create an OpenGL projection matrix.
+		 *
+		 * \param near near value.
+		 * \param far far value.
+		 * \param top top value.
+		 * \param bottom bottom value.
+		 * \param right right value.
+		 * \param left left value.
+		 *
+		 * \return OpenGL projection matrix.
+		 */
+		static Ionflux::GeoUtils::Matrix4 openGLProjection(double near, double 
+		far, double top, double bottom, double right, double left);
 		
 		/** Create image transform matrix.
 		 *

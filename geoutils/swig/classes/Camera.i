@@ -86,34 +86,35 @@ class Camera
         virtual Ionflux::GeoUtils::Vector3 
         getEulerAngles(Ionflux::GeoUtils::HandednessID handedness = 
         Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID 
-        upAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
-        depthAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
+        upAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
+        depthAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
         horizonAxis = Ionflux::GeoUtils::AXIS_X);
         virtual Ionflux::GeoUtils::Matrix4 
         getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness = 
         Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID 
-        upAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
-        depthAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
+        upAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
+        depthAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
         horizonAxis = Ionflux::GeoUtils::AXIS_X);
         virtual Ionflux::GeoUtils::Matrix4 getTranslationMatrix(bool 
         adjustLocation = 
         Ionflux::GeoUtils::Camera::DEFAULT_ADJUST_LOCATION);
         virtual Ionflux::GeoUtils::Matrix4 
         getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis = 
-        Ionflux::GeoUtils::AXIS_Y);
+        Ionflux::GeoUtils::AXIS_Z, double near = 0., double far = 0.);
         virtual Ionflux::GeoUtils::Matrix4 
         getModelViewMatrix(Ionflux::GeoUtils::CameraMode mode = 
         Ionflux::GeoUtils::Camera::MODE_PERSPECTIVE, bool adjustLocation = 
         Ionflux::GeoUtils::Camera::DEFAULT_ADJUST_LOCATION, 
         Ionflux::GeoUtils::HandednessID handedness = 
         Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID 
-        upAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
-        depthAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
-        horizonAxis = Ionflux::GeoUtils::AXIS_X);
+        upAxis = Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID 
+        depthAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
+        horizonAxis = Ionflux::GeoUtils::AXIS_X, double near = 0., double 
+        far = 0.);
         virtual void setOriginCam(double distance0 = 10., double rotX = 
         -30., double rotY = 0., double rotZ = 30., double aspectRatio = 
-        1.33, Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Z,
-        Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Y, 
+        1.33, Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y,
+        Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, 
         Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X);
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;

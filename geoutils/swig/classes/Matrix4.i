@@ -115,7 +115,10 @@ class Matrix4
         Ionflux::GeoUtils::AxisID z = Ionflux::GeoUtils::AXIS_Z, 
         Ionflux::GeoUtils::AxisID w = Ionflux::GeoUtils::AXIS_W);
         static Ionflux::GeoUtils::Matrix4 perspective(double d = 1., 
-        Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Y);
+        Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, 
+        double near = 0., double far = 0.);
+        static Ionflux::GeoUtils::Matrix4 openGLProjection(double near, 
+        double far, double top, double bottom, double right, double left);
         static Ionflux::GeoUtils::Matrix4 imageTransform(double screenWidth
         = 1.33, double screenHeight = 1., double imageWidth = 800., double 
         imageHeight = 600., Ionflux::GeoUtils::AxisID upAxis = 

@@ -279,8 +279,8 @@ class Camera
 		virtual Ionflux::GeoUtils::Vector3 
 		getEulerAngles(Ionflux::GeoUtils::HandednessID handedness = 
 		Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID upAxis = 
-		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID depthAxis = 
-		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID horizonAxis = 
+		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID depthAxis = 
+		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID horizonAxis = 
 		Ionflux::GeoUtils::AXIS_X);
 		
 		/** Get rotation matrix.
@@ -297,8 +297,8 @@ class Camera
 		virtual Ionflux::GeoUtils::Matrix4 
 		getRotationMatrix(Ionflux::GeoUtils::HandednessID handedness = 
 		Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID upAxis = 
-		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID depthAxis = 
-		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID horizonAxis = 
+		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID depthAxis = 
+		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID horizonAxis = 
 		Ionflux::GeoUtils::AXIS_X);
 		
 		/** Get translation matrix.
@@ -319,12 +319,14 @@ class Camera
 		 * Calculate the camera perspective matrix.
 		 *
 		 * \param depthAxis Depth axis.
+		 * \param near near value.
+		 * \param far far value.
 		 *
 		 * \return Perspective matrix.
 		 */
 		virtual Ionflux::GeoUtils::Matrix4 
 		getPerspectiveMatrix(Ionflux::GeoUtils::AxisID depthAxis = 
-		Ionflux::GeoUtils::AXIS_Y);
+		Ionflux::GeoUtils::AXIS_Z, double near = 0., double far = 0.);
 		
 		/** Get model view matrix.
 		 *
@@ -341,6 +343,8 @@ class Camera
 		 * \param upAxis Up axis.
 		 * \param depthAxis Depth axis.
 		 * \param horizonAxis Horizon axis.
+		 * \param near near value.
+		 * \param far far value.
 		 *
 		 * \return View matrix.
 		 */
@@ -350,9 +354,9 @@ class Camera
 		Ionflux::GeoUtils::Camera::DEFAULT_ADJUST_LOCATION, 
 		Ionflux::GeoUtils::HandednessID handedness = 
 		Ionflux::GeoUtils::HANDEDNESS_RIGHT, Ionflux::GeoUtils::AxisID upAxis = 
-		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID depthAxis = 
-		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID horizonAxis = 
-		Ionflux::GeoUtils::AXIS_X);
+		Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID depthAxis = 
+		Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID horizonAxis = 
+		Ionflux::GeoUtils::AXIS_X, double near = 0., double far = 0.);
 		
 		/** Set up camera focused at the origin.
 		 *
@@ -371,8 +375,8 @@ class Camera
 		 */
 		virtual void setOriginCam(double distance0 = 10., double rotX = -30., 
 		double rotY = 0., double rotZ = 30., double aspectRatio = 1.33, 
-		Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Z, 
-		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Y, 
+		Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y, 
+		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, 
 		Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X);
 		
 		/** Get string representation of value.
