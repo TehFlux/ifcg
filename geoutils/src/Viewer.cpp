@@ -154,6 +154,11 @@ void Viewer::init()
 	    Viewer::windowPosHandlerGLFW);
 	glfwSetWindowCloseCallback(windowImpl, 
 	    Viewer::windowCloseHandlerGLFW);
+	glfwSetCursorPosCallback(windowImpl,
+	    Viewer::cursorPosHandlerGLFW);
+	glfwSetMouseButtonCallback(windowImpl,
+	    Viewer::mouseButtonHandlerGLFW);
+	// load OpenGL
 	gladLoadGLLoader(reinterpret_cast<GLADloadproc>(
 	    glfwGetProcAddress));
 }
@@ -271,6 +276,33 @@ void Viewer::onWindowClose()
 	events->addEvent(e0);
 }
 
+void Viewer::onCursorPos(double posX, double posY)
+{
+	Ionflux::ObjectBase::nullPointerCheck(events, this, 
+	    "onCursorPos", "Event set");
+	ViewerEvent* e0 = ViewerEvent::create(this, 
+	    ViewerEvent::TYPE_CURSOR_POS);
+	e0->setPosX(posX);
+	e0->setPosY(posY);
+	events->addEvent(e0);
+}
+
+void Viewer::onMouseButton(int mouseButton, int action, int mods)
+{
+	Ionflux::ObjectBase::nullPointerCheck(windowImpl, this, 
+	    "onMouseButton", "Window");
+	Ionflux::ObjectBase::nullPointerCheck(events, this, 
+	    "onMouseButton", "Event set");
+	ViewerEvent* e0 = ViewerEvent::create(this, 
+	    ViewerEvent::TYPE_MOUSE_BUTTON, 0, 0, action, mods, 
+	    0, 0, mouseButton);
+	double x, y;
+	glfwGetCursorPos(windowImpl, &x, &y);
+	e0->setPosX(x);
+	e0->setPosY(y);
+	events->addEvent(e0);
+}
+
 std::string Viewer::getValueString() const
 {
 	std::ostringstream status;
@@ -365,6 +397,30 @@ void Viewer::windowCloseHandlerGLFW(GLFWwindow* window)
 	Ionflux::ObjectBase::nullPointerCheck(viewer, 
 	    "Viewer::windowCloseHandlerGLFW", "Viewer");
 	viewer->onWindowClose();
+}
+
+void Viewer::cursorPosHandlerGLFW(GLFWwindow* window, double posX, double 
+posY)
+{
+	Ionflux::ObjectBase::nullPointerCheck(window, 
+	    "Viewer::cursorPosHandlerGLFW", "Window");
+	Viewer* viewer = static_cast<Viewer*>(
+	    glfwGetWindowUserPointer(window));
+	Ionflux::ObjectBase::nullPointerCheck(viewer, 
+	    "Viewer::cursorPosHandlerGLFW", "Viewer");
+	viewer->onCursorPos(posX, posY);
+}
+
+void Viewer::mouseButtonHandlerGLFW(GLFWwindow* window, int mouseButton, 
+int action, int mods)
+{
+	Ionflux::ObjectBase::nullPointerCheck(window, 
+	    "Viewer::mouseButtonHandlerGLFW", "Window");
+	Viewer* viewer = static_cast<Viewer*>(
+	    glfwGetWindowUserPointer(window));
+	Ionflux::ObjectBase::nullPointerCheck(viewer, 
+	    "Viewer::mouseButtonHandlerGLFW", "Viewer");
+	viewer->onMouseButton(mouseButton, action, mods);
 }
 
 void Viewer::setWindowImpl(GLFWwindow* newWindowImpl)

@@ -255,6 +255,25 @@ class Viewer
 		 */
 		virtual void onWindowClose();
 		
+		/** Cursor position handler.
+		 *
+		 * Handler for cursor position events.
+		 *
+		 * \param posX position (X).
+		 * \param posY position (Y).
+		 */
+		virtual void onCursorPos(double posX, double posY);
+		
+		/** Mouse button handler.
+		 *
+		 * Handler for mouse button events.
+		 *
+		 * \param mouseButton mouse button.
+		 * \param action Action.
+		 * \param mods Modifier keys.
+		 */
+		virtual void onMouseButton(int mouseButton, int action, int mods);
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.
@@ -342,6 +361,29 @@ class Viewer
 		 * \param window Window.
 		 */
 		static void windowCloseHandlerGLFW(GLFWwindow* window);
+		
+		/** Cursor position handler (GLFW).
+		 *
+		 * Callback for GLFW cursor position events.
+		 *
+		 * \param window Window.
+		 * \param posX position (X).
+		 * \param posY position (Y).
+		 */
+		static void cursorPosHandlerGLFW(GLFWwindow* window, double posX, double 
+		posY);
+		
+		/** Mouse button handler (GLFW).
+		 *
+		 * Callback for GLFW mouse button events.
+		 *
+		 * \param window Window.
+		 * \param mouseButton mouse button.
+		 * \param action Action.
+		 * \param mods Modifier keys.
+		 */
+		static void mouseButtonHandlerGLFW(GLFWwindow* window, int mouseButton, 
+		int action, int mods);
 		
 		/** Assignment operator.
 		 *

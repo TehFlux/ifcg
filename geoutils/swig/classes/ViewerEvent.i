@@ -53,13 +53,16 @@ class ViewerEvent
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_SIZE;
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_POS;
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_CLOSE;
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_CURSOR_POS;
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_MOUSE_BUTTON;
         
         ViewerEvent();
 		ViewerEvent(const Ionflux::GeoUtils::ViewerEvent& other);
         ViewerEvent(Ionflux::GeoUtils::Viewer* initViewer, 
         Ionflux::GeoUtils::ViewerEventTypeID initEventType = TYPE_NONE, int
-        initKeyCode = 0, int initScanCode = 0, int initKeyAction = 0, int 
-        initKeyMods = 0);
+        initKeyCode = 0, int initScanCode = 0, int initAction = 0, int 
+        initKeyMods = 0, double initPosX = 0, double initPosY = 0, int 
+        initMouseButton = 0);
         virtual ~ViewerEvent();
         virtual std::string getValueString() const;
         static std::string 
@@ -72,8 +75,9 @@ class ViewerEvent
 		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::ViewerEvent* create(Ionflux::GeoUtils::Viewer* 
 		initViewer, Ionflux::GeoUtils::ViewerEventTypeID initEventType = 
-		TYPE_NONE, int initKeyCode = 0, int initScanCode = 0, int initKeyAction =
-		0, int initKeyMods = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		TYPE_NONE, int initKeyCode = 0, int initScanCode = 0, int initAction = 0,
+		int initKeyMods = 0, double initPosX = 0, double initPosY = 0, int 
+		initMouseButton = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setViewer(Ionflux::GeoUtils::Viewer* newViewer);
         virtual Ionflux::GeoUtils::Viewer* getViewer() const;
         virtual void setEventType(Ionflux::GeoUtils::ViewerEventTypeID 
@@ -83,10 +87,16 @@ class ViewerEvent
         virtual int getKeyCode() const;
         virtual void setScanCode(int newScanCode);
         virtual int getScanCode() const;
-        virtual void setKeyAction(int newKeyAction);
-        virtual int getKeyAction() const;
+        virtual void setAction(int newAction);
+        virtual int getAction() const;
         virtual void setKeyMods(int newKeyMods);
         virtual int getKeyMods() const;
+        virtual void setPosX(double newPosX);
+        virtual double getPosX() const;
+        virtual void setPosY(double newPosY);
+        virtual double getPosY() const;
+        virtual void setMouseButton(int newMouseButton);
+        virtual int getMouseButton() const;
 };
 
 }

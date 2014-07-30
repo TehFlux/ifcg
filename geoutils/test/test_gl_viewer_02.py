@@ -14,7 +14,7 @@ mm = ib.IFObject()
 
 print("IFVG test: %s" % testName)
 
-checkFPSInterval = 100
+checkFPSInterval = 200
 mvpMatrix = cg.Matrix4.create(cg.Matrix4.UNIT)
 mm.addLocalRef(mvpMatrix)
 normalMatrix = cg.Matrix3.create(cg.Matrix3.UNIT)
@@ -101,9 +101,11 @@ print("Creating camera...")
 
 cam0 = cg.Camera.create()
 mm.addLocalRef(cam0)
-cam0.setOriginCam(15, 60., 0., 10., 
+cam0.setOriginCam(10, 60., 0., 10., 
     ar, cg.Camera.angleToD(fov * m.pi / 180, ar), 
     cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
+
+## camera position according to triangle01.blend
 #T0 = cg.Matrix4.translate(cg.Vector3(0., -1., 10.))
 #R0 = cg.Matrix4.rotate(-32. * m.pi / 180., cg.AXIS_Z)
 #CM0 = cg.Matrix4(T0 * R0)
@@ -120,22 +122,25 @@ cam0.setOriginCam(15, 60., 0., 10.,
 #cam0.setSetupFlags(sf0)
 #cam0.transform(CM0)
 #cam0.applyTransform()
+
+# this is the recommended way to obtain the MVP matrix
 cm0 = cam0.getExtrinsicMatrix()
 cmInv0 = cm0.invert()
-mvp1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
-    cg.Camera.DEFAULT_ADJUST_LOCATION, 
-    cg.HANDEDNESS_RIGHT, cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
-    near, far, -2.)
 # scale perspective matrix for OpenGL value ranges
 cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far, -2.)
+
 angles0 = cam0.getEulerAngles(cg.HANDEDNESS_RIGHT, 
     cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X) * (180. / m.pi)
-
-print("  camera euler angles (YPR): (%s)" % angles0.getValueString())
-
 cm3 = cam0.getRotationMatrix(cg.HANDEDNESS_RIGHT, 
     cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
 cmInv3 = cm3.invert()
+
+mvp2 = cg.Matrix4.create()
+mm.addLocalRef(mvp2)
+mvp2.setElements(cmInv0)
+mvp2.multiplyLeft(cm2)
+
+print("  camera euler angles (YPR): (%s)" % angles0.getValueString())
 
 print("  camera inverse extrinsic matrix: \n%s" 
     % cmInv0.getValueStringF(10))
@@ -145,12 +150,13 @@ print("  camera inverse rotation matrix: \n%s"
 
 print("  camera perspective matrix: \n%s" % cm2.getValueStringF(10))
 
-print("  camera MVP matrix: \n%s" % mvp1.getValueStringF(10))
+# another possible way to obtain the MVP matrix
+mvp1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
+    cg.Camera.DEFAULT_ADJUST_LOCATION, 
+    cg.HANDEDNESS_RIGHT, cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
+    near, far, -2.)
 
-mvp2 = cg.Matrix4.create()
-mm.addLocalRef(mvp2)
-mvp2.setElements(cmInv0)
-mvp2.multiplyLeft(cm2)
+print("  camera MVP matrix: \n%s" % mvp1.getValueStringF(10))
 
 print("  camera calculated MVP matrix: \n%s" % mvp2.getValueStringF(10))
 
@@ -242,7 +248,8 @@ while (not viewer.getShutdownFlag()):
     ne0 = es0.getNumEvents()
     for i in range(0, ne0):
         e0 = es0.getEvent(i)
-        print ("  event: [%s]" % e0.getValueString())
+        if (e0.getEventType() != ggl.ViewerEvent.TYPE_CURSOR_POS):
+            print ("  event: [%s]" % e0.getValueString())
         if (e0.getEventType() == ggl.ViewerEvent.TYPE_KEY):
             # handle key event
             if ((e0.getKeyCode() == 256) 

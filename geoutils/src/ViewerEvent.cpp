@@ -61,13 +61,15 @@ const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_KEY = 1;
 const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_WINDOW_SIZE = 2;
 const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_WINDOW_POS = 4;
 const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_WINDOW_CLOSE = 8;
+const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_CURSOR_POS = 16;
+const Ionflux::GeoUtils::ViewerEventTypeID ViewerEvent::TYPE_MOUSE_BUTTON = 32;
 
 // run-time type information instance constants
 const ViewerEventClassInfo ViewerEvent::viewerEventClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* ViewerEvent::CLASS_INFO = &ViewerEvent::viewerEventClassInfo;
 
 ViewerEvent::ViewerEvent()
-: viewer(0), eventType(TYPE_NONE), keyCode(0), scanCode(0), keyAction(0), keyMods(0)
+: viewer(0), eventType(TYPE_NONE), keyCode(0), scanCode(0), action(0), keyMods(0), posX(0), posY(0), mouseButton(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -75,7 +77,7 @@ ViewerEvent::ViewerEvent()
 }
 
 ViewerEvent::ViewerEvent(const Ionflux::GeoUtils::ViewerEvent& other)
-: viewer(0), eventType(TYPE_NONE), keyCode(0), scanCode(0), keyAction(0), keyMods(0)
+: viewer(0), eventType(TYPE_NONE), keyCode(0), scanCode(0), action(0), keyMods(0), posX(0), posY(0), mouseButton(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -84,9 +86,11 @@ ViewerEvent::ViewerEvent(const Ionflux::GeoUtils::ViewerEvent& other)
 
 ViewerEvent::ViewerEvent(Ionflux::GeoUtils::Viewer* initViewer, 
 Ionflux::GeoUtils::ViewerEventTypeID initEventType, int initKeyCode, int 
-initScanCode, int initKeyAction, int initKeyMods)
+initScanCode, int initAction, int initKeyMods, double initPosX, double 
+initPosY, int initMouseButton)
 : viewer(initViewer), eventType(initEventType), keyCode(initKeyCode), 
-scanCode(initScanCode), keyAction(initKeyAction), keyMods(initKeyMods)
+scanCode(initScanCode), action(initAction), keyMods(initKeyMods), 
+posX(initPosX), posY(initPosY), mouseButton(initMouseButton)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -116,8 +120,20 @@ std::string ViewerEvent::getValueString() const
 	{
 	    status << "; key = " << keyCode 
 	        << ", scanCode = " << scanCode 
-	        << ", action = " << keyAction 
+	        << ", action = " << action 
 	        << ", mods = " << keyMods;
+	} else 
+	if (eventType == TYPE_CURSOR_POS)
+	{
+	    status << "; pos = (" << posX 
+	        << ", " << posY << ")";
+	} else 
+	if (eventType == TYPE_MOUSE_BUTTON)
+	{
+	    status << "; mouseButton = " << mouseButton 
+	        << ", action = " << action 
+	        << ", mods = " << keyMods 
+	        << ", pos = (" << posX << ", " << posY << ")";
 	}
 	return status.str();
 }
@@ -135,6 +151,10 @@ eventType)
 	    return "window_pos";
 	if (eventType == TYPE_WINDOW_CLOSE)
 	    return "window_close";
+	if (eventType == TYPE_CURSOR_POS)
+	    return "cursor_pos";
+	if (eventType == TYPE_MOUSE_BUTTON)
+	    return "mouse_button";
 	return "<unknown>";
 }
 
@@ -179,14 +199,14 @@ int ViewerEvent::getScanCode() const
     return scanCode;
 }
 
-void ViewerEvent::setKeyAction(int newKeyAction)
+void ViewerEvent::setAction(int newAction)
 {
-	keyAction = newKeyAction;
+	action = newAction;
 }
 
-int ViewerEvent::getKeyAction() const
+int ViewerEvent::getAction() const
 {
-    return keyAction;
+    return action;
 }
 
 void ViewerEvent::setKeyMods(int newKeyMods)
@@ -199,6 +219,36 @@ int ViewerEvent::getKeyMods() const
     return keyMods;
 }
 
+void ViewerEvent::setPosX(double newPosX)
+{
+	posX = newPosX;
+}
+
+double ViewerEvent::getPosX() const
+{
+    return posX;
+}
+
+void ViewerEvent::setPosY(double newPosY)
+{
+	posY = newPosY;
+}
+
+double ViewerEvent::getPosY() const
+{
+    return posY;
+}
+
+void ViewerEvent::setMouseButton(int newMouseButton)
+{
+	mouseButton = newMouseButton;
+}
+
+int ViewerEvent::getMouseButton() const
+{
+    return mouseButton;
+}
+
 Ionflux::GeoUtils::ViewerEvent& ViewerEvent::operator=(const 
 Ionflux::GeoUtils::ViewerEvent& other)
 {
@@ -208,8 +258,11 @@ Ionflux::GeoUtils::ViewerEvent& other)
     setEventType(other.eventType);
     setKeyCode(other.keyCode);
     setScanCode(other.scanCode);
-    setKeyAction(other.keyAction);
+    setAction(other.action);
     setKeyMods(other.keyMods);
+    setPosX(other.posX);
+    setPosY(other.posY);
+    setMouseButton(other.mouseButton);
 	return *this;
 }
 
@@ -242,11 +295,12 @@ ViewerEvent::create(Ionflux::ObjectBase::IFObject* parentObject)
 Ionflux::GeoUtils::ViewerEvent* 
 ViewerEvent::create(Ionflux::GeoUtils::Viewer* initViewer, 
 Ionflux::GeoUtils::ViewerEventTypeID initEventType, int initKeyCode, int 
-initScanCode, int initKeyAction, int initKeyMods, 
-Ionflux::ObjectBase::IFObject* parentObject)
+initScanCode, int initAction, int initKeyMods, double initPosX, double 
+initPosY, int initMouseButton, Ionflux::ObjectBase::IFObject* parentObject)
 {
     ViewerEvent* newObject = new ViewerEvent(initViewer, initEventType, 
-    initKeyCode, initScanCode, initKeyAction, initKeyMods);
+    initKeyCode, initScanCode, initAction, initKeyMods, initPosX, initPosY,
+    initMouseButton);
     if (newObject == 0)
     {
         throw GeoUtilsError("Could not allocate object");

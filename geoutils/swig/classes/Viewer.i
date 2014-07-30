@@ -80,6 +80,8 @@ class Viewer
         virtual void onWindowSize(int width, int height);
         virtual void onWindowPos(int posX, int posY);
         virtual void onWindowClose();
+        virtual void onCursorPos(double posX, double posY);
+        virtual void onMouseButton(int mouseButton, int action, int mods);
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Viewer* getInstance();
         static void setInstance(Ionflux::GeoUtils::Viewer* viewer);

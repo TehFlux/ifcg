@@ -71,10 +71,16 @@ class ViewerEvent
 		int keyCode;
 		/// Scan code.
 		int scanCode;
-		/// Key action.
-		int keyAction;
+		/// action.
+		int action;
 		/// Modifier keys.
 		int keyMods;
+		/// Position (x).
+		double posX;
+		/// Position (Y).
+		double posY;
+		/// Mouse button.
+		int mouseButton;
 		
 	public:
 		/// Event ID: none.
@@ -87,6 +93,10 @@ class ViewerEvent
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_POS;
 		/// Event ID: window close.
 		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_WINDOW_CLOSE;
+		/// Event ID: cursor position.
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_CURSOR_POS;
+		/// Event ID: mouse button.
+		static const Ionflux::GeoUtils::ViewerEventTypeID TYPE_MOUSE_BUTTON;
 		/// Class information instance.
 		static const ViewerEventClassInfo viewerEventClassInfo;
 		/// Class information.
@@ -114,13 +124,17 @@ class ViewerEvent
 		 * \param initEventType event type.
 		 * \param initKeyCode key code.
 		 * \param initScanCode scan code.
-		 * \param initKeyAction key action.
+		 * \param initAction Action.
 		 * \param initKeyMods modifier keys.
+		 * \param initPosX position (X).
+		 * \param initPosY position (Y).
+		 * \param initMouseButton mouse button.
 		 */
 		ViewerEvent(Ionflux::GeoUtils::Viewer* initViewer, 
 		Ionflux::GeoUtils::ViewerEventTypeID initEventType = TYPE_NONE, int 
-		initKeyCode = 0, int initScanCode = 0, int initKeyAction = 0, int 
-		initKeyMods = 0);
+		initKeyCode = 0, int initScanCode = 0, int initAction = 0, int 
+		initKeyMods = 0, double initPosX = 0, double initPosY = 0, int 
+		initMouseButton = 0);
 		
 		/** Destructor.
 		 *
@@ -198,14 +212,18 @@ class ViewerEvent
 		 * \param initEventType event type.
 		 * \param initKeyCode key code.
 		 * \param initScanCode scan code.
-		 * \param initKeyAction key action.
+		 * \param initAction Action.
 		 * \param initKeyMods modifier keys.
+		 * \param initPosX position (X).
+		 * \param initPosY position (Y).
+		 * \param initMouseButton mouse button.
 		 * \param parentObject Parent object.
 		 */
 		static Ionflux::GeoUtils::ViewerEvent* create(Ionflux::GeoUtils::Viewer* 
 		initViewer, Ionflux::GeoUtils::ViewerEventTypeID initEventType = 
-		TYPE_NONE, int initKeyCode = 0, int initScanCode = 0, int initKeyAction =
-		0, int initKeyMods = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		TYPE_NONE, int initKeyCode = 0, int initScanCode = 0, int initAction = 0,
+		int initKeyMods = 0, double initPosX = 0, double initPosY = 0, int 
+		initMouseButton = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get allocated size in memory.
 		 *
@@ -272,19 +290,19 @@ class ViewerEvent
 		 */
 		virtual void setScanCode(int newScanCode);
 		
-		/** Get key action.
+		/** Get action.
 		 *
-		 * \return Current value of key action.
+		 * \return Current value of action.
 		 */
-		virtual int getKeyAction() const;
+		virtual int getAction() const;
 		
-		/** Set key action.
+		/** Set action.
 		 *
-		 * Set new value of key action.
+		 * Set new value of action.
 		 *
-		 * \param newKeyAction New value of key action.
+		 * \param newAction New value of action.
 		 */
-		virtual void setKeyAction(int newKeyAction);
+		virtual void setAction(int newAction);
 		
 		/** Get modifier keys.
 		 *
@@ -299,6 +317,48 @@ class ViewerEvent
 		 * \param newKeyMods New value of modifier keys.
 		 */
 		virtual void setKeyMods(int newKeyMods);
+		
+		/** Get position (x).
+		 *
+		 * \return Current value of position (x).
+		 */
+		virtual double getPosX() const;
+		
+		/** Set position (x).
+		 *
+		 * Set new value of position (x).
+		 *
+		 * \param newPosX New value of position (x).
+		 */
+		virtual void setPosX(double newPosX);
+		
+		/** Get position (Y).
+		 *
+		 * \return Current value of position (Y).
+		 */
+		virtual double getPosY() const;
+		
+		/** Set position (Y).
+		 *
+		 * Set new value of position (Y).
+		 *
+		 * \param newPosY New value of position (Y).
+		 */
+		virtual void setPosY(double newPosY);
+		
+		/** Get mouse button.
+		 *
+		 * \return Current value of mouse button.
+		 */
+		virtual int getMouseButton() const;
+		
+		/** Set mouse button.
+		 *
+		 * Set new value of mouse button.
+		 *
+		 * \param newMouseButton New value of mouse button.
+		 */
+		virtual void setMouseButton(int newMouseButton);
 };
 
 }
