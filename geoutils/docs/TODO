@@ -16,8 +16,8 @@ New
 --------------------------------------------------------------------------------
 
 + Face
-  > getTriangles(): get triangles for a quad face, with all face data 
-    duplicated accordingly
+  > getTris() should assign all face data to the new triangles 
+    (not just texture coordinates)
 
 --------------------------------------------------------------------------------
 Critical stuff
