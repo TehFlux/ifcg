@@ -15,7 +15,9 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ Face
+  > getTriangles(): get triangles for a quad face, with all face data 
+    duplicated accordingly
 
 --------------------------------------------------------------------------------
 Critical stuff

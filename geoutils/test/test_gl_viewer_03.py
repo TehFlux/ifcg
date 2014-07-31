@@ -80,12 +80,13 @@ print("  %s" % viewer.getString())
 distance = 10.
 fov = 65.
 near = 1.
-far = 20.
+far = 30.
 pitch = 60.
 roll = 0.
 yaw = 0.
 angleStep = 10.
 distanceStep = 0.5
+locStep = 0.5
 
 print("Creating camera...")
 
@@ -247,6 +248,7 @@ nFrames = 0
 clock = cg.Clock.create()
 mm.addLocalRef(clock)
 clock.start()
+locOffset = cg.Vector3(cg.Vector3.ZERO)
 while (not viewer.getShutdownFlag()):
     viewer.clear()
     va0.draw(ggl.PRIMITIVE_TRIANGLE, 1)
@@ -310,11 +312,32 @@ while (not viewer.getShutdownFlag()):
                     # PgDown
                     distance += distanceStep
                     updateCam = True
+                elif (e0.getKeyCode() == 87):
+                    # w
+                    cx = locOffset.getElement(cg.AXIS_Z)
+                    locOffset.setElement(cg.AXIS_Z, cx + locStep)
+                    updateCam = True
+                elif (e0.getKeyCode() == 65):
+                    # a
+                    cx = locOffset.getElement(cg.AXIS_X)
+                    locOffset.setElement(cg.AXIS_X, cx - locStep)
+                    updateCam = True
+                elif (e0.getKeyCode() == 83):
+                    # s
+                    cx = locOffset.getElement(cg.AXIS_Z)
+                    locOffset.setElement(cg.AXIS_Z, cx - locStep)
+                    updateCam = True
+                elif (e0.getKeyCode() == 68):
+                    # d
+                    cx = locOffset.getElement(cg.AXIS_X)
+                    locOffset.setElement(cg.AXIS_X, cx + locStep)
+                    updateCam = True
                 elif (e0.getKeyCode() == 320):
                     # keypad 0
                     roll = 0.
                     pitch = 60.
                     yaw = 0.
+                    locOffset.setElements(cg.Vector3.ZERO)
                     updateCam = True
         elif (e0.getEventType() == ggl.ViewerEvent.TYPE_WINDOW_CLOSE):
             # handle window close event
@@ -347,6 +370,8 @@ while (not viewer.getShutdownFlag()):
             roll += 360.
         if (roll > 180.):
             roll -= 360.
+        if (distance < near):
+            distance = near
         # update MVP matrix
         print("  Updating camera: d = %f, YPR = (%f, %f, %f)" 
             % (distance, yaw, pitch, roll))
@@ -354,6 +379,8 @@ while (not viewer.getShutdownFlag()):
             ar, cg.Camera.angleToD(fov * m.pi / 180, ar), 
             cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
             cg.AXIS_X, cg.AXIS_Z, cg.AXIS_Z)
+        loc0 = cam0.getLocation()
+        loc0.addIP(locOffset)
         cm0 = cam0.getExtrinsicMatrix()
         cmInv0 = cm0.invert()
         cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far, -2.)
