@@ -21,7 +21,7 @@ normalMatrix = cg.Matrix3.create(cg.Matrix3.UNIT)
 mm.addLocalRef(normalMatrix)
 
 lightPos = [
-    cg.Vector3.create(2., 5., 4.)
+    cg.Vector3.create(2., 5., 10.)
 ]
 
 lightColor = [
@@ -77,82 +77,24 @@ ar = w / h
 
 print("  %s" % viewer.getString())
 
-## inverse of the extrinsic camera matrix
-#mv0 = cg.Matrix4.create(
-#    1, 0, 0, 0, 
-#    0, 1, 0, 0, 
-#    0, 0, 1, -10, 
-#    0, 0, 0, 1
-#)
-# inverse camera matrix from triangle01.blend
-# pos = (0, -1, 10)
-# rot = (0, 0, -32°)
-# fov = 65°
-mv0 = cg.Matrix4.create(
-     0.848,     -0.53,         0,     -0.53,
-      0.53,     0.848,         0,     0.848,
-         0,         0,         1,       -10,
-         0,         0,         0,         1)
-mm.addLocalRef(mv0)
-
-print("  camera inverse extrinsic matrix (triangle01.blend): \n%s" 
-    % mv0.getValueStringF(10))
-
+distance = 10.
 fov = 65.
-
-## have to use the aspect ratio as the half-width of the image plane and 
-## also no division by 2 because the value range for OpenGL is [-1, 1], 
-## i.e. 2 in total.
-#d = ar / (m.tan((fov * m.pi / 180.) / 2.))
-d = cg.Camera.angleToD(fov * m.pi / 180, ar, 2.)
 near = 1.
 far = 20.
-pm0 = cg.Matrix4.create(cg.Matrix4.UNIT)
-mm.addLocalRef(pm0)
-# this is basically the OpenGL projection matrix multiplied by 1/d.
-pm0.setElement(cg.AXIS_Z, cg.AXIS_Z, -(far + near) / (d * (far - near)))
-pm0.setElement(cg.AXIS_Z, cg.AXIS_W, -2. * far * near / (d * (far - near)))
-pm0.setElement(cg.AXIS_W, cg.AXIS_Z, -1. / d)
-pm0.setElement(cg.AXIS_W, cg.AXIS_W, 0)
-
-print(("  calculated perspective matrix "
-    + "(fov = %f°, near = %f, far = %f): \n%s") 
-        % (fov, near, far, pm0.getValueStringF(10)))
-
-mvp0 = cg.Matrix4.create()
-mm.addLocalRef(mvp0)
-mvp0.setElements(mv0)
-mvp0.multiplyLeft(pm0)
-s1 = cg.Matrix4.scale(1. / ar, 1., 1., 1.)
-mvp0.multiplyLeft(s1)
-
-print("  calculated MVP matrix: \n%s" % mvp0.getValueStringF(10))
+pitch = 60.
+roll = 0.
+yaw = 0.
+angleStep = 10.
+distanceStep = 0.5
 
 print("Creating camera...")
 
 cam0 = cg.Camera.create()
 mm.addLocalRef(cam0)
-cam0.setOriginCam(10, 60., 0., 10., 
+cam0.setOriginCam(distance, pitch, roll, yaw, 
     ar, cg.Camera.angleToD(fov * m.pi / 180, ar), 
-    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
-
-## camera position according to triangle01.blend
-#T0 = cg.Matrix4.translate(cg.Vector3(0., -1., 10.))
-#R0 = cg.Matrix4.rotate(-32. * m.pi / 180., cg.AXIS_Z)
-#CM0 = cg.Matrix4(T0 * R0)
-#cam0.setVectors(
-#    cg.Vector3.ZERO, 
-#    cg.Vector3.E_Z, 
-#    cg.Vector3.ZERO, 
-#    cg.Vector3(ar, 0., 0.), 
-#    cg.Vector3.E_Y, 
-#    cg.Vector3.E_Y)
-#cam0.setAngle(fov * m.pi / 180.)
-#sf0 = cg.Camera.createSetupFlags(True, True, True, False, 
-#    True, True, False)
-#cam0.setSetupFlags(sf0)
-#cam0.transform(CM0)
-#cam0.applyTransform()
+    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
+    cg.AXIS_X, cg.AXIS_Z, cg.AXIS_Z)
 
 # this is the recommended way to obtain the MVP matrix
 cm0 = cam0.getExtrinsicMatrix()
@@ -160,40 +102,21 @@ cmInv0 = cm0.invert()
 # scale perspective matrix for OpenGL value ranges
 cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far, -2.)
 
-angles0 = cam0.getEulerAngles(cg.HANDEDNESS_RIGHT, 
-    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X) * (180. / m.pi)
-cm3 = cam0.getRotationMatrix(cg.HANDEDNESS_RIGHT, 
-    cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X)
-cmInv3 = cm3.invert()
-
 mvp2 = cg.Matrix4.create()
 mm.addLocalRef(mvp2)
 mvp2.setElements(cmInv0)
 mvp2.multiplyLeft(cm2)
 
-print("  camera euler angles (YPR): (%s)" % angles0.getValueString())
-
 print("  camera inverse extrinsic matrix: \n%s" 
     % cmInv0.getValueStringF(10))
 
-print("  camera inverse rotation matrix: \n%s" 
-    % cmInv3.getValueStringF(10))
-
 print("  camera perspective matrix: \n%s" % cm2.getValueStringF(10))
-
-# another possible way to obtain the MVP matrix
-mvp1 = cam0.getModelViewMatrix(cg.Camera.MODE_PERSPECTIVE, 
-    cg.Camera.DEFAULT_ADJUST_LOCATION, 
-    cg.HANDEDNESS_RIGHT, cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
-    near, far, -2.)
-
-print("  camera MVP matrix: \n%s" % mvp1.getValueStringF(10))
 
 print("  camera calculated MVP matrix: \n%s" % mvp2.getValueStringF(10))
 
 # mvp0, mvp1, mvp2 should all have the same effect
-mvpMatrix.setElements(mvp1)
-normalMatrix.setElements(mvp1.invert().transpose())
+mvpMatrix.setElements(mvp2)
+normalMatrix.setElements(mvp2.invert().transpose())
 
 print("  using MVP matrix: \n%s" % mvpMatrix.getValueStringF(10))
 
@@ -342,17 +265,57 @@ while (not viewer.getShutdownFlag()):
     # handle events
     es0 = viewer.getEvents()
     ne0 = es0.getNumEvents()
+    updateCam = False
     for i in range(0, ne0):
         e0 = es0.getEvent(i)
         if (e0.getEventType() != ggl.ViewerEvent.TYPE_CURSOR_POS):
             print ("  event: [%s]" % e0.getValueString())
         if (e0.getEventType() == ggl.ViewerEvent.TYPE_KEY):
             # handle key event
-            if ((e0.getKeyCode() == 256) 
-                and (e0.getKeyAction() == 1)):
-                # escape
-                viewer.closeWindow()
-                viewer.shutdown(False)
+            if (e0.getAction() == 1):
+                # key press events
+                if (e0.getKeyCode() == 256):
+                    # escape
+                    viewer.closeWindow()
+                    viewer.shutdown(False)
+                elif (e0.getKeyCode() == 263):
+                    # left
+                    yaw -= angleStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 262):
+                    # right
+                    yaw += angleStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 265):
+                    # up
+                    pitch -= angleStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 264):
+                    # down
+                    pitch += angleStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 44):
+                    # ,
+                    roll -= angleStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 46):
+                    # .
+                    roll += angleStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 266):
+                    # PgUp
+                    distance -= distanceStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 267):
+                    # PgDown
+                    distance += distanceStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 320):
+                    # keypad 0
+                    roll = 0.
+                    pitch = 60.
+                    yaw = 0.
+                    updateCam = True
         elif (e0.getEventType() == ggl.ViewerEvent.TYPE_WINDOW_CLOSE):
             # handle window close event
             viewer.shutdown(False)
@@ -369,6 +332,34 @@ while (not viewer.getShutdownFlag()):
                 w = w0
                 h = h0
                 ar = ar0
+    if (updateCam):
+        # update camera
+        # normalize euler angles
+        if (yaw < -180.):
+            yaw += 360.
+        if (yaw > 180.):
+            yaw -= 360.
+        if (pitch <= -90.):
+            pitch = -89.99
+        if (pitch >= 90.):
+            pitch = 89.99
+        if (roll < -180.):
+            roll += 360.
+        if (roll > 180.):
+            roll -= 360.
+        # update MVP matrix
+        print("  Updating camera: d = %f, YPR = (%f, %f, %f)" 
+            % (distance, yaw, pitch, roll))
+        cam0.setOriginCam(distance, pitch, roll, yaw, 
+            ar, cg.Camera.angleToD(fov * m.pi / 180, ar), 
+            cg.AXIS_Y, cg.AXIS_Z, cg.AXIS_X, 
+            cg.AXIS_X, cg.AXIS_Z, cg.AXIS_Z)
+        cm0 = cam0.getExtrinsicMatrix()
+        cmInv0 = cm0.invert()
+        cm2 = cam0.getPerspectiveMatrix(cg.AXIS_Z, near, far, -2.)
+        mvpMatrix.setElements(cmInv0)
+        mvpMatrix.multiplyLeft(cm2)
+        p0.setUniform("cgMVPMatrix", mvpMatrix)
 
 viewer.shutdown()
 mm.removeLocalRef(vao0)

@@ -369,20 +369,26 @@ class Camera
 		 * rotated around the global coordinate axes as specified.
 		 *
 		 * \param distance0 Distance to origin.
-		 * \param rotX Rotation around horizon axis (in degrees).
-		 * \param rotY Rotation around depth axis (in degrees).
-		 * \param rotZ Rotation around up axis (in degrees).
+		 * \param pitch Rotation around horizon axis (in degrees).
+		 * \param roll Rotation around depth axis (in degrees).
+		 * \param yaw Rotation around up axis (in degrees).
 		 * \param aspectRatio aspect ratio.
 		 * \param d perspective value.
 		 * \param upAxis Up axis.
 		 * \param depthAxis Depth axis.
 		 * \param horizonAxis Horizon axis.
+		 * \param pitchAxis Pitch axis.
+		 * \param rollAxis Roll axis.
+		 * \param yawAxis Yaw axis.
 		 */
-		virtual void setOriginCam(double distance0 = 10., double rotX = -30., 
-		double rotY = 0., double rotZ = 30., double aspectRatio = 1., double d = 
+		virtual void setOriginCam(double distance0 = 10., double pitch = -30., 
+		double roll = 0., double yaw = 30., double aspectRatio = 1., double d = 
 		1., Ionflux::GeoUtils::AxisID upAxis = Ionflux::GeoUtils::AXIS_Y, 
 		Ionflux::GeoUtils::AxisID depthAxis = Ionflux::GeoUtils::AXIS_Z, 
-		Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X);
+		Ionflux::GeoUtils::AxisID horizonAxis = Ionflux::GeoUtils::AXIS_X, 
+		Ionflux::GeoUtils::AxisID pitchAxis = Ionflux::GeoUtils::AXIS_X, 
+		Ionflux::GeoUtils::AxisID rollAxis = Ionflux::GeoUtils::AXIS_Z, 
+		Ionflux::GeoUtils::AxisID yawAxis = Ionflux::GeoUtils::AXIS_Y);
 		
 		/** Get string representation of value.
 		 *

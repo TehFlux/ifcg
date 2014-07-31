@@ -654,19 +654,20 @@ dScale)
 	return S * P * TRInv;
 }
 
-void Camera::setOriginCam(double distance0, double rotX, double rotY, 
-double rotZ, double aspectRatio, double d, Ionflux::GeoUtils::AxisID 
-upAxis, Ionflux::GeoUtils::AxisID depthAxis, Ionflux::GeoUtils::AxisID 
-horizonAxis)
+void Camera::setOriginCam(double distance0, double pitch, double roll, 
+double yaw, double aspectRatio, double d, Ionflux::GeoUtils::AxisID upAxis,
+Ionflux::GeoUtils::AxisID depthAxis, Ionflux::GeoUtils::AxisID horizonAxis,
+Ionflux::GeoUtils::AxisID pitchAxis, Ionflux::GeoUtils::AxisID rollAxis, 
+Ionflux::GeoUtils::AxisID yawAxis)
 {
 	initVectors();
 	/* <---- DEBUG ----- //
 	ostringstream status;
 	// ----- DEBUG ----> */
-	Matrix3 RX(Matrix3::rotate(rotX * M_PI / 180., horizonAxis));
-	Matrix3 RY(Matrix3::rotate(rotY * M_PI / 180., depthAxis));
-	Matrix3 RZ(Matrix3::rotate(rotZ * M_PI / 180., upAxis));
-	Matrix3 R(RZ * RX * RY);
+	Matrix3 RP(Matrix3::rotate(pitch * M_PI / 180., pitchAxis));
+	Matrix3 RR(Matrix3::rotate(roll * M_PI / 180., rollAxis));
+	Matrix3 RY(Matrix3::rotate(yaw * M_PI / 180., yawAxis));
+	Matrix3 R(RY * RP * RR);
 	Vector3 da(Vector3::axis(depthAxis));
 	Vector3 ha(Vector3::axis(horizonAxis));
 	Vector3 ua(Vector3::axis(upAxis));

@@ -112,12 +112,15 @@ class Camera
         depthAxis = Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID 
         horizonAxis = Ionflux::GeoUtils::AXIS_X, double near = 0., double 
         far = 0., double dScale = 1.);
-        virtual void setOriginCam(double distance0 = 10., double rotX = 
-        -30., double rotY = 0., double rotZ = 30., double aspectRatio = 1.,
+        virtual void setOriginCam(double distance0 = 10., double pitch = 
+        -30., double roll = 0., double yaw = 30., double aspectRatio = 1., 
         double d = 1., Ionflux::GeoUtils::AxisID upAxis = 
         Ionflux::GeoUtils::AXIS_Y, Ionflux::GeoUtils::AxisID depthAxis = 
         Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID horizonAxis = 
-        Ionflux::GeoUtils::AXIS_X);
+        Ionflux::GeoUtils::AXIS_X, Ionflux::GeoUtils::AxisID pitchAxis = 
+        Ionflux::GeoUtils::AXIS_X, Ionflux::GeoUtils::AxisID rollAxis = 
+        Ionflux::GeoUtils::AXIS_Z, Ionflux::GeoUtils::AxisID yawAxis = 
+        Ionflux::GeoUtils::AXIS_Y);
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::CameraSetupFlags createSetupFlags(bool 
         useDirection = true, bool useRight = true, bool useUp = true, bool 
