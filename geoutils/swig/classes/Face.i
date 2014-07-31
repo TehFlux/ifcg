@@ -109,6 +109,8 @@ Ionflux::GeoUtils::TransformableObject
         target);
         virtual Ionflux::GeoUtils::FaceData* getVertexNormals0(unsigned int
         index = 0);
+        virtual void getFaceDataByVertex(Ionflux::ObjectBase::UIntVector& 
+        faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::Vector3 getTangent();
         virtual Ionflux::GeoUtils::Vector3 getBinormal();
         virtual Ionflux::GeoUtils::Vector3 getNormal();
@@ -122,7 +124,10 @@ Ionflux::GeoUtils::TransformableObject
         sphere, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual int checkBoxInner(const Ionflux::GeoUtils::BoxBoundsItem& 
         other, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual Ionflux::GeoUtils::FaceVector getTris();
+        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
+        virtual Ionflux::GeoUtils::FaceVector getTris0();
+        virtual bool isTri();
+        virtual bool isQuad();
         virtual bool isPlanar(double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual void makePlanar(double p = 1., double t = 
@@ -169,6 +174,7 @@ Ionflux::GeoUtils::TransformableObject
 		other);
 		static Ionflux::GeoUtils::Face* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Face* create(const 
 		Ionflux::ObjectBase::UIntVector* initVerts, 
 		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 

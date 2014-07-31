@@ -109,6 +109,7 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::ObjectBase::UIntVector& indices, unsigned int 
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual unsigned int makeTris();
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
@@ -136,6 +137,7 @@ Ionflux::GeoUtils::TransformableObject
 		other);
 		static Ionflux::GeoUtils::Mesh* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Mesh* create(Ionflux::GeoUtils::Vertex3Vector* 
 		initVerts, const Ionflux::GeoUtils::FaceVector* initFaces, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);

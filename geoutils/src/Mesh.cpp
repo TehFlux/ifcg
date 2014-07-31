@@ -583,6 +583,39 @@ indices, unsigned int maxIterations, double p, double t)
 	return nonPlanar;
 }
 
+unsigned int Mesh::makeTris()
+{
+	unsigned int numFaces = getNumFaces();
+	unsigned int ntCount = 0;
+	Mesh m0;
+	FaceVector nfv;
+	for (unsigned int i = 0; i < numFaces; i++)
+	{
+	    Face* cf = getFace(i);
+	    if (cf != 0)
+	    {
+	        if (cf->isTri())
+	        {
+	            // keep existing tri face
+	            m0.addFace(cf);
+	        } else
+	        {
+	            // not a tri face
+	            nfv.clear();
+	            cf->getTris(nfv);
+	            m0.addFaces(nfv);
+	            ntCount++;
+	        }
+	    }
+	}
+	if (ntCount > 0)
+	{
+	    clearFaces();
+	    addFaces(m0.getFaces());
+	}
+	return ntCount;
+}
+
 std::string Mesh::getValueString() const
 {
 	std::ostringstream status;

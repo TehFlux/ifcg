@@ -436,6 +436,15 @@ Ionflux::GeoUtils::TransformableObject
 		indices, unsigned int maxIterations = 10000, double p = 1., double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
+		/** Make triangle faces.
+		 *
+		 * Convert all faces in the mesh to triangles, creating new faces as 
+		 * necessary. Existing triangle faces will not be changed.
+		 *
+		 * \return Number of new faces that were generated.
+		 */
+		virtual unsigned int makeTris();
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.

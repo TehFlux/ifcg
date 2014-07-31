@@ -15,22 +15,18 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Face
-  > getTris() should assign all face data to the new triangles 
-    (not just texture coordinates)
+
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
 
 + OpenGL utility library
-  > Viewer
-    . change camera parameters via mouse/keyboard
+  > Vertex array object
+    . set from Mesh
   > shaders
     . lighting (Blinn-Phong)
     . texture (see FMViewer)
-  > Vertex array object
-    . set from Mesh
   > textures
     . copy GeoUtils::Image to texture
   > uniforms 
@@ -64,8 +60,6 @@ Critical stuff
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
 + Use getValueString() instead of getString()
-
-+ VectorSet, VectorSetSet assignment should create a deep copy.
 
 + Make sure objects correctly implement copy assignment and the 
   IFObject::copy() function.

@@ -370,6 +370,18 @@ Ionflux::GeoUtils::TransformableObject
 		virtual Ionflux::GeoUtils::FaceData* getVertexNormals0(unsigned int index
 		= 0);
 		
+		/** Get face data by vertex.
+		 *
+		 * Get face data for the vertices specified by the indices in \c 
+		 * faceVertexIndices, where each index refers to one vertex of the 
+		 * face (not the underlying vertex set).
+		 *
+		 * \param faceVertexIndices Vertex indices.
+		 * \param target Where to store the face data.
+		 */
+		virtual void getFaceDataByVertex(Ionflux::ObjectBase::UIntVector& 
+		faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target);
+		
 		/** Get tangent vector.
 		 *
 		 * Get the tangent vector for the face.
@@ -478,9 +490,34 @@ Ionflux::GeoUtils::TransformableObject
 		 * Create triangles for a quad face. The new faces are not referenced 
 		 * and must be managed by the caller.
 		 *
+		 * \param target where to store the triangles.
+		 */
+		virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
+		
+		/** Get triangle faces.
+		 *
+		 * Create triangles for a quad face. The new faces are not referenced 
+		 * and must be managed by the caller.
+		 *
 		 * \return Vector containing triangle faces.
 		 */
-		virtual Ionflux::GeoUtils::FaceVector getTris();
+		virtual Ionflux::GeoUtils::FaceVector getTris0();
+		
+		/** Triangle check.
+		 *
+		 * Check whether the face is a triangle.
+		 *
+		 * \return \c true if the face is a triangle, \c false otherwise.
+		 */
+		virtual bool isTri();
+		
+		/** Quad check.
+		 *
+		 * Check whether the face is a quad.
+		 *
+		 * \return \c true if the face is a quad, \c false otherwise.
+		 */
+		virtual bool isQuad();
 		
 		/** Planar face check.
 		 *

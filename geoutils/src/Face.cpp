@@ -358,6 +358,37 @@ Ionflux::GeoUtils::FaceData* Face::getVertexNormals0(unsigned int index)
 	return getFaceDataByType0(FaceData::TYPE_VERTEX_NORMAL, index);;
 }
 
+void Face::getFaceDataByVertex(Ionflux::ObjectBase::UIntVector& 
+faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target)
+{
+	if (faceData == 0)
+	    return;
+	unsigned int n0 = faceData->getNumVectorSets();
+	unsigned int n2 = faceVertexIndices.size();
+	for (unsigned int i = 0; i < n0; i++)
+	{
+	    FaceData* cfd = FaceData::upcast(faceData->getVectorSet(i));
+	    if (cfd != 0)
+	    {
+	        unsigned int n1 = cfd->getNumVectors();
+	        VectorVector v0;
+	        for (unsigned int k = 0; k < n2; k++)
+	        {
+	            unsigned int i0 = faceVertexIndices[k];
+	            if (i0 < n1)
+	            {
+	                Vector* cv0 = Ionflux::ObjectBase::nullPointerCheck(
+	                    cfd->getVector(i0), this, "getFaceDataByVertex", 
+	                        "Face data vector");
+	                v0.push_back(cv0->copy());
+	            }
+	        }
+	        FaceData* nfd = FaceData::create(v0, cfd->getDataType());
+	        target.addVectorSet(nfd);
+	    }
+	}
+}
+
 Ionflux::GeoUtils::Vector3 Face::getTangent()
 {
 	if (tangent != 0)
@@ -626,12 +657,18 @@ double t)
 	return c0;
 }
 
-Ionflux::GeoUtils::FaceVector Face::getTris()
+void Face::getTris(Ionflux::GeoUtils::FaceVector& target)
 {
 	if (vertexSource == 0)
-	    throw GeoUtilsError("Vertex source is not set.");
-	if (vertices.size() != 4)
-	    throw GeoUtilsError("Face is not a quad.");
+	{
+	    throw GeoUtilsError(getErrorString(
+	        "Vertex source is not set.", "getTris"));
+	}
+	if (!isQuad())
+	{
+	    throw GeoUtilsError(getErrorString(
+	        "Face is not a quad.", "getTris"));
+	}
 	FaceVector result;
 	UIntVector v0;
 	v0.push_back(vertices[0]);
@@ -641,32 +678,41 @@ Ionflux::GeoUtils::FaceVector Face::getTris()
 	v1.push_back(vertices[0]);
 	v1.push_back(vertices[2]);
 	v1.push_back(vertices[3]);
-	FaceData* uv0 = 0;
-	FaceData* uv1 = 0;
-	FaceData* uv = getTexCoords0();
-	if ((uv != 0) 
-	    && (uv->getNumVectors() == vertices.size()))
+	Face* f0 = Face::create(&v0, vertexSource);
+	Face* f1 = Face::create(&v1, vertexSource);
+	if (faceData != 0)
 	{
-	    uv0 = FaceData::create();
-	    uv0->addVector(Ionflux::ObjectBase::nullPointerCheck(
-	        uv->getVector(0), this, "Texture coordinate vector")->copy());
-	    uv0->addVector(Ionflux::ObjectBase::nullPointerCheck(
-	        uv->getVector(1), this, "Texture coordinate vector")->copy());
-	    uv0->addVector(Ionflux::ObjectBase::nullPointerCheck(
-	        uv->getVector(2), this, "Texture coordinate vector")->copy());
-	    uv1 = FaceData::create();
-	    uv1->addVector(Ionflux::ObjectBase::nullPointerCheck(
-	        uv->getVector(0), this, "Texture coordinate vector")->copy());
-	    uv1->addVector(Ionflux::ObjectBase::nullPointerCheck(
-	        uv->getVector(2), this, "Texture coordinate vector")->copy());
-	    uv1->addVector(Ionflux::ObjectBase::nullPointerCheck(
-	        uv->getVector(3), this, "Texture coordinate vector")->copy());
+	    // copy face data
+	    VectorSetSet* nfd0 = VectorSetSet::create();
+	    VectorSetSet* nfd1 = VectorSetSet::create();
+	    getFaceDataByVertex(v0, *nfd0);
+	    getFaceDataByVertex(v1, *nfd1);
+	    f0->setFaceData(nfd0);
+	    f1->setFaceData(nfd1);
 	}
-	Face* f0 = Face::create(&v0, vertexSource, uv0);
-	result.push_back(f0);
-	Face* f1 = Face::create(&v1, vertexSource, uv1);
-	result.push_back(f1);
+	target.push_back(f0);
+	target.push_back(f1);
+}
+
+Ionflux::GeoUtils::FaceVector Face::getTris0()
+{
+	FaceVector result;
+	getTris(result);
 	return result;
+}
+
+bool Face::isTri()
+{
+	if (vertices.size() == 3)
+	    return true;
+	return false;
+}
+
+bool Face::isQuad()
+{
+	if (vertices.size() == 4)
+	    return true;
+	return false;
 }
 
 bool Face::isPlanar(double t)
