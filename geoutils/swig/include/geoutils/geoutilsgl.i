@@ -174,6 +174,7 @@ namespace GeoUtils
 
 class Vertex3Set;
 class VectorSet;
+class Mesh;
 
 class VertexAttributeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -187,6 +188,10 @@ class VertexAttribute
 : public Ionflux::ObjectBase::IFObject
 {
     public:
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_UNDEFINED;
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_POSITION;
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_DATA;
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_INDEX;
         
         VertexAttribute();
 		VertexAttribute(const Ionflux::GeoUtils::VertexAttribute& other);

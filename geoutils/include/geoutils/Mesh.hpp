@@ -445,6 +445,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual unsigned int makeTris();
 		
+		/** Triangle mesh check.
+		 *
+		 * Check whether all faces of the mesh are triangles.
+		 *
+		 * \return \c true if the mesh is a triangle mesh, \c false otherwise.
+		 */
+		virtual bool isTriMesh();
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.

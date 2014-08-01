@@ -21,17 +21,26 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ BGeoUTils.Data.Mesh
+  > Loop indexing does not seem to match vertex indexing in all cases. Find 
+    a robust method to obtain the loopOffset.
+    . could be related to tri/quad face
+
++ VertexArray
+  > set from Mesh
+    . vertex position, attribute (by index), face vertex indices
+
++ Program
+  > uniforms 
+    . ColorSet
+    . Vector3/4
+
 + OpenGL utility library
-  > Vertex array object
-    . set from Mesh
   > shaders
     . lighting (Blinn-Phong)
     . texture (see FMViewer)
   > textures
     . copy GeoUtils::Image to texture
-  > uniforms 
-    . Vector3/4
-    . ColorSet
 
 + add 'hasClassInfo = true' for parent classes that have class information.
 

@@ -371,6 +371,10 @@ faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target)
 	    if (cfd != 0)
 	    {
 	        unsigned int n1 = cfd->getNumVectors();
+	        /* <---- DEBUG ----- //
+	        std::cerr << "[Face::getFaceDataByVertex] DEBUG: "
+	            "number of source face data vectors = " << n1 << std::endl;
+	        // ----- DEBUG ----> */
 	        VectorVector v0;
 	        for (unsigned int k = 0; k < n2; k++)
 	        {
@@ -383,6 +387,11 @@ faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target)
 	                v0.push_back(cv0->copy());
 	            }
 	        }
+	        /* <---- DEBUG ----- //
+	        std::cerr << "[Face::getFaceDataByVertex] DEBUG: "
+	            "number of target face data vectors = " 
+	            << v0.size() << std::endl;
+	        // ----- DEBUG ----> */
 	        FaceData* nfd = FaceData::create(v0, cfd->getDataType());
 	        target.addVectorSet(nfd);
 	    }
@@ -678,6 +687,14 @@ void Face::getTris(Ionflux::GeoUtils::FaceVector& target)
 	v1.push_back(vertices[0]);
 	v1.push_back(vertices[2]);
 	v1.push_back(vertices[3]);
+	UIntVector iv0;
+	iv0.push_back(0);
+	iv0.push_back(1);
+	iv0.push_back(2);
+	UIntVector iv1;
+	iv1.push_back(0);
+	iv1.push_back(2);
+	iv1.push_back(3);
 	Face* f0 = Face::create(&v0, vertexSource);
 	Face* f1 = Face::create(&v1, vertexSource);
 	if (faceData != 0)
@@ -685,8 +702,8 @@ void Face::getTris(Ionflux::GeoUtils::FaceVector& target)
 	    // copy face data
 	    VectorSetSet* nfd0 = VectorSetSet::create();
 	    VectorSetSet* nfd1 = VectorSetSet::create();
-	    getFaceDataByVertex(v0, *nfd0);
-	    getFaceDataByVertex(v1, *nfd1);
+	    getFaceDataByVertex(iv0, *nfd0);
+	    getFaceDataByVertex(iv1, *nfd1);
 	    f0->setFaceData(nfd0);
 	    f1->setFaceData(nfd1);
 	}

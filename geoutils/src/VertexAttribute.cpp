@@ -40,6 +40,7 @@
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/VectorSet.hpp"
 #include "geoutils/Vector.hpp"
+#include "geoutils/Mesh.hpp"
 #include "geoutils/glutils.hpp"
 #include "geoutils/glutils_private.hpp"
 
@@ -61,6 +62,12 @@ VertexAttributeClassInfo::VertexAttributeClassInfo()
 VertexAttributeClassInfo::~VertexAttributeClassInfo()
 {
 }
+
+// public member constants
+const Ionflux::GeoUtils::VertexAttributeTypeID VertexAttribute::TYPE_UNDEFINED = 0;
+const Ionflux::GeoUtils::VertexAttributeTypeID VertexAttribute::TYPE_POSITION = 1;
+const Ionflux::GeoUtils::VertexAttributeTypeID VertexAttribute::TYPE_DATA = 2;
+const Ionflux::GeoUtils::VertexAttributeTypeID VertexAttribute::TYPE_INDEX = 3;
 
 // run-time type information instance constants
 const VertexAttributeClassInfo VertexAttribute::vertexAttributeClassInfo;

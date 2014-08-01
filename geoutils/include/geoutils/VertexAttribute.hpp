@@ -45,6 +45,7 @@ namespace GeoUtils
 
 class Vertex3Set;
 class VectorSet;
+class Mesh;
 
 /// Class information for class VertexAttribute.
 class VertexAttributeClassInfo
@@ -133,6 +134,14 @@ class VertexAttribute
 		virtual void setElementSize(unsigned int newElementSize);
 		
 	public:
+		/// Vertex attribute type: undefined.
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_UNDEFINED;
+		/// Vertex attribute type: position.
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_POSITION;
+		/// Vertex attribute type: data.
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_DATA;
+		/// Vertex attribute type: index.
+		static const Ionflux::GeoUtils::VertexAttributeTypeID TYPE_INDEX;
 		/// Class information instance.
 		static const VertexAttributeClassInfo vertexAttributeClassInfo;
 		/// Class information.

@@ -32,6 +32,14 @@ from BGeoUtils import BGeoUtilsError
 import bpy
 import bmesh
 
+def vertexEqual(v, bv):
+    """Compare CGeoUtils.Vertex3 to Blender vector."""
+    if ((v.getX() == bv[0]) 
+        and (v.getY() == bv[1]) 
+        and (v.getZ() == bv[2])):
+        return True
+    return False
+
 class DataNode:
     """Data node.
     
@@ -107,6 +115,7 @@ class Mesh(DataNode):
             # Face data.
             tc0 = None
             vc0 = None
+            vn0 = f.addFaceData(cg.FaceData.TYPE_VERTEX_NORMAL)
             if (not uvTex is None):
                 tc0 = f.addFaceData(cg.FaceData.TYPE_TEX_COORD)
             if (not vCol is None):
@@ -117,6 +126,18 @@ class Mesh(DataNode):
                 numLoops = len(bf.loops)
                 while (k < numLoops):
                     l0 = bf.loops[((numLoops - 1) + k) % numLoops]
+                    ## <---- DEBUG -----
+                    #print("[Data.setFromBMesh] DEBUG: [%03d] %s" 
+                    #    % (k, str(l0.vert.normal)))
+                    ## ----- DEBUG ---->
+                    # vertex normal
+                    n0 = l0.vert.normal
+                    v0 = cg.Vector3.create(n0[0], n0[1], n0[2])
+                    ## <---- DEBUG -----
+                    #print("[Data.setFromBMesh] DEBUG: [%03d] n = (%s)" 
+                    #    % (k, v0.getValueString()))
+                    ## ----- DEBUG ---->
+                    vn0.addVector(v0)
                     if (not tc0 is None):
                         # Get texture coordinates.
                         uv0 = l0[uvTex].uv
@@ -131,7 +152,7 @@ class Mesh(DataNode):
         bm0.free()
     
     def createBMesh(self, meshName = None, createUVTex = False, 
-        createVertexColors = False):
+        createVertexColors = False, createVertexNormals = False):
         """Create Blender mesh.
         
         Create a new Blender mesh from the current CGeoUtils mesh."""
@@ -144,8 +165,17 @@ class Mesh(DataNode):
         numVerts0 = m.getNumVertices()
         for i in range(0, numVerts0):
             v0 = m.getVertex(i)
+            ## <---- DEBUG -----
+            #print("[Data.createBMesh] DEBUG: [%03d] (%s)" 
+            #    % (i, v0.getValueString()))
+            ## ----- DEBUG ---->
             bm0.verts.new((v0.getX(), v0.getY(), v0.getZ()))
         bm0.verts.index_update()
+        ## <---- DEBUG -----
+        #for i in range(0, numVerts0):
+        #    print("[Data.createBMesh] DEBUG: [%03d] %s" 
+        #        % (i, str(bm0.verts[i].co)))
+        ## ----- DEBUG ---->
         # Faces.
         numFaces0 = m.getNumFaces()
         for i in range(0, numFaces0):
@@ -193,17 +223,42 @@ class Mesh(DataNode):
                             "colors for face #" + str(i) + " (expected "
                             + str(numLoops) + ", " + "got " 
                             + str(numVertexColors0) + ").")
+                vn0 = None
+                if (createVertexNormals):
+                    vn0 = f0.getVertexNormals0()
+                    numVertexNormals0 = vn0.getNumVectors()
+                    if (numVertexNormals0 != numLoops):
+                        bm0.free()
+                        raise BGeoUtilsError("Invalid number of vertex "
+                            "normals for face #" + str(i) + " (expected "
+                            + str(numLoops) + ", " + "got " 
+                            + str(numVertexNormals0) + ").")
+                # NOTE: This is rather ugly and not certain to work in 
+                #       all cases.
+                loopOffset = 0
+                if (f0.isTri()):
+                    loopOffset = 1
+                ## <---- DEBUG -----
+                #print("[Data.createBMesh] DEBUG: loop offset = %d" 
+                #    % loopOffset)
+                ## ----- DEBUG ---->
                 for k in range(0, numLoops):
                     l0 = f1.loops[k]
                     if (not tc0 is None):
-                        uv0 = tc0.getVector((k + 1) % numLoops)
+                        uv0 = tc0.getVector((k + loopOffset) % numLoops)
                         l0[uvTex].uv[0] = uv0.getElement(0)
                         l0[uvTex].uv[1] = uv0.getElement(1)
                     if (not vc0 is None):
-                        c0 = vc0.getVector((k + 1) % numLoops)
+                        c0 = vc0.getVector((k + loopOffset) % numLoops)
                         l0[vCol][0] = c0.getElement(0)
                         l0[vCol][1] = c0.getElement(1)
                         l0[vCol][2] = c0.getElement(2)
+                    if (not vn0 is None):
+                        n0 = vn0.getVector((k + loopOffset) % numLoops)
+                        l0.vert.normal = [
+                            n0.getElement(0), n0.getElement(1), 
+                            n0.getElement(2)
+                        ]
         bm0.to_mesh(m0)
         bm0.free()
         return m0

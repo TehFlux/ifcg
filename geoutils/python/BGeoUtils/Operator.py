@@ -157,6 +157,8 @@ class LoadMesh(bpy.types.Operator):
         name = "Create UV texture", default = False)
     createVertexColors = bpy.props.BoolProperty(
         name = "Create vertex colors", default = False)
+    createVertexNormals = bpy.props.BoolProperty(
+        name = "Create vertex normals", default = False)
     
     def execute(self, context):
         # register XML object factories
@@ -173,7 +175,7 @@ class LoadMesh(bpy.types.Operator):
             n0 = "UnnamedObject"
         gm0 = bgd.Mesh(n0 + "M", cgm0)
         gm0.createBMesh(None, self.createUVTex, 
-            self.createVertexColors)
+            self.createVertexColors, self.createVertexNormals)
         o0 = bgo.Object(n0, gm0)
         o0.createBObject()
         self.report({'INFO'}, "Mesh '%s' loaded from file '%s'." 

@@ -616,6 +616,24 @@ unsigned int Mesh::makeTris()
 	return ntCount;
 }
 
+bool Mesh::isTriMesh()
+{
+	unsigned int numFaces = getNumFaces();
+	FaceVector nfv;
+	unsigned int i = 0;
+	while (i < numFaces)
+	{
+	    Face* cf = getFace(i);
+	    if (cf != 0)
+	    {
+	        if (!cf->isTri())
+	            return false;
+	    }
+	    i++;
+	}
+	return true;
+}
+
 std::string Mesh::getValueString() const
 {
 	std::ostringstream status;
