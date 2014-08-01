@@ -33,6 +33,7 @@
 #include <iomanip>
 #include "ifobject/utils.hpp"
 #include "ifobject/objectutils.hpp"
+#include "altjira/Color.hpp"
 #include "geoutils/Matrix3.hpp"
 #include "geoutils/Matrix4.hpp"
 #include "geoutils/VectorSet.hpp"
@@ -338,6 +339,52 @@ Ionflux::GeoUtils::VectorSet& value)
 	}
 }
 
+void Program::setUniform(const std::string& name, const 
+Ionflux::Altjira::ColorSet& value)
+{
+	if (programImpl == 0)
+	    throw GeoUtilsError(getErrorString("Program not set.", "setUniform"));
+	int ul0 = glGetUniformLocation(programImpl, name.c_str());
+	if (ul0 == -1)
+	{
+	    std::ostringstream status;
+	    status << "Name does not exist within default "
+	        "uniform block: '" << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+	int n0 = value.getNumColors();
+	if (n0 == 0)
+	    return;
+	// <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = [array of " << n0 
+	    << " vec4] " << value.getString() 
+	    << std::endl;
+	// ----- DEBUG ----> */
+	GLfloat* vb0 = new GLfloat[n0 * 4];
+	Ionflux::ObjectBase::nullPointerCheck(vb0, this, 
+	    "setUniform", "Value buffer");
+	for (int i = 0; i < n0; i++)
+	{
+	    Ionflux::Altjira::Color* c0 = 
+	        Ionflux::ObjectBase::nullPointerCheck(
+	            value.getColor(i), this, "setUniform", "Color");
+	    vb0[i * 4] = c0->getRed();
+	    vb0[i * 4 + 1] = c0->getGreen();
+	    vb0[i * 4 + 2] = c0->getBlue();
+	    vb0[i * 4 + 3] = c0->getAlpha();
+	}
+	glUniform4fv(ul0, n0, vb0);
+	delete[] vb0;
+	if (glGetError() == GL_INVALID_OPERATION)
+	{
+	    std::ostringstream status;
+	    status << "Type mismatch for uniform within default block '" 
+	        << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+}
+
 std::string Program::getValueString() const
 {
 	std::ostringstream status;
@@ -423,6 +470,12 @@ const std::string& shaderID)
 	    throw GeoUtilsError(status.str());
 	}
 	return shader;
+}
+
+unsigned int Program::getOpenGLMaxVertexUniformComponents()
+{
+	// TODO: Implementation.
+	return GL_MAX_VERTEX_UNIFORM_COMPONENTS;
 }
 
 void Program::setVertexShaderSource(const std::string 

@@ -125,16 +125,16 @@ std::string FaceData::getTypeIDString(Ionflux::GeoUtils::FaceDataTypeID
 typeID)
 {
 	if (typeID == TYPE_UNDEFINED)
-	    return "TYPE_UNDEFINED";
+	    return "undefined";
 	else
 	if (typeID == TYPE_TEX_COORD)
-	    return "TYPE_TEX_COORD";
+	    return "tex_coord";
 	else
 	if (typeID == TYPE_VERTEX_COLOR)
-	    return "TYPE_VERTEX_COLOR";
+	    return "vertex_color";
 	else
 	if (typeID == TYPE_VERTEX_NORMAL)
-	    return "TYPE_VERTEX_NORMAL";
+	    return "vertex_normal";
 	return "<unknown>";
 }
 

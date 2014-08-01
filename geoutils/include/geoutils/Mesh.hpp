@@ -445,13 +445,19 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual unsigned int makeTris();
 		
+		/** Set face vertex normals.
+		 *
+		 * Set the vertex normals for all faces to the face normal.
+		 */
+		virtual void setFaceVertexNormals();
+		
 		/** Triangle mesh check.
 		 *
 		 * Check whether all faces of the mesh are triangles.
 		 *
 		 * \return \c true if the mesh is a triangle mesh, \c false otherwise.
 		 */
-		virtual bool isTriMesh();
+		virtual bool isTriMesh() const;
 		
 		/** Get string representation of value.
 		 *

@@ -1,0 +1,268 @@
+<mesh name="colorcube01">
+  <vertex3set pname="vertex_source">
+    <vert3vec pname="vertices">
+      <vert3 d="-1,-1,-1" />
+      <vert3 d="-1,1,-1" />
+      <vert3 d="1,1,-1" />
+      <vert3 d="1,-1,-1" />
+      <vert3 d="-1,-1,1" />
+      <vert3 d="-1,1,1" />
+      <vert3 d="1,1,1" />
+      <vert3 d="1,-1,1" />
+    </vert3vec>
+  </vertex3set>
+  <vec pname="faces">
+    <face>
+      <uintv pname="vertices" d="4,5,1" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="-1,0,0" />
+              <v3 d="-1,0,0" />
+              <v3 d="-1,0,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0,0.188235,1" />
+              <v3 d="0.972549,0.00392157,1" />
+              <v3 d="1,1,1" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="4,1,0" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="-1,0,0" />
+              <v3 d="-1,0,0" />
+              <v3 d="-1,0,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="1,0.933333,0.0196078" />
+              <v3 d="0.972549,0.00392157,1" />
+              <v3 d="0,0.188235,1" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="5,6,2" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="-0,1,0" />
+              <v3 d="-0,1,0" />
+              <v3 d="-0,1,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.203922,1,0.0745098" />
+              <v3 d="1,0.509804,0.552941" />
+              <v3 d="1,0.74902,0.764706" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="5,2,1" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="-0,1,0" />
+              <v3 d="-0,1,0" />
+              <v3 d="-0,1,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0,0.188235,1" />
+              <v3 d="1,0.509804,0.552941" />
+              <v3 d="0.203922,1,0.0745098" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="6,7,3" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="1,0,0" />
+              <v3 d="1,0,0" />
+              <v3 d="1,0,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.72549,0.00392157,1" />
+              <v3 d="1,0.74902,0.764706" />
+              <v3 d="0.0156863,0.647059,1" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="6,3,2" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="1,0,0" />
+              <v3 d="1,0,0" />
+              <v3 d="1,0,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.203922,1,0.0745098" />
+              <v3 d="1,0.74902,0.764706" />
+              <v3 d="0.72549,0.00392157,1" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="7,4,0" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="-0,-1,0" />
+              <v3 d="-0,-1,0" />
+              <v3 d="-0,-1,0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="1,0.933333,0.0196078" />
+              <v3 d="0.0823529,0.67451,1" />
+              <v3 d="0.972549,0.00392157,1" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="7,0,3" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="-0,-1,-0" />
+              <v3 d="-0,-1,-0" />
+              <v3 d="-0,-1,-0" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.72549,0.00392157,1" />
+              <v3 d="0.0823529,0.67451,1" />
+              <v3 d="1,0.933333,0.0196078" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="0,1,2" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="0,0,-1" />
+              <v3 d="0,0,-1" />
+              <v3 d="0,0,-1" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.203922,1,0.0745098" />
+              <v3 d="1,0.933333,0.0196078" />
+              <v3 d="0,0.188235,1" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="0,2,3" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="0,0,-1" />
+              <v3 d="0,0,-1" />
+              <v3 d="0,0,-1" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.733333,0.0313726,1" />
+              <v3 d="1,0.933333,0.0196078" />
+              <v3 d="0.203922,1,0.0745098" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="7,6,5" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="0,-0,1" />
+              <v3 d="0,-0,1" />
+              <v3 d="0,-0,1" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="1,0.509804,0.552941" />
+              <v3 d="0.0156863,0.647059,1" />
+              <v3 d="1,0.74902,0.764706" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+    <face>
+      <uintv pname="vertices" d="7,5,4" />
+      <vectorsetset pname="fds">
+        <vectorsetvec pname="vector_sets">
+          <facedata datatype="3">
+            <vectorvec pname="vectors">
+              <v3 d="0,-0,1" />
+              <v3 d="0,-0,1" />
+              <v3 d="0,-0,1" />
+            </vectorvec>
+          </facedata>
+          <facedata datatype="2">
+            <vectorvec pname="vectors">
+              <v3 d="0.972549,0.00392157,1" />
+              <v3 d="0.0156863,0.647059,1" />
+              <v3 d="1,0.509804,0.552941" />
+            </vectorvec>
+          </facedata>
+        </vectorsetvec>
+      </vectorsetset>
+    </face>
+  </vec>
+</mesh>

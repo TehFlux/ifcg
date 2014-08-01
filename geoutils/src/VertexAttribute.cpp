@@ -41,6 +41,7 @@
 #include "geoutils/VectorSet.hpp"
 #include "geoutils/Vector.hpp"
 #include "geoutils/Mesh.hpp"
+#include "geoutils/Face.hpp"
 #include "geoutils/glutils.hpp"
 #include "geoutils/glutils_private.hpp"
 
@@ -326,6 +327,90 @@ newData)
 	setElementSize(1);
 }
 
+unsigned int VertexAttribute::setData(const Ionflux::GeoUtils::Mesh& mesh, 
+Ionflux::GeoUtils::VertexAttributeTypeID attrType, 
+Ionflux::GeoUtils::FaceDataTypeID faceDataType)
+{
+	if (!mesh.isTriMesh())
+	{
+	    throw GeoUtilsError(getErrorString(
+	        "Mesh is not a tri-mesh.", "setData"));
+	}
+	if ((attrType != TYPE_POSITION) 
+	    && (attrType != TYPE_DATA) 
+	    && (attrType != TYPE_INDEX))
+	{
+	    std::ostringstream status;
+	    status << "Invalid vertex attribute type: " << attrType;
+	    throw GeoUtilsError(getErrorString(
+	        status.str(), "setData"));
+	}
+	unsigned int numFaces = mesh.getNumFaces();
+	// <---- DEBUG ----- //
+	std::cerr << "[VertexAttribute::setData] DEBUG: "
+	    "numFaces = " << numFaces << ", attrType = " 
+	    << getTypeIDString(attrType) << ", faceDataType = " 
+	    << FaceData::getTypeIDString(faceDataType) << std::endl;
+	// ----- DEBUG ----> */
+	VectorSet vs0;
+	Ionflux::ObjectBase::UIntVector iv0;
+	unsigned int numAttr = 0;
+	for (unsigned int i = 0; i < numFaces; i++)
+	{
+	    Face* f0 = mesh.getFace(i);
+	    if (f0 != 0)
+	    {
+	        if (attrType == TYPE_POSITION)
+	        {
+	            // vertex position
+	            for (unsigned int i = 0; i < 3; i++)
+	            {
+	                Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	                    mesh.getVertex(f0->getVertex(i)), this, 
+	                    "setData", "Vertex");
+	                vs0.addVector(v0->getVector().copy());
+	            }
+	        } else
+	        if (attrType == TYPE_DATA)
+	        {
+	            // vertex data
+	            FaceData* fd0 = f0->getFaceDataByType0(faceDataType);
+	            if (fd0 == 0)
+	            {
+	                std::ostringstream status;
+	                status << "Face data not set (type = " 
+	                    << FaceData::getTypeIDString(faceDataType) 
+	                    << "(" << faceDataType << ")" 
+	                    << ", face = " << i << ")";
+	                throw GeoUtilsError(getErrorString(
+	                    status.str(), "setData"));
+	            }
+	            for (unsigned int i = 0; i < 3; i++)
+	            {
+	                Vector* v0 = Ionflux::ObjectBase::nullPointerCheck(
+	                    fd0->getVector(i), this, "setData", 
+	                    "Face data vector");
+	                vs0.addVector(v0->copy());
+	            }
+	        } else
+	        if (attrType == TYPE_INDEX)
+	        {
+	            // vertex indices
+	            for (unsigned int i = 0; i < 3; i++)
+	                iv0.push_back(f0->getVertex(i));
+	        }
+	        numAttr += 3;
+	    }
+	}
+	if ((attrType == TYPE_POSITION) 
+	    || (attrType == TYPE_DATA))
+	    setData(vs0);
+	else
+	if (attrType == TYPE_INDEX)
+	    setData(iv0);
+	return numAttr;
+}
+
 float VertexAttribute::getFloat(unsigned int elementIndex, unsigned int 
 componentIndex)
 {
@@ -475,6 +560,24 @@ std::string VertexAttribute::getValueString() const
 	    << ", elementSize = " << elementSize 
 	    << ", normalized = " << normalized;
 	return status.str();
+}
+
+std::string 
+VertexAttribute::getTypeIDString(Ionflux::GeoUtils::VertexAttributeTypeID 
+typeID)
+{
+	if (typeID == TYPE_UNDEFINED)
+	    return "undefined";
+	else
+	if (typeID == TYPE_POSITION)
+	    return "position";
+	else
+	if (typeID == TYPE_DATA)
+	    return "data";
+	else
+	if (typeID == TYPE_INDEX)
+	    return "index";
+	return "<unknown>";
 }
 
 void VertexAttribute::setData(GLvoid* newData)

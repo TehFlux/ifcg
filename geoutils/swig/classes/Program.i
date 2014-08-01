@@ -69,7 +69,10 @@ class Program
         Ionflux::GeoUtils::Matrix3& value);
         virtual void setUniform(const std::string& name, const 
         Ionflux::GeoUtils::VectorSet& value);
+        virtual void setUniform(const std::string& name, const 
+        Ionflux::Altjira::ColorSet& value);
         virtual std::string getValueString() const;
+        static unsigned int getOpenGLMaxVertexUniformComponents();
 		virtual Ionflux::GeoUtils::Program* copy() const;
 		static Ionflux::GeoUtils::Program* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

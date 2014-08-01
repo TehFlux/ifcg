@@ -288,6 +288,12 @@ Ionflux::GeoUtils::TransformableObject
 		Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 0, 
 		Ionflux::GeoUtils::Vector* v3 = 0);
 		
+		/** Set face vertex normals.
+		 *
+		 * Set the vertex normals for the face to the face normal.
+		 */
+		virtual void setFaceVertexNormals();
+		
 		/** Get face data by type.
 		 *
 		 * Get face data entries of a certain type.

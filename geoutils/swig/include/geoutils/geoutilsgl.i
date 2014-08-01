@@ -135,7 +135,10 @@ class Program
         Ionflux::GeoUtils::Matrix3& value);
         virtual void setUniform(const std::string& name, const 
         Ionflux::GeoUtils::VectorSet& value);
+        virtual void setUniform(const std::string& name, const 
+        Ionflux::Altjira::ColorSet& value);
         virtual std::string getValueString() const;
+        static unsigned int getOpenGLMaxVertexUniformComponents();
 		virtual Ionflux::GeoUtils::Program* copy() const;
 		static Ionflux::GeoUtils::Program* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -209,6 +212,10 @@ class VertexAttribute
         virtual void setData(const Ionflux::Altjira::ColorSet& newData);
         virtual void setData(const Ionflux::ObjectBase::UIntVector& 
         newData);
+        virtual unsigned int setData(const Ionflux::GeoUtils::Mesh& mesh, 
+        Ionflux::GeoUtils::VertexAttributeTypeID attrType = TYPE_POSITION, 
+        Ionflux::GeoUtils::FaceDataTypeID faceDataType = 
+        FaceData::TYPE_VERTEX_NORMAL);
         virtual float getFloat(unsigned int elementIndex, unsigned int 
         componentIndex = 0);
         virtual unsigned int getUInt(unsigned int elementIndex, unsigned 
@@ -220,6 +227,8 @@ class VertexAttribute
         virtual void draw(Ionflux::GeoUtils::PrimitiveID primitiveID, 
         unsigned int drawNumPrimitives = 0, unsigned int startIndex = 0);
         virtual std::string getValueString() const;
+        static std::string 
+        getTypeIDString(Ionflux::GeoUtils::VertexAttributeTypeID typeID);
 		virtual Ionflux::GeoUtils::VertexAttribute* copy() const;
 		static Ionflux::GeoUtils::VertexAttribute* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

@@ -285,6 +285,21 @@ Ionflux::GeoUtils::Vector* v3)
 	return addFaceData(FaceData::TYPE_VERTEX_NORMAL, v0, v1, v2, v3);
 }
 
+void Face::setFaceVertexNormals()
+{
+	Vector3 n0 = getNormal();
+	FaceData* vn0 = getVertexNormals0();
+	if (vn0 == 0)
+	{
+	    vn0 = FaceData::upcast(
+	        addFaceData(FaceData::TYPE_VERTEX_NORMAL));
+	}
+	vn0->clearVectors();
+	unsigned int numVerts = getNumVertices();
+	for (unsigned int i = 0; i < numVerts; i++)
+	    vn0->addVector(n0.copy());
+}
+
 void Face::getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID dataType, 
 Ionflux::GeoUtils::VectorSetSet& target)
 {

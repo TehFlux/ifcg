@@ -110,7 +110,8 @@ Ionflux::GeoUtils::TransformableObject
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual unsigned int makeTris();
-        virtual bool isTriMesh();
+        virtual void setFaceVertexNormals();
+        virtual bool isTriMesh() const;
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();

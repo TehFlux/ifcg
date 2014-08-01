@@ -73,6 +73,7 @@ class FaceData
 		other);
 		static Ionflux::GeoUtils::FaceData* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::FaceData* 
 		create(Ionflux::GeoUtils::VectorVector& initVectors, 
 		Ionflux::GeoUtils::FaceDataTypeID initDataType = TYPE_UNDEFINED, 

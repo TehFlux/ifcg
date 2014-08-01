@@ -87,6 +87,7 @@ yaw = 0.
 angleStep = 10.
 distanceStep = 0.5
 locStep = 0.5
+fovStep = 5.
 
 print("Creating camera...")
 
@@ -153,15 +154,10 @@ for it in lightPos:
 p0.setUniform("cgLightPos", lps0)
 
 # light colors
-lcs0 = cg.VectorSet.create()
+lcs0 = ai.ColorSet.create()
 mm.addLocalRef(lcs0)
-lcs1 = ai.ColorSet.create()
-mm.addLocalRef(lcs1)
 for it in lightColor:
-    lcs1.addColor(it)
-    cv0 = cg.Vector4.create(
-        it.getRed(), it.getGreen(), it.getBlue(), it.getAlpha())
-    lcs0.addVector(cv0)
+    lcs0.addColor(it)
 p0.setUniform("cgLightColor", lcs0)
 
 # light parameters
@@ -332,11 +328,20 @@ while (not viewer.getShutdownFlag()):
                     cx = locOffset.getElement(cg.AXIS_X)
                     locOffset.setElement(cg.AXIS_X, cx + locStep)
                     updateCam = True
+                elif (e0.getKeyCode() == 333):
+                    # keypad -
+                    fov -= fovStep
+                    updateCam = True
+                elif (e0.getKeyCode() == 334):
+                    # keypad +
+                    fov += fovStep
+                    updateCam = True
                 elif (e0.getKeyCode() == 320):
                     # keypad 0
                     roll = 0.
                     pitch = 60.
                     yaw = 0.
+                    fov = 65.
                     locOffset.setElements(cg.Vector3.ZERO)
                     updateCam = True
         elif (e0.getEventType() == ggl.ViewerEvent.TYPE_WINDOW_CLOSE):

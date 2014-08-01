@@ -35,6 +35,7 @@
 #include "geoutils/constants.hpp"
 #include "geoutils/gltypes.hpp"
 #include "geoutils/glconstants.hpp"
+#include "geoutils/FaceData.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -257,6 +258,28 @@ class VertexAttribute
 		 */
 		virtual void setData(const Ionflux::ObjectBase::UIntVector& newData);
 		
+		/** Set data (mesh).
+		 *
+		 * Set the data for the vertex attribute from a tri-mesh. \c attrType 
+		 * determines what subset of data from the mesh is assigned to the 
+		 * vertex attribute. If \c attrType is \c TYPE_DATA, the \c 
+		 * faceDataType parameter determines the type of face data that is 
+		 * assigned to the vertex attribute. This function creates one vertex 
+		 * attribute element per face vertex, i.e. vertices are duplicated for
+		 * each face. An exception will be thrown if \c mesh is not a 
+		 * tri-mesh.
+		 *
+		 * \param mesh mesh.
+		 * \param attrType vertex attribute type.
+		 * \param faceDataType face data type.
+		 *
+		 * \return number of vertex attribute elements that were created.
+		 */
+		virtual unsigned int setData(const Ionflux::GeoUtils::Mesh& mesh, 
+		Ionflux::GeoUtils::VertexAttributeTypeID attrType = TYPE_POSITION, 
+		Ionflux::GeoUtils::FaceDataTypeID faceDataType = 
+		FaceData::TYPE_VERTEX_NORMAL);
+		
 		/** Get data (float).
 		 *
 		 * Get the data value with the specified element and component index.
@@ -325,6 +348,17 @@ class VertexAttribute
 		 * \return String representation.
 		 */
 		virtual std::string getValueString() const;
+		
+		/** Get vertex attribute type string representation.
+		 *
+		 * Get a string representation for a vertex attribute type ID.
+		 *
+		 * \param typeID Vertex attribute type ID.
+		 *
+		 * \return String representation.
+		 */
+		static std::string 
+		getTypeIDString(Ionflux::GeoUtils::VertexAttributeTypeID typeID);
 		
 		/** Assignment operator.
 		 *

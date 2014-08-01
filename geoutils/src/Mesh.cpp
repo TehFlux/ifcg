@@ -616,7 +616,18 @@ unsigned int Mesh::makeTris()
 	return ntCount;
 }
 
-bool Mesh::isTriMesh()
+void Mesh::setFaceVertexNormals()
+{
+	unsigned int numFaces = getNumFaces();
+	for (unsigned int i = 0; i < numFaces; i++)
+	{
+	    Face* cf = getFace(i);
+	    if (cf != 0)
+	        cf->setFaceVertexNormals();
+	}
+}
+
+bool Mesh::isTriMesh() const
 {
 	unsigned int numFaces = getNumFaces();
 	FaceVector nfv;

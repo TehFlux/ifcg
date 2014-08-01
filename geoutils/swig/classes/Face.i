@@ -93,6 +93,7 @@ Ionflux::GeoUtils::TransformableObject
         addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
         Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
         0, Ionflux::GeoUtils::Vector* v3 = 0);
+        virtual void setFaceVertexNormals();
         virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
         dataType, Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::FaceData* 

@@ -29,6 +29,7 @@
 
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
+#include "altjira/ColorSet.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/gltypes.hpp"
 #include "geoutils/constants.hpp"
@@ -196,6 +197,17 @@ class Program
 		virtual void setUniform(const std::string& name, const 
 		Ionflux::GeoUtils::VectorSet& value);
 		
+		/** Set uniform (color set).
+		 *
+		 * Set the uniform with the specified name within the default uniform 
+		 * block to the specified value.
+		 *
+		 * \param name Uniform name.
+		 * \param value Value.
+		 */
+		virtual void setUniform(const std::string& name, const 
+		Ionflux::Altjira::ColorSet& value);
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.
@@ -236,6 +248,14 @@ class Program
 		 */
 		static GLuint createOpenGLShader(const std::string& source, GLenum type, 
 		const std::string& shaderID = "<unnamed>");
+		
+		/** Get maximum number of uniform components.
+		 *
+		 * Get the maximum number of vertex shader uniform components.
+		 *
+		 * \return maximum number of uniform components.
+		 */
+		static unsigned int getOpenGLMaxVertexUniformComponents();
 		
 		/** Assignment operator.
 		 *

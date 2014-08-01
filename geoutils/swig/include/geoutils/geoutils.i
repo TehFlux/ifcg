@@ -4572,6 +4572,7 @@ Ionflux::GeoUtils::TransformableObject
         addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
         Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
         0, Ionflux::GeoUtils::Vector* v3 = 0);
+        virtual void setFaceVertexNormals();
         virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
         dataType, Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::FaceData* 
@@ -4777,7 +4778,8 @@ Ionflux::GeoUtils::TransformableObject
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual unsigned int makeTris();
-        virtual bool isTriMesh();
+        virtual void setFaceVertexNormals();
+        virtual bool isTriMesh() const;
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
@@ -7138,6 +7140,7 @@ class FaceData
 		other);
 		static Ionflux::GeoUtils::FaceData* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::FaceData* 
 		create(Ionflux::GeoUtils::VectorVector& initVectors, 
 		Ionflux::GeoUtils::FaceDataTypeID initDataType = TYPE_UNDEFINED, 

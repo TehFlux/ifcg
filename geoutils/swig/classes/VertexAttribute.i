@@ -71,6 +71,10 @@ class VertexAttribute
         virtual void setData(const Ionflux::Altjira::ColorSet& newData);
         virtual void setData(const Ionflux::ObjectBase::UIntVector& 
         newData);
+        virtual unsigned int setData(const Ionflux::GeoUtils::Mesh& mesh, 
+        Ionflux::GeoUtils::VertexAttributeTypeID attrType = TYPE_POSITION, 
+        Ionflux::GeoUtils::FaceDataTypeID faceDataType = 
+        FaceData::TYPE_VERTEX_NORMAL);
         virtual float getFloat(unsigned int elementIndex, unsigned int 
         componentIndex = 0);
         virtual unsigned int getUInt(unsigned int elementIndex, unsigned 
@@ -82,6 +86,8 @@ class VertexAttribute
         virtual void draw(Ionflux::GeoUtils::PrimitiveID primitiveID, 
         unsigned int drawNumPrimitives = 0, unsigned int startIndex = 0);
         virtual std::string getValueString() const;
+        static std::string 
+        getTypeIDString(Ionflux::GeoUtils::VertexAttributeTypeID typeID);
 		virtual Ionflux::GeoUtils::VertexAttribute* copy() const;
 		static Ionflux::GeoUtils::VertexAttribute* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
