@@ -54,12 +54,6 @@ Critical stuff
   > See if duplicate() can be replaced with copy(). If not, make the 
     difference clear in the docs.
 
-+ Vertex3
-  > implement custom XML I/O functions that process a list of coordinates 
-    in a single XML attribute (see Vector).
-  > Vertex3 should not duplicate so much functionality from Vector3. Maybe 
-    make Vertex3 have a 'position' property that is a Vector3.
-
 + Add create<numeric type>Vector<n>(..., <target vector>) functions.
   (necessary because swig does not recognize the vectors returned by such 
   functions as of the correct type)
@@ -132,6 +126,10 @@ Important stuff
   > maybe just throw away and create a new implementation
   > adjustLocation mystery: the cause for this could have been the 
     erroneous 1 value at the (w, w) entry of the perspective matrix
+
++ Vertex3
+  > Vertex3 should not duplicate so much functionality from Vector3. Maybe 
+    make Vertex3 have a 'position' property that is a Vector3.
 
 + Testing
   > TransformableObject and derived classes
