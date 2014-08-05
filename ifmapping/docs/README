@@ -1,6 +1,6 @@
 ==========================================================================
 IFMapping - Ionflux Mapping Library
-Copyright © 2010-2013 Joern P. Meier
+Copyright © 2010-2014 Joern P. Meier
 mail@ionflux.org
 --------------------------------------------------------------------------
 README
@@ -16,6 +16,15 @@ to |R^n. It is designed to be used with Python.
 Using SWIG, bindings for a large variety of programming languages can 
 be created. The package currently supports Python, but it should not be 
 too hard to generate bindings for other languages as well.
+
+Features
+--------------------------------------------------------------------------
+
++ Modular, chainable functions |R -> |R and |R -> |R³
++ Bezier curves and splines
++ Adaptive sampling of functions
++ Root finding
++ Floating point comparisons with tolerance
 
 Dependencies
 --------------------------------------------------------------------------

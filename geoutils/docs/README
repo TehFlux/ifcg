@@ -1,6 +1,6 @@
 ==========================================================================
 GeoUtils - Ionflux' Geometry Library
-Copyright © 2009-2013 Jörn P. Meier
+Copyright © 2009-2014 Jörn P. Meier
 mail@ionflux.org
 --------------------------------------------------------------------------
 README
@@ -13,19 +13,6 @@ GeoUtils (Ionflux' Geometry Library) is a library that provides various
 classes and functions to support geometric computations and for managing 
 geometric objects.
 
-Features include:
-
-+ Basic vector math.
-+ Matrix transformations.
-+ Primitive 3D objects (Vertex, Line, Plane, Box, Sphere).
-+ 3D Meshes.
-+ Tangent space (UV) calculations.
-+ Intersection checking.
-+ Axis-aligned bounding box (AABB) tree data structure.
-+ Transform graphs.
-+ Procedural brush creation for GIMP (http://www.gimp.org/).
-+ Integration with Blender (http://www.blender.org/) via Python.
-
 Implementations (in various states of completeness) are provided for 
 C++, Python and JavaScript.
 
@@ -33,6 +20,22 @@ Using SWIG, bindings for a large variety of programming languages can
 be created for the C++ library. The package currently supports Python, 
 but it should not be too hard to generate bindings for other languages 
 as well.
+
+Features
+--------------------------------------------------------------------------
+
++ Basic vector math
++ Matrix transformations
++ Primitive 3D objects (Vertex, Line, Plane, Box, Sphere)
++ 3D Meshes
++ Tangent space (UV) calculations
++ Intersection checking
++ Axis-aligned bounding box (AABB) tree data structure
++ Node-based modular transform and drawing
++ Procedural brush creation for GIMP (http://www.gimp.org/)
++ Integration with Blender (http://www.blender.org/) via Python
++ Drawing polygons and transformed images with SVG and PNG support
++ OpenGL viewer
 
 Dependencies
 --------------------------------------------------------------------------

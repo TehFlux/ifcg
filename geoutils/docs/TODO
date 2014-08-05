@@ -23,17 +23,12 @@ Critical stuff
 
 + OpenGL utility library
   > viewer
-    . render a mesh using VertexAttribute::setData(Mesh, ...)
+    . better camera control which avoids singularities
   > shaders
     . lighting (Blinn-Phong)
     . texture (see FMViewer)
   > textures
     . copy GeoUtils::Image to texture
-
-+ BGeoUTils.Data.Mesh
-  > Loop indexing does not seem to match vertex indexing in all cases. Find 
-    a robust method to obtain the loopOffset.
-    . could be related to tri/quad face
 
 + Program
   > uniforms 
@@ -43,19 +38,6 @@ Critical stuff
 
 + Segfaults:
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
-
-+ Testing
-  > TransformableObject and derived classes
-    . Face, Mesh, TransformableGroup, Object3, Vertex3, 
-      Vertex3Set, Polygon3, Polygon3Set, Shape3, SVG, Image
-  > Matrix
-    . permuteRows, permuteColumns, multiply, transpose
-    . XML I/O
-  > Face
-    . new face data API
-  > Vector2, Vector3, Vector4
-  > XML I/O (polymorphic)
-    . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
 
 + Mesh
   > Generator functions
@@ -139,6 +121,9 @@ Critical stuff
 Important stuff
 --------------------------------------------------------------------------------
 
++ BGeoUTils.Data.Mesh
+  > vertex normals, smooth/flat shading should be exported correctly
+
 + Camera
   > still does not work in all cases (handedness, axis order)
     . getEulerAngles()
@@ -147,6 +132,23 @@ Important stuff
   > maybe just throw away and create a new implementation
   > adjustLocation mystery: the cause for this could have been the 
     erroneous 1 value at the (w, w) entry of the perspective matrix
+
++ Testing
+  > TransformableObject and derived classes
+    . TransformableGroup, Object3, Polygon3, Polygon3Set, Shape3, 
+      SVG, Image
+    . seem to work well enough: Face, Mesh, Vertex3, Vertex3Set
+  > Matrix
+    . permuteRows, permuteColumns, multiply, transpose
+    . XML I/O
+    . seems to work well enough
+  > Face
+    . new face data API
+    . seems to work well enough
+  > Vector2, Vector3, Vector4
+  > XML I/O (polymorphic)
+    . Vector, VectorSet, VectorSetSet, Face, Vertex3, Vertex3Set, Mesh
+    . seems to work well enough
 
 + BGeoUtils
   > Create a Blender version of cgeoutilstest31.
@@ -249,6 +251,13 @@ Important stuff
 --------------------------------------------------------------------------------
 Nice to have
 --------------------------------------------------------------------------------
+
++ BGeoUTils.Data.Mesh
+  > Loop indexing does not seem to match vertex indexing in all cases. Find 
+    a robust method to obtain the loopOffset.
+    . could be related to tri/quad face
+    . could also be related to changes in the Blender API
+    . seems to be solved for now
 
 + BGeoUtils
   > Mesh
