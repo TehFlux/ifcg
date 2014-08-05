@@ -88,6 +88,14 @@ std::string getDataTypeString(Ionflux::GeoUtils::DataTypeID dataType);
 unsigned int getNumElementsPerPrimitive(
     Ionflux::GeoUtils::PrimitiveID primitive);
 
+/** Enable OpenGL backface culling.
+ *
+ * Enable OpenGL backface culling.
+ *
+ * \param enable enable flag
+ */
+void enableOpenGLBackFaceCulling(bool enable = true);
+
 }
 
 }

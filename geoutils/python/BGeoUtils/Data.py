@@ -125,7 +125,7 @@ class Mesh(DataNode):
                 k = 0
                 numLoops = len(bf.loops)
                 while (k < numLoops):
-                    l0 = bf.loops[((numLoops - 1) + k) % numLoops]
+                    l0 = bf.loops[k % numLoops]
                     ## <---- DEBUG -----
                     #print("[Data.setFromBMesh] DEBUG: [%03d] %s" 
                     #    % (k, str(l0.vert.normal)))
@@ -236,8 +236,8 @@ class Mesh(DataNode):
                 # NOTE: This is rather ugly and not certain to work in 
                 #       all cases.
                 loopOffset = 0
-                if (f0.isTri()):
-                    loopOffset = 1
+                #if (f0.isTri()):
+                #    loopOffset = 1
                 ## <---- DEBUG -----
                 #print("[Data.createBMesh] DEBUG: loop offset = %d" 
                 #    % loopOffset)

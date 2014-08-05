@@ -149,6 +149,12 @@ GLenum getOpenGLPrimitive(Ionflux::GeoUtils::PrimitiveID primitive)
 	return 0;
 }
 
+void enableOpenGLBackFaceCulling(bool enable)
+{
+    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+}
+
 }
 
 }

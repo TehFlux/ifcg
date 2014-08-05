@@ -129,12 +129,15 @@ void VertexArrayObject::update()
 	    VertexAttribute* va = *i;
 	    if (va != 0)
 	    {
-	        // <---- DEBUG ----- //
-	        std::cerr << "[VertexArrayObject::update] DEBUG: "
-	            "Enabling vertex attribute: index = " << k << ", [" 
-	            << va->getValueString() << "]" << std::endl;
-	        // ----- DEBUG ----> //
-	        va->enable(k);
+	        if (va->getNumElements() > 0)
+	        {
+	            // <---- DEBUG ----- //
+	            std::cerr << "[VertexArrayObject::update] DEBUG: "
+	                "Enabling vertex attribute: index = " << k << ", [" 
+	                << va->getValueString() << "]" << std::endl;
+	            // ----- DEBUG ----> //
+	            va->enable(k);
+	        }
 	        k++;
 	    }
 	}

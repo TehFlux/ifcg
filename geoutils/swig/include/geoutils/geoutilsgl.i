@@ -50,6 +50,7 @@ typedef int ViewerEventTypeID;
 class ViewerEvent;
 typedef std::vector<Ionflux::GeoUtils::ViewerEvent*>
     ViewerEventVector;
+typedef int VertexAttributeTypeID;
 
 // glconstants.hpp
 
@@ -82,6 +83,7 @@ std::string getDataTypeString(
     Ionflux::GeoUtils::DataTypeID dataType);
 unsigned int getNumElementsPerPrimitive(
     Ionflux::GeoUtils::PrimitiveID primitive);
+void enableOpenGLBackFaceCulling(bool enable = true);
 
 }
 
