@@ -400,12 +400,12 @@ bool Range3::operator!=(const Ionflux::GeoUtils::Range3& other) const
 	return !(*this == other);;
 }
 
-std::string Range3::getString() const
+std::string Range3::getValueString() const
 {
-	ostringstream state;
-	state << getClassName() << "[" << x.getString() 
-	    << ", " << y.getString() << ", " << z.getString() << "]";
-	return state.str();
+	std::ostringstream status;
+	status << x.getString() << ", " << y.getString() << ", " 
+	    << z.getString();
+	return status.str();
 }
 
 void Range3::setX(const Ionflux::GeoUtils::Range& newX)

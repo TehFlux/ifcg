@@ -104,7 +104,7 @@ class Range3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Range3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Range3* copy() const;
 		static Ionflux::GeoUtils::Range3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);

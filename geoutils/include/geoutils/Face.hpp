@@ -509,13 +509,24 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual Ionflux::GeoUtils::FaceVector getTris0();
 		
+		/** Get vertex data.
+		 *
+		 * Get the vertex data for the face vertex with the specified index.
+		 *
+		 * \param index Vertex index.
+		 *
+		 * \return Vertex data.
+		 */
+		virtual Ionflux::GeoUtils::Vertex3* getVertexData(unsigned int index) 
+		const;
+		
 		/** Triangle check.
 		 *
 		 * Check whether the face is a triangle.
 		 *
 		 * \return \c true if the face is a triangle, \c false otherwise.
 		 */
-		virtual bool isTri();
+		virtual bool isTri() const;
 		
 		/** Quad check.
 		 *
@@ -523,7 +534,7 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \return \c true if the face is a quad, \c false otherwise.
 		 */
-		virtual bool isQuad();
+		virtual bool isQuad() const;
 		
 		/** Planar face check.
 		 *

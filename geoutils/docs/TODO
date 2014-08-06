@@ -115,6 +115,11 @@ Critical stuff
 Important stuff
 --------------------------------------------------------------------------------
 
++ Split GeoUtils into smaller libraries
+  > basic vector math
+  > transform nodes
+  > other
+
 + BGeoUTils.Data.Mesh
   > vertex normals, smooth/flat shading should be exported correctly
 
@@ -173,8 +178,6 @@ Important stuff
 + Viewer
   > use Ogre 3D
   > Python scripting
-
-+ Split GeoUtils into a basic vector math library and the rest.
 
 + Transform nodes
   > Scale

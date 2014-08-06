@@ -733,14 +733,21 @@ Ionflux::GeoUtils::FaceVector Face::getTris0()
 	return result;
 }
 
-bool Face::isTri()
+Ionflux::GeoUtils::Vertex3* Face::getVertexData(unsigned int index) const
+{
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getVertexData", "Vertex source");
+	return vertexSource->getVertex(getVertex(index));;
+}
+
+bool Face::isTri() const
 {
 	if (vertices.size() == 3)
 	    return true;
 	return false;
 }
 
-bool Face::isQuad()
+bool Face::isQuad() const
 {
 	if (vertices.size() == 4)
 	    return true;

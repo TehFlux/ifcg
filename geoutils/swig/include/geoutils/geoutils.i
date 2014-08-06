@@ -1226,7 +1226,7 @@ class Range3
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Range3& other) 
         const;
-        virtual std::string getString() const;
+        virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::Range3* copy() const;
 		static Ionflux::GeoUtils::Range3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -4606,8 +4606,10 @@ Ionflux::GeoUtils::TransformableObject
         other, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
         virtual Ionflux::GeoUtils::FaceVector getTris0();
-        virtual bool isTri();
-        virtual bool isQuad();
+        virtual Ionflux::GeoUtils::Vertex3* getVertexData(unsigned int 
+        index) const;
+        virtual bool isTri() const;
+        virtual bool isQuad() const;
         virtual bool isPlanar(double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual void makePlanar(double p = 1., double t = 
