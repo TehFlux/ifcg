@@ -22,6 +22,10 @@ Critical stuff
 --------------------------------------------------------------------------------
 
 + OpenGL utility library
+  > render points
+    . set point size
+    . as small quad/tri surfaces
+    . as boxes
   > viewer
     . better camera control which avoids singularities
   > shaders
