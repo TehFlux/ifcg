@@ -29,6 +29,7 @@ Critical stuff
     . texture (see FMViewer)
   > textures
     . copy GeoUtils::Image to texture
+  > render to Image
 
 + Program
   > uniforms 

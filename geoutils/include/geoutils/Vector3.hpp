@@ -269,6 +269,17 @@ class Vector3
 		 */
 		virtual Ionflux::GeoUtils::Vector3 ortho() const;
 		
+		/** Calculate angle cosine.
+		 *
+		 * Calculate the cosine of the geometric angle between the two 
+		 * vectors.
+		 *
+		 * \param other Vector.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual double angleCos(const Ionflux::GeoUtils::Vector3& other) const;
+		
 		/** Calculate angle.
 		 *
 		 * Calculate the geometric angle between the two vectors.

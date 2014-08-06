@@ -83,6 +83,8 @@ class Vector3
         virtual Ionflux::GeoUtils::Vector3 ortho(const 
         Ionflux::GeoUtils::Vector3& other) const;
         virtual Ionflux::GeoUtils::Vector3 ortho() const;
+        virtual double angleCos(const Ionflux::GeoUtils::Vector3& other) 
+        const;
         virtual double angle(const Ionflux::GeoUtils::Vector3& other) 
         const;
         virtual double angle(const Ionflux::GeoUtils::Vector3& other, const
@@ -136,6 +138,7 @@ class Vector3
 		other);
 		static Ionflux::GeoUtils::Vector3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vector3* create(double initX0, double initX1, 
 		double initX2, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vector3* create(const 

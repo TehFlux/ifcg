@@ -229,7 +229,7 @@ Ionflux::GeoUtils::Vector3 Vector3::ortho() const
 	return Vector3(t0.elements[V3_P[p]], t0.elements[V3_P[p + 1]], t0.elements[V3_P[p + 2]]);
 }
 
-double Vector3::angle(const Ionflux::GeoUtils::Vector3& other) const
+double Vector3::angleCos(const Ionflux::GeoUtils::Vector3& other) const
 {
 	const Vector3& v0 = *this;
 	double t = (v0 * other) / (v0.norm() * other.norm());
@@ -238,7 +238,13 @@ double Vector3::angle(const Ionflux::GeoUtils::Vector3& other) const
 	else
 	if (t > 1.)
 	    t = 1.;
-	return ::acos(t);
+	return t;
+}
+
+double Vector3::angle(const Ionflux::GeoUtils::Vector3& other) const
+{
+	// TODO: Implementation.
+	return ::acos(angleCos(other));
 }
 
 double Vector3::angle(const Ionflux::GeoUtils::Vector3& other, const 

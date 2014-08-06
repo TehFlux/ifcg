@@ -614,6 +614,7 @@ class Vector
         Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual double dot(const Ionflux::GeoUtils::Vector& other) const;
         virtual double norm() const;
+        virtual double length() const;
         virtual Ionflux::GeoUtils::Vector& normalizeIP();
         virtual Ionflux::GeoUtils::Vector& multiplyIP(double c);
         virtual Ionflux::GeoUtils::Vector& divideIP(double c);
@@ -633,6 +634,10 @@ class Vector
         virtual double operator*(const Ionflux::GeoUtils::Vector& other) 
         const;
         virtual unsigned int getNumElements() const;
+        virtual void getElementSigns(Ionflux::ObjectBase::IntVector& 
+        target) const;
+        virtual void getElementSigns(Ionflux::GeoUtils::Vector& target) 
+        const;
         virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
         unsigned int precision = 3, const std::string& colSep = " ") const;
         virtual std::string getValueString() const;
@@ -1064,6 +1069,8 @@ class Vector3
         virtual Ionflux::GeoUtils::Vector3 ortho(const 
         Ionflux::GeoUtils::Vector3& other) const;
         virtual Ionflux::GeoUtils::Vector3 ortho() const;
+        virtual double angleCos(const Ionflux::GeoUtils::Vector3& other) 
+        const;
         virtual double angle(const Ionflux::GeoUtils::Vector3& other) 
         const;
         virtual double angle(const Ionflux::GeoUtils::Vector3& other, const
@@ -1117,6 +1124,7 @@ class Vector3
 		other);
 		static Ionflux::GeoUtils::Vector3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vector3* create(double initX0, double initX1, 
 		double initX2, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vector3* create(const 

@@ -69,6 +69,7 @@ class Vector
         Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual double dot(const Ionflux::GeoUtils::Vector& other) const;
         virtual double norm() const;
+        virtual double length() const;
         virtual Ionflux::GeoUtils::Vector& normalizeIP();
         virtual Ionflux::GeoUtils::Vector& multiplyIP(double c);
         virtual Ionflux::GeoUtils::Vector& divideIP(double c);
@@ -88,6 +89,10 @@ class Vector
         virtual double operator*(const Ionflux::GeoUtils::Vector& other) 
         const;
         virtual unsigned int getNumElements() const;
+        virtual void getElementSigns(Ionflux::ObjectBase::IntVector& 
+        target) const;
+        virtual void getElementSigns(Ionflux::GeoUtils::Vector& target) 
+        const;
         virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
         unsigned int precision = 3, const std::string& colSep = " ") const;
         virtual std::string getValueString() const;

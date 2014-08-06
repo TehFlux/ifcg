@@ -264,6 +264,12 @@ double Vector::norm() const
 	return ::sqrt(result);
 }
 
+double Vector::length() const
+{
+	// TODO: Implementation.
+	return norm();
+}
+
 Ionflux::GeoUtils::Vector& Vector::normalizeIP()
 {
 	// TODO: Implementation.
@@ -394,6 +400,34 @@ unsigned int Vector::getNumElements() const
 {
 	// TODO: Implementation.
 	return NUM_ELEMENTS;
+}
+
+void Vector::getElementSigns(Ionflux::ObjectBase::IntVector& target) const
+{
+	unsigned int numElements0 = getNumElements();
+	for (unsigned int i = 0; i < numElements0; i++)
+	{
+	    if (elements[i] < 0.)
+	        target.push_back(-1.);
+	    else
+	        target.push_back(1.);
+	}
+}
+
+void Vector::getElementSigns(Ionflux::GeoUtils::Vector& target) const
+{
+	unsigned int numElements0 = getNumElements();
+	unsigned int numElements1 = target.getNumElements();
+	unsigned int i = 0;
+	while ((i < numElements0) 
+	    && (i < numElements1))
+	{
+	    if (elements[i] < 0.)
+	        target.setElement(i, -1.);
+	    else
+	        target.setElement(i, 1.);
+	    i++;
+	}
 }
 
 std::string Vector::getValueStringF(unsigned int fieldWidth, unsigned int 

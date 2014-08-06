@@ -226,6 +226,14 @@ class Vector
 		 */
 		virtual double norm() const;
 		
+		/** Length.
+		 *
+		 * Calculate the length of this vector.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual double length() const;
+		
 		/** Normalize (in-place).
 		 *
 		 * Normalize the vector (in-place).
@@ -356,6 +364,23 @@ class Vector
 		 * \return Number of elements.
 		 */
 		virtual unsigned int getNumElements() const;
+		
+		/** Get signs of elements.
+		 *
+		 * Get the signs of the elements of the vector.
+		 *
+		 * \param target where to store the signs.
+		 */
+		virtual void getElementSigns(Ionflux::ObjectBase::IntVector& target) 
+		const;
+		
+		/** Get signs of elements.
+		 *
+		 * Get the signs of the elements of the vector.
+		 *
+		 * \param target where to store the signs.
+		 */
+		virtual void getElementSigns(Ionflux::GeoUtils::Vector& target) const;
 		
 		/** Get string representation of value.
 		 *
