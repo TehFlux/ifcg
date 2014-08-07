@@ -54,6 +54,7 @@ h = viewer.getWindowHeight()
 ar = w / h
 
 ggl.enableOpenGLBackFaceCulling()
+ggl.enableOpenGLDepthBufferTest()
 
 print("  %s" % viewer.getString())
 

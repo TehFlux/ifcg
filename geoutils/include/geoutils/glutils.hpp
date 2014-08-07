@@ -96,6 +96,14 @@ unsigned int getNumElementsPerPrimitive(
  */
 void enableOpenGLBackFaceCulling(bool enable = true);
 
+/** Enable OpenGL depth buffer test.
+ *
+ * Enable OpenGL depth buffer test.
+ *
+ * \param enable enable flag
+ */
+void enableOpenGLDepthBufferTest(bool enable = true);
+
 }
 
 }

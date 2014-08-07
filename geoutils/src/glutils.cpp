@@ -155,6 +155,13 @@ void enableOpenGLBackFaceCulling(bool enable)
     glEnable(GL_CULL_FACE);
 }
 
+void enableOpenGLDepthBufferTest(bool enable)
+{
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(GL_TRUE);
+    glEnable(GL_DEPTH_TEST);
+}
+
 }
 
 }
