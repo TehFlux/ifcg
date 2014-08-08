@@ -64,8 +64,10 @@ class Edge
         virtual int getVertex(int index) const;
         virtual Ionflux::ObjectBase::IntVector getVector() const;
         virtual void setVertex(int index, int value);
+        virtual void sort();
         virtual bool operator==(const Ionflux::GeoUtils::Edge& other) 
         const;
+        virtual bool operator<(const Ionflux::GeoUtils::Edge& other) const;
         virtual bool operator!=(const Ionflux::GeoUtils::Edge& other) 
         const;
         virtual std::string getValueString() const;
@@ -81,6 +83,7 @@ class Edge
 		other);
 		static Ionflux::GeoUtils::Edge* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Edge* create(int initV0, int initV1, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Edge* create(const 

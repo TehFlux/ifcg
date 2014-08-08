@@ -217,6 +217,8 @@ class VertexAttribute
         newData);
         virtual unsigned int setData(const Ionflux::GeoUtils::Mesh& mesh, 
         Ionflux::GeoUtils::VertexAttributeTypeID attrType = TYPE_POSITION, 
+        Ionflux::GeoUtils::MeshNFaceTypeID nFaceType = 
+        Ionflux::GeoUtils::Mesh::NFACE_TYPE_FACE, 
         Ionflux::GeoUtils::FaceDataTypeID faceDataType = 
         FaceData::TYPE_VERTEX_NORMAL);
         virtual float getFloat(unsigned int elementIndex, unsigned int 

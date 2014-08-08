@@ -169,6 +169,14 @@ class Range3
 		 */
 		virtual void extend(const Ionflux::GeoUtils::Vector3& v);
 		
+		/** Extend range.
+		 *
+		 * Extend the range by the specified radius delta.
+		 *
+		 * \param rd radius delta.
+		 */
+		virtual void extend(double rd);
+		
 		/** Get center.
 		 *
 		 * Get the center vector of the range.
@@ -215,6 +223,22 @@ class Range3
 		 */
 		virtual Ionflux::GeoUtils::Vector3 getValue(const 
 		Ionflux::GeoUtils::Vector3 v) const;
+		
+		/** Get minimum value.
+		 *
+		 * Get the minimum vector contained within the range.
+		 *
+		 * \return Minimum vector.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 getRMin() const;
+		
+		/** Get maximum value.
+		 *
+		 * Get the maximum vector contained within the range.
+		 *
+		 * \return Maximum vector.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 getRMax() const;
 		
 		/** Clamp vector.
 		 *

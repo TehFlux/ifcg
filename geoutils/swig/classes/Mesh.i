@@ -49,6 +49,8 @@ Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const std::string DEFAULT_ID;
+		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_FACE;
+		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_EDGE;
         
         Mesh();
 		Mesh(const Ionflux::GeoUtils::Mesh& other);
@@ -63,8 +65,14 @@ Ionflux::GeoUtils::TransformableObject
         virtual void clear();
         virtual void clearData();
         virtual void setFaceIDs();
+        virtual void setEdgeIDs();
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID);
+        virtual Ionflux::GeoUtils::NFace* 
+        getNFace(Ionflux::GeoUtils::MeshNFaceTypeID typeID, unsigned int 
+        index) const;
+        virtual unsigned int 
+        getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID typeID) const;
         virtual int checkPlaneInner(const Ionflux::GeoUtils::Plane3& plane,
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual int checkSphereInner(const Ionflux::GeoUtils::Sphere3& 
@@ -100,7 +108,10 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::Mesh& transform(const 
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Mesh& duplicate();
-        virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
+        virtual void getFacePolygons(Ionflux::GeoUtils::Polygon3Set& 
+        target);
+        virtual void getEdgePolygons(Ionflux::GeoUtils::Polygon3Set& 
+        target);
         virtual void removeBackfaces(const Ionflux::GeoUtils::Vector3& 
         front);
         virtual void sortFaces(Ionflux::GeoUtils::FaceCompare* compFunc = 
@@ -125,8 +136,8 @@ Ionflux::GeoUtils::TransformableObject
         static Ionflux::GeoUtils::Mesh* fiber(unsigned int aSubDivs = 10, 
         unsigned int lSubDivs = 10, double length = 1., double radius = 
         0.05);
-        virtual std::string getXML_legacy() const;
-        virtual void writeToFile_legacy(const std::string& fileName) const;
+        static std::string 
+        getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID typeID);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -176,7 +187,20 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void addFaces(Ionflux::GeoUtils::Mesh* newFaces);        
         virtual void removeFace(Ionflux::GeoUtils::Face* removeElement);
 		virtual void removeFaceIndex(unsigned int removeIndex);
-		virtual void clearFaces();
+		virtual void clearFaces();        
+        virtual unsigned int getNumEdges() const;
+        virtual Ionflux::GeoUtils::NFace* getEdge(unsigned int elementIndex
+        = 0) const;
+		virtual int findEdge(Ionflux::GeoUtils::NFace* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::NFace*>& getEdges();
+        virtual void addEdge(Ionflux::GeoUtils::NFace* addElement);
+		virtual Ionflux::GeoUtils::NFace* addEdge();
+		virtual void addEdges(std::vector<Ionflux::GeoUtils::NFace*>& newEdges);
+		virtual void addEdges(Ionflux::GeoUtils::Mesh* newEdges);        
+        virtual void removeEdge(Ionflux::GeoUtils::NFace* removeElement);
+		virtual void removeEdgeIndex(unsigned int removeIndex);
+		virtual void clearEdges();
 };
 
 }

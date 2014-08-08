@@ -128,8 +128,10 @@ struct Color
 typedef std::vector<Ionflux::GeoUtils::TexCoords> TexCoordsVector;
 typedef std::vector<Ionflux::GeoUtils::Color> ColorVector;
 
+class NFace;
 class Face;
 
+typedef std::vector<Ionflux::GeoUtils::NFace*> NFaceVector;
 typedef std::vector<Ionflux::GeoUtils::Face*> FaceVector;
 
 typedef int CenteringMethod;
@@ -206,6 +208,10 @@ struct AAPlanePairIntersection
     double tNear;
     double tFar;
 };
+
+typedef int MeshNFaceTypeID;
+
+typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;
 
 // constants.hpp
 
@@ -616,6 +622,7 @@ $SplitSet
 $BoundingBox
 $Camera
 $Vertex
+$NFace
 $Face
 $Mesh
 $Voxel
@@ -702,4 +709,7 @@ $CameraXMLFactory
 %template(ParamControlVector) std::vector<Ionflux::GeoUtils::TransformNodes::ParamControl*>;
 %template(VectorVector) std::vector<Ionflux::GeoUtils::Vector*>;
 %template(VectorSetVector) std::vector<Ionflux::GeoUtils::VectorSet*>;
+%template(NFaceVector) std::vector<Ionflux::GeoUtils::NFace*>;
+%template(FaceVector) std::vector<Ionflux::GeoUtils::Face*>;
+%template(EdgeObjSet) std::set<Ionflux::GeoUtils::Edge>;
 

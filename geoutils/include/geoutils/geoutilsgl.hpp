@@ -34,6 +34,8 @@
 #include "geoutils/VertexAttribute.hpp"
 #include "geoutils/VertexArrayObject.hpp"
 #include "geoutils/Viewer.hpp"
+#include "geoutils/ViewerEvent.hpp"
+#include "geoutils/ViewerEventSet.hpp"
 
 /** \file geoutilsgl.hpp
  * \brief GeoUtils GL library (header).

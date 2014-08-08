@@ -187,9 +187,11 @@ typedef std::vector<Ionflux::GeoUtils::TexCoords> TexCoordsVector;
 /// Vector of Colors.
 typedef std::vector<Ionflux::GeoUtils::Color> ColorVector;
 
-
+class NFace;
 class Face;
 
+/// Vector of N-faces.
+typedef std::vector<Ionflux::GeoUtils::NFace*> NFaceVector;
 /// Vector of faces.
 typedef std::vector<Ionflux::GeoUtils::Face*> FaceVector;
 
@@ -311,13 +313,19 @@ typedef int FaceDataTypeID;
 /// Axis-aligned plane pair intersection.
 struct AAPlanePairIntersection
 {
-    // Valid flag.
+    /// Valid flag.
     bool valid;
-    // Intersection parameter for the near plane.
+    /// Intersection parameter for the near plane.
     double tNear;
-    // Intersection parameter for the far plane.
+    /// Intersection parameter for the far plane.
     double tFar;
 };
+
+/// Mesh N-face type ID.
+typedef int MeshNFaceTypeID;
+
+/// Set of edges.
+typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;
 
 }
 

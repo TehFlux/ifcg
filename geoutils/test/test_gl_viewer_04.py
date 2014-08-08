@@ -190,6 +190,7 @@ va1 = ggl.VertexAttribute.create()
 va2 = ggl.VertexAttribute.create()
 va2.init()
 va2.setData(mesh0, ggl.VertexAttribute.TYPE_DATA, 
+    cg.Mesh.NFACE_TYPE_FACE, 
     cg.FaceData.TYPE_VERTEX_COLOR)
 va2.update()
 
@@ -197,6 +198,7 @@ va2.update()
 va3 = ggl.VertexAttribute.create()
 va3.init()
 va3.setData(mesh0, ggl.VertexAttribute.TYPE_DATA, 
+    cg.Mesh.NFACE_TYPE_FACE, 
     cg.FaceData.TYPE_VERTEX_NORMAL)
 va3.update()
 

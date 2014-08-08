@@ -28,6 +28,7 @@
 #include "geoutils/geoutils.hpp"
 #include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils_private.hpp"
+#include "geoutils/xmlio/MeshXMLFactory.hpp"
 
 using namespace Ionflux::GeoUtils;
 using namespace Ionflux::GeoUtils::XMLUtils;
@@ -51,96 +52,6 @@ void getSVGPolygons(const std::string& fileName,
         Polygon3* p0 = target.addPolygon();
         extractSVGVertices(*i, *p0->getVertexSource());
     }
-}
-
-// Initialize mesh from an XML element.
-void getMesh_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Mesh& target)
-{
-    std::ostringstream message;
-    const char* a0 = e0->Value();
-    if (std::string(a0) != "mesh")
-        throw GeoUtilsError("XML element is not a mesh.");
-    TiXmlElement* v0 = Ionflux::ObjectBase::XMLUtils::findElementByName(
-        e0, "vertices");
-    if (v0 == 0)
-    {
-        message << "Element 'vertices' not found.";
-        throw GeoUtilsError(message.str());
-    }
-    TiXmlElement* f0 = Ionflux::ObjectBase::XMLUtils::findElementByName(
-        e0, "faces");
-    if (f0 == 0)
-    {
-        message << "Element 'faces' not found.";
-        throw GeoUtilsError(message.str());
-    }
-    TiXmlElement* vs0e = 
-        Ionflux::ObjectBase::XMLUtils::findElementByName(
-            v0, "vertex3set");
-    if (vs0e == 0)
-    {
-        message << "Element 'vertex3set' not found.";
-        throw GeoUtilsError(message.str());
-    }
-    const char* d1 = vs0e->Attribute("d");
-    if (d1 == 0)
-    {
-        message << "Element 'vertex3set' does not have attribute 'd'.";
-        throw GeoUtilsError(message.str());
-    }
-    Vertex3Set* vs0 = Vertex3Set::create();
-    extractXMLVertices(d1, *vs0);
-    TiXmlElement* f1 = f0->FirstChildElement();
-    FaceVector fv0;
-    while (f1 != 0)
-    {
-        const char* a0 = f1->Value();
-        if (std::string(a0) == "f")
-        {
-            a0 = f1->Attribute("d");
-            if (a0 == 0)
-            {
-                message << "Element 'f' does not have attribute 'd'.";
-                throw GeoUtilsError(message.str());
-            }
-            std::string vertexData(a0);
-            a0 = f1->Attribute("uv");
-            if (a0 == 0)
-            {
-                message << "Element 'f' does not have attribute 'uv'.";
-                throw GeoUtilsError(message.str());
-            }
-            std::string texCoordData(a0);
-            Face* f2 = Face::create();
-            f2->setFromXMLData_legacy(vertexData, texCoordData);
-            fv0.push_back(f2);
-        }
-        f1 = f1->NextSiblingElement();
-    }
-    target.setVertexSource(vs0);
-    target.addFaces(fv0);
-    target.update();
-}
-
-void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Mesh& target)
-{
-    std::ostringstream message;
-    TiXmlDocument d0(fileName.c_str());
-    if (!d0.LoadFile(TIXML_ENCODING_UTF8))
-    {
-        message << "Unable to read from file '" << fileName << "'.";
-        throw GeoUtilsError(message.str());
-    }
-    TiXmlElement* m0 =
-        Ionflux::ObjectBase::XMLUtils::findElementByID(
-            d0.RootElement(), "mesh", elementID);
-    if (m0 == 0)
-    {
-        message << "Element 'mesh' with ID '" << elementID << "' not found.";
-        throw GeoUtilsError(message.str());
-    }
-    getMesh_legacy(m0, target);
 }
 
 // Initialize box bounds item from an XML element.
@@ -204,7 +115,9 @@ void getBoundingBox(TiXmlElement* e0, Ionflux::GeoUtils::BoundingBox& target)
         {
             // Mesh.
             Mesh* m0 = Mesh::create();
-            getMesh_legacy(c0, *m0);
+            MeshXMLFactory* xf = MeshXMLFactory::upcast(
+                m0->getXMLObjectFactory());
+            xf->initObject(c0, *m0, b0);
             target.addItem(m0);
         }
         c0 = c0->NextSiblingElement();
@@ -230,46 +143,6 @@ void getBoundingBox(const std::string& fileName, const std::string& elementID,
         throw GeoUtilsError(message.str());
     }
     getBoundingBox(b0, target);
-}
-
-// Initialize vertex set from an XML element.
-void getVertex3Set_legacy(TiXmlElement* e0, Ionflux::GeoUtils::Vertex3Set& target)
-{
-    std::ostringstream message;
-    const char* a0 = e0->Value();
-    if (std::string(a0) != "vertex3set")
-        throw GeoUtilsError("[getVertex3Set] "
-            "XML element is not a vertex set.");
-    const char* d0 = e0->Attribute("d");
-    if (d0 == 0)
-    {
-        message << "[getVertex3Set] "
-            "Element 'vertex3set' does not have attribute 'd'.";
-        throw GeoUtilsError(message.str());
-    }
-    extractXMLVertices(d0, target);
-}
-
-void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Vertex3Set& target)
-{
-    std::ostringstream message;
-    TiXmlDocument d0(fileName.c_str());
-    if (!d0.LoadFile(TIXML_ENCODING_UTF8))
-    {
-        message << "[getVertex3Set] "
-            "Unable to read from file '" << fileName << "'.";
-        throw GeoUtilsError(message.str());
-    }
-    TiXmlElement* m0 = Ionflux::ObjectBase::XMLUtils::findElementByID(
-        d0.RootElement(), "vertex3set", elementID);
-    if (m0 == 0)
-    {
-        message << "[getVertex3Set] "
-            "Element 'vertex3set' with ID '" << elementID << "' not found.";
-        throw GeoUtilsError(message.str());
-    }
-    getVertex3Set_legacy(m0, target);
 }
 
 }

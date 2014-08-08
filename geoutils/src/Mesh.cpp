@@ -70,6 +70,8 @@ MeshClassInfo::~MeshClassInfo()
 
 // public member constants
 const std::string Mesh::DEFAULT_ID = "mesh01";
+const Ionflux::GeoUtils::MeshNFaceTypeID Mesh::NFACE_TYPE_FACE = 0;
+const Ionflux::GeoUtils::MeshNFaceTypeID Mesh::NFACE_TYPE_EDGE = 1;
 
 // run-time type information instance constants
 const MeshClassInfo Mesh::meshClassInfo;
@@ -127,6 +129,7 @@ Ionflux::GeoUtils::Vector3::ZERO, ""), vertexSource(0)
 Mesh::~Mesh()
 {
 	clearFaces();
+	clearEdges();
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -173,7 +176,7 @@ void Mesh::update()
 	    "update", "Vertex source");
 	// Determine the bounds.
 	recalculateBounds();
-	// Update the faces.
+	// update faces.
 	for (FaceVector::iterator i = faces.begin(); 
 	    i != faces.end(); i++)
 	{
@@ -186,6 +189,19 @@ void Mesh::update()
 	    }
 	    f->update();
 	}
+	// update edges.
+	for (NFaceVector::iterator i = edges.begin(); 
+	    i != edges.end(); i++)
+	{
+	    NFace* e = *i;
+	    if (e->getVertexSource() == 0)
+	    {
+	        /* If the vertex source is not defined for the edge, set it 
+	           to the vertex source of this mesh. */
+	        e->setVertexSource(vertexSource);
+	    }
+	    e->update();
+	}
 	updateRadiusAndCenter();
 }
 
@@ -193,6 +209,7 @@ void Mesh::clear()
 {
 	setVertexSource(0);
 	clearFaces();
+	clearEdges();
 	BoxBoundsItem::clear();
 	TransformableObject::clear();
 }
@@ -202,6 +219,7 @@ void Mesh::clearData()
 	if (vertexSource != 0)
 	    vertexSource->clearVertices();
 	clearFaces();
+	clearEdges();
 	BoxBoundsItem::clear();
 	TransformableObject::clear();
 }
@@ -220,25 +238,99 @@ void Mesh::setFaceIDs()
 	}
 }
 
+void Mesh::setEdgeIDs()
+{
+	std::ostringstream eid;
+	unsigned int k = 0;
+	for (NFaceVector::const_iterator i = edges.begin(); 
+	    i != edges.end(); i++)
+	{
+	    eid.str("");
+	    eid << "edge" << right << setfill('0') << setw(8) << k;
+	    (*i)->setItemID(eid.str());
+	    k++;
+	}
+}
+
 Ionflux::GeoUtils::BoxBoundsItem* Mesh::getItem(const std::string& itemID)
 {
-	std::ostringstream message;
-	if ((itemID.size() < 12) 
-	    || (itemID.substr(0, 4) != "face"))
+	if (itemID.size() < 4)
 	{
-	    message << "Bad item ID for mesh: '" << itemID << "'";
-	    throw GeoUtilsError(getErrorString(message.str(), "getItem"));
+	    std::ostringstream status;
+	    status << "Bad item ID for mesh: '" << itemID << "'";
+	    throw GeoUtilsError(getErrorString(status.str(), "getItem"));
 	}
-	size_t i0 = itemID.find_first_not_of("0", 4);
-	unsigned int fi = 0;
-	if (i0 != string::npos)
-	    fi = strtol(itemID.substr(i0).c_str(), 0, 10);
-	if (fi >= faces.size())
+	std::string itemType = itemID.substr(0, 4);
+	if (itemType == "face")
 	{
-	    message << "Invalid face index: '" << itemID << "'";
-	    throw GeoUtilsError(getErrorString(message.str(), "getItem"));
+	    // face
+	    if (itemID.size() < 12)
+	    {
+	        std::ostringstream status;
+	        status << "Bad item ID for mesh: '" << itemID 
+	            << "' (itemType = " << itemType << ")";
+	        throw GeoUtilsError(getErrorString(status.str(), "getItem"));
+	    }
+	    size_t i0 = itemID.find_first_not_of("0", 4);
+	    unsigned int fi = 0;
+	    if (i0 != string::npos)
+	        fi = strtol(itemID.substr(i0).c_str(), 0, 10);
+	    if (fi >= faces.size())
+	    {
+	        std::ostringstream status;
+	        status << "Invalid face index: '" << itemID << "'";
+	        throw GeoUtilsError(getErrorString(status.str(), "getItem"));
+	    }
+	    return faces[fi];
+	} else
+	if (itemType == "edge")
+	{
+	    // edge
+	    if (itemID.size() < 12)
+	    {
+	        std::ostringstream status;
+	        status << "Bad item ID for mesh: '" << itemID 
+	            << "' (itemType = " << itemType << ")";
+	        throw GeoUtilsError(getErrorString(status.str(), "getItem"));
+	    }
+	    size_t i0 = itemID.find_first_not_of("0", 4);
+	    unsigned int ei = 0;
+	    if (i0 != string::npos)
+	        ei = strtol(itemID.substr(i0).c_str(), 0, 10);
+	    if (ei >= edges.size())
+	    {
+	        std::ostringstream status;
+	        status << "Invalid edge index: '" << itemID << "'";
+	        throw GeoUtilsError(getErrorString(status.str(), "getItem"));
+	    }
+	    return edges[ei];
+	} else
+	{
+	    std::ostringstream status;
+	    status << "Bad item type for mesh: '" << itemType << "'";
+	    throw GeoUtilsError(getErrorString(status.str(), "getItem"));
 	}
-	return faces[fi];
+	return 0;
+}
+
+Ionflux::GeoUtils::NFace* Mesh::getNFace(Ionflux::GeoUtils::MeshNFaceTypeID
+typeID, unsigned int index) const
+{
+	if (typeID == NFACE_TYPE_FACE)
+	    return getFace(index);
+	if (typeID == NFACE_TYPE_EDGE)
+	    return getEdge(index);
+	return 0;
+}
+
+unsigned int Mesh::getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID typeID) 
+const
+{
+	if (typeID == NFACE_TYPE_FACE)
+	    return getNumFaces();
+	if (typeID == NFACE_TYPE_EDGE)
+	    return getNumEdges();
+	return 0;
 }
 
 int Mesh::checkPlaneInner(const Ionflux::GeoUtils::Plane3& plane, double t)
@@ -337,6 +429,7 @@ bool Mesh::operator==(const Ionflux::GeoUtils::Mesh& other) const
 	if (faces.size() != other.faces.size())
 	    return false;
 	bool result = true;
+	// faces
 	unsigned int i = 0;
 	while (result 
 	    && (i < faces.size()))
@@ -345,6 +438,20 @@ bool Mesh::operator==(const Ionflux::GeoUtils::Mesh& other) const
 	        result = false;
 	    i++;
 	}
+	if (!result)
+	    return false;
+	// edges
+	i = 0;
+	while (result 
+	    && (i < edges.size()))
+	{
+	    if (edges[i] != other.edges[i])
+	        result = false;
+	    i++;
+	}
+	if (!result)
+	    return false;
+	// vertices
 	if ((vertexSource == 0) && (other.vertexSource == 0))
 	    return true;
 	if ((vertexSource == 0) || (other.vertexSource == 0))
@@ -406,7 +513,7 @@ void Mesh::applyTransform(bool recursive)
 	    vertexSource->transformVI(*getViewMatrix(), getImageMatrix());
 	if (useTransform() || useVI())
 	    vertexSource->applyTransform(recursive);
-	// Update faces.
+	// update faces.
 	for (FaceVector::iterator i = faces.begin(); i != faces.end(); i++)
 	{
 	    // Update vertex source used by the faces.
@@ -416,6 +523,16 @@ void Mesh::applyTransform(bool recursive)
 	    // Clear face data dependent on transformation.
 	    f0->clearTangentSpace();
 	    f0->clearPolygon();
+	}
+	// update edges
+	for (NFaceVector::iterator i = edges.begin(); i != edges.end(); i++)
+	{
+	    // Update vertex source used by the edges.
+	    NFace* e0 = *i;
+	    if (e0->getVertexSource() == vs0)
+	        e0->setVertexSource(vertexSource);
+	    // Clear edge data dependent on transformation.
+	    e0->clearPolygon();
 	}
 	removeLocalRef(vs0);
 	clearTransformations();
@@ -482,7 +599,7 @@ Ionflux::GeoUtils::Mesh& Mesh::duplicate()
 	return *copy();
 }
 
-void Mesh::getPolygons(Ionflux::GeoUtils::Polygon3Set& target)
+void Mesh::getFacePolygons(Ionflux::GeoUtils::Polygon3Set& target)
 {
 	Polygon3Set* ps0 = 0;
 	bool t0 = false;
@@ -501,6 +618,36 @@ void Mesh::getPolygons(Ionflux::GeoUtils::Polygon3Set& target)
 	    // Add face polygons to the target or temporary set.
 	    Face* f0 = *i;
 	    ps0->addPolygon(f0->getPolygon());
+	}
+	if (t0)
+	{
+	    /* Transform polygons in the temporary set, then add them to 
+	       the target set. */
+	    ps0->applyTransform();
+	    target.addPolygons(ps0);
+	    delete ps0;
+	}
+}
+
+void Mesh::getEdgePolygons(Ionflux::GeoUtils::Polygon3Set& target)
+{
+	Polygon3Set* ps0 = 0;
+	bool t0 = false;
+	if (useTransform() || useVI())
+	{
+	    /* Use a temporary polygon set to transform the polygons 
+	       according to the mesh transformations. */
+	    ps0 = Polygon3Set::create();
+	    ps0->copyTransform(*this);
+	    t0 = true;
+	} else
+	    ps0 = &target;
+	for (NFaceVector::iterator i = edges.begin(); 
+	    i != edges.end(); i++)
+	{
+	    // Add edge polygons to the target or temporary set.
+	    NFace* e0 = *i;
+	    ps0->addPolygon(e0->getPolygon());
 	}
 	if (t0)
 	{
@@ -687,6 +834,26 @@ std::string Mesh::getValueString() const
 	        else
 	            e0 = false;
 	        status << "[" << f0->getValueString() << "]";
+	    }
+	    status << "]";
+	} else
+	    status << "<none>";
+	// edges
+	status << "; edges: ";
+	unsigned int numEdges = edges.size();
+	if (numEdges > 0)
+	{
+	    status << "[";
+	    bool ef0 = true;
+	    for (NFaceVector::const_iterator i = edges.begin(); 
+	        i != edges.end(); i++)
+	    {
+	        NFace* e0 = *i;
+	        if (!ef0)
+	            status << ", ";
+	        else
+	            ef0 = false;
+	        status << "[" << e0->getValueString() << "]";
 	    }
 	    status << "]";
 	} else
@@ -1031,29 +1198,14 @@ lSubDivs, double length, double radius)
 	return m0;
 }
 
-std::string Mesh::getXML_legacy() const
+std::string Mesh::getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID 
+typeID)
 {
-	ostringstream d0;
-	std::string mID = getID();
-	if (mID.size() == 0)
-	    mID = DEFAULT_ID;
-	d0 << "<mesh id=\"" << mID << "\"><vertices>";
-	// Vertices.
-	d0 << vertexSource->getXML_legacy();
-	// Faces.
-	d0 << "</vertices><faces>";
-	for (FaceVector::const_iterator i = faces.begin(); 
-	    i != faces.end(); i++)
-	    d0 << (*i)->getXML_legacy();
-	d0 << "</faces></mesh>";
-	return d0.str();
-}
-
-void Mesh::writeToFile_legacy(const std::string& fileName) const
-{
-	ofstream f0;
-	f0.open(fileName.c_str(), ios_base::out);
-	f0 << XML_HEADER << getXML_legacy();
+	if (typeID == NFACE_TYPE_FACE)
+	    return "face";
+	if (typeID == NFACE_TYPE_EDGE)
+	    return "edge";
+	return "<unknown>";
 }
 
 void Mesh::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)
@@ -1261,6 +1413,115 @@ void Mesh::clearFaces()
 	faces.clear();
 }
 
+unsigned int Mesh::getNumEdges() const
+{
+    return edges.size();
+}
+
+Ionflux::GeoUtils::NFace* Mesh::getEdge(unsigned int elementIndex) const
+{
+    if (elementIndex < edges.size())
+		return edges[elementIndex];
+	return 0;
+}
+
+int Mesh::findEdge(Ionflux::GeoUtils::NFace* needle, unsigned int 
+occurence) const
+{
+    bool found = false;
+	Ionflux::GeoUtils::NFace* currentEdge = 0;
+	unsigned int i = 0;
+	while (!found 
+		&& (i < edges.size()))
+	{
+		currentEdge = edges[i];
+		if (currentEdge == needle)
+        {
+            if (occurence == 1)
+			    found = true;
+            else
+                occurence--;
+		} else
+			i++;
+	}
+	if (found)
+        return i;
+	return -1;
+}
+
+std::vector<Ionflux::GeoUtils::NFace*>& Mesh::getEdges()
+{
+    return edges;
+}
+
+void Mesh::addEdge(Ionflux::GeoUtils::NFace* addElement)
+{
+	addLocalRef(addElement);
+	edges.push_back(addElement);
+}
+
+Ionflux::GeoUtils::NFace* Mesh::addEdge()
+{
+	Ionflux::GeoUtils::NFace* o0 = NFace::create();
+	addEdge(o0);
+	return o0;
+}
+
+void Mesh::addEdges(const std::vector<Ionflux::GeoUtils::NFace*>& newEdges)
+{
+	for (std::vector<Ionflux::GeoUtils::NFace*>::const_iterator i = newEdges.begin(); 
+	    i != newEdges.end(); i++)
+	    addEdge(*i);
+}
+
+void Mesh::addEdges(Ionflux::GeoUtils::Mesh* newEdges)
+{
+	for (unsigned int i = 0; 
+	    i < newEdges->getNumEdges(); i++)
+	    addEdge(newEdges->getEdge(i));
+}
+
+void Mesh::removeEdge(Ionflux::GeoUtils::NFace* removeElement)
+{
+    bool found = false;
+	Ionflux::GeoUtils::NFace* currentEdge = 0;
+	unsigned int i = 0;
+	while (!found 
+		&& (i < edges.size()))
+	{
+		currentEdge = edges[i];
+		if (currentEdge == removeElement)
+			found = true;
+		else
+			i++;
+	}
+	if (found)
+	{
+		edges.erase(edges.begin() + i);
+		if (currentEdge != 0)
+			removeLocalRef(currentEdge);
+	}
+}
+
+void Mesh::removeEdgeIndex(unsigned int removeIndex)
+{
+    if (removeIndex > edges.size())
+        return;
+	Ionflux::GeoUtils::NFace* e0 = edges[removeIndex];
+    edges.erase(edges.begin() + removeIndex);
+    if (e0 != 0)
+        removeLocalRef(e0);
+}
+
+void Mesh::clearEdges()
+{
+    std::vector<Ionflux::GeoUtils::NFace*>::iterator i;
+	for (i = edges.begin(); i != edges.end(); i++)
+		if (*i != 0)
+			removeLocalRef(*i);
+	edges.clear();
+}
+
 Ionflux::GeoUtils::Mesh& Mesh::operator=(const Ionflux::GeoUtils::Mesh& 
 other)
 {
@@ -1268,6 +1529,7 @@ other)
         return *this;
     TransformableObject::operator=(other);
     setVertexSource(other.vertexSource);
+    // faces
     FaceVector f0;
     for (FaceVector::const_iterator i = other.faces.begin(); 
         i != other.faces.end(); i++)
@@ -1278,6 +1540,15 @@ other)
     }
     clearFaces();
     addFaces(f0);
+    // edges
+    NFaceVector ev0;
+    for (NFaceVector::const_iterator i = other.edges.begin(); 
+        i != other.edges.end(); i++)
+    {
+        NFace* e0 = Ionflux::ObjectBase::nullPointerCheck(*i, this, 
+            "operator=", "Edge");
+        ev0.push_back(e0->copy());
+    }
     BoxBoundsItem::clear();
     TransformableObject::clear();
     update();
@@ -1377,6 +1648,11 @@ const
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(faces, "vec", "", 
         indentLevel, "pname=\"faces\"");
+    xcFirst = false;
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(edges, "vec", "", 
+        indentLevel, "pname=\"edges\"");
     xcFirst = false;
 	target = d0.str();
 }

@@ -137,6 +137,16 @@ void Range3::extend(const Ionflux::GeoUtils::Vector3& v)
 	z.extend(v[2]);
 }
 
+void Range3::extend(double rd)
+{
+	Vector3 r(getRadius());
+	Vector3 c(getCenter());
+	double r0 = r.length();
+	Vector3 nr(r.normalize() * (r0 + rd));
+	extend(c - nr);
+	extend(c + nr);
+}
+
 Ionflux::GeoUtils::Vector3 Range3::getCenter() const
 {
 	// TODO: Implementation.
@@ -171,6 +181,18 @@ Ionflux::GeoUtils::Vector3 v) const
 {
 	// TODO: Implementation.
 	return Vector3(x.getValue(v.getX0()), y.getValue(v.getX1()), z.getValue(v.getX2()));
+}
+
+Ionflux::GeoUtils::Vector3 Range3::getRMin() const
+{
+	// TODO: Implementation.
+	return getValue(Vector3::ZERO);
+}
+
+Ionflux::GeoUtils::Vector3 Range3::getRMax() const
+{
+	// TODO: Implementation.
+	return getValue(Vector3::E_SUM);
 }
 
 Ionflux::GeoUtils::Vector3 Range3::clamp(const Ionflux::GeoUtils::Vector3 

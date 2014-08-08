@@ -40,7 +40,6 @@
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/VectorSet.hpp"
 #include "geoutils/Vector.hpp"
-#include "geoutils/Mesh.hpp"
 #include "geoutils/Face.hpp"
 #include "geoutils/glutils.hpp"
 #include "geoutils/glutils_private.hpp"
@@ -329,9 +328,11 @@ newData)
 
 unsigned int VertexAttribute::setData(const Ionflux::GeoUtils::Mesh& mesh, 
 Ionflux::GeoUtils::VertexAttributeTypeID attrType, 
+Ionflux::GeoUtils::MeshNFaceTypeID nFaceType, 
 Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 {
-	if (!mesh.isTriMesh())
+	if ((nFaceType == Ionflux::GeoUtils::Mesh::NFACE_TYPE_FACE) 
+	    && !mesh.isTriMesh())
 	{
 	    throw GeoUtilsError(getErrorString(
 	        "Mesh is not a tri-mesh.", "setData"));
@@ -345,21 +346,41 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	    throw GeoUtilsError(getErrorString(
 	        status.str(), "setData"));
 	}
-	unsigned int numFaces = mesh.getNumFaces();
+	unsigned int numNFaces = mesh.getNumNFaces(nFaceType);
 	// <---- DEBUG ----- //
 	std::cerr << "[VertexAttribute::setData] DEBUG: "
-	    "numFaces = " << numFaces << ", attrType = " 
-	    << getTypeIDString(attrType) << ", faceDataType = " 
-	    << FaceData::getTypeIDString(faceDataType) << std::endl;
+	    "numNFaces = " << numNFaces 
+	    << ", attrType = " << getTypeIDString(attrType) 
+	    << ", nFaceType = " 
+	        << Ionflux::GeoUtils::Mesh::getNFaceTypeIDString(nFaceType)
+	    << ", faceDataType = " << FaceData::getTypeIDString(faceDataType) 
+	    << std::endl;
 	// ----- DEBUG ----> */
 	VectorSet vs0;
 	Ionflux::ObjectBase::UIntVector iv0;
 	unsigned int numAttr = 0;
-	for (unsigned int i = 0; i < numFaces; i++)
+	unsigned int nv0 = 0;
+	for (unsigned int i = 0; i < numNFaces; i++)
 	{
-	    Face* f0 = mesh.getFace(i);
+	    NFace* f0 = mesh.getNFace(nFaceType, i);
 	    if (f0 != 0)
 	    {
+	        if (i == 0)
+	            nv0 = f0->getNumVertices();
+	        else
+	        {
+	            unsigned int nv1 = f0->getNumVertices();
+	            if (nv0 != nv1)
+	            {
+	                std::ostringstream status;
+	                status << "Inconsistent vertex count (type = " 
+	                    << Ionflux::GeoUtils::Mesh::getNFaceTypeIDString(
+	                        nFaceType) << ", N-face = " << i << ", nv0 = " 
+	                    << nv0 << ", nv1 = " << nv1 << ")";
+	                throw GeoUtilsError(getErrorString(
+	                    status.str(), "setData"));
+	            }
+	        }
 	        if (attrType == TYPE_POSITION)
 	        {
 	            // vertex position
@@ -378,7 +399,7 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	            if (fd0 == 0)
 	            {
 	                std::ostringstream status;
-	                status << "Face data not set (type = " 
+	                status << "N-face data not set (type = " 
 	                    << FaceData::getTypeIDString(faceDataType) 
 	                    << "(" << faceDataType << ")" 
 	                    << ", face = " << i << ")";

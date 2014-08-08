@@ -265,4 +265,5 @@ $ColorSet
 %template(ColorStopVector) std::vector<Ionflux::Altjira::ColorStop>;
 %template(ImageVector) std::vector<Ionflux::Altjira::Image*>;
 %template(GIHRankSpecVector) std::vector<Ionflux::Altjira::GIHRankSpec>;
-%template(ColorVector) std::vector<Ionflux::Altjira::Color>;
+%template(ColorVector) std::vector<Ionflux::Altjira::Color*>;
+%template(ColorObjVector) std::vector<Ionflux::Altjira::Color>;

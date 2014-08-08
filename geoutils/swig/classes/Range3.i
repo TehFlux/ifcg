@@ -66,12 +66,15 @@ class Range3
         virtual ~Range3();
         virtual void extend(const Ionflux::GeoUtils::Range3& other);
         virtual void extend(const Ionflux::GeoUtils::Vector3& v);
+        virtual void extend(double rd);
         virtual Ionflux::GeoUtils::Vector3 getCenter() const;
         virtual Ionflux::GeoUtils::Vector3 getRadius() const;
         virtual Ionflux::GeoUtils::Vector3 getExtent() const;
         virtual double getExtent(Ionflux::GeoUtils::AxisID axis) const;
         virtual Ionflux::GeoUtils::Vector3 getValue(const 
         Ionflux::GeoUtils::Vector3 v) const;
+        virtual Ionflux::GeoUtils::Vector3 getRMin() const;
+        virtual Ionflux::GeoUtils::Vector3 getRMax() const;
         virtual Ionflux::GeoUtils::Vector3 clamp(const 
         Ionflux::GeoUtils::Vector3 v) const;
         virtual Ionflux::GeoUtils::Vector3 getClampedValue(const 

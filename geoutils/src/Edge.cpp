@@ -142,7 +142,8 @@ void Edge::setVertex(int index, int value)
 	{
 	    ostringstream message;
 	    message << "Index out of range: " << index;
-	    throw GeoUtilsError(message.str());
+	    throw GeoUtilsError(getErrorString(message.str(), 
+	        "setVertex"));
 	}
 	if (index == 0)
 	    v0 = value;
@@ -151,11 +152,32 @@ void Edge::setVertex(int index, int value)
 	    v1 = value;
 }
 
+void Edge::sort()
+{
+	if (v0 <= v1)
+	    return;
+	int vt = v0;
+	v0 = v1;
+	v1 = vt;
+}
+
 bool Edge::operator==(const Ionflux::GeoUtils::Edge& other) const
 {
 	if (!((v0 == other.v0) && (v1 == other.v1)))
-	        return false;
+	    return false;
 	return true;
+}
+
+bool Edge::operator<(const Ionflux::GeoUtils::Edge& other) const
+{
+	if (v0 < other.v0)
+	    return true;
+	if (v0 == other.v0)
+	{
+	    if (v1 < other.v1)
+	        return true;
+	}
+	return false;
 }
 
 bool Edge::operator!=(const Ionflux::GeoUtils::Edge& other) const

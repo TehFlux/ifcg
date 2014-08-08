@@ -58,30 +58,6 @@ void getSVGPolygons(const std::string& fileName,
     Ionflux::GeoUtils::Polygon3Set& target);
 
 /**
- * Get vertex set from XML file.
- *
- * Get a vertex set, identified by an element ID, from a certain XML file.
- *
- * \param fileName File name.
- * \param elementID Element ID.
- * \param target Vertex set to be initialized.
- */
-void getVertex3Set_legacy(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Vertex3Set& target);
-
-/**
- * Get mesh from XML file.
- *
- * Get a mesh, identified by an element ID, from a certain XML file.
- *
- * \param fileName File name.
- * \param elementID Element ID.
- * \param target Mesh to be initialized.
- */
-void getMesh_legacy(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::Mesh& target);
-
-/**
  * Get bounding box hierarchy from XML file.
  *
  * Get a bounding box hierarchy, identified by an element ID, from a certain 
@@ -91,8 +67,8 @@ void getMesh_legacy(const std::string& fileName, const std::string& elementID,
  * \param elementID Element ID.
  * \param target bounding box to be initialized.
  */
-void getBoundingBox(const std::string& fileName, const std::string& elementID, 
-    Ionflux::GeoUtils::BoundingBox& target);
+void getBoundingBox(const std::string& fileName, 
+    const std::string& elementID, Ionflux::GeoUtils::BoundingBox& target);
 
 }
 

@@ -177,6 +177,12 @@ class Edge
 		 */
 		virtual void setVertex(int index, int value);
 		
+		/** Sort vertex indices.
+		 *
+		 * Sort the vertex indices for the edge in ascending order.
+		 */
+		virtual void sort();
+		
 		/** Comparison operator: equality.
 		 *
 		 * Compare equality.
@@ -186,6 +192,16 @@ class Edge
 		 * \return Result of the comparison.
 		 */
 		virtual bool operator==(const Ionflux::GeoUtils::Edge& other) const;
+		
+		/** Comparison operator: less than.
+		 *
+		 * Compare equality.
+		 *
+		 * \param other Edge.
+		 *
+		 * \return Result of the comparison.
+		 */
+		virtual bool operator<(const Ionflux::GeoUtils::Edge& other) const;
 		
 		/** Comparison operator: inequality.
 		 *

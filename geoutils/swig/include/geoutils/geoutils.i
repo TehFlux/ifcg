@@ -128,8 +128,10 @@ struct Color
 typedef std::vector<Ionflux::GeoUtils::TexCoords> TexCoordsVector;
 typedef std::vector<Ionflux::GeoUtils::Color> ColorVector;
 
+class NFace;
 class Face;
 
+typedef std::vector<Ionflux::GeoUtils::NFace*> NFaceVector;
 typedef std::vector<Ionflux::GeoUtils::Face*> FaceVector;
 
 typedef int CenteringMethod;
@@ -206,6 +208,10 @@ struct AAPlanePairIntersection
     double tNear;
     double tFar;
 };
+
+typedef int MeshNFaceTypeID;
+
+typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;
 
 // constants.hpp
 
@@ -1196,12 +1202,15 @@ class Range3
         virtual ~Range3();
         virtual void extend(const Ionflux::GeoUtils::Range3& other);
         virtual void extend(const Ionflux::GeoUtils::Vector3& v);
+        virtual void extend(double rd);
         virtual Ionflux::GeoUtils::Vector3 getCenter() const;
         virtual Ionflux::GeoUtils::Vector3 getRadius() const;
         virtual Ionflux::GeoUtils::Vector3 getExtent() const;
         virtual double getExtent(Ionflux::GeoUtils::AxisID axis) const;
         virtual Ionflux::GeoUtils::Vector3 getValue(const 
         Ionflux::GeoUtils::Vector3 v) const;
+        virtual Ionflux::GeoUtils::Vector3 getRMin() const;
+        virtual Ionflux::GeoUtils::Vector3 getRMax() const;
         virtual Ionflux::GeoUtils::Vector3 clamp(const 
         Ionflux::GeoUtils::Vector3 v) const;
         virtual Ionflux::GeoUtils::Vector3 getClampedValue(const 
@@ -2228,8 +2237,10 @@ class Edge
         virtual int getVertex(int index) const;
         virtual Ionflux::ObjectBase::IntVector getVector() const;
         virtual void setVertex(int index, int value);
+        virtual void sort();
         virtual bool operator==(const Ionflux::GeoUtils::Edge& other) 
         const;
+        virtual bool operator<(const Ionflux::GeoUtils::Edge& other) const;
         virtual bool operator!=(const Ionflux::GeoUtils::Edge& other) 
         const;
         virtual std::string getValueString() const;
@@ -2245,6 +2256,7 @@ class Edge
 		other);
 		static Ionflux::GeoUtils::Edge* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Edge* create(int initV0, int initV1, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Edge* create(const 
@@ -4512,7 +4524,7 @@ class Vertex
 
 
 %{
-#include "geoutils/Face.hpp"
+#include "geoutils/NFace.hpp"
 %}
 
 namespace Ionflux
@@ -4524,41 +4536,42 @@ namespace GeoUtils
 class VectorSetSet;
 class FaceData;
 
-class FaceClassInfo
+class NFaceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
     public:
-        FaceClassInfo();
-        virtual ~FaceClassInfo();
+        NFaceClassInfo();
+        virtual ~NFaceClassInfo();
 };
 
-class Face
-: public Ionflux::GeoUtils::BoxBoundsItem, public 
+class NFace
+: virtual public Ionflux::GeoUtils::BoxBoundsItem, virtual public 
 Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const unsigned int VERTEX_INDEX_NONE;
         
-        Face();
-		Face(const Ionflux::GeoUtils::Face& other);
-        Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
+        NFace();
+		NFace(const Ionflux::GeoUtils::NFace& other);
+        NFace(const Ionflux::ObjectBase::UIntVector* initVerts, 
         Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
         Ionflux::GeoUtils::FaceData* initUV = 0, 
         Ionflux::GeoUtils::FaceData* initVertexColors = 0);
-        Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned 
-        int v3 = Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
+        NFace(unsigned int v0, unsigned int v1, unsigned int v2 = 
+        Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, unsigned int v3 = 
+        Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, 
         Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
         Ionflux::GeoUtils::FaceData* initUV = 0, 
         Ionflux::GeoUtils::FaceData* initVertexColors = 0);
-        virtual ~Face();
+        virtual ~NFace();
         virtual void copyVertices();
         virtual void update();
-        virtual void clearTangentSpace();
         virtual void clearPolygon();
         virtual void clear();
-        virtual void addVertices(unsigned int v0, unsigned int v1, unsigned
-        int v2, unsigned int v3 = 
-        Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE);
+        virtual void addVertices(unsigned int v0, unsigned int v1 = 
+        Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, unsigned int v2 = 
+        Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, unsigned int v3 = 
+        Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE);
         virtual Ionflux::GeoUtils::VectorSet* 
         addFaceData(Ionflux::GeoUtils::FaceData* newFaceData);
         virtual Ionflux::GeoUtils::VectorSet* 
@@ -4580,7 +4593,6 @@ Ionflux::GeoUtils::TransformableObject
         addVertexNormals(Ionflux::GeoUtils::Vector* v0, 
         Ionflux::GeoUtils::Vector* v1 = 0, Ionflux::GeoUtils::Vector* v2 = 
         0, Ionflux::GeoUtils::Vector* v3 = 0);
-        virtual void setFaceVertexNormals();
         virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
         dataType, Ionflux::GeoUtils::VectorSetSet& target);
         virtual Ionflux::GeoUtils::FaceData* 
@@ -4599,10 +4611,6 @@ Ionflux::GeoUtils::TransformableObject
         index = 0);
         virtual void getFaceDataByVertex(Ionflux::ObjectBase::UIntVector& 
         faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target);
-        virtual Ionflux::GeoUtils::Vector3 getTangent();
-        virtual Ionflux::GeoUtils::Vector3 getBinormal();
-        virtual Ionflux::GeoUtils::Vector3 getNormal();
-        virtual Ionflux::GeoUtils::Matrix3 getTangentBase();
         virtual Ionflux::GeoUtils::Polygon3* getPolygon();
         virtual bool checkLineInner(const Ionflux::GeoUtils::Line3& line, 
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
@@ -4612,24 +4620,138 @@ Ionflux::GeoUtils::TransformableObject
         sphere, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual int checkBoxInner(const Ionflux::GeoUtils::BoxBoundsItem& 
         other, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
-        virtual Ionflux::GeoUtils::FaceVector getTris0();
         virtual Ionflux::GeoUtils::Vertex3* getVertexData(unsigned int 
         index) const;
-        virtual bool isTri() const;
-        virtual bool isQuad() const;
         virtual bool isPlanar(double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual void makePlanar(double p = 1., double t = 
-        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
-        virtual bool operator==(const Ionflux::GeoUtils::Face& other) 
+        virtual bool isEdge() const;
+        virtual bool isTri() const;
+        virtual bool isQuad() const;
+        virtual bool operator==(const Ionflux::GeoUtils::NFace& other) 
         const;
-        virtual bool operator!=(const Ionflux::GeoUtils::Face& other) 
+        virtual bool operator!=(const Ionflux::GeoUtils::NFace& other) 
         const;
-        virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
         virtual Ionflux::GeoUtils::Vector3 getBarycenter();
         virtual Ionflux::GeoUtils::Range3 getBounds();
         virtual void applyTransform(bool recursive = false);
+        virtual Ionflux::GeoUtils::NFace& scale(const 
+        Ionflux::GeoUtils::Vector3& s);
+        virtual Ionflux::GeoUtils::NFace& translate(const 
+        Ionflux::GeoUtils::Vector3& t);
+        virtual Ionflux::GeoUtils::NFace& rotate(double phi, 
+        Ionflux::GeoUtils::AxisID axis = Ionflux::GeoUtils::AXIS_Z);
+        virtual Ionflux::GeoUtils::NFace& normalize();
+        virtual Ionflux::GeoUtils::NFace& 
+        center(Ionflux::GeoUtils::CenteringMethod method = 
+        Ionflux::GeoUtils::CENTER_BARYCENTER, Ionflux::GeoUtils::Vector3* 
+        origin = 0);
+        virtual Ionflux::GeoUtils::NFace& transform(const 
+        Ionflux::GeoUtils::Matrix4& matrix);
+        virtual Ionflux::GeoUtils::NFace& transform(const 
+        Ionflux::GeoUtils::Matrix3& matrix);
+        virtual Ionflux::GeoUtils::NFace& duplicate();
+        virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
+		virtual Ionflux::GeoUtils::NFace* copy() const;
+		static Ionflux::GeoUtils::NFace* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::GeoUtils::NFace* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;
+		static Ionflux::GeoUtils::NFace* create(const 
+		Ionflux::ObjectBase::UIntVector* initVerts, 
+		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::GeoUtils::NFace* create(unsigned int v0, unsigned int v1,
+		unsigned int v2 = Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, unsigned 
+		int v3 = Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, 
+		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);        
+        virtual unsigned int getNumVertices() const;
+        virtual unsigned int getVertex(unsigned int elementIndex = 0) 
+        const;
+		virtual int findVertex(unsigned int needle, unsigned int occurence = 1) 
+		const;
+        virtual std::vector<unsigned int>& getVertices();
+        virtual void addVertex(unsigned int addElement);
+		virtual unsigned int addVertex();
+		virtual void addVertices(std::vector<unsigned int>& newVertices);
+		virtual void addVertices(Ionflux::GeoUtils::NFace* newVertices);        
+        virtual void removeVertex(unsigned int removeElement);
+		virtual void removeVertexIndex(unsigned int removeIndex);
+		virtual void clearVertices();
+        virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
+        newVertexSource);
+        virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;
+        virtual void setFaceData(Ionflux::GeoUtils::VectorSetSet* 
+        newFaceData);
+        virtual Ionflux::GeoUtils::VectorSetSet* getFaceData() const;
+};
+
+}
+
+}
+
+
+%{
+#include "geoutils/Face.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class VectorSetSet;
+class FaceData;
+
+class FaceClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        FaceClassInfo();
+        virtual ~FaceClassInfo();
+};
+
+class Face
+: public Ionflux::GeoUtils::NFace
+{
+    public:
+        
+        Face();
+		Face(const Ionflux::GeoUtils::Face& other);
+        Face(const Ionflux::ObjectBase::UIntVector* initVerts, 
+        Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+        Ionflux::GeoUtils::FaceData* initUV = 0, 
+        Ionflux::GeoUtils::FaceData* initVertexColors = 0);
+        Face(unsigned int v0, unsigned int v1, unsigned int v2, unsigned 
+        int v3 = Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, 
+        Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
+        Ionflux::GeoUtils::FaceData* initUV = 0, 
+        Ionflux::GeoUtils::FaceData* initVertexColors = 0);
+        virtual ~Face();
+        virtual void update();
+        virtual void clearTangentSpace();
+        virtual void clear();
+        virtual void setFaceVertexNormals();
+        virtual Ionflux::GeoUtils::Vector3 getTangent();
+        virtual Ionflux::GeoUtils::Vector3 getBinormal();
+        virtual Ionflux::GeoUtils::Vector3 getNormal();
+        virtual Ionflux::GeoUtils::Matrix3 getTangentBase();
+        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
+        virtual Ionflux::GeoUtils::FaceVector getTris0();
+        virtual void makePlanar(double p = 1., double t = 
+        Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
         virtual Ionflux::GeoUtils::Face& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Face& translate(const 
@@ -4646,12 +4768,6 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::Face& transform(const 
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Face& duplicate();
-        virtual std::string getValueString() const;
-        virtual std::string getXMLDataVertices_legacy() const;
-        virtual std::string getXMLDataTexCoords_legacy() const;
-        virtual std::string getXML_legacy() const;
-        virtual void setFromXMLData_legacy(const std::string& vertexData, 
-        const std::string& texCoordData);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -4672,29 +4788,10 @@ Ionflux::GeoUtils::TransformableObject
 		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Face* create(unsigned int v0, unsigned int v1, 
 		unsigned int v2, unsigned int v3 = 
-		Ionflux::GeoUtils::Face::VERTEX_INDEX_NONE, 
+		Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, 
 		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
 		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
-		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);        
-        virtual unsigned int getNumVertices() const;
-        virtual unsigned int getVertex(unsigned int elementIndex = 0) 
-        const;
-		virtual int findVertex(unsigned int needle, unsigned int occurence = 1) 
-		const;
-        virtual std::vector<unsigned int>& getVertices();
-        virtual void addVertex(unsigned int addElement);
-		virtual unsigned int addVertex();
-		virtual void addVertices(std::vector<unsigned int>& newVertices);
-		virtual void addVertices(Ionflux::GeoUtils::Face* newVertices);        
-        virtual void removeVertex(unsigned int removeElement);
-		virtual void removeVertexIndex(unsigned int removeIndex);
-		virtual void clearVertices();
-        virtual void setVertexSource(Ionflux::GeoUtils::Vertex3Set* 
-        newVertexSource);
-        virtual Ionflux::GeoUtils::Vertex3Set* getVertexSource() const;
-        virtual void setFaceData(Ionflux::GeoUtils::VectorSetSet* 
-        newFaceData);
-        virtual Ionflux::GeoUtils::VectorSetSet* getFaceData() const;
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
 };
 
 }
@@ -4727,6 +4824,8 @@ Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const std::string DEFAULT_ID;
+		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_FACE;
+		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_EDGE;
         
         Mesh();
 		Mesh(const Ionflux::GeoUtils::Mesh& other);
@@ -4741,8 +4840,14 @@ Ionflux::GeoUtils::TransformableObject
         virtual void clear();
         virtual void clearData();
         virtual void setFaceIDs();
+        virtual void setEdgeIDs();
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID);
+        virtual Ionflux::GeoUtils::NFace* 
+        getNFace(Ionflux::GeoUtils::MeshNFaceTypeID typeID, unsigned int 
+        index) const;
+        virtual unsigned int 
+        getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID typeID) const;
         virtual int checkPlaneInner(const Ionflux::GeoUtils::Plane3& plane,
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual int checkSphereInner(const Ionflux::GeoUtils::Sphere3& 
@@ -4778,7 +4883,10 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::Mesh& transform(const 
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::Mesh& duplicate();
-        virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
+        virtual void getFacePolygons(Ionflux::GeoUtils::Polygon3Set& 
+        target);
+        virtual void getEdgePolygons(Ionflux::GeoUtils::Polygon3Set& 
+        target);
         virtual void removeBackfaces(const Ionflux::GeoUtils::Vector3& 
         front);
         virtual void sortFaces(Ionflux::GeoUtils::FaceCompare* compFunc = 
@@ -4803,8 +4911,8 @@ Ionflux::GeoUtils::TransformableObject
         static Ionflux::GeoUtils::Mesh* fiber(unsigned int aSubDivs = 10, 
         unsigned int lSubDivs = 10, double length = 1., double radius = 
         0.05);
-        virtual std::string getXML_legacy() const;
-        virtual void writeToFile_legacy(const std::string& fileName) const;
+        static std::string 
+        getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID typeID);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -4854,7 +4962,20 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void addFaces(Ionflux::GeoUtils::Mesh* newFaces);        
         virtual void removeFace(Ionflux::GeoUtils::Face* removeElement);
 		virtual void removeFaceIndex(unsigned int removeIndex);
-		virtual void clearFaces();
+		virtual void clearFaces();        
+        virtual unsigned int getNumEdges() const;
+        virtual Ionflux::GeoUtils::NFace* getEdge(unsigned int elementIndex
+        = 0) const;
+		virtual int findEdge(Ionflux::GeoUtils::NFace* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::NFace*>& getEdges();
+        virtual void addEdge(Ionflux::GeoUtils::NFace* addElement);
+		virtual Ionflux::GeoUtils::NFace* addEdge();
+		virtual void addEdges(std::vector<Ionflux::GeoUtils::NFace*>& newEdges);
+		virtual void addEdges(Ionflux::GeoUtils::Mesh* newEdges);        
+        virtual void removeEdge(Ionflux::GeoUtils::NFace* removeElement);
+		virtual void removeEdgeIndex(unsigned int removeIndex);
+		virtual void clearEdges();
 };
 
 }
@@ -8144,6 +8265,7 @@ class FaceXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::FaceXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8242,6 +8364,7 @@ class MeshXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::MeshXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8519,4 +8642,7 @@ class CameraXMLFactory
 %template(ParamControlVector) std::vector<Ionflux::GeoUtils::TransformNodes::ParamControl*>;
 %template(VectorVector) std::vector<Ionflux::GeoUtils::Vector*>;
 %template(VectorSetVector) std::vector<Ionflux::GeoUtils::VectorSet*>;
+%template(NFaceVector) std::vector<Ionflux::GeoUtils::NFace*>;
+%template(FaceVector) std::vector<Ionflux::GeoUtils::Face*>;
+%template(EdgeObjSet) std::set<Ionflux::GeoUtils::Edge>;
 

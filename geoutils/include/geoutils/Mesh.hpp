@@ -75,6 +75,8 @@ Ionflux::GeoUtils::TransformableObject
 		Ionflux::GeoUtils::Vertex3Set* vertexSource;
 		/// Face vector.
 		std::vector<Ionflux::GeoUtils::Face*> faces;
+		/// Edge vector.
+		std::vector<Ionflux::GeoUtils::NFace*> edges;
 		
 		/** Recalculate bounds.
 		 *
@@ -85,6 +87,10 @@ Ionflux::GeoUtils::TransformableObject
 	public:
 		/// Default ID.
 		static const std::string DEFAULT_ID;
+		/// Mesh N-face type: face.
+		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_FACE;
+		/// Mesh N-face type: edge.
+		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_EDGE;
 		/// Class information instance.
 		static const MeshClassInfo meshClassInfo;
 		/// Class information.
@@ -172,6 +178,13 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void setFaceIDs();
 		
+		/** Set edge IDs.
+		 *
+		 * Set the item IDs of the edges. This is useful for saving and 
+		 * restoring the bounding box hierarchy, if one has been created.
+		 */
+		virtual void setEdgeIDs();
+		
 		/** Get item.
 		 *
 		 * Return the item with the specified ID. Throws an error if no valid 
@@ -181,10 +194,35 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \param itemID Item ID.
 		 *
-		 * \return .
+		 * \return Item with the specified ID, or 0 if no matching item exists.
 		 */
 		virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const std::string& 
 		itemID);
+		
+		/** Get N-face.
+		 *
+		 * Get the mesh N-face of the specified type with the specified index.
+		 *
+		 * \param typeID N-face type ID.
+		 * \param index index.
+		 *
+		 * \return N-face with the specified type and index, or 0 if no matching 
+		 * N-face exists.
+		 */
+		virtual Ionflux::GeoUtils::NFace* 
+		getNFace(Ionflux::GeoUtils::MeshNFaceTypeID typeID, unsigned int index) 
+		const;
+		
+		/** Get number of N-faces.
+		 *
+		 * Get the number of mesh N-faces of the specified type.
+		 *
+		 * \param typeID N-face type ID.
+		 *
+		 * \return Number of N-faces of the specified type.
+		 */
+		virtual unsigned int getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID 
+		typeID) const;
 		
 		/** Check position relative to plane.
 		 *
@@ -390,13 +428,21 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual Ionflux::GeoUtils::Mesh& duplicate();
 		
-		/** Get polygons.
+		/** Get face polygons.
 		 *
-		 * Get the polygons of the (transformed) mesh.
+		 * Get the face polygons of the (transformed) mesh.
 		 *
 		 * \param target Where to store the polygons.
 		 */
-		virtual void getPolygons(Ionflux::GeoUtils::Polygon3Set& target);
+		virtual void getFacePolygons(Ionflux::GeoUtils::Polygon3Set& target);
+		
+		/** Get edge polygons.
+		 *
+		 * Get the edge polygons of the (transformed) mesh.
+		 *
+		 * \param target Where to store the polygons.
+		 */
+		virtual void getEdgePolygons(Ionflux::GeoUtils::Polygon3Set& target);
 		
 		/** Remove backfaces.
 		 *
@@ -538,21 +584,16 @@ Ionflux::GeoUtils::TransformableObject
 		static Ionflux::GeoUtils::Mesh* fiber(unsigned int aSubDivs = 10, 
 		unsigned int lSubDivs = 10, double length = 1., double radius = 0.05);
 		
-		/** Get XML representation.
+		/** Get N-face type ID string.
 		 *
-		 * Get an XML representation of the object.
+		 * Get a string representation for an N-face type ID.
 		 *
-		 * \return XML representation.
+		 * \param typeID N-face type ID.
+		 *
+		 * \return String representation.
 		 */
-		virtual std::string getXML_legacy() const;
-		
-		/** Write to file.
-		 *
-		 * Write mesh data to a (XML) file.
-		 *
-		 * \param fileName .
-		 */
-		virtual void writeToFile_legacy(const std::string& fileName) const;
+		static std::string 
+		getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID typeID);
 		
 		/** Assignment operator.
 		 *
@@ -866,6 +907,96 @@ Ionflux::GeoUtils::TransformableObject
 		 * Clear all faces.
 		 */
 		virtual void clearFaces();
+		
+		/** Get number of edges.
+		 *
+		 * \return Number of edges.
+		 */
+		virtual unsigned int getNumEdges() const;
+		
+		/** Get edge.
+		 *
+		 * Get the edge at the specified index.
+		 *
+		 * \param elementIndex Element index.
+		 *
+		 * \return Edge at specified index.
+		 */
+		virtual Ionflux::GeoUtils::NFace* getEdge(unsigned int elementIndex = 0) 
+		const;
+		
+		/** Find edge.
+		 *
+		 * Find the specified occurence of a edge.
+		 *
+		 * \param needle Edge to be found.
+		 * \param occurence Number of the occurence to be found.
+		 *
+		 * \return Index of the edge, or -1 if the edge cannot be found.
+		 */
+		virtual int findEdge(Ionflux::GeoUtils::NFace* needle, unsigned int 
+		occurence = 1) const;
+        
+		/** Get edge vector.
+		 *
+		 * \return edge vector.
+		 */
+		virtual std::vector<Ionflux::GeoUtils::NFace*>& getEdges();
+		
+		/** Add edge.
+		 *
+		 * Add a edge.
+		 *
+		 * \param addElement Edge to be added.
+		 */
+		virtual void addEdge(Ionflux::GeoUtils::NFace* addElement);
+		
+		/** Create edge.
+		 *
+		 * Create a new edge which is managed by the edge set.
+		 *
+		 * \return New edge.
+		 */
+		virtual Ionflux::GeoUtils::NFace* addEdge();
+		
+		/** Add edges.
+		 *
+		 * Add edges from a edge vector.
+		 *
+		 * \param newEdges edges.
+		 */
+		virtual void addEdges(const std::vector<Ionflux::GeoUtils::NFace*>& 
+		newEdges);
+		
+		/** Add edges.
+		 *
+		 * Add edges from a edge set.
+		 *
+		 * \param newEdges edges.
+		 */
+		virtual void addEdges(Ionflux::GeoUtils::Mesh* newEdges);
+		
+		/** Remove edge.
+		 *
+		 * Remove a edge.
+		 *
+		 * \param removeElement Edge to be removed.
+		 */
+		virtual void removeEdge(Ionflux::GeoUtils::NFace* removeElement);
+		
+		/** Remove edge.
+		 *
+		 * Remove a edge.
+		 *
+		 * \param removeIndex Edge to be removed.
+		 */
+		virtual void removeEdgeIndex(unsigned int removeIndex);
+		
+		/** Clear edges.
+		 *
+		 * Clear all edges.
+		 */
+		virtual void clearEdges();
 };
 
 }
