@@ -162,6 +162,11 @@ void enableOpenGLDepthBufferTest(bool enable)
     glEnable(GL_DEPTH_TEST);
 }
 
+void setOpenGLLineWidth(double width)
+{
+    glLineWidth(width);
+}
+
 }
 
 }

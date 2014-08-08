@@ -104,6 +104,14 @@ void enableOpenGLBackFaceCulling(bool enable = true);
  */
 void enableOpenGLDepthBufferTest(bool enable = true);
 
+/** Set OpenGL line width.
+ *
+ * Set the OpenGL line width.
+ *
+ * \param width line width
+ */
+void setOpenGLLineWidth(double width);
+
 }
 
 }

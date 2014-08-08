@@ -85,6 +85,7 @@ unsigned int getNumElementsPerPrimitive(
     Ionflux::GeoUtils::PrimitiveID primitive);
 void enableOpenGLBackFaceCulling(bool enable = true);
 void enableOpenGLDepthBufferTest(bool enable = true);
+void setOpenGLLineWidth(double width);
 
 }
 

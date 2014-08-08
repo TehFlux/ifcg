@@ -84,6 +84,8 @@
 #include "geoutils/Camera.hpp"
 #include "geoutils/Vertex.hpp"
 #include "geoutils/Face.hpp"
+#include "geoutils/NFace.hpp"
+#include "geoutils/NFaceSet.hpp"
 #include "geoutils/Mesh.hpp"
 #include "geoutils/mappings.hpp"
 #include "geoutils/transformnodes.hpp"

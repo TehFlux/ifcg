@@ -353,6 +353,11 @@ faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target)
 	    return;
 	unsigned int n0 = faceData->getNumVectorSets();
 	unsigned int n2 = faceVertexIndices.size();
+	if (n2 == 0)
+	{
+	    throw GeoUtilsError(getErrorString(
+	        "Face vertex index vector is empty.", "getFaceDataByVertex"));
+	}
 	for (unsigned int i = 0; i < n0; i++)
 	{
 	    FaceData* cfd = FaceData::upcast(faceData->getVectorSet(i));
@@ -373,6 +378,12 @@ faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target)
 	                    cfd->getVector(i0), this, "getFaceDataByVertex", 
 	                        "Face data vector");
 	                v0.push_back(cv0->copy());
+	            } else
+	            {
+	                std::ostringstream status;
+	                status << "Invalid face vertex index: " << i0;
+	                throw GeoUtilsError(getErrorString(status.str(), 
+	                    "getFaceDataByVertex"));
 	            }
 	        }
 	        /* <---- DEBUG ----- //
@@ -588,6 +599,24 @@ bool NFace::isQuad() const
 	if (vertices.size() == 4)
 	    return true;
 	return false;
+}
+
+void NFace::getEdge(Ionflux::GeoUtils::Edge& target) const
+{
+	if (!isEdge())
+	{
+	    throw GeoUtilsError(getErrorString(
+	        "N-face is not an edge.", "getEdge"));
+	}
+	target.setV0(getVertex(0));
+	target.setV1(getVertex(1));
+}
+
+Ionflux::GeoUtils::Edge NFace::getEdge0() const
+{
+	Edge e0;
+	getEdge(e0);
+	return e0;
 }
 
 bool NFace::operator==(const Ionflux::GeoUtils::NFace& other) const

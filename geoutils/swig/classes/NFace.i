@@ -128,6 +128,8 @@ Ionflux::GeoUtils::TransformableObject
         virtual bool isEdge() const;
         virtual bool isTri() const;
         virtual bool isQuad() const;
+        virtual void getEdge(Ionflux::GeoUtils::Edge& target) const;
+        virtual Ionflux::GeoUtils::Edge getEdge0() const;
         virtual bool operator==(const Ionflux::GeoUtils::NFace& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::NFace& other) 

@@ -39,6 +39,7 @@ namespace GeoUtils
 
 class VectorSetSet;
 class FaceData;
+class NFaceSet;
 
 namespace XMLUtils
 {
@@ -206,9 +207,39 @@ class Face
 		 * Create triangles for a quad face. The new faces are not referenced 
 		 * and must be managed by the caller.
 		 *
+		 * \param target where to store the triangles.
+		 */
+		virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
+		
+		/** Get triangle faces.
+		 *
+		 * Create triangles for a quad face. The new faces are not referenced 
+		 * and must be managed by the caller.
+		 *
 		 * \return Vector containing triangle faces.
 		 */
 		virtual Ionflux::GeoUtils::FaceVector getTris0();
+		
+		/** Get triangle edges.
+		 *
+		 * Create edges for a face. The new edges are not referenced and must 
+		 * be managed by the caller.
+		 *
+		 * \param target where to store the edges.
+		 * \param copyFaceData copy corresponding face data to the new edges.
+		 */
+		virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
+		copyFaceData = true);
+		
+		/** Get triangle edges.
+		 *
+		 * Create edges for a face.
+		 *
+		 * \param target where to store the edges.
+		 * \param copyFaceData copy corresponding face data to the new edges.
+		 */
+		virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
+		copyFaceData = true);
 		
 		/** Make face planar.
 		 *

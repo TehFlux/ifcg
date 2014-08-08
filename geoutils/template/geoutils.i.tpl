@@ -623,6 +623,7 @@ $BoundingBox
 $Camera
 $Vertex
 $NFace
+$NFaceSet
 $Face
 $Mesh
 $Voxel

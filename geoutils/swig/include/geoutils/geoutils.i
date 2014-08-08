@@ -4627,6 +4627,8 @@ Ionflux::GeoUtils::TransformableObject
         virtual bool isEdge() const;
         virtual bool isTri() const;
         virtual bool isQuad() const;
+        virtual void getEdge(Ionflux::GeoUtils::Edge& target) const;
+        virtual Ionflux::GeoUtils::Edge getEdge0() const;
         virtual bool operator==(const Ionflux::GeoUtils::NFace& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::NFace& other) 
@@ -4702,6 +4704,62 @@ Ionflux::GeoUtils::TransformableObject
 
 
 %{
+#include "geoutils/NFaceSet.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace GeoUtils
+{
+
+class NFace;
+
+class NFaceSetClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        NFaceSetClassInfo();
+        virtual ~NFaceSetClassInfo();
+};
+
+class NFaceSet
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        NFaceSet();
+		NFaceSet(const Ionflux::GeoUtils::NFaceSet& other);
+        virtual ~NFaceSet();
+        virtual std::string getValueString() const;
+		virtual Ionflux::GeoUtils::NFaceSet* copy() const;
+		static Ionflux::GeoUtils::NFaceSet* upcast(Ionflux::ObjectBase::IFObject*
+		other);
+		static Ionflux::GeoUtils::NFaceSet* create(Ionflux::ObjectBase::IFObject*
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
+        virtual unsigned int getNumNFaces() const;
+        virtual Ionflux::GeoUtils::NFace* getNFace(unsigned int 
+        elementIndex = 0) const;
+		virtual int findNFace(Ionflux::GeoUtils::NFace* needle, unsigned int 
+		occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::NFace*>& getNFaces();
+        virtual void addNFace(Ionflux::GeoUtils::NFace* addElement);
+		virtual Ionflux::GeoUtils::NFace* addNFace();
+		virtual void addNFaces(std::vector<Ionflux::GeoUtils::NFace*>& 
+		newNFaces);
+		virtual void addNFaces(Ionflux::GeoUtils::NFaceSet* newNFaces);        
+        virtual void removeNFace(Ionflux::GeoUtils::NFace* removeElement);
+		virtual void removeNFaceIndex(unsigned int removeIndex);
+		virtual void clearNFaces();
+};
+
+}
+
+}
+
+
+%{
 #include "geoutils/Face.hpp"
 %}
 
@@ -4713,6 +4771,7 @@ namespace GeoUtils
 
 class VectorSetSet;
 class FaceData;
+class NFaceSet;
 
 class FaceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -4748,7 +4807,12 @@ class Face
         virtual Ionflux::GeoUtils::Vector3 getNormal();
         virtual Ionflux::GeoUtils::Matrix3 getTangentBase();
         virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
+        virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
         virtual Ionflux::GeoUtils::FaceVector getTris0();
+        virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
+        copyFaceData = true);
+        virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
+        copyFaceData = true);
         virtual void makePlanar(double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
@@ -4898,6 +4962,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual unsigned int makeTris();
         virtual void setFaceVertexNormals();
         virtual bool isTriMesh() const;
+        virtual unsigned int createEdges();
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();

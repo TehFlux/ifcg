@@ -384,7 +384,7 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	        if (attrType == TYPE_POSITION)
 	        {
 	            // vertex position
-	            for (unsigned int i = 0; i < 3; i++)
+	            for (unsigned int i = 0; i < nv0; i++)
 	            {
 	                Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
 	                    mesh.getVertex(f0->getVertex(i)), this, 
@@ -406,7 +406,7 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	                throw GeoUtilsError(getErrorString(
 	                    status.str(), "setData"));
 	            }
-	            for (unsigned int i = 0; i < 3; i++)
+	            for (unsigned int i = 0; i < nv0; i++)
 	            {
 	                Vector* v0 = Ionflux::ObjectBase::nullPointerCheck(
 	                    fd0->getVector(i), this, "setData", 
@@ -417,10 +417,10 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	        if (attrType == TYPE_INDEX)
 	        {
 	            // vertex indices
-	            for (unsigned int i = 0; i < 3; i++)
+	            for (unsigned int i = 0; i < nv0; i++)
 	                iv0.push_back(f0->getVertex(i));
 	        }
-	        numAttr += 3;
+	        numAttr += nv0;
 	    }
 	}
 	if ((attrType == TYPE_POSITION) 

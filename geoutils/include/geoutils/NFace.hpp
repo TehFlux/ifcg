@@ -29,6 +29,7 @@
 
 #include "ifobject/types.hpp"
 #include "geoutils/Matrix3.hpp"
+#include "geoutils/Edge.hpp"
 #include "geoutils/BoxBoundsItem.hpp"
 #include "geoutils/TransformableObject.hpp"
 
@@ -489,6 +490,24 @@ Ionflux::GeoUtils::TransformableObject
 		 * \return \c true if the face is a quad, \c false otherwise.
 		 */
 		virtual bool isQuad() const;
+		
+		/** Get edge.
+		 *
+		 * Get the edge corresponding to the N-face. If the N-face is not an 
+		 * edge, an exception will be thrown.
+		 *
+		 * \param target where to store the edge.
+		 */
+		virtual void getEdge(Ionflux::GeoUtils::Edge& target) const;
+		
+		/** Get edge.
+		 *
+		 * Get the edge corresponding to the N-face. If the N-face is not an 
+		 * edge, an exception will be thrown.
+		 *
+		 * \return Edge.
+		 */
+		virtual Ionflux::GeoUtils::Edge getEdge0() const;
 		
 		/** Comparison operator: equality.
 		 *

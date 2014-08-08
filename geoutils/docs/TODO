@@ -21,15 +21,7 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Mesh::createEdges(): create unique edges for a mesh
-  > iterate over faces
-  > Face::createEdges(): create NFaces corresponding to face edges
-    . copy face data
-  > use Edge::sort() to obtain ordered edges and add them to a set
-  > add original N-face edge if corresponding ordered edge is not in the set
-
 + OpenGL utility library
-  > render mesh edges
   > render points
     . set point size
     . as small quad/tri surfaces

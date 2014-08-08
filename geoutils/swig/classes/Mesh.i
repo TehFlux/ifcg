@@ -123,6 +123,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual unsigned int makeTris();
         virtual void setFaceVertexNormals();
         virtual bool isTriMesh() const;
+        virtual unsigned int createEdges();
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();

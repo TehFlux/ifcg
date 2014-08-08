@@ -38,6 +38,9 @@
 #include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex.hpp"
+#include "geoutils/Edge.hpp"
+#include "geoutils/NFaceSet.hpp"
+#include "geoutils/VectorSetSet.hpp"
 #include "geoutils/FaceCompareAxis.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "ifobject/utils.hpp"
@@ -790,6 +793,63 @@ bool Mesh::isTriMesh() const
 	    i++;
 	}
 	return true;
+}
+
+unsigned int Mesh::createEdges()
+{
+	unsigned int numFaces = getNumFaces();
+	unsigned int neCount = 0;
+	NFaceSet nes;
+	NFaceSet ces;
+	EdgeObjSet es0;
+	for (unsigned int i = 0; i < numFaces; i++)
+	{
+	    Face* cf = getFace(i);
+	    if (cf != 0)
+	    {
+	        ces.clearNFaces();
+	        cf->getEdges(ces, true);
+	        for (unsigned int k = 0; k < ces.getNumNFaces(); k++)
+	        {
+	            NFace* ce0 = Ionflux::ObjectBase::nullPointerCheck(
+	                ces.getNFace(k), this, "createEdges", "Edge");
+	            Edge ce1;
+	            ce0->getEdge(ce1);
+	            ce1.sort();
+	            /* <---- DEBUG ----- //
+	            std::cerr << "[Mesh::createEdges] DEBUG: "
+	                "N-face: [" << ce0->getValueString() 
+	                << "], edge: [" << ce1.getValueString() << "]" 
+	                << std::endl;
+	            // ----- DEBUG ----> */
+	            if (es0.count(ce1) == 0)
+	            {
+	                // <---- DEBUG ----- //
+	                std::cerr << "[Mesh::createEdges] DEBUG: "
+	                    "adding edge: [" << ce0->getValueString() 
+	                    << "]" << std::endl;
+	                // ----- DEBUG ----> */
+	                // new edge
+	                es0.insert(ce1);
+	                nes.addNFace(ce0);
+	                neCount++;
+	            } else 
+	            {
+	                /* <---- DEBUG ----- //
+	                std::cerr << "[Mesh::createEdges] DEBUG: "
+	                    "not adding edge to new edge set" 
+	                    << std::endl;
+	                // ----- DEBUG ----> */
+	            }
+	        }
+	    }
+	}
+	if (neCount > 0)
+	{
+	    clearEdges();
+	    addEdges(nes.getNFaces());
+	}
+	return neCount;
 }
 
 std::string Mesh::getValueString() const

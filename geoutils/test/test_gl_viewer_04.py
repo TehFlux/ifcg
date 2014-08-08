@@ -41,6 +41,21 @@ fragmentShaderSourceFile01 = "data/shaders/lambert330.frag"
 #meshFile01 = 'test/meshes/coloricosphere01.xml'
 meshFile01 = 'temp/coloricosphere01x.xml'
 
+distance = 10.
+fov = 65.
+near = 1.
+far = 15.
+pitch = 60.
+roll = 0.
+yaw = 0.
+angleStep = 10.
+distanceStep = 0.5
+locStep = 0.5
+fovStep = 5.
+flatFaces = True
+renderEdges = False
+lineWidth = 1.
+
 print("Creating viewer...")
 
 viewer = ggl.Viewer.create()
@@ -53,22 +68,12 @@ w = viewer.getWindowWidth()
 h = viewer.getWindowHeight()
 ar = w / h
 
-ggl.enableOpenGLBackFaceCulling()
+if (not renderEdges):
+    ggl.enableOpenGLBackFaceCulling()
 ggl.enableOpenGLDepthBufferTest()
+ggl.setOpenGLLineWidth(lineWidth)
 
 print("  %s" % viewer.getString())
-
-distance = 10.
-fov = 65.
-near = 1.
-far = 15.
-pitch = 60.
-roll = 0.
-yaw = 0.
-angleStep = 10.
-distanceStep = 0.5
-locStep = 0.5
-fovStep = 5.
 
 print("  Loading mesh from file '%s'..." % meshFile01)
 
@@ -82,11 +87,20 @@ mm.addLocalRef(mesh0)
 
 mesh0.loadFromXMLFile(meshFile01)
 mesh0.update()
-#mesh0.setFaceVertexNormals()
+if (flatFaces):
+    print("    Setting face vertex normals...")
+    mesh0.setFaceVertexNormals()
+print("    Creating edges...")
+mesh0.createEdges()
 mesh0.scale(vertexScale0)
 mesh0.applyTransform()
 
+numVerts = mesh0.getNumVertices()
 numFaces = mesh0.getNumFaces()
+numEdges = mesh0.getNumEdges()
+
+print("    Loaded mesh '%s' (%d vertices, %d faces, %d edges)." 
+    % (mesh0.getID(), numVerts, numFaces, numEdges))
 
 print("Creating camera...")
 
@@ -168,10 +182,14 @@ p0.setUniform("cgLightParam", lps1)
 
 print("Initializing vertex attributes...")
 
+nFaceType = cg.Mesh.NFACE_TYPE_FACE
+if (renderEdges):
+    nFaceType = cg.Mesh.NFACE_TYPE_EDGE
+
 # vertices
 va0 = ggl.VertexAttribute.create()
 va0.init()
-va0.setData(mesh0, ggl.VertexAttribute.TYPE_POSITION)
+va0.setData(mesh0, ggl.VertexAttribute.TYPE_POSITION, nFaceType)
 va0.update()
 numVertexAttribElements = va0.getNumElements()
 
@@ -189,16 +207,14 @@ va1 = ggl.VertexAttribute.create()
 # diffuse colors
 va2 = ggl.VertexAttribute.create()
 va2.init()
-va2.setData(mesh0, ggl.VertexAttribute.TYPE_DATA, 
-    cg.Mesh.NFACE_TYPE_FACE, 
+va2.setData(mesh0, ggl.VertexAttribute.TYPE_DATA, nFaceType, 
     cg.FaceData.TYPE_VERTEX_COLOR)
 va2.update()
 
 # normals
 va3 = ggl.VertexAttribute.create()
 va3.init()
-va3.setData(mesh0, ggl.VertexAttribute.TYPE_DATA, 
-    cg.Mesh.NFACE_TYPE_FACE, 
+va3.setData(mesh0, ggl.VertexAttribute.TYPE_DATA, nFaceType, 
     cg.FaceData.TYPE_VERTEX_NORMAL)
 va3.update()
 
@@ -222,7 +238,10 @@ clock.start()
 locOffset = cg.Vector3(cg.Vector3.ZERO)
 while (not viewer.getShutdownFlag()):
     viewer.clear()
-    va0.draw(ggl.PRIMITIVE_TRIANGLE, numFaces)
+    if (renderEdges):
+        va0.draw(ggl.PRIMITIVE_LINE, numEdges)
+    else:
+        va0.draw(ggl.PRIMITIVE_TRIANGLE, numFaces)
     viewer.swapBuffers()
     viewer.pollEvents()
     # fps count

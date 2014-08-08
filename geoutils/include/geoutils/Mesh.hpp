@@ -505,6 +505,15 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual bool isTriMesh() const;
 		
+		/** Create edges.
+		 *
+		 * Create the unique edges defined by the mesh faces and add them to 
+		 * the mesh. Any existing edges will be cleared.
+		 *
+		 * \return Number of new edges that were generated.
+		 */
+		virtual unsigned int createEdges();
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.
