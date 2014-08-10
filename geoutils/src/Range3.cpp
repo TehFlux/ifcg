@@ -143,6 +143,7 @@ void Range3::extend(double rd)
 	Vector3 c(getCenter());
 	double r0 = r.length();
 	Vector3 nr(r.normalize() * (r0 + rd));
+	setBounds(c);
 	extend(c - nr);
 	extend(c + nr);
 }

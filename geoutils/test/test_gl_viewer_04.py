@@ -52,7 +52,7 @@ angleStep = 10.
 distanceStep = 0.5
 locStep = 0.5
 fovStep = 5.
-flatFaces = True
+flatFaces = False
 renderEdges = False
 lineWidth = 1.
 

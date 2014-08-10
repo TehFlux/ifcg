@@ -171,7 +171,7 @@ class Range3
 		
 		/** Extend range.
 		 *
-		 * Extend the range by the specified radius delta.
+		 * Extend (or shrink) the range by the specified radius delta.
 		 *
 		 * \param rd radius delta.
 		 */
