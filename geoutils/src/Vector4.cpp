@@ -167,6 +167,11 @@ int sourceOffset, unsigned int targetOffset)
 	Vector::setElements(other, sourceOffset, targetOffset);
 }
 
+void Vector4::setElements(double x0, double x1, double x2, double x3)
+{
+	Vector::setElements(x0, x1, x2, x3);
+}
+
 void Vector4::setV3(const Ionflux::GeoUtils::Vector3& newElements, double 
 newW)
 {

@@ -25,8 +25,6 @@ Critical stuff
   > update to state of the art
   > add sources.py
 
-+ Sample colors from a ColorBand and store them in a ColorSet.
-
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 + All uses of 'new' within the library should be checked for 0 return values.

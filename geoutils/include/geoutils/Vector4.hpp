@@ -212,6 +212,19 @@ class Vector4
 		
 		/** Set elements.
 		 *
+		 * Set elements of the vector. This is a convenience function that can
+		 * be used to set up to 12 elements of the vector at once.
+		 *
+		 * \param x0 element (0).
+		 * \param x1 element (1).
+		 * \param x2 element (2).
+		 * \param x3 element (3).
+		 */
+		virtual void setElements(double x0, double x1 = 0., double x2 = 0., 
+		double x3 = 0.);
+		
+		/** Set elements.
+		 *
 		 * Set elements from a 3-element vector. The W-coordinate will be set 
 		 * to the optional second parameter (which defaults to 1).
 		 *

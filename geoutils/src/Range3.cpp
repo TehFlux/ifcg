@@ -33,6 +33,8 @@
 #include <cfloat>
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Line3.hpp"
+#include "geoutils/Vector3.hpp"
+#include "geoutils/Mesh.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -408,6 +410,18 @@ Ionflux::GeoUtils::AxisTriple Range3::getAxisOrder() const
 {
 	// TODO: Implementation.
 	return getRadius().getAxisOrder();
+}
+
+Ionflux::GeoUtils::Mesh* Range3::getMesh() const
+{
+	Mesh* mb0 = Mesh::cube();
+	Vector3 r(getRadius());
+	Vector3 c(getCenter());
+	mb0->scale(2. * r);
+	mb0->translate(c);
+	mb0->applyTransform();
+	mb0->update();
+	return mb0;
 }
 
 bool Range3::operator==(const Ionflux::GeoUtils::Range3& other) const

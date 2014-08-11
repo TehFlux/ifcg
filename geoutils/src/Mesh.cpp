@@ -777,6 +777,17 @@ void Mesh::setFaceVertexNormals()
 	}
 }
 
+void Mesh::setFaceVertexColors(const Ionflux::GeoUtils::Vector4& color)
+{
+	unsigned int numFaces = getNumFaces();
+	for (unsigned int i = 0; i < numFaces; i++)
+	{
+	    Face* cf = getFace(i);
+	    if (cf != 0)
+	        cf->setVertexColors(color);
+	}
+}
+
 bool Mesh::isTriMesh() const
 {
 	unsigned int numFaces = getNumFaces();
@@ -850,6 +861,38 @@ unsigned int Mesh::createEdges()
 	    addEdges(nes.getNFaces());
 	}
 	return neCount;
+}
+
+void Mesh::merge(const Ionflux::GeoUtils::Mesh& other)
+{
+	unsigned int numVerts0 = getNumVertices();
+	unsigned int numVerts1 = other.getNumVertices();
+	// vertices
+	for (unsigned int i = 0; i < numVerts1; i++)
+	{
+	    Vertex3* cv0 = Ionflux::ObjectBase::nullPointerCheck(
+	        other.getVertex(i), this, "merge", "Source mesh vertex");
+	    addVertex(cv0->copy());
+	}
+	// faces
+	unsigned int numFaces1 = other.getNumFaces();
+	for (unsigned int i = 0; i < numFaces1; i++)
+	{
+	    Face* cf0 = Ionflux::ObjectBase::nullPointerCheck(
+	        other.getFace(i), this, "merge", "Source mesh face");
+	    Face* nf0 = cf0->copy();
+	    nf0->applyVertexIndexOffset(numVerts0);
+	}
+	// edges
+	unsigned int numEdges1 = other.getNumEdges();
+	for (unsigned int i = 0; i < numEdges1; i++)
+	{
+	    NFace* ce0 = Ionflux::ObjectBase::nullPointerCheck(
+	        other.getEdge(i), this, "merge", "Source mesh edge");
+	    NFace* ne0 = ce0->copy();
+	    ne0->applyVertexIndexOffset(numVerts0);
+	}
+	update();
 }
 
 std::string Mesh::getValueString() const

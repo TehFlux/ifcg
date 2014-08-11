@@ -42,6 +42,8 @@ namespace GeoUtils
 {
 
 class Line3;
+class Vertex3Set;
+class Mesh;
 
 /// Class information for class Range3.
 class Range3ClassInfo
@@ -400,11 +402,21 @@ class Range3
 		/** Get axis order.
 		 *
 		 * Get the order of the axes of the range. The longest axis will be 
-		 * the first in the triple,
+		 * the first in the triple, followed by the next longest axis and the 
+		 * smallest axis.
 		 *
 		 * \return Triple containing the axes ordered from longest to shortest.
 		 */
 		virtual Ionflux::GeoUtils::AxisTriple getAxisOrder() const;
+		
+		/** Get mesh.
+		 *
+		 * Get a mesh corresponding to the range. The new mesh will not be 
+		 * referenced and must be managed by the caller.
+		 *
+		 * \return mesh.
+		 */
+		virtual Ionflux::GeoUtils::Mesh* getMesh() const;
 		
 		/** Comparison operator: equality.
 		 *

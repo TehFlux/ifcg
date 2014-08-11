@@ -509,6 +509,14 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual Ionflux::GeoUtils::Edge getEdge0() const;
 		
+		/** Apply vertex index offset.
+		 *
+		 * Apply an offset to all vertex indices.
+		 *
+		 * \param offset offset.
+		 */
+		virtual void applyVertexIndexOffset(int offset);
+		
 		/** Comparison operator: equality.
 		 *
 		 * Compare equality.

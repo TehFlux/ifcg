@@ -35,6 +35,8 @@ namespace GeoUtils
 {
 
 class Line3;
+class Vertex3Set;
+class Mesh;
 
 class Range3ClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -103,6 +105,7 @@ class Range3
         Ionflux::GeoUtils::AAPlanePairIntersection& result, double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
         virtual Ionflux::GeoUtils::AxisTriple getAxisOrder() const;
+        virtual Ionflux::GeoUtils::Mesh* getMesh() const;
         virtual bool operator==(const Ionflux::GeoUtils::Range3& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::Range3& other) 

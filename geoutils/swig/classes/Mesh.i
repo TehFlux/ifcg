@@ -122,8 +122,11 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual unsigned int makeTris();
         virtual void setFaceVertexNormals();
+        virtual void setFaceVertexColors(const Ionflux::GeoUtils::Vector4& 
+        color);
         virtual bool isTriMesh() const;
         virtual unsigned int createEdges();
+        virtual void merge(const Ionflux::GeoUtils::Mesh& other);
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();

@@ -30,6 +30,7 @@
 #include "altjira/Matrix.hpp"
 #include "geoutils/Vector2.hpp"
 #include "geoutils/Vector3.hpp"
+#include "geoutils/Vector4.hpp"
 
 namespace Ionflux
 {
@@ -70,6 +71,26 @@ void normalToColor(const Ionflux::GeoUtils::Vector3& n,
  */
 void normalToColor(const Ionflux::GeoUtils::Vector3& n, 
     Ionflux::Altjira::Color& c);
+
+/** Convert RGBA color to vector.
+ *
+ * Convert an RGBA color to a vector.
+ * 
+ * \param c color
+ * \param target target vector
+ */
+void colorToVec(const Ionflux::Altjira::Color& c, 
+    Ionflux::GeoUtils::Vector4& target);
+
+/** Convert vector to RGBA color.
+ *
+ * Convert a vector to an RGBA color.
+ * 
+ * \param v vector
+ * \param target target color
+ */
+void vecToColor(const Ionflux::GeoUtils::Vector4& v, 
+    Ionflux::Altjira::Color& target);
 
 /** Sample matrix.
  *

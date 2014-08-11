@@ -76,6 +76,8 @@ class Vector4
         double newZ = 0., double newW = 1.);
         virtual void setElements(const Ionflux::GeoUtils::Vector& other, 
         unsigned int sourceOffset = 0, unsigned int targetOffset = 0);
+        virtual void setElements(double x0, double x1 = 0., double x2 = 0.,
+        double x3 = 0.);
         virtual void setV3(const Ionflux::GeoUtils::Vector3& newElements, 
         double newW = 1.);
         virtual Ionflux::GeoUtils::Vector4 flip() const;
@@ -119,6 +121,7 @@ class Vector4
 		other);
 		static Ionflux::GeoUtils::Vector4* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vector4* create(double initX0, double initX1, 
 		double initX2, double initX3, Ionflux::ObjectBase::IFObject* parentObject
 		= 0);

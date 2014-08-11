@@ -161,6 +161,14 @@ class Face
 		 */
 		virtual void setFaceVertexNormals();
 		
+		/** Set vertex colors.
+		 *
+		 * Set the vertex colors for the face to the specified color vector.
+		 *
+		 * \param color color vector.
+		 */
+		virtual void setVertexColors(const Ionflux::GeoUtils::Vector4& color);
+		
 		/** Get tangent vector.
 		 *
 		 * Get the tangent vector for the face.

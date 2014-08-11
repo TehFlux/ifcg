@@ -29,6 +29,8 @@
 #include <sstream>
 #include "ifmapping/utils.hpp"
 #include "ifmapping/Piece.hpp"
+#include "altjira/AltjiraError.hpp"
+#include "altjira/ColorSet.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -218,6 +220,21 @@ Ionflux::Altjira::Color ColorBand::operator()(double value)
 	Ionflux::Altjira::Color result;
 	eval(value, result);
 	return result;
+}
+
+void ColorBand::sample(unsigned int numSamples, Ionflux::Altjira::ColorSet&
+target)
+{
+	if (numSamples == 0)
+	    return;
+	double step = 1. / (numSamples - 1.);
+	double v = 0.;
+	for (unsigned int i = 0; i < numSamples; i++)
+	{
+	    Color* c0 = target.addColor();
+	    eval(v, *c0);
+	    v += step;
+	}
 }
 
 Ionflux::Altjira::ColorBand* ColorBand::rainbow()
@@ -512,7 +529,21 @@ ColorBand::create(Ionflux::ObjectBase::IFObject* parentObject)
     ColorBand* newObject = new ColorBand();
     if (newObject == 0)
     {
-        return 0;
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::ColorBand* 
+ColorBand::create(Ionflux::Altjira::ColorStopVector initColorStops, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    ColorBand* newObject = new ColorBand(initColorStops);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

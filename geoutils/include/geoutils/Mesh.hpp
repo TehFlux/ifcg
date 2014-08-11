@@ -497,6 +497,15 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void setFaceVertexNormals();
 		
+		/** Set face vertex colors.
+		 *
+		 * Set the vertex colors for all faces to the specified color vector.
+		 *
+		 * \param color color vector.
+		 */
+		virtual void setFaceVertexColors(const Ionflux::GeoUtils::Vector4& 
+		color);
+		
 		/** Triangle mesh check.
 		 *
 		 * Check whether all faces of the mesh are triangles.
@@ -513,6 +522,14 @@ Ionflux::GeoUtils::TransformableObject
 		 * \return Number of new edges that were generated.
 		 */
 		virtual unsigned int createEdges();
+		
+		/** Merge.
+		 *
+		 * Merge another mesh into the mesh.
+		 *
+		 * \param other mesh.
+		 */
+		virtual void merge(const Ionflux::GeoUtils::Mesh& other);
 		
 		/** Get string representation of value.
 		 *

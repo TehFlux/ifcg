@@ -69,6 +69,19 @@ void normalToColor(const Ionflux::GeoUtils::Vector3& n,
     c.clamp();
 }
 
+void colorToVec(const Ionflux::Altjira::Color& c, 
+    Ionflux::GeoUtils::Vector4& target)
+{
+    target.setElements(c.getRed(), c.getGreen(), 
+        c.getBlue(), c.getAlpha());
+}
+
+void vecToColor(const Ionflux::GeoUtils::Vector4& v, 
+    Ionflux::Altjira::Color& target)
+{
+    target.setComponents(v[0], v[1], v[2], v[3]);
+}
+
 double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v)
 {
     int x0 = static_cast<int>(v.getX());

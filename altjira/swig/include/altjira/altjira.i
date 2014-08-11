@@ -458,6 +458,8 @@ namespace Ionflux
 namespace Altjira
 {
 
+class ColorSet;
+
 class ColorBandClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
 {
@@ -484,6 +486,8 @@ class ColorBand
         target);
         virtual void eval(double value, Ionflux::Altjira::Color& target);
         virtual Ionflux::Altjira::Color operator()(double value);
+        virtual void sample(unsigned int numSamples, 
+        Ionflux::Altjira::ColorSet& target);
         static Ionflux::Altjira::ColorBand* rainbow();
         static Ionflux::Altjira::ColorBand* flame();
         static Ionflux::Altjira::ColorBand* ice();
@@ -495,7 +499,11 @@ class ColorBand
 		static Ionflux::Altjira::ColorBand* upcast(Ionflux::ObjectBase::IFObject*
 		other);
 		static Ionflux::Altjira::ColorBand* create(Ionflux::ObjectBase::IFObject*
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;
+		static Ionflux::Altjira::ColorBand* 
+		create(Ionflux::Altjira::ColorStopVector initColorStops, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);        
         virtual unsigned int getNumColorStops() const;
         virtual Ionflux::Altjira::ColorStop getColorStop(unsigned int 
         elementIndex = 0) const;

@@ -130,6 +130,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual bool isQuad() const;
         virtual void getEdge(Ionflux::GeoUtils::Edge& target) const;
         virtual Ionflux::GeoUtils::Edge getEdge0() const;
+        virtual void applyVertexIndexOffset(int offset);
         virtual bool operator==(const Ionflux::GeoUtils::NFace& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::NFace& other) 

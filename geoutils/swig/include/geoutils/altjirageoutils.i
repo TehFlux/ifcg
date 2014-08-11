@@ -52,6 +52,10 @@ void normalToColor(const Ionflux::GeoUtils::Vector3& n,
     Ionflux::Altjira::ByteColor& c);
 void normalToColor(const Ionflux::GeoUtils::Vector3& n, 
     Ionflux::Altjira::Color& c);
+void colorToVec(const Ionflux::Altjira::Color& c, 
+    Ionflux::GeoUtils::Vector4& target);
+void vecToColor(const Ionflux::GeoUtils::Vector4& v, 
+    Ionflux::Altjira::Color& target);
 double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v);
 double sampleMulti(Ionflux::Altjira::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 

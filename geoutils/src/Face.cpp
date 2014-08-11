@@ -166,6 +166,22 @@ void Face::setFaceVertexNormals()
 	    vn0->addVector(n0.copy());
 }
 
+void Face::setVertexColors(const Ionflux::GeoUtils::Vector4& color)
+{
+	FaceData* vc0 = getVertexColors0();
+	if (vc0 == 0)
+	{
+	    vc0 = FaceData::upcast(
+	        addFaceData(FaceData::TYPE_VERTEX_COLOR));
+	}
+	vc0->clearVectors();
+	unsigned int numVerts = getNumVertices();
+	for (unsigned int i = 0; i < numVerts; i++)
+	{
+	    vc0->addVector(color.copy());
+	}
+}
+
 Ionflux::GeoUtils::Vector3 Face::getTangent()
 {
 	if (tangent != 0)

@@ -40,6 +40,8 @@ namespace Ionflux
 namespace Altjira
 {
 
+class ColorSet;
+
 /// Class information for class ColorBand.
 class ColorBandClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -165,7 +167,7 @@ class ColorBand
 		 */
 		virtual void eval(double value, Ionflux::Altjira::Color& target);
 		
-		/** Evaluate the color band..
+		/** Evaluate the color band.
 		 *
 		 * Evaluate the color band at the specified value.
 		 *
@@ -174,6 +176,17 @@ class ColorBand
 		 * \return Resulting color.
 		 */
 		virtual Ionflux::Altjira::Color operator()(double value);
+		
+		/** Sample colors.
+		 *
+		 * Sample colors from the color band at regular intervals and store 
+		 * them in a color set.
+		 *
+		 * \param numSamples number of samples.
+		 * \param target Where to store the colors.
+		 */
+		virtual void sample(unsigned int numSamples, Ionflux::Altjira::ColorSet& 
+		target);
 		
 		/** Create color band: Rainbow.
 		 *
@@ -275,6 +288,17 @@ class ColorBand
 		 */
 		static Ionflux::Altjira::ColorBand* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new ColorBand object.
+		 *
+		 * \param initColorStops Color stops.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::ColorBand* 
+		create(Ionflux::Altjira::ColorStopVector initColorStops, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get allocated size in memory.
 		 *

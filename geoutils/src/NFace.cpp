@@ -619,6 +619,20 @@ Ionflux::GeoUtils::Edge NFace::getEdge0() const
 	return e0;
 }
 
+void NFace::applyVertexIndexOffset(int offset)
+{
+	for (unsigned int i = 0; i < vertices.size(); i++)
+	{
+	    unsigned int cv = vertices[i];
+	    if ((offset < 0) 
+	        && (static_cast<unsigned int>(-offset) > cv))
+	        cv = 0;
+	    else
+	        cv += offset;
+	    vertices[i] = cv;
+	}
+}
+
 bool NFace::operator==(const Ionflux::GeoUtils::NFace& other) const
 {
 	if (vertices.size() != other.vertices.size()) 
@@ -888,12 +902,16 @@ Ionflux::GeoUtils::VectorSetSet* NFace::getFaceData() const
 Ionflux::GeoUtils::NFace& NFace::operator=(const Ionflux::GeoUtils::NFace& 
 other)
 {
-    clear();
+    if (this == &other)
+        return *this;
+    TransformableObject::operator=(other);
+    UIntVector v0;
     for (UIntVector::const_iterator i = other.vertices.begin(); 
         i != other.vertices.end(); i++)
-        vertices.push_back(*i);
+        v0.push_back(*i);
+    clear();
+    addVertices(v0);
     setFaceData(other.faceData->copy());
-    TransformableObject::operator=(other);
     update();
 	return *this;
 }
