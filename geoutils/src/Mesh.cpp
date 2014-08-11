@@ -835,7 +835,7 @@ unsigned int Mesh::createEdges()
 	            // ----- DEBUG ----> */
 	            if (es0.count(ce1) == 0)
 	            {
-	                // <---- DEBUG ----- //
+	                /* <---- DEBUG ----- //
 	                std::cerr << "[Mesh::createEdges] DEBUG: "
 	                    "adding edge: [" << ce0->getValueString() 
 	                    << "]" << std::endl;
@@ -882,6 +882,7 @@ void Mesh::merge(const Ionflux::GeoUtils::Mesh& other)
 	        other.getFace(i), this, "merge", "Source mesh face");
 	    Face* nf0 = cf0->copy();
 	    nf0->applyVertexIndexOffset(numVerts0);
+	    addFace(nf0);
 	}
 	// edges
 	unsigned int numEdges1 = other.getNumEdges();
@@ -891,8 +892,8 @@ void Mesh::merge(const Ionflux::GeoUtils::Mesh& other)
 	        other.getEdge(i), this, "merge", "Source mesh edge");
 	    NFace* ne0 = ce0->copy();
 	    ne0->applyVertexIndexOffset(numVerts0);
+	    addEdge(ne0);
 	}
-	update();
 }
 
 std::string Mesh::getValueString() const

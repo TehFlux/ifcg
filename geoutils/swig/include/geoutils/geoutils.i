@@ -8709,7 +8709,7 @@ class CameraXMLFactory
 %template(BoundingBoxVector) std::vector<Ionflux::GeoUtils::BoundingBox*>;
 %template(SplitVector) std::vector<Ionflux::GeoUtils::Split*>;
 %template(TexCoordsVector) std::vector<Ionflux::GeoUtils::TexCoords>;
-%template(ColorVector) std::vector<Ionflux::GeoUtils::Color>;
+%template(GColorVector) std::vector<Ionflux::GeoUtils::Color>;
 %template(Dictionary) std::map<std::string, std::string>;
 %template(SVGShapeStyleVector) std::vector<Ionflux::GeoUtils::SVGShapeStyle*>;
 %template(SVGShapeStyleStringMap) std::map<std::string, Ionflux::GeoUtils::SVGShapeStyle*>;

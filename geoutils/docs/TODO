@@ -48,8 +48,6 @@ Critical stuff
   > Generator functions
     . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
 
-+ BoundingBox lookups use too much RAM.
-
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
 + Use getValueString() instead of getString()
@@ -119,6 +117,8 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ BoundingBox lookups use too much RAM.
 
 + Split GeoUtils into smaller libraries
   > basic vector math
