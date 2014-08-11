@@ -24,10 +24,6 @@ Critical stuff
 + Mesh
   > OBJ import/export
 
-+ Program
-  > uniforms 
-    . IntVector, UIntVector, Vector2/3/4
-
 + OpenGL utility library
   > render points
     . set point size
@@ -36,11 +32,11 @@ Critical stuff
   > viewer
     . better camera control which avoids singularities
   > shaders
-    . flat/lambert switchable shader
-    . lighting (Blinn-Phong)
+    . specular reflection (Blinn-Phong)
     . texture (see FMViewer)
   > textures
-    . copy GeoUtils::Image to texture
+    . copy GeoUtils::Image to texture (see FMViewer::ImageQuad, 
+      Altjira::Drawable)
   > render to Image
 
 + add 'hasClassInfo = true' for parent classes that have class information.
