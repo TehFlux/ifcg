@@ -21,6 +21,10 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ Program
+  > uniforms 
+    . IntVector, UIntVector, Vector2/3/4
+
 + OpenGL utility library
   > render points
     . set point size
@@ -29,15 +33,12 @@ Critical stuff
   > viewer
     . better camera control which avoids singularities
   > shaders
+    . flat/lambert switchable shader
     . lighting (Blinn-Phong)
     . texture (see FMViewer)
   > textures
     . copy GeoUtils::Image to texture
   > render to Image
-
-+ Program
-  > uniforms 
-    . Vector3/4
 
 + add 'hasClassInfo = true' for parent classes that have class information.
 
