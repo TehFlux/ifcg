@@ -21,6 +21,9 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ Mesh
+  > OBJ import/export
+
 + Program
   > uniforms 
     . IntVector, UIntVector, Vector2/3/4
@@ -44,10 +47,6 @@ Critical stuff
 
 + Segfaults:
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
-
-+ Mesh
-  > Generator functions
-    . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
 
 + Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
@@ -258,6 +257,10 @@ Important stuff
 --------------------------------------------------------------------------------
 Nice to have
 --------------------------------------------------------------------------------
+
++ Mesh
+  > Generator functions
+    . torus() (see [stuff]/scripts/blender/BlenderObjects.py)
 
 + BGeoUTils.Data.Mesh
   > Loop indexing does not seem to match vertex indexing in all cases. Find 

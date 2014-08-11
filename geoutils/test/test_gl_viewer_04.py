@@ -20,6 +20,7 @@ mm.addLocalRef(mvpMatrix)
 normalMatrix = cg.Matrix3.create(cg.Matrix3.UNIT)
 mm.addLocalRef(normalMatrix)
 
+# lights
 lightPos = [
     cg.Vector3.create(2., -5., 10.)
 ]
@@ -33,6 +34,11 @@ lightColor = [
 lightParam = [
     cg.Vector4.create(4., 1.4, 0.2, 0.)
 ]
+
+# shader parameters
+# (flat shading, unused, unused, unused)
+shaderParams0 = ib.IntVector()
+ib.addValues(shaderParams0, 4, 1, 0, 0, 0)
 
 vertexScale0 = cg.Vector3(2.5, 2.5, 2.5)
 
@@ -151,6 +157,9 @@ p0.init()
 p0.use()
 
 print("Initializing uniforms...")
+
+# shader parameters
+p0.setUniform("cgShaderParams0", shaderParams0, 4)
 
 # transformation matrices
 p0.setUniform("cgMVPMatrix", mvpMatrix)

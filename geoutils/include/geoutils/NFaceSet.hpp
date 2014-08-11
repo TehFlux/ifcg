@@ -90,6 +90,31 @@ class NFaceSet
 		 */
 		virtual ~NFaceSet();
 		
+		/** Triangle set check.
+		 *
+		 * Check whether all N-faces in the set are triangles.
+		 *
+		 * \return \c true if the N-face set is a triangle set, \c false 
+		 * otherwise.
+		 */
+		virtual bool isTriSet() const;
+		
+		/** Quad set check.
+		 *
+		 * Check whether all N-faces in the set are quads.
+		 *
+		 * \return \c true if the N-face set is a quad set, \c false otherwise.
+		 */
+		virtual bool isQuadSet() const;
+		
+		/** Edge set check.
+		 *
+		 * Check whether all N-faces in the set are edges.
+		 *
+		 * \return \c true if the N-face set is an edge set, \c false otherwise.
+		 */
+		virtual bool isEdgeSet() const;
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.

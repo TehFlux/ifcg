@@ -79,6 +79,57 @@ NFaceSet::~NFaceSet()
 	// TODO: Nothing ATM. ;-)
 }
 
+bool NFaceSet::isTriSet() const
+{
+	unsigned int numNFaces = getNumNFaces();
+	unsigned int i = 0;
+	while (i < numNFaces)
+	{
+	    NFace* cnf = getNFace(i);
+	    if (cnf != 0)
+	    {
+	        if (!cnf->isTri())
+	            return false;
+	    }
+	    i++;
+	}
+	return true;
+}
+
+bool NFaceSet::isQuadSet() const
+{
+	unsigned int numNFaces = getNumNFaces();
+	unsigned int i = 0;
+	while (i < numNFaces)
+	{
+	    NFace* cnf = getNFace(i);
+	    if (cnf != 0)
+	    {
+	        if (!cnf->isQuad())
+	            return false;
+	    }
+	    i++;
+	}
+	return true;
+}
+
+bool NFaceSet::isEdgeSet() const
+{
+	unsigned int numNFaces = getNumNFaces();
+	unsigned int i = 0;
+	while (i < numNFaces)
+	{
+	    NFace* cnf = getNFace(i);
+	    if (cnf != 0)
+	    {
+	        if (!cnf->isEdge())
+	            return false;
+	    }
+	    i++;
+	}
+	return true;
+}
+
 std::string NFaceSet::getValueString() const
 {
 	ostringstream status;

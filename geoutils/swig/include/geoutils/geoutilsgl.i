@@ -140,6 +140,12 @@ class Program
         virtual void setUniform(const std::string& name, const 
         Ionflux::GeoUtils::VectorSet& value);
         virtual void setUniform(const std::string& name, const 
+        Ionflux::GeoUtils::Vector& value);
+        virtual void setUniform(const std::string& name, const 
+        Ionflux::ObjectBase::IntVector& value, int numElements = 1);
+        virtual void setUniformUI(const std::string& name, const 
+        Ionflux::ObjectBase::UIntVector& value, int numElements = 1);
+        virtual void setUniform(const std::string& name, const 
         Ionflux::Altjira::ColorSet& value);
         virtual std::string getValueString() const;
         static unsigned int getOpenGLMaxVertexUniformComponents();

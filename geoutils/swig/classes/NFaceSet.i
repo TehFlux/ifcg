@@ -52,6 +52,9 @@ class NFaceSet
         NFaceSet();
 		NFaceSet(const Ionflux::GeoUtils::NFaceSet& other);
         virtual ~NFaceSet();
+        virtual bool isTriSet() const;
+        virtual bool isQuadSet() const;
+        virtual bool isEdgeSet() const;
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::NFaceSet* copy() const;
 		static Ionflux::GeoUtils::NFaceSet* upcast(Ionflux::ObjectBase::IFObject*

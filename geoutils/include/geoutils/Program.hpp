@@ -29,6 +29,7 @@
 
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
+#include "ifobject/types.hpp"
 #include "altjira/ColorSet.hpp"
 #include "geoutils/types.hpp"
 #include "geoutils/gltypes.hpp"
@@ -196,6 +197,41 @@ class Program
 		 */
 		virtual void setUniform(const std::string& name, const 
 		Ionflux::GeoUtils::VectorSet& value);
+		
+		/** Set uniform (vector).
+		 *
+		 * Set the uniform with the specified name within the default uniform 
+		 * block to the specified value.
+		 *
+		 * \param name Uniform name.
+		 * \param value Value.
+		 */
+		virtual void setUniform(const std::string& name, const 
+		Ionflux::GeoUtils::Vector& value);
+		
+		/** Set uniform (integer vector).
+		 *
+		 * Set the uniform with the specified name within the default uniform 
+		 * block to the specified value.
+		 *
+		 * \param name Uniform name.
+		 * \param value Value.
+		 * \param numElements number of elements per set.
+		 */
+		virtual void setUniform(const std::string& name, const 
+		Ionflux::ObjectBase::IntVector& value, int numElements = 1);
+		
+		/** Set uniform (unsigned integer vector).
+		 *
+		 * Set the uniform with the specified name within the default uniform 
+		 * block to the specified value.
+		 *
+		 * \param name Uniform name.
+		 * \param value Value.
+		 * \param numElements number of elements per set.
+		 */
+		virtual void setUniformUI(const std::string& name, const 
+		Ionflux::ObjectBase::UIntVector& value, int numElements = 1);
 		
 		/** Set uniform (color set).
 		 *

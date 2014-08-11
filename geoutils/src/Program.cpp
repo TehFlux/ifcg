@@ -218,7 +218,7 @@ Ionflux::GeoUtils::Matrix4& value)
 	        "uniform block: '" << name << "'.";
 	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
 	}
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	std::cerr << "[Program::setUniform] DEBUG: "
 	    << "Setting uniform '" << name << "' = " << value.getString() 
 	    << std::endl;
@@ -253,7 +253,7 @@ Ionflux::GeoUtils::Matrix3& value)
 	        "uniform block: '" << name << "'.";
 	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
 	}
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	std::cerr << "[Program::setUniform] DEBUG: "
 	    << "Setting uniform '" << name << "' = " << value.getString() 
 	    << std::endl;
@@ -279,7 +279,10 @@ void Program::setUniform(const std::string& name, const
 Ionflux::GeoUtils::VectorSet& value)
 {
 	if (programImpl == 0)
-	    throw GeoUtilsError(getErrorString("Program not set.", "setUniform"));
+	{
+	    throw GeoUtilsError(getErrorString("Program not set.", 
+	        "setUniform"));
+	}
 	int ul0 = glGetUniformLocation(programImpl, name.c_str());
 	if (ul0 == -1)
 	{
@@ -299,7 +302,7 @@ Ionflux::GeoUtils::VectorSet& value)
 	    // maximum number of supported vector components is 4
 	    n1 = 4;
 	}
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	std::cerr << "[Program::setUniform] DEBUG: "
 	    << "Setting uniform '" << name << "' = [array of " << n0 
 	    << " vec" << n1 << "] " << value.getString() 
@@ -329,6 +332,185 @@ Ionflux::GeoUtils::VectorSet& value)
 	else
 	if (n1 == 4)
 	    glUniform4fv(ul0, n0, vb0);
+	delete[] vb0;
+	if (glGetError() == GL_INVALID_OPERATION)
+	{
+	    std::ostringstream status;
+	    status << "Type mismatch for uniform within default block '" 
+	        << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+}
+
+void Program::setUniform(const std::string& name, const 
+Ionflux::GeoUtils::Vector& value)
+{
+	if (programImpl == 0)
+	{
+	    throw GeoUtilsError(getErrorString("Program not set.", 
+	        "setUniform"));
+	}
+	int ul0 = glGetUniformLocation(programImpl, name.c_str());
+	if (ul0 == -1)
+	{
+	    std::ostringstream status;
+	    status << "Name does not exist within default "
+	        "uniform block: '" << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+	int n0 = value.getNumElements();
+	if (n0 > 4)
+	{
+	    // maximum number of supported vector components is 4
+	    n0 = 4;
+	}
+	/* <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = (" 
+	        << value.getValueString() << ")" << std::endl;
+	// ----- DEBUG ----> */
+	if (n0 == 2)
+	    glUniform2f(ul0, value[0], value[1]);
+	else
+	if (n0 == 3)
+	    glUniform3f(ul0, value[0], value[1], value[2]);
+	else
+	if (n0 == 4)
+	    glUniform4f(ul0, value[0], value[1], value[2], value[3]);
+	if (glGetError() == GL_INVALID_OPERATION)
+	{
+	    std::ostringstream status;
+	    status << "Type mismatch for uniform within default block '" 
+	        << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), 
+	        "setUniform"));
+	}
+}
+
+void Program::setUniform(const std::string& name, const 
+Ionflux::ObjectBase::IntVector& value, int numElements)
+{
+	if (programImpl == 0)
+	{
+	    throw GeoUtilsError(getErrorString("Program not set.", 
+	        "setUniform"));
+	}
+	int ul0 = glGetUniformLocation(programImpl, name.c_str());
+	if (ul0 == -1)
+	{
+	    std::ostringstream status;
+	    status << "Name does not exist within default "
+	        "uniform block: '" << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+	int n0 = value.size();
+	if (n0 == 0)
+	    return;
+	if (numElements > 4)
+	{
+	    // maximum number of supported elements per set is 4
+	    numElements = 4;
+	}
+	int n1 = n0 / numElements;
+	if ((n0 % numElements) != 0)
+	    n1++;
+	/* <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = [array of " << n1 
+	    << " ivec" << numElements << "] (" 
+	    << Ionflux::ObjectBase::getValueStringVec(value) << ")" 
+	    << std::endl;
+	// ----- DEBUG ----> */
+	GLint* vb0 = new GLint[numElements * n1];
+	Ionflux::ObjectBase::nullPointerCheck(vb0, this, 
+	    "setUniform", "Value buffer");
+	int j = 0;
+	for (int i = 0; i < n1; i++)
+	{
+	    for (int k = 0; k < numElements; k++)
+	    {
+	        if (j < n0)
+	            vb0[i * n1 + k] = value[j];
+	        else
+	            vb0[i * n1 + k] = 0.;
+	        j++;
+	    }
+	}
+	if (numElements == 2)
+	    glUniform2iv(ul0, n1, vb0);
+	else
+	if (numElements == 3)
+	    glUniform3iv(ul0, n1, vb0);
+	else
+	if (numElements == 4)
+	    glUniform4iv(ul0, n1, vb0);
+	delete[] vb0;
+	if (glGetError() == GL_INVALID_OPERATION)
+	{
+	    std::ostringstream status;
+	    status << "Type mismatch for uniform within default block '" 
+	        << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+}
+
+void Program::setUniformUI(const std::string& name, const 
+Ionflux::ObjectBase::UIntVector& value, int numElements)
+{
+	if (programImpl == 0)
+	{
+	    throw GeoUtilsError(getErrorString("Program not set.", 
+	        "setUniform"));
+	}
+	int ul0 = glGetUniformLocation(programImpl, name.c_str());
+	if (ul0 == -1)
+	{
+	    std::ostringstream status;
+	    status << "Name does not exist within default "
+	        "uniform block: '" << name << "'.";
+	    throw GeoUtilsError(getErrorString(status.str(), "setUniform"));
+	}
+	int n0 = value.size();
+	if (n0 == 0)
+	    return;
+	if (numElements > 4)
+	{
+	    // maximum number of supported elements per set is 4
+	    numElements = 4;
+	}
+	int n1 = n0 / numElements;
+	if ((n1 % numElements) != 0)
+	    n1++;
+	/* <---- DEBUG ----- //
+	std::cerr << "[Program::setUniform] DEBUG: "
+	    << "Setting uniform '" << name << "' = [array of " << n1 
+	    << " uivec" << numElements << "] (" 
+	    << Ionflux::ObjectBase::getValueStringVec(value) << ")" 
+	    << std::endl;
+	// ----- DEBUG ----> */
+	GLuint* vb0 = new GLuint[numElements * n1];
+	Ionflux::ObjectBase::nullPointerCheck(vb0, this, 
+	    "setUniform", "Value buffer");
+	int j = 0;
+	for (int i = 0; i < n1; i++)
+	{
+	    for (int k = 0; k < numElements; k++)
+	    {
+	        if (j < n0)
+	            vb0[i * n1 + k] = value[j];
+	        else
+	            vb0[i * n1 + k] = 0.;
+	        j++;
+	    }
+	}
+	if (numElements == 2)
+	    glUniform2uiv(ul0, n1, vb0);
+	else
+	if (numElements == 3)
+	    glUniform3uiv(ul0, n1, vb0);
+	else
+	if (numElements == 4)
+	    glUniform4uiv(ul0, n1, vb0);
 	delete[] vb0;
 	if (glGetError() == GL_INVALID_OPERATION)
 	{

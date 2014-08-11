@@ -791,7 +791,6 @@ void Mesh::setFaceVertexColors(const Ionflux::GeoUtils::Vector4& color)
 bool Mesh::isTriMesh() const
 {
 	unsigned int numFaces = getNumFaces();
-	FaceVector nfv;
 	unsigned int i = 0;
 	while (i < numFaces)
 	{
