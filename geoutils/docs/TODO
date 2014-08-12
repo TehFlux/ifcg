@@ -21,6 +21,9 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ Testing
+  > NFace::getArea()
+
 + Mesh
   > OBJ import/export
 
