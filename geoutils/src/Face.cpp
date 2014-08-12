@@ -281,10 +281,50 @@ Ionflux::GeoUtils::Matrix3 Face::getTangentBase()
 	return m;
 }
 
+void Face::makePlanar(double p, double t)
+{
+	if (isPlanar(t))
+	    return;
+	if (vertexSource == 0)
+	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
+	        "makePlanar"));
+	if (vertices.size() < 3)
+	    throw GeoUtilsError(getErrorString(
+	        "Face does not have enough vertices.", "makePlanar"));
+	Vertex3Set vs;
+	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
+	    vs.addVertex(vertexSource->getVertex(*i)->copy());
+	Plane3 pl = vs.getPlaneFit();
+	Vector3 n0 = pl.getNormal();
+	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
+	{
+	    Vertex3* v0 = vertexSource->getVertex(*i);
+	    double d0 = v0->distanceToPlane(pl);
+	    Vector3 offset = n0 * (-d0 * p);
+	    v0->translate(offset);
+	    v0->applyTransform();
+	}
+	update();
+}
+
+bool Face::isBackface(const Ionflux::GeoUtils::Vector3& front)
+{
+	if (normal == 0)
+	    getNormal();
+	if (normal->angle(front) > (0.5 * M_PI))
+	    return true;
+	return false;
+}
+
 void Face::getTris(Ionflux::GeoUtils::FaceVector& target)
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
 	    "getTris", "Vertex source");
+	if (isTri())
+	{
+	    target.push_back(copy());
+	    return;
+	}
 	if (!isQuad())
 	{
 	    throw GeoUtilsError(getErrorString(
@@ -321,93 +361,6 @@ void Face::getTris(Ionflux::GeoUtils::FaceVector& target)
 	}
 	target.push_back(f0);
 	target.push_back(f1);
-}
-
-void Face::getTris(Ionflux::GeoUtils::NFaceSet& target)
-{
-	FaceVector fv0;
-	getTris(fv0);
-	for (FaceVector::iterator i = fv0.begin(); i!= fv0.end(); i++)
-	    target.addNFace(*i);
-}
-
-Ionflux::GeoUtils::FaceVector Face::getTris0()
-{
-	FaceVector result;
-	getTris(result);
-	return result;
-}
-
-void Face::getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
-copyFaceData)
-{
-	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
-	    "getEdges", "Vertex source");
-	unsigned int numVerts = getNumVertices();
-	UIntVector vv0;
-	for (unsigned int i = 0; i < numVerts; i++)
-	{
-	    unsigned int i1 = (i + 1) % numVerts;
-	    int vi0 = getVertex(i);
-	    int vi1 = getVertex(i1);
-	    NFace* e0 = NFace::create();
-	    e0->setVertexSource(vertexSource);
-	    e0->addVertices(vi0, vi1);
-	    if (copyFaceData && (faceData != 0))
-	    {
-	        // copy face data
-	        vv0.clear();
-	        Ionflux::ObjectBase::addValues(vv0, 2, i, i1);
-	        VectorSetSet* fd0 = VectorSetSet::create();
-	        getFaceDataByVertex(vv0, *fd0);
-	        e0->setFaceData(fd0);
-	    }
-	    target.push_back(e0);
-	}
-}
-
-void Face::getEdges(Ionflux::GeoUtils::NFaceSet& target, bool copyFaceData)
-{
-	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
-	    "getEdges", "Vertex source");
-	NFaceVector ev0;
-	getEdges(ev0, copyFaceData);
-	target.addNFaces(ev0);
-}
-
-void Face::makePlanar(double p, double t)
-{
-	if (isPlanar(t))
-	    return;
-	if (vertexSource == 0)
-	    throw GeoUtilsError(getErrorString("Vertex source is not set.", 
-	        "makePlanar"));
-	if (vertices.size() < 3)
-	    throw GeoUtilsError(getErrorString(
-	        "Face does not have enough vertices.", "makePlanar"));
-	Vertex3Set vs;
-	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
-	    vs.addVertex(vertexSource->getVertex(*i)->copy());
-	Plane3 pl = vs.getPlaneFit();
-	Vector3 n0 = pl.getNormal();
-	for (UIntVector::iterator i = vertices.begin(); i != vertices.end(); i++)
-	{
-	    Vertex3* v0 = vertexSource->getVertex(*i);
-	    double d0 = v0->distanceToPlane(pl);
-	    Vector3 offset = n0 * (-d0 * p);
-	    v0->translate(offset);
-	    v0->applyTransform();
-	}
-	update();
-}
-
-bool Face::isBackface(const Ionflux::GeoUtils::Vector3& front)
-{
-	if (normal == 0)
-	    getNormal();
-	if (normal->angle(front) > (0.5 * M_PI))
-	    return true;
-	return false;
 }
 
 Ionflux::GeoUtils::Face& Face::scale(const Ionflux::GeoUtils::Vector3& s)

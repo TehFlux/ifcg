@@ -4541,6 +4541,7 @@ namespace GeoUtils
 
 class VectorSetSet;
 class FaceData;
+class NFaceSet;
 
 class NFaceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -4636,6 +4637,14 @@ Ionflux::GeoUtils::TransformableObject
         virtual void getEdge(Ionflux::GeoUtils::Edge& target) const;
         virtual Ionflux::GeoUtils::Edge getEdge0() const;
         virtual void applyVertexIndexOffset(int offset);
+        virtual void getTris(Ionflux::GeoUtils::NFaceVector& target);
+        virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
+        virtual Ionflux::GeoUtils::NFaceVector getTris0();
+        virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
+        copyFaceData = true);
+        virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
+        copyFaceData = true);
+        virtual double getArea();
         virtual bool operator==(const Ionflux::GeoUtils::NFace& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::NFace& other) 
@@ -4818,16 +4827,10 @@ class Face
         virtual Ionflux::GeoUtils::Vector3 getBinormal();
         virtual Ionflux::GeoUtils::Vector3 getNormal();
         virtual Ionflux::GeoUtils::Matrix3 getTangentBase();
-        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
-        virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
-        virtual Ionflux::GeoUtils::FaceVector getTris0();
-        virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
-        copyFaceData = true);
-        virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
-        copyFaceData = true);
         virtual void makePlanar(double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
+        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
         virtual Ionflux::GeoUtils::Face& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Face& translate(const 
@@ -7182,6 +7185,7 @@ class VectorSet
         virtual ~VectorSet();
         virtual void makeOrientationsConsistent(Ionflux::GeoUtils::Vector* 
         flipData = 0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual void getCentroid(Ionflux::GeoUtils::Vector& target) const;
         virtual bool operator==(const Ionflux::GeoUtils::VectorSet& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) 
@@ -7203,6 +7207,7 @@ class VectorSet
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::VectorSet* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::VectorSet* 
 		create(Ionflux::GeoUtils::VectorVector& initVectors, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        

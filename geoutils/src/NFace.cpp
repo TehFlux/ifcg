@@ -36,6 +36,7 @@
 #include "geoutils/Vertex3Set.hpp"
 #include "geoutils/VectorSetSet.hpp"
 #include "geoutils/FaceData.hpp"
+#include "geoutils/NFaceSet.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/xmlutils.hpp"
 #include "ifobject/xmlutils_private.hpp"
@@ -631,6 +632,131 @@ void NFace::applyVertexIndexOffset(int offset)
 	        cv += offset;
 	    vertices[i] = cv;
 	}
+}
+
+void NFace::getTris(Ionflux::GeoUtils::NFaceVector& target)
+{
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getTris", "Vertex source");
+	if (isTri())
+	{
+	    target.push_back(copy());
+	    return;
+	}
+	if (!isQuad())
+	{
+	    throw GeoUtilsError(getErrorString(
+	        "N-face is not a quad.", "getTris"));
+	}
+	NFaceVector result;
+	UIntVector v0;
+	v0.push_back(vertices[0]);
+	v0.push_back(vertices[1]);
+	v0.push_back(vertices[2]);
+	UIntVector v1;
+	v1.push_back(vertices[0]);
+	v1.push_back(vertices[2]);
+	v1.push_back(vertices[3]);
+	UIntVector iv0;
+	iv0.push_back(0);
+	iv0.push_back(1);
+	iv0.push_back(2);
+	UIntVector iv1;
+	iv1.push_back(0);
+	iv1.push_back(2);
+	iv1.push_back(3);
+	NFace* f0 = NFace::create(&v0, vertexSource);
+	NFace* f1 = NFace::create(&v1, vertexSource);
+	if (faceData != 0)
+	{
+	    // copy face data
+	    VectorSetSet* nfd0 = VectorSetSet::create();
+	    VectorSetSet* nfd1 = VectorSetSet::create();
+	    getFaceDataByVertex(iv0, *nfd0);
+	    getFaceDataByVertex(iv1, *nfd1);
+	    f0->setFaceData(nfd0);
+	    f1->setFaceData(nfd1);
+	}
+	target.push_back(f0);
+	target.push_back(f1);
+}
+
+void NFace::getTris(Ionflux::GeoUtils::NFaceSet& target)
+{
+	NFaceVector fv0;
+	getTris(fv0);
+	for (NFaceVector::iterator i = fv0.begin(); i!= fv0.end(); i++)
+	    target.addNFace(*i);
+}
+
+Ionflux::GeoUtils::NFaceVector NFace::getTris0()
+{
+	NFaceVector result;
+	getTris(result);
+	return result;
+}
+
+void NFace::getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
+copyFaceData)
+{
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getEdges", "Vertex source");
+	unsigned int numVerts = getNumVertices();
+	UIntVector vv0;
+	for (unsigned int i = 0; i < numVerts; i++)
+	{
+	    unsigned int i1 = (i + 1) % numVerts;
+	    int vi0 = getVertex(i);
+	    int vi1 = getVertex(i1);
+	    NFace* e0 = NFace::create();
+	    e0->setVertexSource(vertexSource);
+	    e0->addVertices(vi0, vi1);
+	    if (copyFaceData && (faceData != 0))
+	    {
+	        // copy face data
+	        vv0.clear();
+	        Ionflux::ObjectBase::addValues(vv0, 2, i, i1);
+	        VectorSetSet* fd0 = VectorSetSet::create();
+	        getFaceDataByVertex(vv0, *fd0);
+	        e0->setFaceData(fd0);
+	    }
+	    target.push_back(e0);
+	}
+}
+
+void NFace::getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
+copyFaceData)
+{
+	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
+	    "getEdges", "Vertex source");
+	NFaceVector ev0;
+	getEdges(ev0, copyFaceData);
+	target.addNFaces(ev0);
+}
+
+double NFace::getArea()
+{
+	if (isEdge())
+	    return 0.;
+	if (isTri())
+	{
+	    Vector3 v0(getVertexData(0)->getVector());
+	    Vector3 v1(getVertexData(1)->getVector());
+	    Vector3 v2(getVertexData(2)->getVector());
+	    Vector3 e0(v1 - v0);
+	    Vector3 e1(v2 - v0);
+	    return 0.5 * e0.cross(e1).length();
+	}
+	double result = 0.;
+	NFaceVector tris0;
+	getTris(tris0);
+	for (NFaceVector::iterator i = tris0.begin(); i != tris0.end(); i++)
+	{
+	    NFace* nf0 = *i;
+	    result += nf0->getArea();
+	    delete nf0;
+	}
+	return result;
 }
 
 bool NFace::operator==(const Ionflux::GeoUtils::NFace& other) const

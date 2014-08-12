@@ -36,6 +36,7 @@ namespace GeoUtils
 
 class VectorSetSet;
 class FaceData;
+class NFaceSet;
 
 class NFaceClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -131,6 +132,14 @@ Ionflux::GeoUtils::TransformableObject
         virtual void getEdge(Ionflux::GeoUtils::Edge& target) const;
         virtual Ionflux::GeoUtils::Edge getEdge0() const;
         virtual void applyVertexIndexOffset(int offset);
+        virtual void getTris(Ionflux::GeoUtils::NFaceVector& target);
+        virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
+        virtual Ionflux::GeoUtils::NFaceVector getTris0();
+        virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
+        copyFaceData = true);
+        virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
+        copyFaceData = true);
+        virtual double getArea();
         virtual bool operator==(const Ionflux::GeoUtils::NFace& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::NFace& other) 

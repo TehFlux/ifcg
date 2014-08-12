@@ -41,6 +41,7 @@ namespace GeoUtils
 
 class VectorSetSet;
 class FaceData;
+class NFaceSet;
 
 namespace XMLUtils
 {
@@ -516,6 +517,62 @@ Ionflux::GeoUtils::TransformableObject
 		 * \param offset offset.
 		 */
 		virtual void applyVertexIndexOffset(int offset);
+		
+		/** Get triangle faces.
+		 *
+		 * Create triangles for a triangle or quad N-face. The new faces are 
+		 * not referenced and must be managed by the caller.
+		 *
+		 * \param target where to store the triangles.
+		 */
+		virtual void getTris(Ionflux::GeoUtils::NFaceVector& target);
+		
+		/** Get triangle faces.
+		 *
+		 * Create triangles for a triangle or quad N-face. The new faces are 
+		 * not referenced and must be managed by the caller.
+		 *
+		 * \param target where to store the triangles.
+		 */
+		virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
+		
+		/** Get triangle faces.
+		 *
+		 * Create triangles for a triangle or quad N-face. The new faces are 
+		 * not referenced and must be managed by the caller.
+		 *
+		 * \return Vector containing triangle faces.
+		 */
+		virtual Ionflux::GeoUtils::NFaceVector getTris0();
+		
+		/** Get edges.
+		 *
+		 * Create edges for a N-face. The new edges are not referenced and 
+		 * must be managed by the caller.
+		 *
+		 * \param target where to store the edges.
+		 * \param copyFaceData copy corresponding face data to the new edges.
+		 */
+		virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
+		copyFaceData = true);
+		
+		/** Get edges.
+		 *
+		 * Create edges for a N-Face.
+		 *
+		 * \param target where to store the edges.
+		 * \param copyFaceData copy corresponding face data to the new edges.
+		 */
+		virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
+		copyFaceData = true);
+		
+		/** get area.
+		 *
+		 * Get the area of the N-face.
+		 *
+		 * \return Area of the face.
+		 */
+		virtual double getArea();
 		
 		/** Comparison operator: equality.
 		 *

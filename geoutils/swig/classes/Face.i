@@ -73,16 +73,10 @@ class Face
         virtual Ionflux::GeoUtils::Vector3 getBinormal();
         virtual Ionflux::GeoUtils::Vector3 getNormal();
         virtual Ionflux::GeoUtils::Matrix3 getTangentBase();
-        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
-        virtual void getTris(Ionflux::GeoUtils::NFaceSet& target);
-        virtual Ionflux::GeoUtils::FaceVector getTris0();
-        virtual void getEdges(Ionflux::GeoUtils::NFaceVector& target, bool 
-        copyFaceData = true);
-        virtual void getEdges(Ionflux::GeoUtils::NFaceSet& target, bool 
-        copyFaceData = true);
         virtual void makePlanar(double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual bool isBackface(const Ionflux::GeoUtils::Vector3& front);
+        virtual void getTris(Ionflux::GeoUtils::FaceVector& target);
         virtual Ionflux::GeoUtils::Face& scale(const 
         Ionflux::GeoUtils::Vector3& s);
         virtual Ionflux::GeoUtils::Face& translate(const 

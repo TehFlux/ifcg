@@ -122,6 +122,14 @@ class VectorSet
 		virtual void makeOrientationsConsistent(Ionflux::GeoUtils::Vector* 
 		flipData = 0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
+		/** Get centroid.
+		 *
+		 * Get the centroid of the vector set.
+		 *
+		 * \param target where to store the centroid.
+		 */
+		virtual void getCentroid(Ionflux::GeoUtils::Vector& target) const;
+		
 		/** Comparison operator: equality.
 		 *
 		 * Compare equality.

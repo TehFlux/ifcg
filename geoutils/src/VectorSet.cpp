@@ -169,6 +169,18 @@ flipData, double t)
 	    m0.getCol(col0, *flipData);
 }
 
+void VectorSet::getCentroid(Ionflux::GeoUtils::Vector& target) const
+{
+	unsigned int numVectors0 = getNumVectors();
+	for (unsigned int i = 0; i < numVectors0; i++)
+	{
+	    Vector* v0 = getVector(i);
+	    if (v0 != 0)
+	        target.addIP(*v0);
+	}
+	target.multiplyIP(1. / numVectors0);
+}
+
 bool VectorSet::operator==(const Ionflux::GeoUtils::VectorSet& other) const
 {
 	if (vectors.size() != other.vectors.size())

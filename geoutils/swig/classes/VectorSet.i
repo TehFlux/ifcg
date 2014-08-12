@@ -55,6 +55,7 @@ class VectorSet
         virtual ~VectorSet();
         virtual void makeOrientationsConsistent(Ionflux::GeoUtils::Vector* 
         flipData = 0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
+        virtual void getCentroid(Ionflux::GeoUtils::Vector& target) const;
         virtual bool operator==(const Ionflux::GeoUtils::VectorSet& other) 
         const;
         virtual bool operator!=(const Ionflux::GeoUtils::VectorSet& other) 
@@ -76,6 +77,7 @@ class VectorSet
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::VectorSet* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::VectorSet* 
 		create(Ionflux::GeoUtils::VectorVector& initVectors, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        
