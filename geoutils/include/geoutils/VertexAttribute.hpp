@@ -177,6 +177,48 @@ class VertexAttribute
 		 */
 		virtual GLenum getOpenGLTarget();
 		
+		/** Allocate buffer.
+		 *
+		 * Allocate a new data buffer. If the current size of the buffer is 
+		 * appropriate to accomodate the specified number of elements of the 
+		 * specified size, the data buffer will not be re-allocated, but its 
+		 * type will still be set according to the \c newDataType parameter.
+		 *
+		 * \param newNumElements number of elements.
+		 * \param newElementSize element size.
+		 * \param newDataType data buffer type.
+		 */
+		virtual void allocate(unsigned int newNumElements, unsigned int 
+		newElementSize, Ionflux::GeoUtils::DataTypeID newDataType = 
+		DATA_TYPE_FLOAT);
+		
+		/** Resize buffer.
+		 *
+		 * Resize the data buffer. If the current size of the buffer is 
+		 * appropriate to accomodate the specified number of elements of the 
+		 * specified size, the data buffer will not be resized, but its type 
+		 * will still be set according to the \c newDataType parameter.
+		 *
+		 * \param newNumElements number of elements.
+		 * \param newElementSize element size.
+		 * \param newDataType data buffer type.
+		 */
+		virtual void resize(unsigned int newNumElements, unsigned int 
+		newElementSize, Ionflux::GeoUtils::DataTypeID newDataType = 
+		DATA_TYPE_FLOAT);
+		
+		/** Append data.
+		 *
+		 * Append data from the source vertex attribute to the vertex 
+		 * attribute. The data type and element size of the two vertex 
+		 * attributes must match. If the buffer of the target vertex attribute
+		 * is not sufficiently large to accomodate the new data, it will be 
+		 * resized.
+		 *
+		 * \param source vertex attribute.
+		 */
+		virtual void append(const Ionflux::GeoUtils::VertexAttribute& source);
+		
 		/** Clean up data.
 		 *
 		 * Clean up the data buffer.
@@ -319,6 +361,20 @@ class VertexAttribute
 		virtual void setData(unsigned int elementIndex, unsigned int 
 		componentIndex, float value);
 		
+		/** Set data (float).
+		 *
+		 * Set the data value with the specified element index to the 
+		 * specified component values.
+		 *
+		 * \param elementIndex Element index.
+		 * \param v0 Value (0).
+		 * \param v1 Value (1).
+		 * \param v2 Value (2).
+		 * \param v3 Value (3).
+		 */
+		virtual void setDataComponents(unsigned int elementIndex, float v0, float
+		v1, float v2 = 0., float v3 = 0.);
+		
 		/** Set data (uint).
 		 *
 		 * Set the data value with the specified element and component index.
@@ -329,6 +385,20 @@ class VertexAttribute
 		 */
 		virtual void setData(unsigned int elementIndex, unsigned int 
 		componentIndex, unsigned int value);
+		
+		/** Set data (uint).
+		 *
+		 * Set the data value with the specified element index to the 
+		 * specified component values.
+		 *
+		 * \param elementIndex Element index.
+		 * \param v0 Value (0).
+		 * \param v1 Value (1).
+		 * \param v2 Value (2).
+		 * \param v3 Value (3).
+		 */
+		virtual void setDataComponents(unsigned int elementIndex, unsigned int 
+		v0, unsigned int v1, unsigned int v2 = 0, unsigned int v3 = 0);
 		
 		/** Draw.
 		 *

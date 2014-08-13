@@ -23,6 +23,9 @@ Critical stuff
 
 + Testing
   > NFace::getArea()
+  > VertexAttribute
+    . allocate(), resize(), append()
+    . setDataComponents()
 
 + Mesh
   > OBJ import/export

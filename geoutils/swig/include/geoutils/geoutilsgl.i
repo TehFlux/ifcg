@@ -209,6 +209,14 @@ class VertexAttribute
         VertexAttribute();
 		VertexAttribute(const Ionflux::GeoUtils::VertexAttribute& other);
         virtual ~VertexAttribute();
+        virtual void allocate(unsigned int newNumElements, unsigned int 
+        newElementSize, Ionflux::GeoUtils::DataTypeID newDataType = 
+        DATA_TYPE_FLOAT);
+        virtual void resize(unsigned int newNumElements, unsigned int 
+        newElementSize, Ionflux::GeoUtils::DataTypeID newDataType = 
+        DATA_TYPE_FLOAT);
+        virtual void append(const Ionflux::GeoUtils::VertexAttribute& 
+        source);
         virtual void cleanupData();
         virtual void cleanup();
         virtual void init();
@@ -234,8 +242,12 @@ class VertexAttribute
         int componentIndex = 0);
         virtual void setData(unsigned int elementIndex, unsigned int 
         componentIndex, float value);
+        virtual void setDataComponents(unsigned int elementIndex, float v0,
+        float v1, float v2 = 0., float v3 = 0.);
         virtual void setData(unsigned int elementIndex, unsigned int 
         componentIndex, unsigned int value);
+        virtual void setDataComponents(unsigned int elementIndex, unsigned 
+        int v0, unsigned int v1, unsigned int v2 = 0, unsigned int v3 = 0);
         virtual void draw(Ionflux::GeoUtils::PrimitiveID primitiveID, 
         unsigned int drawNumPrimitives = 0, unsigned int startIndex = 0);
         virtual std::string getValueString() const;

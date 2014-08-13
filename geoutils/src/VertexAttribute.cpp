@@ -106,6 +106,176 @@ GLenum VertexAttribute::getOpenGLTarget()
 	return 0;
 }
 
+void VertexAttribute::allocate(unsigned int newNumElements, unsigned int 
+newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
+{
+	GLsizei n1 = 0;
+	if (newDataType == DATA_TYPE_FLOAT)
+	{
+	    // float buffer
+	    n1 = newNumElements * newElementSize * sizeof(GLfloat);
+	    GLfloat* d0 = static_cast<GLfloat*>(data);
+	    if ((d0 == 0)
+	        || (n1 > dataSize))
+	    {
+	        // allocate new buffer
+	        cleanupData();
+	        d0 = new GLfloat[newNumElements * newElementSize];
+	        setData(d0);
+	    }
+	} else
+	if (newDataType == DATA_TYPE_UINT)
+	{
+	    // unsigned integer buffer
+	    n1 = newNumElements * newElementSize * sizeof(GLuint);
+	    GLuint* d0 = static_cast<GLuint*>(data);
+	    if ((d0 == 0)
+	        || (n1 > dataSize))
+	    {
+	        // allocate new buffer
+	        cleanupData();
+	        d0 = new GLuint[newNumElements * newElementSize];
+	        setData(d0);
+	    }
+	} else
+	{
+	    std::ostringstream status;
+	    status << "Unsupported buffer data type: " 
+	        << getDataTypeString(newDataType) << " (" << newDataType 
+	        << ")";
+	    throw GeoUtilsError(getErrorString(status.str(), "allocate"));
+	}
+	Ionflux::ObjectBase::nullPointerCheck(data, this, 
+	    "allocate", "Data buffer");
+	setDataSize(n1);
+	setDataType(newDataType);
+	setNumElements(newNumElements);
+	setElementSize(newElementSize);
+}
+
+void VertexAttribute::resize(unsigned int newNumElements, unsigned int 
+newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
+{
+	if (data == 0)
+	{
+	    allocate(newNumElements, newElementSize, newDataType);
+	    return;
+	}
+	GLsizei n1 = 0;
+	if (newDataType == DATA_TYPE_FLOAT)
+	{
+	    // float buffer
+	    n1 = newNumElements * newElementSize * sizeof(GLfloat);
+	    GLfloat* d0 = static_cast<GLfloat*>(data);
+	    if (n1 > dataSize)
+	    {
+	        // copy data to temporary buffer
+	        GLfloat* d1 = new GLfloat[newNumElements * newElementSize];
+	        for (unsigned int i = 0; i < numElements; i++)
+	        {
+	            for (unsigned int k = 0; k < elementSize; k++)
+	                d1[i * elementSize + k] = d0[i * elementSize + k];
+	        }
+	        // allocate new buffer
+	        allocate(newNumElements, newElementSize, newDataType);
+	        // copy data back from temporary buffer
+	        d0 = static_cast<GLfloat*>(data);
+	        for (unsigned int i = 0; i < numElements; i++)
+	        {
+	            for (unsigned int k = 0; k < elementSize; k++)
+	                d0[i * elementSize + k] = d1[i * elementSize + k];
+	        }
+	        delete[] d1;
+	    }
+	} else
+	if (newDataType == DATA_TYPE_UINT)
+	{
+	    // unsigned integer buffer
+	    n1 = newNumElements * newElementSize * sizeof(GLuint);
+	    GLuint* d0 = static_cast<GLuint*>(data);
+	    if (n1 > dataSize)
+	    {
+	        // copy data to temporary buffer
+	        GLuint* d1 = new GLuint[newNumElements * newElementSize];
+	        for (unsigned int i = 0; i < numElements; i++)
+	        {
+	            for (unsigned int k = 0; k < elementSize; k++)
+	                d1[i * elementSize + k] = d0[i * elementSize + k];
+	        }
+	        // allocate new buffer
+	        allocate(newNumElements, newElementSize, newDataType);
+	        // copy data back from temporary buffer
+	        d0 = static_cast<GLuint*>(data);
+	        for (unsigned int i = 0; i < numElements; i++)
+	        {
+	            for (unsigned int k = 0; k < elementSize; k++)
+	                d0[i * elementSize + k] = d1[i * elementSize + k];
+	        }
+	        delete[] d1;
+	    }
+	} else
+	{
+	    std::ostringstream status;
+	    status << "Unsupported buffer data type: " 
+	        << getDataTypeString(newDataType) << " (" << newDataType 
+	        << ")";
+	    throw GeoUtilsError(getErrorString(status.str(), "resize"));
+	}
+	setDataSize(n1);
+	setDataType(newDataType);
+	setNumElements(newNumElements);
+	setElementSize(newElementSize);
+}
+
+void VertexAttribute::append(const Ionflux::GeoUtils::VertexAttribute& 
+source)
+{
+	DataTypeID t0 = source.getDataType();
+	if (t0 != dataType)
+	{
+	    std::ostringstream status;
+	    status << "Buffer data type mismatch (source: " 
+	        << getDataTypeString(t0) << ", target: " << dataType << ")";
+	    throw GeoUtilsError(getErrorString(status.str(), "append"));
+	}
+	unsigned int es0 = source.getElementSize();
+	if (es0 != elementSize)
+	{
+	    std::ostringstream status;
+	    status << "Element size type mismatch (source: " 
+	        << es0 << ", target: " << elementSize << ")";
+	    throw GeoUtilsError(getErrorString(status.str(), "append"));
+	}
+	unsigned int ne0 = source.getNumElements();
+	resize(ne0 + numElements, elementSize, dataType);
+	if (dataType == DATA_TYPE_FLOAT)
+	{
+	    GLfloat* d0 = static_cast<GLfloat*>(data);
+	    GLfloat* d1 = static_cast<GLfloat*>(source.data);
+	    for (unsigned int i = 0; i < ne0; i++)
+	    {
+	        for (unsigned int k = 0; k < elementSize; k++)
+	        {
+	            d0[(i + numElements) * elementSize + k] = 
+	                d1[i * elementSize + k];
+	        }
+	    }
+	} else
+	if (dataType == DATA_TYPE_UINT)
+	{
+	    GLuint* d0 = static_cast<GLuint*>(data);
+	    GLuint* d1 = static_cast<GLuint*>(source.data);
+	    for (unsigned int i = 0; i < ne0; i++)
+	    {
+	        for (unsigned int k = 0; k < elementSize; k++)
+	        {
+	            d0[(i + numElements) * elementSize + k] = 
+	                d1[i * elementSize + k];
+	        }
+	    }
+	}
+}
+
 void VertexAttribute::cleanupData()
 {
 	if (data != 0)
@@ -129,6 +299,8 @@ void VertexAttribute::cleanupData()
 	    }
 	    data = 0;
 	    dataSize = 0;
+	    numElements = 0;
+	    elementSize = 0;
 	}
 }
 
@@ -205,20 +377,8 @@ void VertexAttribute::setData(const Ionflux::GeoUtils::Vertex3Set& newData)
 	unsigned int n0 = newData.getNumVertices();
 	if (n0 == 0)
 	    return;
-	GLsizei n1 = n0 * 3 * sizeof(GLfloat);
+	allocate(n0, 3, DATA_TYPE_FLOAT);
 	GLfloat* d0 = static_cast<GLfloat*>(data);
-	if ((d0 == 0)
-	    || (n1 > dataSize))
-	{
-	    // allocate new buffer
-	    cleanupData();
-	    d0 = new GLfloat[n0 * 3];
-	    dataSize = n1;
-	    setData(d0);
-	    setDataType(DATA_TYPE_FLOAT);
-	}
-	Ionflux::ObjectBase::nullPointerCheck(d0, this, 
-	    "setData", "Data buffer");
 	for (unsigned int i = 0; i < n0; i++)
 	{
 	    Vertex3* v0 = Ionflux::ObjectBase::nullPointerCheck(
@@ -226,8 +386,6 @@ void VertexAttribute::setData(const Ionflux::GeoUtils::Vertex3Set& newData)
 	    for (int j = 0; j < 3; j++)
 	        d0[3 * i + j] = v0->getCoord(j);
 	}
-	setNumElements(n0);
-	setElementSize(3);
 }
 
 void VertexAttribute::setData(const Ionflux::GeoUtils::VectorSet& newData, 
@@ -242,18 +400,8 @@ int useNumElements, float defaultValue)
 	        newData.getVector(0), this, "setData", "Vector");
 	    useNumElements = v0->getNumElements();
 	}
-	GLsizei n1 = n0 * useNumElements * sizeof(GLfloat);
+	allocate(n0, useNumElements, DATA_TYPE_FLOAT);
 	GLfloat* d0 = static_cast<GLfloat*>(data);
-	if ((d0 == 0)
-	    || (n1 > dataSize))
-	{
-	    // allocate new buffer
-	    cleanupData();
-	    d0 = new GLfloat[n0 * useNumElements];
-	    dataSize = n1;
-	    setData(d0);
-	    setDataType(DATA_TYPE_FLOAT);
-	}
 	for (unsigned int i = 0; i < n0; i++)
 	{
 	    Vector* v0 = Ionflux::ObjectBase::nullPointerCheck(
@@ -267,8 +415,6 @@ int useNumElements, float defaultValue)
 	            d0[useNumElements * i + j] = defaultValue;
 	    }
 	}
-	setNumElements(n0);
-	setElementSize(useNumElements);
 }
 
 void VertexAttribute::setData(const Ionflux::Altjira::ColorSet& newData)
@@ -276,18 +422,8 @@ void VertexAttribute::setData(const Ionflux::Altjira::ColorSet& newData)
 	unsigned int n0 = newData.getNumColors();
 	if (n0 == 0)
 	    return;
-	GLsizei n1 = n0 * 4 * sizeof(GLfloat);
+	allocate(n0, 4, DATA_TYPE_FLOAT);
 	GLfloat* d0 = static_cast<GLfloat*>(data);
-	if ((d0 == 0)
-	    || (n1 > dataSize))
-	{
-	    // allocate new buffer
-	    cleanupData();
-	    d0 = new GLfloat[n0 * 4];
-	    dataSize = n1;
-	    setData(d0);
-	    setDataType(DATA_TYPE_FLOAT);
-	}
 	for (unsigned int i = 0; i < n0; i++)
 	{
 	    Ionflux::Altjira::Color* c0 = 
@@ -298,8 +434,6 @@ void VertexAttribute::setData(const Ionflux::Altjira::ColorSet& newData)
 	    d0[4 * i + 2] = c0->getBlue();
 	    d0[4 * i + 3] = c0->getAlpha();
 	}
-	setNumElements(n0);
-	setElementSize(4);
 }
 
 void VertexAttribute::setData(const Ionflux::ObjectBase::UIntVector& 
@@ -308,18 +442,8 @@ newData)
 	unsigned int n0 = newData.size();
 	if (n0 == 0)
 	    return;
-	GLsizei n1 = n0 * sizeof(GLuint);
+	allocate(n0, 1, DATA_TYPE_UINT);
 	GLuint* d0 = static_cast<GLuint*>(data);
-	if ((d0 == 0)
-	    || (n1 > dataSize))
-	{
-	    // allocate new buffer
-	    cleanupData();
-	    d0 = new GLuint[n0];
-	    dataSize = n1;
-	    setData(d0);
-	    setDataType(DATA_TYPE_UINT);
-	}
 	for (unsigned int i = 0; i < n0; i++)
 	    d0[i] = newData[i];
 	setNumElements(n0);
@@ -510,6 +634,19 @@ componentIndex, float value)
 	d0[elementIndex * elementSize + componentIndex] = value;
 }
 
+void VertexAttribute::setDataComponents(unsigned int elementIndex, float 
+v0, float v1, float v2, float v3)
+{
+	if (elementSize > 0)
+	    setData(elementIndex, 0, v0);
+	if (elementSize > 1)
+	    setData(elementIndex, 1, v1);
+	if (elementSize > 2)
+	    setData(elementIndex, 2, v2);
+	if (elementSize > 3)
+	    setData(elementIndex, 3, v3);
+}
+
 void VertexAttribute::setData(unsigned int elementIndex, unsigned int 
 componentIndex, unsigned int value)
 {
@@ -534,6 +671,19 @@ componentIndex, unsigned int value)
 	}
 	GLuint* d0 = static_cast<GLuint*>(data);
 	d0[elementIndex * elementSize + componentIndex] = value;
+}
+
+void VertexAttribute::setDataComponents(unsigned int elementIndex, unsigned
+int v0, unsigned int v1, unsigned int v2, unsigned int v3)
+{
+	if (elementSize > 0)
+	    setData(elementIndex, 0, v0);
+	if (elementSize > 1)
+	    setData(elementIndex, 1, v1);
+	if (elementSize > 2)
+	    setData(elementIndex, 2, v2);
+	if (elementSize > 3)
+	    setData(elementIndex, 3, v3);
 }
 
 void VertexAttribute::draw(Ionflux::GeoUtils::PrimitiveID primitiveID, 
