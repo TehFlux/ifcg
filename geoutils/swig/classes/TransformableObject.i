@@ -109,6 +109,7 @@ class TransformableObject
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformableObject* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void 
         setDeferredTransform(Ionflux::GeoUtils::DeferredTransform* 
         newDeferredTransform);

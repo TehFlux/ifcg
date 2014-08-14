@@ -75,6 +75,7 @@ class Range
 		other);
 		static Ionflux::GeoUtils::Range* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setRMin(double newRMin);
         virtual double getRMin() const;
         virtual void setRMax(double newRMax);

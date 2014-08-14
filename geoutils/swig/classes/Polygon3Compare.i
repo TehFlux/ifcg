@@ -63,6 +63,7 @@ class Polygon3Compare
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3Compare* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setInvert(bool newInvert);
         virtual bool getInvert() const;
         virtual void setTarget(Ionflux::GeoUtils::Polygon3Compare* 

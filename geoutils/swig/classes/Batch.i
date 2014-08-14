@@ -68,6 +68,7 @@ class Batch
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Batch* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void 
         setProcessor(Ionflux::GeoUtils::TransformNodes::TransformNode* 
         newProcessor);

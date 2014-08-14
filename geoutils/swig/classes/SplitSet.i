@@ -57,7 +57,8 @@ class SplitSet
 		static Ionflux::GeoUtils::SplitSet* upcast(Ionflux::ObjectBase::IFObject*
 		other);
 		static Ionflux::GeoUtils::SplitSet* create(Ionflux::ObjectBase::IFObject*
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumSplits() const;
         virtual Ionflux::GeoUtils::Split* getSplit(unsigned int 
         elementIndex = 0) const;

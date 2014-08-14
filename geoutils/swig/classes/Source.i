@@ -62,6 +62,7 @@ class Source
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Source* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setSource(Ionflux::GeoUtils::TransformableGroup* 
         newSource);
         virtual Ionflux::GeoUtils::TransformableGroup* getSource() const;

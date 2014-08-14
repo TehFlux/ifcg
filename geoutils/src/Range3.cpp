@@ -190,7 +190,7 @@ Ionflux::GeoUtils::Vector3 Range3::getValue(const
 Ionflux::GeoUtils::Vector3 v) const
 {
 	// TODO: Implementation.
-	return Vector3(v.getX0(), v.getX1(), v.getX2());
+	return getValue(v.getX0(), v.getX1(), v.getX2());
 }
 
 Ionflux::GeoUtils::Vector3 Range3::getRMin() const

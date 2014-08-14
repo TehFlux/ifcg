@@ -123,6 +123,7 @@ class Vertex3
 		other);
 		static Ionflux::GeoUtils::Vertex3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vertex3* create(double initX, double initY, 
 		double initZ, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vertex3* create(const 

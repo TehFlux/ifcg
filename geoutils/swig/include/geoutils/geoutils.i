@@ -498,6 +498,7 @@ class Clock
 		other);
 		static Ionflux::GeoUtils::Clock* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setStartTime(double newStartTime);
         virtual double getStartTime() const;
         virtual void setStopTime(double newStopTime);
@@ -561,6 +562,7 @@ class Range
 		other);
 		static Ionflux::GeoUtils::Range* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setRMin(double newRMin);
         virtual double getRMin() const;
         virtual void setRMax(double newRMax);
@@ -732,6 +734,7 @@ class Vector2
 		other);
 		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vector2* create(double initX0, double initX1, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vector2* create(const 
@@ -908,6 +911,7 @@ class Matrix2
 		other);
 		static Ionflux::GeoUtils::Matrix2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Matrix2* create(double initX00, double initX01,
 		double initX10, double initX11, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
@@ -997,6 +1001,7 @@ class Vertex2
 		other);
 		static Ionflux::GeoUtils::Vertex2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vertex2* create(double initX, double initY, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vertex2* create(const 
@@ -1481,6 +1486,7 @@ class VectorN
 		other);
 		static Ionflux::GeoUtils::VectorN* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::VectorN* create(unsigned int initNumElements, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::VectorN* create(unsigned int initNumElements, 
@@ -1588,6 +1594,7 @@ class Matrix3
 		other);
 		static Ionflux::GeoUtils::Matrix3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Matrix3* create(double initX00, double initX01,
 		double initX02, double initX10, double initX11, double initX12, double 
 		initX20, double initX21, double initX22, Ionflux::ObjectBase::IFObject* 
@@ -1833,6 +1840,7 @@ class MatrixMN
 		other);
 		static Ionflux::GeoUtils::MatrixMN* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumRows, 
 		unsigned int initNumCols, Ionflux::ObjectBase::IFObject* parentObject = 
 		0);
@@ -1993,6 +2001,7 @@ class DeferredTransform
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::DeferredTransform* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
         newTransformMatrix);
         virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;
@@ -2103,6 +2112,7 @@ class TransformableObject
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformableObject* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void 
         setDeferredTransform(Ionflux::GeoUtils::DeferredTransform* 
         newDeferredTransform);
@@ -2180,7 +2190,8 @@ class TransformableGroup
 		static Ionflux::GeoUtils::TransformableGroup* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformableGroup* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumItems() const;
         virtual Ionflux::GeoUtils::TransformableObject* getItem(unsigned 
         int elementIndex = 0) const;
@@ -2493,6 +2504,7 @@ class LinearInterpolator
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::LinearInterpolator* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::LinearInterpolator* create(double initV0, 
 		double initV1, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::LinearInterpolator* create(const 
@@ -2574,6 +2586,7 @@ class Vertex3Set
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vertex3Set* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		create(Ionflux::GeoUtils::Vertex3Vector& initVertices, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        
@@ -2698,6 +2711,7 @@ class Vertex3
 		other);
 		static Ionflux::GeoUtils::Vertex3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vertex3* create(double initX, double initY, 
 		double initZ, Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vertex3* create(const 
@@ -2796,6 +2810,7 @@ class Plane3
 		other);
 		static Ionflux::GeoUtils::Plane3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setU(const Ionflux::GeoUtils::Vector3& newU);
@@ -3011,6 +3026,7 @@ class Polygon3Compare
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3Compare* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setInvert(bool newInvert);
         virtual bool getInvert() const;
         virtual void setTarget(Ionflux::GeoUtils::Polygon3Compare* 
@@ -3061,6 +3077,7 @@ class Polygon3CompareAxis
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3CompareAxis* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setAxis(Ionflux::GeoUtils::AxisID newAxis);
         virtual Ionflux::GeoUtils::AxisID getAxis() const;
 };
@@ -3108,6 +3125,7 @@ class FaceCompare
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::FaceCompare* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setInvert(bool newInvert);
         virtual bool getInvert() const;
         virtual void setTarget(Ionflux::GeoUtils::FaceCompare* newTarget);
@@ -3157,6 +3175,7 @@ class FaceCompareAxis
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::FaceCompareAxis* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setAxis(Ionflux::GeoUtils::AxisID newAxis);
         virtual Ionflux::GeoUtils::AxisID getAxis() const;
 };
@@ -3201,6 +3220,7 @@ class ImageProperties
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::ImageProperties* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFileName(const std::string& newFileName);
         virtual std::string getFileName() const;
         virtual void setWidth(unsigned int newWidth);
@@ -3251,6 +3271,7 @@ class SVGShapeStyleSource
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGShapeStyleSource* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setDefaultStyle(const 
         Ionflux::GeoUtils::SVGShapeStyle& newDefaultStyle);
         virtual Ionflux::GeoUtils::SVGShapeStyle getDefaultStyle() const;
@@ -3293,6 +3314,7 @@ class SVGShapeStyleMap
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGShapeStyleMap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumStyles() const;
         virtual Ionflux::GeoUtils::SVGShapeStyle* getStyle(const 
         std::string& elementKey) const;
@@ -3344,6 +3366,7 @@ class SVGShapeStyleVectorSource
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGShapeStyleVectorSource* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setCurrentStyle(unsigned int newCurrentStyle);
         virtual unsigned int getCurrentStyle() const;        
         virtual unsigned int getNumStyles() const;
@@ -3401,6 +3424,7 @@ class SVGImageProperties
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGImageProperties* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setStyleSource(Ionflux::GeoUtils::SVGShapeStyleSource*
         newStyleSource);
         virtual Ionflux::GeoUtils::SVGShapeStyleSource* getStyleSource() 
@@ -3512,6 +3536,7 @@ class Polygon3Set
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3Set* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Polygon3Set* 
 		create(Ionflux::GeoUtils::Polygon3Vector& initPolygons, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        
@@ -3661,6 +3686,7 @@ class Shape3
 		other);
 		static Ionflux::GeoUtils::Shape3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -3732,6 +3758,7 @@ class Object3
 		other);
 		static Ionflux::GeoUtils::Object3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Object3* create(Ionflux::GeoUtils::Mesh* 
 		initMesh, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setMesh(Ionflux::GeoUtils::Mesh* newMesh);
@@ -3804,6 +3831,7 @@ class Sphere3
 		other);
 		static Ionflux::GeoUtils::Sphere3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setR(double newR);
@@ -3889,6 +3917,7 @@ class BoxBoundsItem
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::BoxBoundsItem* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setCenter(const Ionflux::GeoUtils::Vector3& 
         newCenter);
         virtual Ionflux::GeoUtils::Vector3 getCenter() const;
@@ -3965,6 +3994,7 @@ class BoxBoundsItemCompare
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::BoxBoundsItemCompare* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setInvert(bool newInvert);
         virtual bool getInvert() const;
         virtual void setTarget(Ionflux::GeoUtils::BoxBoundsItemCompare* 
@@ -4170,7 +4200,8 @@ class SplitSet
 		static Ionflux::GeoUtils::SplitSet* upcast(Ionflux::ObjectBase::IFObject*
 		other);
 		static Ionflux::GeoUtils::SplitSet* create(Ionflux::ObjectBase::IFObject*
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumSplits() const;
         virtual Ionflux::GeoUtils::Split* getSplit(unsigned int 
         elementIndex = 0) const;
@@ -4290,6 +4321,7 @@ class BoundingBox
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::BoundingBox* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setLevel(int newLevel);
         virtual int getLevel() const;
         virtual void setParent(Ionflux::GeoUtils::BoundingBox* newParent);
@@ -4521,6 +4553,7 @@ class Vertex
 		other);
 		static Ionflux::GeoUtils::Vertex* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNormal(const Ionflux::GeoUtils::Vector3& 
         newNormal);
         virtual Ionflux::GeoUtils::Vector3 getNormal() const;
@@ -5111,6 +5144,7 @@ class Voxel
 		other);
 		static Ionflux::GeoUtils::Voxel* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setIndex(const Ionflux::GeoUtils::Vector3& newIndex);
         virtual Ionflux::GeoUtils::Vector3 getIndex() const;
         virtual void setEdgeLength(double newEdgeLength);
@@ -5214,6 +5248,7 @@ class Compose3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::Compose3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFuncX0(Ionflux::Mapping::Mapping* newFuncX0);
         virtual Ionflux::Mapping::Mapping* getFuncX0() const;
         virtual void setFuncX1(Ionflux::Mapping::Mapping* newFuncX1);
@@ -5325,6 +5360,7 @@ class AcceptLength3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptLength3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setLengthRange(const Ionflux::GeoUtils::Range& 
         newLengthRange);
         virtual Ionflux::GeoUtils::Range getLengthRange() const;
@@ -5378,6 +5414,7 @@ class AcceptVolume3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptVolume3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setRefObject(Ionflux::GeoUtils::Shape3* newRefObject);
         virtual Ionflux::GeoUtils::Shape3* getRefObject() const;
 };
@@ -5432,7 +5469,8 @@ class Lookup3
 		static Ionflux::GeoUtils::Mapping::Lookup3* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::Lookup3* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumEntries() const;
         virtual Ionflux::GeoUtils::Vector3* getEntry(unsigned int 
         elementIndex = 0) const;
@@ -5492,7 +5530,8 @@ class Vector3MappingSet
 		static Ionflux::GeoUtils::Vector3MappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vector3MappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumMappings() const;
         virtual Ionflux::GeoUtils::Mapping::Vector3Mapping* 
         getMapping(unsigned int elementIndex = 0) const;
@@ -5720,6 +5759,7 @@ class ParamControl
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::ParamControl* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void 
         setNode(Ionflux::GeoUtils::TransformNodes::TransformNode* newNode);
         virtual Ionflux::GeoUtils::TransformNodes::TransformNode* getNode()
@@ -5817,7 +5857,8 @@ class TransformGraph
 		static Ionflux::GeoUtils::TransformNodes::TransformGraph* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::TransformGraph* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumInputs() const;
         virtual Ionflux::GeoUtils::TransformNodes::InputNodeSpec 
         getInput(unsigned int elementIndex = 0) const;
@@ -5945,6 +5986,7 @@ class WriteSVG
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::WriteSVG* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFileName(const std::string& newFileName);
         virtual std::string getFileName() const;        
         virtual unsigned int getNumStyles() const;
@@ -6031,6 +6073,7 @@ class Duplicate
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Duplicate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 
 		Ionflux::Mapping::MappingValue paramValue);
 		virtual Ionflux::Mapping::MappingValue 
@@ -6091,6 +6134,7 @@ class MatrixTransform
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::MatrixTransform* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMatrix(const Ionflux::GeoUtils::Matrix4& 
         newMatrix);
         virtual Ionflux::GeoUtils::Matrix4 getMatrix() const;
@@ -6148,6 +6192,7 @@ class Rotate
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Rotate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 
 		Ionflux::Mapping::MappingValue paramValue);
 		virtual Ionflux::Mapping::MappingValue 
@@ -6224,6 +6269,7 @@ class Translate
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Translate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setOffset(const Ionflux::GeoUtils::Vector3& 
         newOffset);
         virtual Ionflux::GeoUtils::Vector3 getOffset() const;
@@ -6290,6 +6336,7 @@ class Scale
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Scale* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 
 		Ionflux::Mapping::MappingValue paramValue);
 		virtual Ionflux::Mapping::MappingValue 
@@ -6365,6 +6412,7 @@ class Center
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Center* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setOrigin(const Ionflux::GeoUtils::Vector3& 
         newOrigin);
         virtual Ionflux::GeoUtils::Vector3 getOrigin() const;
@@ -6418,6 +6466,7 @@ class Normalize
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Normalize* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -6473,6 +6522,7 @@ class Array
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Array* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setOffset(const Ionflux::GeoUtils::Vector3& 
         newOffset);
         virtual Ionflux::GeoUtils::Vector3 getOffset() const;
@@ -6531,6 +6581,7 @@ class Flatten
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Flatten* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -6578,6 +6629,7 @@ class Merge
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Merge* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -6627,6 +6679,7 @@ class Explode
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Explode* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setElementsPerGroup(unsigned int newElementsPerGroup);
         virtual unsigned int getElementsPerGroup() const;
 };
@@ -6676,6 +6729,7 @@ class Wrap
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Wrap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -6723,6 +6777,7 @@ class Unwrap
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Unwrap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -6773,6 +6828,7 @@ class Iterate
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Iterate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNumIterations(unsigned int newNumIterations);
         virtual unsigned int getNumIterations() const;
 };
@@ -6822,6 +6878,7 @@ class Source
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Source* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setSource(Ionflux::GeoUtils::TransformableGroup* 
         newSource);
         virtual Ionflux::GeoUtils::TransformableGroup* getSource() const;
@@ -6874,6 +6931,7 @@ class Cache
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Cache* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -6923,6 +6981,7 @@ class Clone
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Clone* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNumClones(unsigned int newNumClones);
         virtual unsigned int getNumClones() const;
 };
@@ -6978,6 +7037,7 @@ class Batch
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Batch* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void 
         setProcessor(Ionflux::GeoUtils::TransformNodes::TransformNode* 
         newProcessor);
@@ -7087,6 +7147,7 @@ class Scatter
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Scatter* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 
 		Ionflux::Mapping::MappingValue paramValue);
 		virtual Ionflux::Mapping::MappingValue 
@@ -7281,6 +7342,7 @@ class VectorSetSet
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::VectorSetSet* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::VectorSetSet* 
 		create(Ionflux::GeoUtils::VectorSetVector& initVectorSets, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        
@@ -7417,6 +7479,7 @@ class VectorXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7466,6 +7529,7 @@ class Vector2XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7515,6 +7579,7 @@ class Vector3XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7564,6 +7629,7 @@ class Vector4XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7613,6 +7679,7 @@ class VectorNXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::VectorNXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7662,6 +7729,7 @@ class VectorSetXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7712,6 +7780,7 @@ class VectorSetSetXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7761,6 +7830,7 @@ class Object3XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Object3XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7810,6 +7880,7 @@ class MatrixXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7859,6 +7930,7 @@ class Matrix2XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7908,6 +7980,7 @@ class Matrix3XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -7957,6 +8030,7 @@ class Matrix4XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8006,6 +8080,7 @@ class MatrixMNXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::MatrixMNXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8055,6 +8130,7 @@ class FaceDataXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8105,6 +8181,7 @@ class DeferredTransformXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8156,6 +8233,7 @@ class TransformableObjectXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8205,6 +8283,7 @@ class Vertex2XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8254,6 +8333,7 @@ class Vertex3XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8303,6 +8383,7 @@ class Vertex3SetXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8402,6 +8483,7 @@ class EdgeXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8503,6 +8585,7 @@ class TransformableGroupXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8552,6 +8635,7 @@ class Polygon3XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8601,6 +8685,7 @@ class Polygon3SetXMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -8650,6 +8735,7 @@ class Shape3XMLFactory
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

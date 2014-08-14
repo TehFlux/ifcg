@@ -59,6 +59,7 @@ class Split
 		other);
 		static Ionflux::GeoUtils::Split* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setAxis(Ionflux::GeoUtils::AxisID newAxis);
         virtual Ionflux::GeoUtils::AxisID getAxis() const;
         virtual void setS(double newS);

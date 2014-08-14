@@ -83,6 +83,7 @@ class Shape3
 		other);
 		static Ionflux::GeoUtils::Shape3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

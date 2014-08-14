@@ -67,7 +67,8 @@ class Lookup3
 		static Ionflux::GeoUtils::Mapping::Lookup3* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::Lookup3* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumEntries() const;
         virtual Ionflux::GeoUtils::Vector3* getEntry(unsigned int 
         elementIndex = 0) const;

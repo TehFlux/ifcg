@@ -66,6 +66,7 @@ class ParamControl
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::ParamControl* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void 
         setNode(Ionflux::GeoUtils::TransformNodes::TransformNode* newNode);
         virtual Ionflux::GeoUtils::TransformNodes::TransformNode* getNode()

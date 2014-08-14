@@ -66,6 +66,7 @@ class AcceptVolume3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptVolume3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setRefObject(Ionflux::GeoUtils::Shape3* newRefObject);
         virtual Ionflux::GeoUtils::Shape3* getRefObject() const;
 };

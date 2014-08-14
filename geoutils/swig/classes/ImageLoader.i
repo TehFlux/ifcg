@@ -65,6 +65,7 @@ class ImageLoader
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::ImageLoader* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumImageIDs() const;
         virtual Ionflux::GeoUtils::ImageID getImageID(const std::string& 
         elementKey) const;

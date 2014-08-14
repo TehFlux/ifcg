@@ -122,6 +122,7 @@ class Polygon3Set
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3Set* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Polygon3Set* 
 		create(Ionflux::GeoUtils::Polygon3Vector& initPolygons, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        

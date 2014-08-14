@@ -73,6 +73,7 @@ class Render
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Render* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setImage(Ionflux::GeoUtils::Image* newImage);
         virtual Ionflux::GeoUtils::Image* getImage() const;        
         virtual unsigned int getNumStyles() const;

@@ -94,6 +94,7 @@ Ionflux::GeoUtils::TransformableObject
 		other);
 		static Ionflux::GeoUtils::Image* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

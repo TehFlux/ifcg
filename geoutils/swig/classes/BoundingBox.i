@@ -126,6 +126,7 @@ class BoundingBox
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::BoundingBox* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setLevel(int newLevel);
         virtual int getLevel() const;
         virtual void setParent(Ionflux::GeoUtils::BoundingBox* newParent);

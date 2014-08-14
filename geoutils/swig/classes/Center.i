@@ -64,6 +64,7 @@ class Center
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Center* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setOrigin(const Ionflux::GeoUtils::Vector3& 
         newOrigin);
         virtual Ionflux::GeoUtils::Vector3 getOrigin() const;

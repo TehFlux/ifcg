@@ -64,6 +64,7 @@ class Explode
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Explode* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setElementsPerGroup(unsigned int newElementsPerGroup);
         virtual unsigned int getElementsPerGroup() const;
 };

@@ -67,6 +67,7 @@ class AcceptLength3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::AcceptLength3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setLengthRange(const Ionflux::GeoUtils::Range& 
         newLengthRange);
         virtual Ionflux::GeoUtils::Range getLengthRange() const;

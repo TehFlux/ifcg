@@ -63,6 +63,7 @@ class Polygon3CompareAxis
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Polygon3CompareAxis* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setAxis(Ionflux::GeoUtils::AxisID newAxis);
         virtual Ionflux::GeoUtils::AxisID getAxis() const;
 };

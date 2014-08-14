@@ -89,6 +89,7 @@ class Vector2
 		other);
 		static Ionflux::GeoUtils::Vector2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vector2* create(double initX0, double initX1, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vector2* create(const 

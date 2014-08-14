@@ -89,7 +89,8 @@ class TransformableGroup
 		static Ionflux::GeoUtils::TransformableGroup* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformableGroup* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumItems() const;
         virtual Ionflux::GeoUtils::TransformableObject* getItem(unsigned 
         int elementIndex = 0) const;

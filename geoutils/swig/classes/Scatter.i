@@ -91,6 +91,7 @@ class Scatter
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Scatter* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		virtual void setParam(Ionflux::ObjectBase::IFParamID paramID, 
 		Ionflux::Mapping::MappingValue paramValue);
 		virtual Ionflux::Mapping::MappingValue 

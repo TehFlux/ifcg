@@ -100,6 +100,7 @@ class DeferredTransform
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::DeferredTransform* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
         newTransformMatrix);
         virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;

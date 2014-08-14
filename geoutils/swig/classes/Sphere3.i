@@ -85,6 +85,7 @@ class Sphere3
 		other);
 		static Ionflux::GeoUtils::Sphere3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setP(const Ionflux::GeoUtils::Vector3& newP);
         virtual Ionflux::GeoUtils::Vector3 getP() const;
         virtual void setR(double newR);

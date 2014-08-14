@@ -65,6 +65,7 @@ class Iterate
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Iterate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNumIterations(unsigned int newNumIterations);
         virtual unsigned int getNumIterations() const;
 };

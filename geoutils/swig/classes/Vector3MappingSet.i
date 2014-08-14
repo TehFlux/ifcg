@@ -59,7 +59,8 @@ class Vector3MappingSet
 		static Ionflux::GeoUtils::Vector3MappingSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vector3MappingSet* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumMappings() const;
         virtual Ionflux::GeoUtils::Mapping::Vector3Mapping* 
         getMapping(unsigned int elementIndex = 0) const;

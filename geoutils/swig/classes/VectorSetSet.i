@@ -70,6 +70,7 @@ class VectorSetSet
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::VectorSetSet* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::VectorSetSet* 
 		create(Ionflux::GeoUtils::VectorSetVector& initVectorSets, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        

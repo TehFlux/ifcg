@@ -116,6 +116,7 @@ class SVG
 		other);
 		static Ionflux::GeoUtils::SVG* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setSource(const std::string& newSource);
         virtual std::string getSource() const;
         virtual void setType(Ionflux::GeoUtils::SVGType newType);
@@ -197,6 +198,7 @@ Ionflux::GeoUtils::TransformableObject
 		other);
 		static Ionflux::GeoUtils::Image* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -241,6 +243,7 @@ class LoadSVG
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::LoadSVG* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFileName(const std::string& newFileName);
         virtual std::string getFileName() const;        
         virtual unsigned int getNumElementIDs() const;
@@ -309,6 +312,7 @@ class WritePNG
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::WritePNG* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFileName(const std::string& newFileName);
         virtual std::string getFileName() const;        
         virtual unsigned int getNumStyles() const;
@@ -396,6 +400,7 @@ class Render
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Render* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setImage(Ionflux::GeoUtils::Image* newImage);
         virtual Ionflux::GeoUtils::Image* getImage() const;        
         virtual unsigned int getNumStyles() const;
@@ -480,6 +485,7 @@ class ImageItem
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::ImageItem* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setImage(Ionflux::GeoUtils::Image* newImage);
         virtual Ionflux::GeoUtils::Image* getImage() const;
         virtual void setImageID(const std::string& newImageID);
@@ -582,6 +588,7 @@ class ImageLoader
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::ImageLoader* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumImageIDs() const;
         virtual Ionflux::GeoUtils::ImageID getImageID(const std::string& 
         elementKey) const;

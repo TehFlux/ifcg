@@ -101,7 +101,8 @@ class TransformGraph
 		static Ionflux::GeoUtils::TransformNodes::TransformGraph* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::TransformGraph* 
-		create(Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumInputs() const;
         virtual Ionflux::GeoUtils::TransformNodes::InputNodeSpec 
         getInput(unsigned int elementIndex = 0) const;

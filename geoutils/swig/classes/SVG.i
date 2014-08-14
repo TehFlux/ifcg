@@ -63,6 +63,7 @@ class SVG
 		other);
 		static Ionflux::GeoUtils::SVG* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setSource(const std::string& newSource);
         virtual std::string getSource() const;
         virtual void setType(Ionflux::GeoUtils::SVGType newType);

@@ -68,6 +68,7 @@ class Compose3
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Mapping::Compose3* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFuncX0(Ionflux::Mapping::Mapping* newFuncX0);
         virtual Ionflux::Mapping::Mapping* getFuncX0() const;
         virtual void setFuncX1(Ionflux::Mapping::Mapping* newFuncX1);

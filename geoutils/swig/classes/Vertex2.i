@@ -89,6 +89,7 @@ class Vertex2
 		other);
 		static Ionflux::GeoUtils::Vertex2* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vertex2* create(double initX, double initY, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		static Ionflux::GeoUtils::Vertex2* create(const 

@@ -63,6 +63,7 @@ class BoxBoundsItemCompare
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::BoxBoundsItemCompare* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setInvert(bool newInvert);
         virtual bool getInvert() const;
         virtual void setTarget(Ionflux::GeoUtils::BoxBoundsItemCompare* 

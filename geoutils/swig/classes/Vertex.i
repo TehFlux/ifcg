@@ -86,6 +86,7 @@ class Vertex
 		other);
 		static Ionflux::GeoUtils::Vertex* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNormal(const Ionflux::GeoUtils::Vector3& 
         newNormal);
         virtual Ionflux::GeoUtils::Vector3 getNormal() const;

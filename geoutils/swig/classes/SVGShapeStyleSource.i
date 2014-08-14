@@ -58,6 +58,7 @@ class SVGShapeStyleSource
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGShapeStyleSource* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setDefaultStyle(const 
         Ionflux::GeoUtils::SVGShapeStyle& newDefaultStyle);
         virtual Ionflux::GeoUtils::SVGShapeStyle getDefaultStyle() const;

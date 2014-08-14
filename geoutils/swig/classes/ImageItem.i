@@ -73,6 +73,7 @@ class ImageItem
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::ImageItem* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setImage(Ionflux::GeoUtils::Image* newImage);
         virtual Ionflux::GeoUtils::Image* getImage() const;
         virtual void setImageID(const std::string& newImageID);

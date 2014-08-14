@@ -59,6 +59,7 @@ class SVGImageProperties
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGImageProperties* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setStyleSource(Ionflux::GeoUtils::SVGShapeStyleSource*
         newStyleSource);
         virtual Ionflux::GeoUtils::SVGShapeStyleSource* getStyleSource() 

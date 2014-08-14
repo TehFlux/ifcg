@@ -65,6 +65,7 @@ class Translate
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Translate* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setOffset(const Ionflux::GeoUtils::Vector3& 
         newOffset);
         virtual Ionflux::GeoUtils::Vector3 getOffset() const;

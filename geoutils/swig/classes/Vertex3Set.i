@@ -93,6 +93,7 @@ class Vertex3Set
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::Vertex3Set* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Vertex3Set* 
 		create(Ionflux::GeoUtils::Vertex3Vector& initVertices, 
 		Ionflux::ObjectBase::IFObject* parentObject = 0);        

@@ -98,6 +98,7 @@ class BoxBoundsItem
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::BoxBoundsItem* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setCenter(const Ionflux::GeoUtils::Vector3& 
         newCenter);
         virtual Ionflux::GeoUtils::Vector3 getCenter() const;

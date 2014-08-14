@@ -83,6 +83,7 @@ class MatrixMN
 		other);
 		static Ionflux::GeoUtils::MatrixMN* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::MatrixMN* create(unsigned int initNumRows, 
 		unsigned int initNumCols, Ionflux::ObjectBase::IFObject* parentObject = 
 		0);

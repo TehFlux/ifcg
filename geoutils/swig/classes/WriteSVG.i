@@ -73,6 +73,7 @@ class WriteSVG
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::WriteSVG* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFileName(const std::string& newFileName);
         virtual std::string getFileName() const;        
         virtual unsigned int getNumStyles() const;

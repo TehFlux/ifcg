@@ -67,6 +67,7 @@ class Voxel
 		other);
 		static Ionflux::GeoUtils::Voxel* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setIndex(const Ionflux::GeoUtils::Vector3& newIndex);
         virtual Ionflux::GeoUtils::Vector3 getIndex() const;
         virtual void setEdgeLength(double newEdgeLength);

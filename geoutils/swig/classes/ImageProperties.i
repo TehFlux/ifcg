@@ -59,6 +59,7 @@ class ImageProperties
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::ImageProperties* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setFileName(const std::string& newFileName);
         virtual std::string getFileName() const;
         virtual void setWidth(unsigned int newWidth);

@@ -130,6 +130,8 @@ newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 	        // allocate new buffer
 	        cleanupData();
 	        d0 = new GLfloat[newNumElements * newElementSize];
+	        Ionflux::ObjectBase::nullPointerCheck(d0, this, "allocate", 
+	            "Data buffer");
 	        setData(d0);
 	    }
 	} else
@@ -144,6 +146,8 @@ newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 	        // allocate new buffer
 	        cleanupData();
 	        d0 = new GLuint[newNumElements * newElementSize];
+	        Ionflux::ObjectBase::nullPointerCheck(d0, this, "allocate", 
+	            "Data buffer");
 	        setData(d0);
 	    }
 	} else
@@ -173,6 +177,8 @@ resizeExponent)
 	}
 	GLsizei n1 = 0;
 	unsigned int ne0 = newNumElements;
+	unsigned int ne1 = numElements;
+	unsigned int es1 = elementSize;
 	if (resizeExponent >= 2.)
 	{
 	    ne0 = numElements;
@@ -189,31 +195,40 @@ resizeExponent)
 	    // float buffer
 	    n1 = newNumElements * newElementSize * sizeof(GLfloat);
 	    GLfloat* d0 = static_cast<GLfloat*>(data);
+	    Ionflux::ObjectBase::nullPointerCheck(d0, this, "resize", 
+	        "Data buffer");
 	    if (n1 > dataSize)
 	    {
-	        // copy data to temporary buffer
-	        GLfloat* d1 = new GLfloat[newNumElements * newElementSize];
-	        for (unsigned int i = 0; i < numElements; i++)
-	        {
-	            for (unsigned int k = 0; k < elementSize; k++)
-	                d1[i * elementSize + k] = d0[i * elementSize + k];
-	        }
-	        // allocate new buffer
 	        // <---- DEBUG ----- //
 	        std::cerr << "[VertexAttribute::resize] DEBUG: "
 	            "Resizing buffer (ne0 = " << ne0 
-	            << ", exponent = " << resizeExponent << ", numElements = " 
-	            << newNumElements << ", elementSize = " << newElementSize 
+	            << ", exponent = " << resizeExponent 
+	            << ", n1 = " << n1 
+	            << ", dataSize = " << dataSize 
+	            << ", numElements = " << ne1 
+	            << ", elementSize = " << es1 
+	            << ", newNumElements = " << newNumElements 
+	            << ", newElementSize = " << newElementSize 
 	            << ", type = " << getDataTypeString(newDataType) << ")." 
 	            << std::endl;
 	        // ----- DEBUG ----> */
+	        // copy data to temporary buffer
+	        GLfloat* d1 = new GLfloat[ne1 * es1];
+	        Ionflux::ObjectBase::nullPointerCheck(d1, this, "resize", 
+	            "Temporary data buffer");
+	        for (unsigned int i = 0; i < ne1; i++)
+	        {
+	            for (unsigned int k = 0; k < es1; k++)
+	                d1[i * es1 + k] = d0[i * es1 + k];
+	        }
+	        // allocate new buffer
 	        allocate(ne0, newElementSize, newDataType);
 	        // copy data back from temporary buffer
 	        d0 = static_cast<GLfloat*>(data);
-	        for (unsigned int i = 0; i < numElements; i++)
+	        for (unsigned int i = 0; i < ne1; i++)
 	        {
-	            for (unsigned int k = 0; k < elementSize; k++)
-	                d0[i * elementSize + k] = d1[i * elementSize + k];
+	            for (unsigned int k = 0; k < es1; k++)
+	                d0[i * es1 + k] = d1[i * es1 + k];
 	        }
 	        delete[] d1;
 	    }
@@ -225,29 +240,34 @@ resizeExponent)
 	    GLuint* d0 = static_cast<GLuint*>(data);
 	    if (n1 > dataSize)
 	    {
-	        // copy data to temporary buffer
-	        GLuint* d1 = new GLuint[newNumElements * newElementSize];
-	        for (unsigned int i = 0; i < numElements; i++)
-	        {
-	            for (unsigned int k = 0; k < elementSize; k++)
-	                d1[i * elementSize + k] = d0[i * elementSize + k];
-	        }
-	        // allocate new buffer
 	        // <---- DEBUG ----- //
 	        std::cerr << "[VertexAttribute::resize] DEBUG: "
 	            "Resizing buffer (ne0 = " << ne0 
-	            << ", exponent = " << resizeExponent << ", numElements = " 
-	            << newNumElements << ", elementSize = " << newElementSize 
+	            << ", exponent = " << resizeExponent 
+	            << ", n1 = " << n1 
+	            << ", dataSize = " << dataSize 
+	            << ", numElements = " << ne1 
+	            << ", elementSize = " << es1 
+	            << ", newNumElements = " << newNumElements 
+	            << ", newElementSize = " << newElementSize 
 	            << ", type = " << getDataTypeString(newDataType) << ")." 
 	            << std::endl;
 	        // ----- DEBUG ----> */
+	        // copy data to temporary buffer
+	        GLuint* d1 = new GLuint[ne1 * es1];
+	        for (unsigned int i = 0; i < ne1; i++)
+	        {
+	            for (unsigned int k = 0; k < es1; k++)
+	                d1[i * es1 + k] = d0[i * es1 + k];
+	        }
+	        // allocate new buffer
 	        allocate(ne0, newElementSize, newDataType);
 	        // copy data back from temporary buffer
 	        d0 = static_cast<GLuint*>(data);
-	        for (unsigned int i = 0; i < numElements; i++)
+	        for (unsigned int i = 0; i < ne1; i++)
 	        {
-	            for (unsigned int k = 0; k < elementSize; k++)
-	                d0[i * elementSize + k] = d1[i * elementSize + k];
+	            for (unsigned int k = 0; k < es1; k++)
+	                d0[i * es1 + k] = d1[i * es1 + k];
 	        }
 	        delete[] d1;
 	    }
@@ -259,7 +279,6 @@ resizeExponent)
 	        << ")";
 	    throw GeoUtilsError(getErrorString(status.str(), "resize"));
 	}
-	setDataSize(n1);
 	setDataType(newDataType);
 	setNumElements(newNumElements);
 	setElementSize(newElementSize);

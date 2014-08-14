@@ -64,6 +64,7 @@ class Clone
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::Clone* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNumClones(unsigned int newNumClones);
         virtual unsigned int getNumClones() const;
 };

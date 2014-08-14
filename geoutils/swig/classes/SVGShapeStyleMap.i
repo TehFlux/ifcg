@@ -56,6 +56,7 @@ class SVGShapeStyleMap
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGShapeStyleMap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumStyles() const;
         virtual Ionflux::GeoUtils::SVGShapeStyle* getStyle(const 
         std::string& elementKey) const;

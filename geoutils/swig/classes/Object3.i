@@ -88,6 +88,7 @@ class Object3
 		other);
 		static Ionflux::GeoUtils::Object3* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 		static Ionflux::GeoUtils::Object3* create(Ionflux::GeoUtils::Mesh* 
 		initMesh, Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual void setMesh(Ionflux::GeoUtils::Mesh* newMesh);

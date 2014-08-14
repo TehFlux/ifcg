@@ -64,6 +64,7 @@ class MatrixTransform
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::TransformNodes::MatrixTransform* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setMatrix(const Ionflux::GeoUtils::Matrix4& 
         newMatrix);
         virtual Ionflux::GeoUtils::Matrix4 getMatrix() const;

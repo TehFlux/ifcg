@@ -59,6 +59,7 @@ class Clock
 		other);
 		static Ionflux::GeoUtils::Clock* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setStartTime(double newStartTime);
         virtual double getStartTime() const;
         virtual void setStopTime(double newStopTime);

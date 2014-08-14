@@ -59,6 +59,7 @@ class SVGShapeStyleVectorSource
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::GeoUtils::SVGShapeStyleVectorSource* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setCurrentStyle(unsigned int newCurrentStyle);
         virtual unsigned int getCurrentStyle() const;        
         virtual unsigned int getNumStyles() const;
