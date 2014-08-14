@@ -1652,6 +1652,8 @@ other)
             "operator=", "Edge");
         ev0.push_back(e0->copy());
     }
+    clearEdges();
+    addEdges(ev0);
     BoxBoundsItem::clear();
     TransformableObject::clear();
     update();

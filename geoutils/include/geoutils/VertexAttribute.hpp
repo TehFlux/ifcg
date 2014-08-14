@@ -197,15 +197,21 @@ class VertexAttribute
 		 * Resize the data buffer. If the current size of the buffer is 
 		 * appropriate to accomodate the specified number of elements of the 
 		 * specified size, the data buffer will not be resized, but its type 
-		 * will still be set according to the \c newDataType parameter.
+		 * will still be set according to the \c newDataType parameter. If \c 
+		 * resizeExponent is set to some value \c x greater than or equal to 
+		 * 2, the current buffer size will be multiplied by \c x until it can 
+		 * accomodate the specified number and size of elements. This is 
+		 * useful to reduce the number of resize operations required if data 
+		 * is appended to the buffer multiple times.
 		 *
 		 * \param newNumElements number of elements.
 		 * \param newElementSize element size.
 		 * \param newDataType data buffer type.
+		 * \param resizeExponent resize exponent.
 		 */
 		virtual void resize(unsigned int newNumElements, unsigned int 
 		newElementSize, Ionflux::GeoUtils::DataTypeID newDataType = 
-		DATA_TYPE_FLOAT);
+		DATA_TYPE_FLOAT, double resizeExponent = 0.);
 		
 		/** Append data.
 		 *
@@ -374,6 +380,16 @@ class VertexAttribute
 		 */
 		virtual void setDataComponents(unsigned int elementIndex, float v0, float
 		v1, float v2 = 0., float v3 = 0.);
+		
+		/** Set data (Vector).
+		 *
+		 * Set the data value with the specified element index.
+		 *
+		 * \param elementIndex Element index.
+		 * \param value Value.
+		 */
+		virtual void setData(unsigned int elementIndex, const 
+		Ionflux::GeoUtils::Vector& value);
 		
 		/** Set data (uint).
 		 *

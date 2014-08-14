@@ -214,7 +214,7 @@ class VertexAttribute
         DATA_TYPE_FLOAT);
         virtual void resize(unsigned int newNumElements, unsigned int 
         newElementSize, Ionflux::GeoUtils::DataTypeID newDataType = 
-        DATA_TYPE_FLOAT);
+        DATA_TYPE_FLOAT, double resizeExponent = 0.);
         virtual void append(const Ionflux::GeoUtils::VertexAttribute& 
         source);
         virtual void cleanupData();
@@ -244,6 +244,8 @@ class VertexAttribute
         componentIndex, float value);
         virtual void setDataComponents(unsigned int elementIndex, float v0,
         float v1, float v2 = 0., float v3 = 0.);
+        virtual void setData(unsigned int elementIndex, const 
+        Ionflux::GeoUtils::Vector& value);
         virtual void setData(unsigned int elementIndex, unsigned int 
         componentIndex, unsigned int value);
         virtual void setDataComponents(unsigned int elementIndex, unsigned 

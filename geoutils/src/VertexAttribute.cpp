@@ -109,6 +109,15 @@ GLenum VertexAttribute::getOpenGLTarget()
 void VertexAttribute::allocate(unsigned int newNumElements, unsigned int 
 newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 {
+	if ((newNumElements == 0) 
+	    || (newElementSize == 0))
+	{
+	    std::ostringstream status;
+	    status << "Number of elements or element size to be allocated is "
+	        "zero (numElements = " << newNumElements << ", elementSize = " 
+	        << newElementSize << ")";
+	    throw GeoUtilsError(getErrorString(status.str(), "allocate"));
+	}
 	GLsizei n1 = 0;
 	if (newDataType == DATA_TYPE_FLOAT)
 	{
@@ -154,7 +163,8 @@ newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 }
 
 void VertexAttribute::resize(unsigned int newNumElements, unsigned int 
-newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
+newElementSize, Ionflux::GeoUtils::DataTypeID newDataType, double 
+resizeExponent)
 {
 	if (data == 0)
 	{
@@ -162,6 +172,18 @@ newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 	    return;
 	}
 	GLsizei n1 = 0;
+	unsigned int ne0 = newNumElements;
+	if (resizeExponent >= 2.)
+	{
+	    ne0 = numElements;
+	    if (ne0 == 0)
+	    {
+	        throw GeoUtilsError(getErrorString(
+	            "Current number of elements is zero.", "resize"));
+	    }
+	    while (ne0 < newNumElements)
+	        ne0 = static_cast<unsigned int>(resizeExponent * ne0);
+	}
 	if (newDataType == DATA_TYPE_FLOAT)
 	{
 	    // float buffer
@@ -177,7 +199,15 @@ newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 	                d1[i * elementSize + k] = d0[i * elementSize + k];
 	        }
 	        // allocate new buffer
-	        allocate(newNumElements, newElementSize, newDataType);
+	        // <---- DEBUG ----- //
+	        std::cerr << "[VertexAttribute::resize] DEBUG: "
+	            "Resizing buffer (ne0 = " << ne0 
+	            << ", exponent = " << resizeExponent << ", numElements = " 
+	            << newNumElements << ", elementSize = " << newElementSize 
+	            << ", type = " << getDataTypeString(newDataType) << ")." 
+	            << std::endl;
+	        // ----- DEBUG ----> */
+	        allocate(ne0, newElementSize, newDataType);
 	        // copy data back from temporary buffer
 	        d0 = static_cast<GLfloat*>(data);
 	        for (unsigned int i = 0; i < numElements; i++)
@@ -203,7 +233,15 @@ newElementSize, Ionflux::GeoUtils::DataTypeID newDataType)
 	                d1[i * elementSize + k] = d0[i * elementSize + k];
 	        }
 	        // allocate new buffer
-	        allocate(newNumElements, newElementSize, newDataType);
+	        // <---- DEBUG ----- //
+	        std::cerr << "[VertexAttribute::resize] DEBUG: "
+	            "Resizing buffer (ne0 = " << ne0 
+	            << ", exponent = " << resizeExponent << ", numElements = " 
+	            << newNumElements << ", elementSize = " << newElementSize 
+	            << ", type = " << getDataTypeString(newDataType) << ")." 
+	            << std::endl;
+	        // ----- DEBUG ----> */
+	        allocate(ne0, newElementSize, newDataType);
 	        // copy data back from temporary buffer
 	        d0 = static_cast<GLuint*>(data);
 	        for (unsigned int i = 0; i < numElements; i++)
@@ -645,6 +683,33 @@ v0, float v1, float v2, float v3)
 	    setData(elementIndex, 2, v2);
 	if (elementSize > 3)
 	    setData(elementIndex, 3, v3);
+}
+
+void VertexAttribute::setData(unsigned int elementIndex, const 
+Ionflux::GeoUtils::Vector& value)
+{
+	if (dataType != DATA_TYPE_FLOAT)
+	{
+	    std::ostringstream status;
+	    status << "Data type mismatch (dataType = " 
+	        << getDataTypeString(dataType) << ").";
+	    throw GeoUtilsError(getErrorString(status.str(), "setData"));
+	}
+	if (elementIndex >= numElements)
+	{
+	    std::ostringstream status;
+	    status << "Element index out of bounds: " << elementIndex;
+	    throw GeoUtilsError(getErrorString(status.str(), "setData"));
+	}
+	GLfloat* d0 = static_cast<GLfloat*>(data);
+	unsigned int ne0 = value.getNumElements();
+	for (unsigned int i = 0; i < elementSize; i++)
+	{
+	    if (i < ne0)
+	        d0[elementIndex * elementSize + i] = value[i];
+	    else
+	        d0[elementIndex * elementSize + i] = 0.;
+	}
 }
 
 void VertexAttribute::setData(unsigned int elementIndex, unsigned int 

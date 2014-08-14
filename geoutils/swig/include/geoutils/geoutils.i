@@ -1209,6 +1209,8 @@ class Range3
         virtual Ionflux::GeoUtils::Vector3 getRadius() const;
         virtual Ionflux::GeoUtils::Vector3 getExtent() const;
         virtual double getExtent(Ionflux::GeoUtils::AxisID axis) const;
+        virtual Ionflux::GeoUtils::Vector3 getValue(double v0, double v1, 
+        double v2) const;
         virtual Ionflux::GeoUtils::Vector3 getValue(const 
         Ionflux::GeoUtils::Vector3 v) const;
         virtual Ionflux::GeoUtils::Vector3 getRMin() const;

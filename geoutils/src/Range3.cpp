@@ -179,11 +179,18 @@ double Range3::getExtent(Ionflux::GeoUtils::AxisID axis) const
 	return 0.;
 }
 
+Ionflux::GeoUtils::Vector3 Range3::getValue(double v0, double v1, double 
+v2) const
+{
+	// TODO: Implementation.
+	return Vector3(x.getValue(v0), y.getValue(v1), z.getValue(v2));
+}
+
 Ionflux::GeoUtils::Vector3 Range3::getValue(const 
 Ionflux::GeoUtils::Vector3 v) const
 {
 	// TODO: Implementation.
-	return Vector3(x.getValue(v.getX0()), y.getValue(v.getX1()), z.getValue(v.getX2()));
+	return Vector3(v.getX0(), v.getX1(), v.getX2());
 }
 
 Ionflux::GeoUtils::Vector3 Range3::getRMin() const

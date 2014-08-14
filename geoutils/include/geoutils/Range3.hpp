@@ -215,6 +215,21 @@ class Range3
 		
 		/** Get value.
 		 *
+		 * Get the vector inside the range corresponding to the parameters. 
+		 * For each dimension, s = 0 returns the minimum value and s = 1 
+		 * returns the maximum value for that dimension.
+		 *
+		 * \param v0 Parameter (0).
+		 * \param v1 Parameter (1).
+		 * \param v2 Parameter (2).
+		 *
+		 * \return Value from the range.
+		 */
+		virtual Ionflux::GeoUtils::Vector3 getValue(double v0, double v1, double 
+		v2) const;
+		
+		/** Get value.
+		 *
 		 * Get the vector inside the range corresponding to the parameter 
 		 * vector. For each dimension, s = 0 returns the minimum value and s =
 		 * 1 returns the maximum value for that dimension.
