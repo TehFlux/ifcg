@@ -447,8 +447,8 @@ bool Range3::operator!=(const Ionflux::GeoUtils::Range3& other) const
 std::string Range3::getValueString() const
 {
 	std::ostringstream status;
-	status << x.getString() << ", " << y.getString() << ", " 
-	    << z.getString();
+	status << "(" << x.getValueString() << "), (" << y.getValueString() 
+	    << "), (" << z.getValueString() << ")";
 	return status.str();
 }
 

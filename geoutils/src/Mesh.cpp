@@ -766,14 +766,14 @@ unsigned int Mesh::makeTris()
 	return ntCount;
 }
 
-void Mesh::setFaceVertexNormals()
+void Mesh::setFaceVertexNormals(bool flip0)
 {
 	unsigned int numFaces = getNumFaces();
 	for (unsigned int i = 0; i < numFaces; i++)
 	{
 	    Face* cf = getFace(i);
 	    if (cf != 0)
-	        cf->setFaceVertexNormals();
+	        cf->setFaceVertexNormals(flip0);
 	}
 }
 

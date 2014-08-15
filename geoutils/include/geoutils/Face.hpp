@@ -158,8 +158,10 @@ class Face
 		/** Set face vertex normals.
 		 *
 		 * Set the vertex normals for the face to the face normal.
+		 *
+		 * \param flip0 flip normals.
 		 */
-		virtual void setFaceVertexNormals();
+		virtual void setFaceVertexNormals(bool flip0 = false);
 		
 		/** Set vertex colors.
 		 *

@@ -199,7 +199,7 @@ resizeExponent)
 	        "Data buffer");
 	    if (n1 > dataSize)
 	    {
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        std::cerr << "[VertexAttribute::resize] DEBUG: "
 	            "Resizing buffer (ne0 = " << ne0 
 	            << ", exponent = " << resizeExponent 
@@ -240,7 +240,7 @@ resizeExponent)
 	    GLuint* d0 = static_cast<GLuint*>(data);
 	    if (n1 > dataSize)
 	    {
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        std::cerr << "[VertexAttribute::resize] DEBUG: "
 	            "Resizing buffer (ne0 = " << ne0 
 	            << ", exponent = " << resizeExponent 

@@ -151,7 +151,7 @@ void Face::clear()
 	clearTangentSpace();
 }
 
-void Face::setFaceVertexNormals()
+void Face::setFaceVertexNormals(bool flip0)
 {
 	Vector3 n0 = getNormal();
 	FaceData* vn0 = getVertexNormals0();
@@ -163,7 +163,12 @@ void Face::setFaceVertexNormals()
 	vn0->clearVectors();
 	unsigned int numVerts = getNumVertices();
 	for (unsigned int i = 0; i < numVerts; i++)
-	    vn0->addVector(n0.copy());
+	{
+	    Vector* v0 = n0.copy();
+	    if (flip0)
+	        v0->flipIP();
+	    vn0->addVector(v0);
+	}
 }
 
 void Face::setVertexColors(const Ionflux::GeoUtils::Vector4& color)

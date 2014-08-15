@@ -121,7 +121,7 @@ Ionflux::GeoUtils::TransformableObject
         maxIterations = 10000, double p = 1., double t = 
         Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual unsigned int makeTris();
-        virtual void setFaceVertexNormals();
+        virtual void setFaceVertexNormals(bool flip0 = false);
         virtual void setFaceVertexColors(const Ionflux::GeoUtils::Vector4& 
         color);
         virtual bool isTriMesh() const;

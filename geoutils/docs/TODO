@@ -17,6 +17,8 @@ New
 
 + VertexAttribute: make it a TransformableObject
 
++ Mesh: make face normals consistent
+
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------

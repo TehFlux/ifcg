@@ -494,8 +494,10 @@ Ionflux::GeoUtils::TransformableObject
 		/** Set face vertex normals.
 		 *
 		 * Set the vertex normals for all faces to the face normal.
+		 *
+		 * \param flip0 flip normals.
 		 */
-		virtual void setFaceVertexNormals();
+		virtual void setFaceVertexNormals(bool flip0 = false);
 		
 		/** Set face vertex colors.
 		 *
