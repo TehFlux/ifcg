@@ -237,11 +237,14 @@ class FBXNode
 		 * \param targetPath where to store the mesh data.
 		 * \param recursive recursively dump meshes.
 		 * \param localTransform local transformation to be applied to the mesh.
+		 * \param startIndex start index for extracted meshes.
+		 * \param scale0 mesh scale factor.
 		 *
 		 * \return number of meshes that were merged.
 		 */
 		virtual unsigned int dumpMesh(const std::string& targetPath, bool 
-		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) const;
+		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
+		unsigned int startIndex = 0, double scale0 = 1.) const;
 		
 		/** Get string representation of value.
 		 *

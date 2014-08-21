@@ -231,8 +231,8 @@ class FBXNode
         recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) 
         const;
         virtual unsigned int dumpMesh(const std::string& targetPath, bool 
-        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) 
-        const;
+        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
+        unsigned int startIndex = 0, double scale0 = 1.) const;
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::FBXNode* copy() const;
 		static Ionflux::GeoUtils::FBXNode* upcast(Ionflux::ObjectBase::IFObject* 
