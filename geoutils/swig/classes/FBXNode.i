@@ -35,6 +35,7 @@ namespace GeoUtils
 {
 
 class Matrix4;
+class Mesh;
 
 class FBXNodeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -83,6 +84,11 @@ class FBXNode
         virtual void listChildNodes(bool recursive = false, unsigned int 
         indentWidth = Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char 
         indentChar = ' ', unsigned int depth = 0) const;
+        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+        std::string& needle, bool recursive = true);
+        virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
+        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) 
+        const;
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::FBXNode* copy() const;
 		static Ionflux::GeoUtils::FBXNode* upcast(Ionflux::ObjectBase::IFObject* 

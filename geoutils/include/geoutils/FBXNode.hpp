@@ -41,6 +41,7 @@ namespace GeoUtils
 {
 
 class Matrix4;
+class Mesh;
 
 /// Class information for class FBXNode.
 class FBXNodeClassInfo
@@ -179,8 +180,8 @@ class FBXNode
 		
 		/** Get child node.
 		 *
-		 * Get the child node with the specified index. The caller is 
-		 * responsible for managing the returned object.
+		 * Get the child node with the specified index. The returned node will
+		 * not be referenced and must be managed by the caller.
 		 *
 		 * \param index child node index.
 		 *
@@ -201,6 +202,32 @@ class FBXNode
 		virtual void listChildNodes(bool recursive = false, unsigned int 
 		indentWidth = Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char indentChar 
 		= ' ', unsigned int depth = 0) const;
+		
+		/** Find child node by name.
+		 *
+		 * Find a child node by name. The returned node will not be referenced
+		 * and must be managed by the caller.
+		 *
+		 * \param needle name of node to be found.
+		 * \param recursive look for child node.
+		 *
+		 * \return Node with the specified name, or 0 if the node does not exist.
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+		std::string& needle, bool recursive = true);
+		
+		/** Get mesh.
+		 *
+		 * Get the mesh attached to a node.
+		 *
+		 * \param target where to store the mesh data.
+		 * \param recursive recursively merge meshes.
+		 * \param localTransform local transformation to be applied to the mesh.
+		 *
+		 * \return number of meshes that were merged.
+		 */
+		virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
+		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) const;
 		
 		/** Get string representation of value.
 		 *

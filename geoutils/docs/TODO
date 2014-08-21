@@ -15,9 +15,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ VertexAttribute: make it a TransformableObject
 
-+ Mesh: make face normals consistent
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -31,6 +29,7 @@ Critical stuff
 
 + Mesh
   > OBJ import/export
+  > make face normals consistent
 
 + OpenGL utility library
   > render points
@@ -47,12 +46,12 @@ Critical stuff
       Altjira::Drawable)
   > render to Image
 
++ VertexAttribute: make it a TransformableObject
+
 + add 'hasClassInfo = true' for parent classes that have class information.
 
 + Segfaults:
   > cg.Matrix3.create(r - cg.Matrix3.UNIT)
-
-+ Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
 + Use getValueString() instead of getString()
 
@@ -121,6 +120,8 @@ Critical stuff
 --------------------------------------------------------------------------------
 Important stuff
 --------------------------------------------------------------------------------
+
++ Remove legacy XML I/O functions (Mesh, Face, Vertex3Set).
 
 + BoundingBox lookups use too much RAM.
 

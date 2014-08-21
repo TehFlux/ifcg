@@ -35,6 +35,9 @@
 #include "ifobject/objectutils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Matrix4.hpp"
+#include "geoutils/Mesh.hpp"
+#include "geoutils/Face.hpp"
+#include "geoutils/Vertex3.hpp"
 #include "geoutils/fbxutils.hpp"
 #include "geoutils/fbxutils_private.hpp"
 
@@ -226,6 +229,143 @@ indentChar, unsigned int depth) const
 	        removeLocalRef(n0);
 	    }
 	}
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::findChildNodeByName(const std::string&
+needle, bool recursive)
+{
+	if ((getName() == needle) 
+	    || !recursive)
+	    return this;
+	int numChildNodes = getNumChildNodes();
+	int i = 0;
+	FBXNode* result = 0;
+	while ((result == 0) 
+	    && (i < numChildNodes))
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	    {
+	        if (n0->getName() == needle)
+	        {
+	            result = n0;
+	        } else
+	            delete n0;
+	    }
+	    i++;
+	}
+	return result;
+}
+
+unsigned int FBXNode::getMesh(Ionflux::GeoUtils::Mesh& target, bool 
+recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
+{
+	Ionflux::ObjectBase::nullPointerCheck(impl, this, "getMesh", 
+	    "Node implementation");
+	FBXNodeAttributeType t0 = getAttributeType();
+	if ((t0 != TYPE_MESH) 
+	    && !recursive)
+	    return 0;
+	unsigned int numMeshes = 0;
+	if (t0 == TYPE_MESH)
+	{
+	    // extract the mesh
+	    FbxMesh* fbm0 = impl->GetMesh();
+	    Ionflux::ObjectBase::nullPointerCheck(fbm0, this, "getMesh", 
+	        "Mesh data");
+	    int numVerts0 = fbm0->GetControlPointsCount();
+	    int numFaces0 = fbm0->GetPolygonCount();
+	    // <---- DEBUG ----- //
+	    std::cerr << "[FBXNode::getMesh] DEBUG: "
+	        "merging mesh '" << getName() << "': " << "numVerts = " 
+	        << numVerts0 << ", numFaces = " << numFaces0 
+	        << std::endl;
+	    /* ----- DEBUG ----> */
+	    Ionflux::GeoUtils::Mesh m0;
+	    // vertices
+	    for (int i = 0; i < numVerts0; i++)
+	    {
+	        FbxVector4 v0 = fbm0->GetControlPointAt(i);
+	        Vertex3* cv = m0.addVertex();
+	        cv->setCoords(v0[0], v0[1], v0[2]);
+	    }
+	    // faces
+	    for (int i = 0; i < numFaces0; i++)
+	    {
+	        int n0 = fbm0->GetPolygonSize(i);
+	        if (n0 < 0)
+	        {
+	            std::ostringstream status;
+	            status << "Invalid polygon index (" << i << ").";
+	            throw GeoUtilsError(getErrorString(status.str(), 
+	                "getMesh"));
+	        }
+	        // <---- DEBUG ----- //
+	        if (n0 > 4)
+	        {
+	            std::cerr << "[FBXNode::getMesh] DEBUG: "
+	                "number of face vertices for face #" << i << ": " 
+	                << n0 << std::endl;
+	        }
+	        /* ----- DEBUG ----> */
+	        Face* cf = m0.addFace();
+	        for (int j = 0; j < n0; j++)
+	        {
+	            int v0 = fbm0->GetPolygonVertex(i, j);
+	            cf->addVertex(v0);
+	        }
+	    }
+	    if (transformMatrix != 0)
+	    {
+	        // apply transform of this node
+	        m0.transform(*transformMatrix);
+	    }
+	    if ((localTransform != 0) 
+	        && !localTransform->eq(Matrix4::UNIT))
+	    {
+	        // apply local transform
+	        m0.transform(*localTransform);
+	    }
+	    m0.applyTransform();
+	    target.merge(m0);
+	    numMeshes++;
+	}
+	if (!recursive)
+	    return numMeshes;
+	// determine local transformation for child meshes
+	Matrix4 T0(Matrix4::UNIT);
+	bool useLT = false;
+	if (transformMatrix != 0)
+	    T0.multiplyLeft(*transformMatrix);
+	if ((localTransform != 0) 
+	    && !localTransform->eq(Matrix4::UNIT))
+	    T0.multiplyLeft(*localTransform);
+	if (!T0.eq(Matrix4::UNIT))
+	    useLT = true;
+	// <---- DEBUG ----- //
+	if (useLT)
+	{
+	    std::cerr << "[FBXNode::getMesh] DEBUG: "
+	        "node '" << getName() << "': local transformation: [" 
+	        << T0.getValueString() << "]" << std::endl;
+	}
+	/* ----- DEBUG ----> */
+	// recursively merge meshes
+	int numChildNodes = getNumChildNodes();
+	for (int i = 0; i < numChildNodes; i++)
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	    {
+	        addLocalRef(n0);
+	        if (useLT)
+	            numMeshes += n0->getMesh(target, true, &T0);
+	        else
+	            numMeshes += n0->getMesh(target, true);
+	        removeLocalRef(n0);
+	    }
+	}
+	return numMeshes;
 }
 
 std::string FBXNode::getValueString() const
