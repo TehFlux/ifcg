@@ -179,6 +179,22 @@ indentChar) const
 	removeLocalRef(r0);
 }
 
+Ionflux::GeoUtils::FBXNode* FBXScene::findChildNodeByName(const 
+std::string& needle, bool recursive)
+{
+	FBXNode* r0 = getRootNode();
+	if (r0 == 0)
+	    return 0;
+	if (r0->getName() == needle)
+	    return r0;
+	if (!recursive)
+	    return r0;
+	addLocalRef(r0);
+	FBXNode* result = r0->findChildNodeByName(needle, recursive);
+	removeLocalRef(r0);
+	return result;
+}
+
 std::string FBXScene::getValueString() const
 {
 	// TODO: Implementation.

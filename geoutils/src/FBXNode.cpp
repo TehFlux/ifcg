@@ -246,10 +246,8 @@ needle, bool recursive)
 	    FBXNode* n0 = getChildNode(i);
 	    if (n0 != 0)
 	    {
-	        if (n0->getName() == needle)
-	        {
-	            result = n0;
-	        } else
+	        result = n0->findChildNodeByName(needle, true);
+	        if (n0 != result)
 	            delete n0;
 	    }
 	    i++;
@@ -362,6 +360,85 @@ recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
 	            numMeshes += n0->getMesh(target, true, &T0);
 	        else
 	            numMeshes += n0->getMesh(target, true);
+	        removeLocalRef(n0);
+	    }
+	}
+	return numMeshes;
+}
+
+unsigned int FBXNode::dumpMesh(const std::string& targetPath, bool 
+recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
+{
+	Ionflux::ObjectBase::nullPointerCheck(impl, this, "dumpMesh", 
+	    "Node implementation");
+	FBXNodeAttributeType t0 = getAttributeType();
+	if ((t0 != TYPE_MESH) 
+	    && !recursive)
+	    return 0;
+	unsigned int numMeshes = 0;
+	if (t0 == TYPE_MESH)
+	{
+	    // extract the mesh
+	    Mesh m0;
+	    getMesh(m0, false);
+	    m0.update();
+	    unsigned int nv0 = m0.getNumVertices();
+	    unsigned int nf0 = m0.getNumFaces();
+	    std::string nn0(getName());
+	    std::ostringstream mn0;
+	    if (nn0.size() == 0)
+	        mn0 << "UnnamedNode_" << numMeshes;
+	    else
+	        mn0 << nn0;
+	    m0.setID(mn0.str());
+	    // <---- DEBUG ----- //
+	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
+	        "extracted mesh '" << mn0.str() << "': " << "numVerts = " 
+	        << nv0 << ", numFaces = " << nf0 << std::endl;
+	    /* ----- DEBUG ----> */
+	    std::ostringstream fn0;
+	    if (targetPath.size() > 0)
+	        fn0 << targetPath << Ionflux::ObjectBase::DIR_SEPARATOR;
+	    fn0 << std::setw(6) << std::setfill('0') << numMeshes << "_" 
+	        << mn0.str() << ".xml";
+	    // <---- DEBUG ----- //
+	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
+	        "writing mesh to file '" << fn0.str() << "'..." << std::endl;
+	    /* ----- DEBUG ----> */
+	    m0.writeToXMLFile(fn0.str());
+	}
+	if (!recursive)
+	    return numMeshes;
+	// determine local transformation for child meshes
+	Matrix4 T0(Matrix4::UNIT);
+	bool useLT = false;
+	if (transformMatrix != 0)
+	    T0.multiplyLeft(*transformMatrix);
+	if ((localTransform != 0) 
+	    && !localTransform->eq(Matrix4::UNIT))
+	    T0.multiplyLeft(*localTransform);
+	if (!T0.eq(Matrix4::UNIT))
+	    useLT = true;
+	// <---- DEBUG ----- //
+	if (useLT)
+	{
+	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
+	        "node '" << getName() << "': local transformation: [" 
+	        << T0.getValueString() << "]" << std::endl;
+	}
+	/* ----- DEBUG ----> */
+	// recursively dump meshes
+	int numChildNodes = getNumChildNodes();
+	for (int i = 0; i < numChildNodes; i++)
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	    {
+	        addLocalRef(n0);
+	        if (useLT)
+	            numMeshes += n0->dumpMesh(targetPath, true, &T0);
+	        else
+	            numMeshes += n0->dumpMesh(targetPath, true);
 	        removeLocalRef(n0);
 	    }
 	}

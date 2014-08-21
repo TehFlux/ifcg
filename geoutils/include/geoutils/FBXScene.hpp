@@ -208,6 +208,19 @@ class FBXScene
 		virtual void listNodes(bool recursive = true, unsigned int indentWidth = 
 		Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char indentChar = ' ') const;
 		
+		/** Find child node by name.
+		 *
+		 * Find a child node by name. The returned node will not be referenced
+		 * and must be managed by the caller.
+		 *
+		 * \param needle name of node to be found.
+		 * \param recursive look for child node.
+		 *
+		 * \return Node with the specified name, or 0 if the node does not exist.
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+		std::string& needle, bool recursive = true);
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object

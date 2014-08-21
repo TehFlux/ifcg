@@ -140,6 +140,8 @@ class FBXScene
         virtual void listNodes(bool recursive = true, unsigned int 
         indentWidth = Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char 
         indentChar = ' ') const;
+        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+        std::string& needle, bool recursive = true);
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::FBXScene* copy() const;
 		static Ionflux::GeoUtils::FBXScene* upcast(Ionflux::ObjectBase::IFObject*
@@ -226,6 +228,9 @@ class FBXNode
         virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
         std::string& needle, bool recursive = true);
         virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
+        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) 
+        const;
+        virtual unsigned int dumpMesh(const std::string& targetPath, bool 
         recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) 
         const;
         virtual std::string getValueString() const;

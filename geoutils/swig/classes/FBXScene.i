@@ -59,6 +59,8 @@ class FBXScene
         virtual void listNodes(bool recursive = true, unsigned int 
         indentWidth = Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char 
         indentChar = ' ') const;
+        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+        std::string& needle, bool recursive = true);
         virtual std::string getValueString() const;
 		virtual Ionflux::GeoUtils::FBXScene* copy() const;
 		static Ionflux::GeoUtils::FBXScene* upcast(Ionflux::ObjectBase::IFObject*

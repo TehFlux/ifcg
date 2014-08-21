@@ -1037,7 +1037,8 @@ other)
         v0.push_back(*i);
     clear();
     addVertices(v0);
-    setFaceData(other.faceData->copy());
+    if (other.faceData != 0)
+        setFaceData(other.faceData->copy());
     update();
 	return *this;
 }

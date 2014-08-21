@@ -229,6 +229,20 @@ class FBXNode
 		virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
 		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) const;
 		
+		/** Dump mesh.
+		 *
+		 * Dump mesh data from a node to a directory. Each mesh will be saved 
+		 * to an individual file.
+		 *
+		 * \param targetPath where to store the mesh data.
+		 * \param recursive recursively dump meshes.
+		 * \param localTransform local transformation to be applied to the mesh.
+		 *
+		 * \return number of meshes that were merged.
+		 */
+		virtual unsigned int dumpMesh(const std::string& targetPath, bool 
+		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0) const;
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object
