@@ -256,7 +256,8 @@ needle, bool recursive)
 }
 
 unsigned int FBXNode::getMesh(Ionflux::GeoUtils::Mesh& target, bool 
-recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
+recursive, Ionflux::GeoUtils::Matrix4* localTransform, bool 
+applyNodeTransform0) const
 {
 	Ionflux::ObjectBase::nullPointerCheck(impl, this, "getMesh", 
 	    "Node implementation");
@@ -313,18 +314,65 @@ recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
 	            cf->addVertex(v0);
 	        }
 	    }
-	    if (transformMatrix != 0)
+	    if (applyNodeTransform0)
 	    {
-	        // apply transform of this node
-	        m0.transform(*transformMatrix);
+	        // <---- DEBUG ----- //
+	        m0.update();
+	        Range3 bb0 = m0.getBounds();
+	        Vector3 c0 = bb0.getCenter();
+	        Vector3 e0 = bb0.getExtent();
+	        std::cerr << "[FBXNode::getMesh] DEBUG: "
+	            "mesh '" << getName() << "': transformMatrix = ";
+	        if (transformMatrix != 0)
+	        {
+	            std::cerr << "[" << transformMatrix->getValueString() 
+	                << "]";
+	        } else
+	            std::cerr << "<none>";
+	        std::cerr << ", localTransform = ";
+	        if ((localTransform != 0) 
+	            && !localTransform->eq(Matrix4::UNIT))
+	        {
+	            std::cerr << "[" << localTransform->getValueString() 
+	                << "]";
+	        } else
+	        if ((localTransform != 0) 
+	            && localTransform->eq(Matrix4::UNIT))
+	        {
+	            std::cerr << "UNIT [" 
+	                << localTransform->getValueString() << "]";
+	        } else
+	            std::cerr << "<none>";
+	        std::cerr << ", bBox = [" << bb0.getValueString() 
+	            << "], center = (" << c0.getValueString() 
+	            << "), extent = (" << e0.getValueString() << ")";
+	        std::cerr << std::endl;
+	        // ----- DEBUG ----> */
+	        if (transformMatrix != 0)
+	        {
+	            // apply transform of this node
+	            m0.transform(*transformMatrix);
+	        }
+	        if ((localTransform != 0) 
+	            && !localTransform->eq(Matrix4::UNIT))
+	        {
+	            // apply local transform
+	            m0.transform(*localTransform);
+	        }
+	        m0.applyTransform(true);
+	        // <---- DEBUG ----- //
+	        m0.update();
+	        bb0 = m0.getBounds();
+	        c0 = bb0.getCenter();
+	        e0 = bb0.getExtent();
+	        std::cerr << "[FBXNode::getMesh] DEBUG: "
+	            "mesh '" << getName() << "' after transform: "
+	            << ", bBox = [" << bb0.getValueString() 
+	            << "], center = (" << c0.getValueString() 
+	            << "), extent = (" << e0.getValueString() << ")" 
+	            << std::endl;
+	        // ----- DEBUG ----> */
 	    }
-	    if ((localTransform != 0) 
-	        && !localTransform->eq(Matrix4::UNIT))
-	    {
-	        // apply local transform
-	        m0.transform(*localTransform);
-	    }
-	    m0.applyTransform();
 	    target.merge(m0);
 	    numMeshes++;
 	}
@@ -333,19 +381,33 @@ recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
 	// determine local transformation for child meshes
 	Matrix4 T0(Matrix4::UNIT);
 	bool useLT = false;
-	if (transformMatrix != 0)
-	    T0.multiplyLeft(*transformMatrix);
-	if ((localTransform != 0) 
-	    && !localTransform->eq(Matrix4::UNIT))
-	    T0.multiplyLeft(*localTransform);
-	if (!T0.eq(Matrix4::UNIT))
-	    useLT = true;
+	if (applyNodeTransform0)
+	{
+	    if (transformMatrix != 0)
+	        T0.multiplyLeft(*transformMatrix);
+	    if ((localTransform != 0) 
+	        && !localTransform->eq(Matrix4::UNIT))
+	        T0.multiplyLeft(*localTransform);
+	    if (!T0.eq(Matrix4::UNIT))
+	        useLT = true;
+	}
 	// <---- DEBUG ----- //
 	if (useLT)
 	{
 	    std::cerr << "[FBXNode::getMesh] DEBUG: "
 	        "node '" << getName() << "': local transformation: [" 
-	        << T0.getValueString() << "]" << std::endl;
+	        << T0.getValueString() << "]";
+	    if (transformMatrix != 0)
+	    {
+	        std::cerr << ", transformMatrix = [" 
+	            << transformMatrix->getValueString() << "]";
+	    }
+	    if (localTransform != 0)
+	    {
+	        std::cerr << ", localTransform = [" 
+	            << localTransform->getValueString() << "]";
+	    }
+	    std::cerr << std::endl;
 	}
 	/* ----- DEBUG ----> */
 	// recursively merge meshes
@@ -357,9 +419,11 @@ recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
 	    {
 	        addLocalRef(n0);
 	        if (useLT)
-	            numMeshes += n0->getMesh(target, true, &T0);
+	            numMeshes += n0->getMesh(target, true, &T0, 
+	                applyNodeTransform0);
 	        else
-	            numMeshes += n0->getMesh(target, true);
+	            numMeshes += n0->getMesh(target, true, 0, 
+	                applyNodeTransform0);
 	        removeLocalRef(n0);
 	    }
 	}
@@ -368,7 +432,7 @@ recursive, Ionflux::GeoUtils::Matrix4* localTransform) const
 
 unsigned int FBXNode::dumpMesh(const std::string& targetPath, bool 
 recursive, Ionflux::GeoUtils::Matrix4* localTransform, unsigned int 
-startIndex, double scale0) const
+startIndex, double scale0, bool applyNodeTransform0) const
 {
 	Ionflux::ObjectBase::nullPointerCheck(impl, this, "dumpMesh", 
 	    "Node implementation");
@@ -381,7 +445,7 @@ startIndex, double scale0) const
 	{
 	    // extract the mesh
 	    Mesh m0;
-	    getMesh(m0, false);
+	    getMesh(m0, false, localTransform, applyNodeTransform0);
 	    m0.update();
 	    std::string nn0(getName());
 	    std::ostringstream mn0;
@@ -394,7 +458,6 @@ startIndex, double scale0) const
 	    {
 	        Vector3 sv0(scale0, scale0, scale0);
 	        m0.scale(sv0);
-	        m0.applyTransform();
 	    }
 	    // <---- DEBUG ----- //
 	    unsigned int nv0 = m0.getNumVertices();
@@ -412,6 +475,7 @@ startIndex, double scale0) const
 	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
 	        "writing mesh to file '" << fn0.str() << "'..." << std::endl;
 	    /* ----- DEBUG ----> */
+	    m0.applyTransform(true);
 	    m0.writeToXMLFile(fn0.str());
 	    numMeshes++;
 	}
@@ -420,19 +484,33 @@ startIndex, double scale0) const
 	// determine local transformation for child meshes
 	Matrix4 T0(Matrix4::UNIT);
 	bool useLT = false;
-	if (transformMatrix != 0)
-	    T0.multiplyLeft(*transformMatrix);
-	if ((localTransform != 0) 
-	    && !localTransform->eq(Matrix4::UNIT))
-	    T0.multiplyLeft(*localTransform);
-	if (!T0.eq(Matrix4::UNIT))
-	    useLT = true;
+	if (applyNodeTransform0)
+	{
+	    if (transformMatrix != 0)
+	        T0.multiplyLeft(*transformMatrix);
+	    if ((localTransform != 0) 
+	        && !localTransform->eq(Matrix4::UNIT))
+	        T0.multiplyLeft(*localTransform);
+	    if (!T0.eq(Matrix4::UNIT))
+	        useLT = true;
+	}
 	// <---- DEBUG ----- //
 	if (useLT)
 	{
 	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
 	        "node '" << getName() << "': local transformation: [" 
-	        << T0.getValueString() << "]" << std::endl;
+	        << T0.getValueString() << "]";
+	    if (transformMatrix != 0)
+	    {
+	        std::cerr << ", transformMatrix = [" 
+	            << transformMatrix->getValueString() << "]";
+	    }
+	    if (localTransform != 0)
+	    {
+	        std::cerr << ", localTransform = [" 
+	            << localTransform->getValueString() << "]";
+	    }
+	    std::cerr << std::endl;
 	}
 	/* ----- DEBUG ----> */
 	// recursively dump meshes
@@ -446,10 +524,10 @@ startIndex, double scale0) const
 	        unsigned int nm0 = 0;
 	        if (useLT)
 	            nm0 += n0->dumpMesh(targetPath, true, &T0, 
-	                startIndex, scale0);
+	                startIndex, scale0, applyNodeTransform0);
 	        else
 	            nm0 += n0->dumpMesh(targetPath, true, 0, 
-	                startIndex, scale0);
+	                startIndex, scale0, applyNodeTransform0);
 	        startIndex += nm0;
 	        numMeshes += nm0;
 	        removeLocalRef(n0);

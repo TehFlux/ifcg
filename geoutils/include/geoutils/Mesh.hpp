@@ -531,7 +531,7 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \param other mesh.
 		 */
-		virtual void merge(const Ionflux::GeoUtils::Mesh& other);
+		virtual void merge(Ionflux::GeoUtils::Mesh& other);
 		
 		/** Get string representation of value.
 		 *

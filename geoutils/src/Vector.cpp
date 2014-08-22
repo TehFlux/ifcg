@@ -232,6 +232,9 @@ void Vector::setElement(unsigned int index, double value)
 bool Vector::eq(const Ionflux::GeoUtils::Vector& other, double t) const
 {
 	unsigned int numElements = getNumElements();
+	unsigned int oNumElements = other.getNumElements();
+	if (numElements != oNumElements)
+	    return false;
 	for (unsigned int i = 0; i < numElements; i++)
 	    if (!Ionflux::GeoUtils::eq(elements[i], other.elements[i], t))
 	        return false;

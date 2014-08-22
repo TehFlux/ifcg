@@ -5015,7 +5015,7 @@ Ionflux::GeoUtils::TransformableObject
         color);
         virtual bool isTriMesh() const;
         virtual unsigned int createEdges();
-        virtual void merge(const Ionflux::GeoUtils::Mesh& other);
+        virtual void merge(Ionflux::GeoUtils::Mesh& other);
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
