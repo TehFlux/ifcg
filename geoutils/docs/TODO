@@ -21,14 +21,18 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
++ Vector buffer
+  . same as the VertexAttribute buffer, but non-GL
+
 + Testing
   > NFace::getArea()
   > VertexAttribute
-    . allocate(), resize(), append()
+    . allocate(), resize(), append() [seems to work]
     . setDataComponents()
 
 + Mesh
   > OBJ import/export
+  > binary import/export
   > make face normals consistent
 
 + OpenGL utility library
