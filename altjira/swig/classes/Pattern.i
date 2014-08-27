@@ -62,6 +62,7 @@ class Pattern
 		other);
 		static Ionflux::Altjira::Pattern* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

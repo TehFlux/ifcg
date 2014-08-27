@@ -439,6 +439,7 @@ class Matrix
 		other);
 		static Ionflux::Altjira::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
 };
@@ -629,6 +630,7 @@ class BlendSrcOver
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendSrcOver* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -680,6 +682,7 @@ class BlendMultiply
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendMultiply* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -731,6 +734,7 @@ class BlendLighten
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendLighten* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -782,6 +786,7 @@ class BlendDarken
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendDarken* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -833,6 +838,7 @@ class BlendPlus
 		other);
 		static Ionflux::Altjira::BlendPlus* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -890,6 +896,7 @@ class BlendChannel
 		virtual Ionflux::Altjira::BlendChannel* copy() const;
 		static Ionflux::Altjira::BlendChannel* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setSrcFunc(Ionflux::Mapping::Mapping* newSrcFunc);
         virtual Ionflux::Mapping::Mapping* getSrcFunc() const;
         virtual void setDestFunc(Ionflux::Mapping::Mapping* newDestFunc);
@@ -1077,6 +1084,7 @@ class Image
 		other);
 		static Ionflux::Altjira::Image* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumChannels() const;
         virtual unsigned int getBitsPerSample() const;
         virtual Ionflux::Altjira::ColorSpace getColorSpace() const;
@@ -1127,7 +1135,8 @@ class ImageSet
 		static Ionflux::Altjira::ImageSet* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Altjira::ImageSet* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumImages() const;
         virtual Ionflux::Altjira::Image* getImage(unsigned int elementIndex
         = 0) const;

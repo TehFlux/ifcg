@@ -104,6 +104,7 @@ class Drawable
 		other);
 		static Ionflux::Altjira::Drawable* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

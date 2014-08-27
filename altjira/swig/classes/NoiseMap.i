@@ -68,6 +68,7 @@ class NoiseMap
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::Noise::NoiseMap* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setNoiseMap(noise::utils::NoiseMap* newNoiseMap);
         virtual noise::utils::NoiseMap* getNoiseMap() const;
 };

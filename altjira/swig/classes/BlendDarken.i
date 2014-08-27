@@ -68,6 +68,7 @@ class BlendDarken
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendDarken* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

@@ -110,6 +110,7 @@ class Drawable
 		other);
 		static Ionflux::Altjira::Drawable* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -155,6 +156,7 @@ class Pattern
 		other);
 		static Ionflux::Altjira::Pattern* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -201,6 +203,7 @@ class ImagePattern
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::ImagePattern* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setImage(Ionflux::Altjira::Image* newImage);
         virtual Ionflux::Altjira::Image* getImage() const;
         virtual void setOffsetX(double newOffsetX);
@@ -252,6 +255,7 @@ class Gradient
 		other);
 		static Ionflux::Altjira::Gradient* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -296,6 +300,7 @@ class RadialGradient
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::RadialGradient* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
@@ -338,6 +343,7 @@ class LinearGradient
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::LinearGradient* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

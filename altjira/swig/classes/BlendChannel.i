@@ -74,6 +74,7 @@ class BlendChannel
 		virtual Ionflux::Altjira::BlendChannel* copy() const;
 		static Ionflux::Altjira::BlendChannel* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setSrcFunc(Ionflux::Mapping::Mapping* newSrcFunc);
         virtual Ionflux::Mapping::Mapping* getSrcFunc() const;
         virtual void setDestFunc(Ionflux::Mapping::Mapping* newDestFunc);

@@ -68,6 +68,7 @@ class BlendLighten
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendLighten* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

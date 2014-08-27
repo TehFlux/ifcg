@@ -68,6 +68,7 @@ class BlendPlus
 		other);
 		static Ionflux::Altjira::BlendPlus* create(Ionflux::ObjectBase::IFObject*
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

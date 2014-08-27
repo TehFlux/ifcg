@@ -60,7 +60,8 @@ class ImageSet
 		static Ionflux::Altjira::ImageSet* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Altjira::ImageSet* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);        
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;        
         virtual unsigned int getNumImages() const;
         virtual Ionflux::Altjira::Image* getImage(unsigned int elementIndex
         = 0) const;

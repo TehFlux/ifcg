@@ -68,6 +68,7 @@ class BlendMultiply
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::BlendMultiply* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }

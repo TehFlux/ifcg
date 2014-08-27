@@ -63,6 +63,7 @@ class ImagePattern
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::ImagePattern* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual void setImage(Ionflux::Altjira::Image* newImage);
         virtual Ionflux::Altjira::Image* getImage() const;
         virtual void setOffsetX(double newOffsetX);

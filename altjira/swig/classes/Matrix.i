@@ -72,6 +72,7 @@ class Matrix
 		other);
 		static Ionflux::Altjira::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
 };

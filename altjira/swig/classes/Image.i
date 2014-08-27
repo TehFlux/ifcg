@@ -189,6 +189,7 @@ class Image
 		other);
 		static Ionflux::Altjira::Image* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+		virtual unsigned int getMemSize() const;
         virtual unsigned int getNumChannels() const;
         virtual unsigned int getBitsPerSample() const;
         virtual Ionflux::Altjira::ColorSpace getColorSpace() const;

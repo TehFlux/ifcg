@@ -59,6 +59,7 @@ class LinearGradient
 		upcast(Ionflux::ObjectBase::IFObject* other);
 		static Ionflux::Altjira::LinearGradient* 
 		create(Ionflux::ObjectBase::IFObject* parentObject = 0);
+		virtual unsigned int getMemSize() const;
 };
 
 }
