@@ -120,7 +120,7 @@ void FBXNode::update()
 {
 	if (impl == 0)
 	    return;
-	Matrix4 M0(getMatrix(impl->EvaluateLocalTransform()));
+	Matrix4 M0(getMatrix(impl->EvaluateLocalTransform(FBXSDK_TIME_ZERO)));
 	if (M0.eq(Matrix4::UNIT))
 	{
 	    if (transformMatrix != 0)
