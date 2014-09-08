@@ -40,6 +40,11 @@
 #include "geoutils/Vertex3.hpp"
 #include "geoutils/fbxutils.hpp"
 #include "geoutils/fbxutils_private.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/FBXNodeXMLFactory.hpp"
 
 namespace Ionflux
 {
@@ -86,8 +91,10 @@ const Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::TYPE_LINE = 21;
 const FBXNodeClassInfo FBXNode::fBXNodeClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* FBXNode::CLASS_INFO = &FBXNode::fBXNodeClassInfo;
 
+const std::string FBXNode::XML_ELEMENT_NAME = "fbxnode";
+
 FBXNode::FBXNode()
-: impl(0), transformMatrix(0)
+: impl(0), transformMatrix(0), attributeType(TYPE_UNKNOWN), name("")
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -95,7 +102,7 @@ FBXNode::FBXNode()
 }
 
 FBXNode::FBXNode(const Ionflux::GeoUtils::FBXNode& other)
-: impl(0), transformMatrix(0)
+: impl(0), transformMatrix(0), attributeType(TYPE_UNKNOWN), name("")
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -103,7 +110,7 @@ FBXNode::FBXNode(const Ionflux::GeoUtils::FBXNode& other)
 }
 
 FBXNode::FBXNode(FBXSDK_NAMESPACE::FbxNode* initImpl)
-: impl(0), transformMatrix(0)
+: impl(0), transformMatrix(0), attributeType(TYPE_UNKNOWN), name("")
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -113,13 +120,27 @@ FBXNode::FBXNode(FBXSDK_NAMESPACE::FbxNode* initImpl)
 
 FBXNode::~FBXNode()
 {
+	clearChildNodes();
 	impl = 0;
 }
 
 void FBXNode::update()
 {
 	if (impl == 0)
+	{
+	    setAttributeType(TYPE_UNKNOWN);
+	    setName("");
 	    return;
+	}
+	setName(impl->GetName());
+	FbxNodeAttribute* attr0 = impl->GetNodeAttribute();
+	if (attr0 == 0)
+	    setAttributeType(TYPE_NULL);
+	else
+	{
+	    setAttributeType(getFBXNodeAttributeType(
+	        attr0->GetAttributeType()));
+	}
 	Matrix4 M0(getMatrix(impl->EvaluateLocalTransform(FBXSDK_TIME_ZERO)));
 	if (M0.eq(Matrix4::UNIT))
 	{
@@ -134,69 +155,16 @@ void FBXNode::update()
 	    setTransformMatrix(m1);
 	}
 	m1->setElements(M0);
-	/*
-	Vector3 t0 = getVector(impl->LclTranslation.Get());
-	Vector3 r0 = getVector(impl->LclRotation.Get());
-	Vector3 s0 = getVector(impl->LclScaling.Get());
-	if (t0.eq(Vector3::ZERO) 
-	    && r0.eq(Vector3::ZERO) 
-	    && s0.eq(Vector3::E_SUM))
-	{
-	    if (transformMatrix != 0)
-	        setTransformMatrix(0);
-	    return;
-	}
-	Matrix4* m0 = transformMatrix;
-	if (m0 == 0)
-	{
-	    m0 = Matrix4::create();
-	    setTransformMatrix(m0);
-	}
-	m0->setIdentity();
-	if (!s0.eq(Vector3::E_SUM))
-	{
-	    Matrix4 S0(Matrix4::scale(s0));
-	    m0->multiplyLeft(S0);
-	}
-	if (!r0.eq(Vector3::ZERO))
-	{
-	    Matrix4 R0(Matrix3::rotate(r0.norm(), r0.normalize()));
-	    m0->multiplyLeft(R0);
-	}
-	if (!t0.eq(Vector3::ZERO))
-	{
-	    Matrix4 T0(Matrix4::translate(t0));
-	    m0->multiplyLeft(T0);
-	}
-	*/
 }
 
-Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::getAttributeType() const
-{
-	if (impl == 0)
-	    return TYPE_UNKNOWN;
-	FbxNodeAttribute* attr0 = impl->GetNodeAttribute();
-	if (attr0 == 0)
-	    return TYPE_NULL;
-	return getFBXNodeAttributeType(attr0->GetAttributeType());
-}
-
-std::string FBXNode::getName() const
-{
-	if (impl == 0)
-	    return "";
-	std::string result(impl->GetName());
-	return result;
-}
-
-int FBXNode::getNumChildNodes() const
+int FBXNode::getNumChildNodesFBX() const
 {
 	if (impl == 0)
 	    return 0;
 	return impl->GetChildCount();
 }
 
-Ionflux::GeoUtils::FBXNode* FBXNode::getChildNode(int index) const
+Ionflux::GeoUtils::FBXNode* FBXNode::getChildNodeFBX(int index) const
 {
 	if (impl == 0)
 	    return 0;
@@ -207,12 +175,32 @@ Ionflux::GeoUtils::FBXNode* FBXNode::getChildNode(int index) const
 	return result;
 }
 
-void FBXNode::listChildNodes(bool recursive, unsigned int indentWidth, char
-indentChar, unsigned int depth) const
+void FBXNode::addChildNodesFBX(bool recursive)
+{
+	int n0 = getNumChildNodesFBX();
+	for (int i = 0; i < n0; i++)
+	{
+	    Ionflux::GeoUtils::FBXNode* cn = getChildNodeFBX(i);
+	    if (cn != 0)
+	    {
+	        // <---- DEBUG ----- //
+	        std::cerr << "[FBXNode::addChildNodesFBX] DEBUG: "
+	            "adding child node: [" << cn->getValueString() << "]." 
+	            << std::endl;
+	        // ----- DEBUG ----> */
+	        addChildNode(cn);
+	        if (recursive)
+	            cn->addChildNodesFBX(true);
+	    }
+	}
+}
+
+void FBXNode::listChildNodesFBX(bool recursive, unsigned int indentWidth, 
+char indentChar, unsigned int depth) const
 {
 	std::string indent = Ionflux::ObjectBase::getIndent(depth, 
 	    indentWidth, indentChar);
-	int numChildNodes = getNumChildNodes();
+	int numChildNodes = getNumChildNodesFBX();
 	for (int i = 0; i < numChildNodes; i++)
 	{
 	    FBXNode* n0 = getChildNode(i);
@@ -223,7 +211,7 @@ indentChar, unsigned int depth) const
 	            << std::endl;
 	        if (recursive)
 	        {
-	            n0->listChildNodes(true, indentWidth, indentChar, 
+	            n0->listChildNodesFBX(true, indentWidth, indentChar, 
 	                depth + 1);
 	        }
 	        removeLocalRef(n0);
@@ -231,22 +219,22 @@ indentChar, unsigned int depth) const
 	}
 }
 
-Ionflux::GeoUtils::FBXNode* FBXNode::findChildNodeByName(const std::string&
-needle, bool recursive)
+Ionflux::GeoUtils::FBXNode* FBXNode::findChildNodeByNameFBX(const 
+std::string& needle, bool recursive)
 {
 	if ((getName() == needle) 
 	    || !recursive)
 	    return this;
-	int numChildNodes = getNumChildNodes();
+	int numChildNodes = getNumChildNodesFBX();
 	int i = 0;
 	FBXNode* result = 0;
 	while ((result == 0) 
 	    && (i < numChildNodes))
 	{
-	    FBXNode* n0 = getChildNode(i);
+	    FBXNode* n0 = getChildNodeFBX(i);
 	    if (n0 != 0)
 	    {
-	        result = n0->findChildNodeByName(needle, true);
+	        result = n0->findChildNodeByNameFBX(needle, true);
 	        if (n0 != result)
 	            delete n0;
 	    }
@@ -274,12 +262,12 @@ applyNodeTransform0) const
 	        "Mesh data");
 	    int numVerts0 = fbm0->GetControlPointsCount();
 	    int numFaces0 = fbm0->GetPolygonCount();
-	    // <---- DEBUG ----- //
+	    /* <---- DEBUG ----- //
 	    std::cerr << "[FBXNode::getMesh] DEBUG: "
 	        "merging mesh '" << getName() << "': " << "numVerts = " 
 	        << numVerts0 << ", numFaces = " << numFaces0 
 	        << std::endl;
-	    /* ----- DEBUG ----> */
+	    // ----- DEBUG ----> */
 	    Ionflux::GeoUtils::Mesh m0;
 	    // vertices
 	    for (int i = 0; i < numVerts0; i++)
@@ -299,14 +287,14 @@ applyNodeTransform0) const
 	            throw GeoUtilsError(getErrorString(status.str(), 
 	                "getMesh"));
 	        }
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        if (n0 > 4)
 	        {
 	            std::cerr << "[FBXNode::getMesh] DEBUG: "
 	                "number of face vertices for face #" << i << ": " 
 	                << n0 << std::endl;
 	        }
-	        /* ----- DEBUG ----> */
+	        // ----- DEBUG ----> */
 	        Face* cf = m0.addFace();
 	        for (int j = 0; j < n0; j++)
 	        {
@@ -316,7 +304,7 @@ applyNodeTransform0) const
 	    }
 	    if (applyNodeTransform0)
 	    {
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        m0.update();
 	        Range3 bb0 = m0.getBounds();
 	        Vector3 c0 = bb0.getCenter();
@@ -360,7 +348,7 @@ applyNodeTransform0) const
 	            m0.transform(*localTransform);
 	        }
 	        m0.applyTransform(true);
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        m0.update();
 	        bb0 = m0.getBounds();
 	        c0 = bb0.getCenter();
@@ -391,7 +379,7 @@ applyNodeTransform0) const
 	    if (!T0.eq(Matrix4::UNIT))
 	        useLT = true;
 	}
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	if (useLT)
 	{
 	    std::cerr << "[FBXNode::getMesh] DEBUG: "
@@ -409,12 +397,12 @@ applyNodeTransform0) const
 	    }
 	    std::cerr << std::endl;
 	}
-	/* ----- DEBUG ----> */
+	// ----- DEBUG ----> */
 	// recursively merge meshes
-	int numChildNodes = getNumChildNodes();
+	int numChildNodes = getNumChildNodesFBX();
 	for (int i = 0; i < numChildNodes; i++)
 	{
-	    FBXNode* n0 = getChildNode(i);
+	    FBXNode* n0 = getChildNodeFBX(i);
 	    if (n0 != 0)
 	    {
 	        addLocalRef(n0);
@@ -459,22 +447,22 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	        Vector3 sv0(scale0, scale0, scale0);
 	        m0.scale(sv0);
 	    }
-	    // <---- DEBUG ----- //
+	    /* <---- DEBUG ----- //
 	    unsigned int nv0 = m0.getNumVertices();
 	    unsigned int nf0 = m0.getNumFaces();
 	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
 	        "extracted mesh '" << mn0.str() << "': " << "numVerts = " 
 	        << nv0 << ", numFaces = " << nf0 << std::endl;
-	    /* ----- DEBUG ----> */
+	    // ----- DEBUG ----> */
 	    std::ostringstream fn0;
 	    if (targetPath.size() > 0)
 	        fn0 << targetPath << Ionflux::ObjectBase::DIR_SEPARATOR;
 	    fn0 << std::setw(6) << std::setfill('0') << startIndex << "_" 
 	        << mn0.str() << ".xml";
-	    // <---- DEBUG ----- //
+	    /* <---- DEBUG ----- //
 	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
 	        "writing mesh to file '" << fn0.str() << "'..." << std::endl;
-	    /* ----- DEBUG ----> */
+	    // ----- DEBUG ----> */
 	    m0.applyTransform(true);
 	    m0.writeToXMLFile(fn0.str());
 	    numMeshes++;
@@ -494,7 +482,7 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	    if (!T0.eq(Matrix4::UNIT))
 	        useLT = true;
 	}
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	if (useLT)
 	{
 	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
@@ -512,12 +500,12 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	    }
 	    std::cerr << std::endl;
 	}
-	/* ----- DEBUG ----> */
+	// ----- DEBUG ----> */
 	// recursively dump meshes
-	int numChildNodes = getNumChildNodes();
+	int numChildNodes = getNumChildNodesFBX();
 	for (int i = 0; i < numChildNodes; i++)
 	{
-	    FBXNode* n0 = getChildNode(i);
+	    FBXNode* n0 = getChildNodeFBX(i);
 	    if (n0 != 0)
 	    {
 	        addLocalRef(n0);
@@ -534,6 +522,24 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	    }
 	}
 	return numMeshes;
+}
+
+unsigned int FBXNode::assignNodeIDs(const std::string& prefix, unsigned int
+width, char fillChar, unsigned int offset)
+{
+	std::ostringstream id0;
+	id0 << prefix << std::setw(width) << std::setfill(fillChar) 
+	    << std::right << offset;
+	setID(id0.str());
+	offset += 1;
+	int n0 = getNumChildNodes();
+	for (int i = 0; i < n0; i++)
+	{
+	    Ionflux::GeoUtils::FBXNode* cn = getChildNode(i);
+	    if (cn != 0)
+	        offset = cn->assignNodeIDs(prefix, width, fillChar, offset);
+	}
+	return offset;
 }
 
 std::string FBXNode::getValueString() const
@@ -576,6 +582,138 @@ newTransformMatrix)
 Ionflux::GeoUtils::Matrix4* FBXNode::getTransformMatrix() const
 {
     return transformMatrix;
+}
+
+unsigned int FBXNode::getNumChildNodes() const
+{
+    return childNodes.size();
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::getChildNode(unsigned int 
+elementIndex) const
+{
+    if (elementIndex < childNodes.size())
+		return childNodes[elementIndex];
+	return 0;
+}
+
+int FBXNode::findChildNode(Ionflux::GeoUtils::FBXNode* needle, unsigned int
+occurence) const
+{
+    bool found = false;
+	Ionflux::GeoUtils::FBXNode* currentChildNode = 0;
+	unsigned int i = 0;
+	while (!found 
+		&& (i < childNodes.size()))
+	{
+		currentChildNode = childNodes[i];
+		if (currentChildNode == needle)
+        {
+            if (occurence == 1)
+			    found = true;
+            else
+                occurence--;
+		} else
+			i++;
+	}
+	if (found)
+        return i;
+	return -1;
+}
+
+std::vector<Ionflux::GeoUtils::FBXNode*>& FBXNode::getChildNodes()
+{
+    return childNodes;
+}
+
+void FBXNode::addChildNode(Ionflux::GeoUtils::FBXNode* addElement)
+{
+	addLocalRef(addElement);
+	childNodes.push_back(addElement);
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::addChildNode()
+{
+	Ionflux::GeoUtils::FBXNode* o0 = FBXNode::create();
+	addChildNode(o0);
+	return o0;
+}
+
+void FBXNode::addChildNodes(const std::vector<Ionflux::GeoUtils::FBXNode*>&
+newChildNodes)
+{
+	for (std::vector<Ionflux::GeoUtils::FBXNode*>::const_iterator i = newChildNodes.begin(); 
+	    i != newChildNodes.end(); i++)
+	    addChildNode(*i);
+}
+
+void FBXNode::addChildNodes(Ionflux::GeoUtils::FBXNode* newChildNodes)
+{
+	for (unsigned int i = 0; 
+	    i < newChildNodes->getNumChildNodes(); i++)
+	    addChildNode(newChildNodes->getChildNode(i));
+}
+
+void FBXNode::removeChildNode(Ionflux::GeoUtils::FBXNode* removeElement)
+{
+    bool found = false;
+	Ionflux::GeoUtils::FBXNode* currentChildNode = 0;
+	unsigned int i = 0;
+	while (!found 
+		&& (i < childNodes.size()))
+	{
+		currentChildNode = childNodes[i];
+		if (currentChildNode == removeElement)
+			found = true;
+		else
+			i++;
+	}
+	if (found)
+	{
+		childNodes.erase(childNodes.begin() + i);
+		if (currentChildNode != 0)
+			removeLocalRef(currentChildNode);
+	}
+}
+
+void FBXNode::removeChildNodeIndex(unsigned int removeIndex)
+{
+    if (removeIndex > childNodes.size())
+        return;
+	Ionflux::GeoUtils::FBXNode* e0 = childNodes[removeIndex];
+    childNodes.erase(childNodes.begin() + removeIndex);
+    if (e0 != 0)
+        removeLocalRef(e0);
+}
+
+void FBXNode::clearChildNodes()
+{
+    std::vector<Ionflux::GeoUtils::FBXNode*>::iterator i;
+	for (i = childNodes.begin(); i != childNodes.end(); i++)
+		if (*i != 0)
+			removeLocalRef(*i);
+	childNodes.clear();
+}
+
+void FBXNode::setAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType 
+newAttributeType)
+{
+	attributeType = newAttributeType;
+}
+
+Ionflux::GeoUtils::FBXNodeAttributeType FBXNode::getAttributeType() const
+{
+    return attributeType;
+}
+
+void FBXNode::setName(const std::string& newName)
+{
+	name = newName;
+}
+
+std::string FBXNode::getName() const
+{
+    return name;
 }
 
 Ionflux::GeoUtils::FBXNode& FBXNode::operator=(const 
@@ -629,6 +767,68 @@ initImpl, Ionflux::ObjectBase::IFObject* parentObject)
 unsigned int FBXNode::getMemSize() const
 {
     return sizeof *this;
+}
+
+std::string FBXNode::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string FBXNode::getXMLAttributeData() const
+{
+	std::ostringstream d0;
+	d0 << Ionflux::ObjectBase::IFObject::getXMLAttributeData();
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "attr_type=\"" << attributeType << "\"";
+	if (d0.str().size() > 0)
+	    d0 << " ";
+	d0 << "fbx_name=\"" << 
+    Ionflux::ObjectBase::XMLUtils::xmlEscape(name) << "\"";
+	return d0.str();
+}
+
+void FBXNode::getXMLChildData(std::string& target, unsigned int 
+indentLevel) const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	std::string iws0 = Ionflux::ObjectBase::getIndent(indentLevel);
+	bool haveBCData = false;
+	if (d0.str().size() > 0)
+	    haveBCData = true;
+	bool xcFirst = true;
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+	if (!xcFirst || haveBCData)
+	    d0 << "\n";
+    d0 << Ionflux::ObjectBase::XMLUtils::getXML0(childNodes, "fbxnodevec", "", 
+        indentLevel, "pname=\"child_nodes\"");
+    xcFirst = false;
+	target = d0.str();
+}
+
+void FBXNode::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+FBXNode::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::FBXNodeXMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::FBXNodeXMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

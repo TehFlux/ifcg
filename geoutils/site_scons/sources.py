@@ -398,6 +398,7 @@ fbxGeoUtilsLibClasses = [
 ]
 
 fbxGeoUtilsLibXMLClasses = [
+    'FBXNode'
 ]
 
 # GeoUtils/GL library

@@ -76,15 +76,14 @@ class FBXNode
 		FBXNode(const Ionflux::GeoUtils::FBXNode& other);
         virtual ~FBXNode();
         virtual void update();
-        virtual Ionflux::GeoUtils::FBXNodeAttributeType getAttributeType() 
+        virtual int getNumChildNodesFBX() const;
+        virtual Ionflux::GeoUtils::FBXNode* getChildNodeFBX(int index) 
         const;
-        virtual std::string getName() const;
-        virtual int getNumChildNodes() const;
-        virtual Ionflux::GeoUtils::FBXNode* getChildNode(int index) const;
-        virtual void listChildNodes(bool recursive = false, unsigned int 
+        virtual void addChildNodesFBX(bool recursive = false);
+        virtual void listChildNodesFBX(bool recursive = false, unsigned int
         indentWidth = Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char 
         indentChar = ' ', unsigned int depth = 0) const;
-        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByNameFBX(const 
         std::string& needle, bool recursive = true);
         virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
         recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
@@ -93,7 +92,17 @@ class FBXNode
         recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
         unsigned int startIndex = 0, double scale0 = 1., bool 
         applyNodeTransform0 = true) const;
+        virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
+        unsigned int width = 8, char fillChar = '0', unsigned int offset = 
+        0);
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::FBXNode* copy() const;
 		static Ionflux::GeoUtils::FBXNode* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -102,7 +111,29 @@ class FBXNode
 		virtual unsigned int getMemSize() const;
         virtual void setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
         newTransformMatrix);
-        virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;
+        virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;        
+        virtual unsigned int getNumChildNodes() const;
+        virtual Ionflux::GeoUtils::FBXNode* getChildNode(unsigned int 
+        elementIndex = 0) const;
+		virtual int findChildNode(Ionflux::GeoUtils::FBXNode* needle, unsigned 
+		int occurence = 1) const;
+        virtual std::vector<Ionflux::GeoUtils::FBXNode*>& getChildNodes();
+        virtual void addChildNode(Ionflux::GeoUtils::FBXNode* addElement);
+		virtual Ionflux::GeoUtils::FBXNode* addChildNode();
+		virtual void addChildNodes(std::vector<Ionflux::GeoUtils::FBXNode*>& 
+		newChildNodes);
+		virtual void addChildNodes(Ionflux::GeoUtils::FBXNode* newChildNodes);        
+        virtual void removeChildNode(Ionflux::GeoUtils::FBXNode* 
+        removeElement);
+		virtual void removeChildNodeIndex(unsigned int removeIndex);
+		virtual void clearChildNodes();
+        virtual void 
+        setAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType 
+        newAttributeType);
+        virtual Ionflux::GeoUtils::FBXNodeAttributeType getAttributeType() 
+        const;
+        virtual void setName(const std::string& newName);
+        virtual std::string getName() const;
 };
 
 }

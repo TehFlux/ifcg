@@ -303,8 +303,13 @@ if (haveIFTpl):
         ]
     ## Altjira/GeoUtils library
     # Nothing here.
-    ## GeoUtils/FBX library
-    # Nothing here.
+    # GeoUtils/FBX library
+    for it in fbxGeoUtilsLibXMLClasses:
+        t0 = 'conf/class/xmlio/' + it + 'XMLFactory.conf'
+        classXMLFactory += [
+            geoutilsEnv.ClassXMLFactory(target = t0, 
+                source = ['conf/class/' + it + '.conf']), 
+        ]
     ## GeoUtils/GL library
     # Nothing here.
     allTargets += classXMLFactory
@@ -318,6 +323,7 @@ else:
 xmlFactoryHeaders = []
 if (haveIFClassgen):
     xmlFactorySources = []
+    # geoutils library
     for it in geoutilsLibXMLClasses:
         t0 = 'include/geoutils/xmlio/' + it + 'XMLFactory.hpp'
         t1 = 'src/xmlio/' + it + 'XMLFactory.cpp'
@@ -327,6 +333,16 @@ if (haveIFClassgen):
         ]
         xmlFactoryHeaders += [t0]
         geoutilsLibSources += [ 'build/xmlio/' + it + 'XMLFactory.cpp' ]
+    # GeoUtils/FBX library
+    for it in fbxGeoUtilsLibXMLClasses:
+        t0 = 'include/geoutils/xmlio/' + it + 'XMLFactory.hpp'
+        t1 = 'src/xmlio/' + it + 'XMLFactory.cpp'
+        xmlFactorySources += [ 
+            geoutilsEnv.Source(target = [ t0, t1 ], 
+                source = ['conf/class/xmlio/' + it + 'XMLFactory.conf'])
+        ]
+        xmlFactoryHeaders += [t0]
+        fbxGeoUtilsLibSources += [ 'build/xmlio/' + it + 'XMLFactory.cpp' ]
     allTargets += xmlFactorySources
 else:
     print "**********************************************************"
@@ -377,6 +393,14 @@ if (haveIFTpl):
         classInterfaces += [ 
             fbxGeoUtilsEnv.ClassInterface(target = [ t0 ], 
                 source = ['conf/class/' + it + '.conf'])
+        ]
+    # GeoUtils/FBX library; XML object factories
+    for it in fbxGeoUtilsLibXMLClasses:
+        t0 = 'swig/classes/xmlio/' + it + 'XMLFactory.i'
+        interfaceTargets += [t0]
+        classInterfaces += [ 
+            geoutilsEnv.ClassInterface(target = [ t0 ], 
+                source = ['conf/class/xmlio/' + it + 'XMLFactory.conf'])
         ]
     interfaces += [ fbxGeoUtilsEnv.Interface(
         target = lc.swigInterfaceFile[2], 

@@ -43,6 +43,13 @@ namespace GeoUtils
 class Matrix4;
 class Mesh;
 
+namespace XMLUtils
+{
+
+class FBXNodeXMLFactory;
+
+}
+
 /// Class information for class FBXNode.
 class FBXNodeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -69,6 +76,12 @@ class FBXNode
 		FBXSDK_NAMESPACE::FbxNode* impl;
 		/// Transform matrix.
 		Ionflux::GeoUtils::Matrix4* transformMatrix;
+		/// Child node vector.
+		std::vector<Ionflux::GeoUtils::FBXNode*> childNodes;
+		/// Attribute type.
+		Ionflux::GeoUtils::FBXNodeAttributeType attributeType;
+		/// Name.
+		std::string name;
 		
 	public:
 		/// Node attribute type: unknown.
@@ -119,6 +132,8 @@ class FBXNode
 		static const FBXNodeClassInfo fBXNodeClassInfo;
 		/// Class information.
 		static const Ionflux::ObjectBase::IFClassInfo* CLASS_INFO;
+		/// XML element name.
+		static const std::string XML_ELEMENT_NAME;
 		
 		/** Constructor.
 		 *
@@ -154,66 +169,59 @@ class FBXNode
 		 */
 		virtual void update();
 		
-		/** Get the node attribute type.
+		/** Get the number of child nodes (FBX).
 		 *
-		 * Get the node attribute type.
-		 *
-		 * \return String representation.
-		 */
-		virtual Ionflux::GeoUtils::FBXNodeAttributeType getAttributeType() const;
-		
-		/** Get the node name.
-		 *
-		 * Get the node name.
-		 *
-		 * \return Name.
-		 */
-		virtual std::string getName() const;
-		
-		/** Get the number of child nodes.
-		 *
-		 * Get the number of child nodes.
+		 * Get the number of child nodes from the FBX hierarchy.
 		 *
 		 * \return Number of child nodes.
 		 */
-		virtual int getNumChildNodes() const;
+		virtual int getNumChildNodesFBX() const;
 		
-		/** Get child node.
+		/** Get child node (FBX).
 		 *
-		 * Get the child node with the specified index. The returned node will
-		 * not be referenced and must be managed by the caller.
+		 * Get the child node with the specified index from the FBX hierarchy.
+		 * The returned node will not be referenced and must be managed by the
+		 * caller.
 		 *
 		 * \param index child node index.
 		 *
 		 * \return Child node, or 0 if the child node ith the specified index 
 		 * does not exist.
 		 */
-		virtual Ionflux::GeoUtils::FBXNode* getChildNode(int index) const;
+		virtual Ionflux::GeoUtils::FBXNode* getChildNodeFBX(int index) const;
 		
-		/** List child nodes.
+		/** Add child nodes (FBX).
 		 *
-		 * List the child nodes of the node
+		 * Add the child nodes from the FBX hierarchy.
+		 *
+		 * \param recursive Add child nodes recursively.
+		 */
+		virtual void addChildNodesFBX(bool recursive = false);
+		
+		/** List child nodes (FBX).
+		 *
+		 * List the child nodes of the node from the FBX hierarchy.
 		 *
 		 * \param recursive List child nodes recursively.
 		 * \param indentWidth Indentation width.
 		 * \param indentChar Indentation character.
 		 * \param depth Depth.
 		 */
-		virtual void listChildNodes(bool recursive = false, unsigned int 
+		virtual void listChildNodesFBX(bool recursive = false, unsigned int 
 		indentWidth = Ionflux::ObjectBase::DEFAULT_INDENT_WIDTH, char indentChar 
 		= ' ', unsigned int depth = 0) const;
 		
-		/** Find child node by name.
+		/** Find child node by name (FBX).
 		 *
-		 * Find a child node by name. The returned node will not be referenced
-		 * and must be managed by the caller.
+		 * Find a child node by name from the FBX hierarchy. The returned node
+		 * will not be referenced and must be managed by the caller.
 		 *
 		 * \param needle name of node to be found.
 		 * \param recursive look for child node.
 		 *
 		 * \return Node with the specified name, or 0 if the node does not exist.
 		 */
-		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByNameFBX(const 
 		std::string& needle, bool recursive = true);
 		
 		/** Get mesh.
@@ -249,6 +257,23 @@ class FBXNode
 		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
 		unsigned int startIndex = 0, double scale0 = 1., bool applyNodeTransform0
 		= true) const;
+		
+		/** Assign node IDs.
+		 *
+		 * Recursively assign node IDs to the nodes contained in the hierarchy
+		 * of which this node is the root. Each node is assigned an ID 
+		 * consisting of the prefix and a number (starting from \c offset) 
+		 * that is formatted according to the specified parameters.
+		 *
+		 * \param prefix ID prefix.
+		 * \param width field width.
+		 * \param fillChar Fill character.
+		 * \param offset offset.
+		 *
+		 * \return new offset.
+		 */
+		virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
+		unsigned int width = 8, char fillChar = '0', unsigned int offset = 0);
 		
 		/** Get string representation of value.
 		 *
@@ -318,6 +343,49 @@ class FBXNode
 		 * \return The more specific object, or 0 if the cast failed.
 		 */
 		virtual unsigned int getMemSize() const;
+        
+		/** Get XML element name.
+		 *
+		 * Get the XML element name for the object.
+		 *
+		 * \return XML element name
+		 */
+		virtual std::string getXMLElementName() const;
+        
+		/** Get XML attribute data.
+		 *
+		 * Get a string containing the XML attributes of the object.
+		 *
+		 * \return XML attribute data
+		 */
+		virtual std::string getXMLAttributeData() const;
+        
+        /** Get XML child data.
+		 *
+		 * Get the XML child data for the object.
+		 *
+		 * \param target Where to store the XML data.
+		 * \param indentLevel Indentation level.
+		 */
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+        
+        /** Load from XML file.
+		 *
+		 * Initialize the object from an XML file.
+		 *
+		 * \param fileName file name
+		 */
+		virtual void loadFromXMLFile(const std::string& FileName);
+        
+        /** Get XML object factory
+		 *
+		 * Get the XML object factory singleton for the class.
+		 *
+		 * \param fileName file name
+		 */
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		
 		/** Get fBX node implementation.
 		 *
@@ -347,6 +415,126 @@ class FBXNode
 		 */
 		virtual void setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
 		newTransformMatrix);
+		
+		/** Get number of childNodes.
+		 *
+		 * \return Number of childNodes.
+		 */
+		virtual unsigned int getNumChildNodes() const;
+		
+		/** Get childNode.
+		 *
+		 * Get the childNode at the specified index.
+		 *
+		 * \param elementIndex Element index.
+		 *
+		 * \return ChildNode at specified index.
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* getChildNode(unsigned int 
+		elementIndex = 0) const;
+		
+		/** Find childNode.
+		 *
+		 * Find the specified occurence of a childNode.
+		 *
+		 * \param needle ChildNode to be found.
+		 * \param occurence Number of the occurence to be found.
+		 *
+		 * \return Index of the childNode, or -1 if the childNode cannot be 
+		 * found.
+		 */
+		virtual int findChildNode(Ionflux::GeoUtils::FBXNode* needle, unsigned 
+		int occurence = 1) const;
+        
+		/** Get child node vector.
+		 *
+		 * \return child node vector.
+		 */
+		virtual std::vector<Ionflux::GeoUtils::FBXNode*>& getChildNodes();
+		
+		/** Add childNode.
+		 *
+		 * Add a childNode.
+		 *
+		 * \param addElement ChildNode to be added.
+		 */
+		virtual void addChildNode(Ionflux::GeoUtils::FBXNode* addElement);
+		
+		/** Create childNode.
+		 *
+		 * Create a new childNode which is managed by the childNode set.
+		 *
+		 * \return New childNode.
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* addChildNode();
+		
+		/** Add childNodes.
+		 *
+		 * Add childNodes from a childNode vector.
+		 *
+		 * \param newChildNodes childNodes.
+		 */
+		virtual void addChildNodes(const 
+		std::vector<Ionflux::GeoUtils::FBXNode*>& newChildNodes);
+		
+		/** Add childNodes.
+		 *
+		 * Add childNodes from a childNode set.
+		 *
+		 * \param newChildNodes childNodes.
+		 */
+		virtual void addChildNodes(Ionflux::GeoUtils::FBXNode* newChildNodes);
+		
+		/** Remove childNode.
+		 *
+		 * Remove a childNode.
+		 *
+		 * \param removeElement ChildNode to be removed.
+		 */
+		virtual void removeChildNode(Ionflux::GeoUtils::FBXNode* removeElement);
+		
+		/** Remove childNode.
+		 *
+		 * Remove a childNode.
+		 *
+		 * \param removeIndex ChildNode to be removed.
+		 */
+		virtual void removeChildNodeIndex(unsigned int removeIndex);
+		
+		/** Clear childNodes.
+		 *
+		 * Clear all childNodes.
+		 */
+		virtual void clearChildNodes();
+		
+		/** Get attribute type.
+		 *
+		 * \return Current value of attribute type.
+		 */
+		virtual Ionflux::GeoUtils::FBXNodeAttributeType getAttributeType() const;
+		
+		/** Set attribute type.
+		 *
+		 * Set new value of attribute type.
+		 *
+		 * \param newAttributeType New value of attribute type.
+		 */
+		virtual void setAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType 
+		newAttributeType);
+		
+		/** Get name.
+		 *
+		 * \return Current value of name.
+		 */
+		virtual std::string getName() const;
+		
+		/** Set name.
+		 *
+		 * Set new value of name.
+		 *
+		 * \param newName New value of name.
+		 */
+		virtual void setName(const std::string& newName);
 };
 
 }

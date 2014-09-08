@@ -1,11 +1,11 @@
-#ifndef IONFLUX_GEOUTILS_FBX
-#define IONFLUX_GEOUTILS_FBX
+#ifndef IONFLUX_GEOUTILS_XML_FACTORIES_FBX
+#define IONFLUX_GEOUTILS_XML_FACTORIES_FBX
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2014 Jörn P. Meier
+ * Copyright © 2009-2013 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * geoutilsfbx.hpp                    GeoUtils FBX library (header).
+ * fbx_xml_factories.hpp              XML object factories (FBX library).
  * =========================================================================
  *
  * This file is part of GeoUtils - Ionflux' Geometry Library.
@@ -27,15 +27,9 @@
  * 
  * ========================================================================== */
 
-#include "geoutils/fbxtypes.hpp"
-#include "geoutils/fbxutils.hpp"
-#include "geoutils/FBXManager.hpp"
-#include "geoutils/FBXNode.hpp"
-#include "geoutils/FBXNodeSet.hpp"
-#include "geoutils/FBXScene.hpp"
-#include "geoutils/fbx_xml_factories.hpp"
+#include "geoutils/xmlio/FBXNodeXMLFactory.hpp"
 
-/** \file geoutilsfbx.hpp
- * \brief GeoUtils FBX library (header).
+/** \file fbx_xml_factories.hpp
+ * \brief XML object factories (FBX library).
  */
 #endif

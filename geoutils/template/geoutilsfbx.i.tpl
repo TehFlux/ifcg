@@ -68,5 +68,6 @@ $FBXManager
 $FBXScene
 $FBXNode
 $FBXNodeSet
+$FBXNodeXMLFactory
 
 %template(FBXNodeVector) std::vector<Ionflux::GeoUtils::FBXNode*>;

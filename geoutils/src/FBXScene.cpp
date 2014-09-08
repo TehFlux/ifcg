@@ -175,7 +175,7 @@ indentChar) const
 	    return;
 	addLocalRef(r0);
 	std::cout << "[root: " << r0->getValueString() << "]" << std::endl;
-	r0->listChildNodes(recursive, indentWidth, indentChar, 1);
+	r0->listChildNodesFBX(recursive, indentWidth, indentChar, 1);
 	removeLocalRef(r0);
 }
 
@@ -190,7 +190,7 @@ std::string& needle, bool recursive)
 	if (!recursive)
 	    return r0;
 	addLocalRef(r0);
-	FBXNode* result = r0->findChildNodeByName(needle, recursive);
+	FBXNode* result = r0->findChildNodeByNameFBX(needle, recursive);
 	removeLocalRef(r0);
 	return result;
 }
