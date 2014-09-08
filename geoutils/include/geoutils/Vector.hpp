@@ -397,6 +397,15 @@ class Vector
 		virtual std::string getValueStringF(unsigned int fieldWidth = 5, unsigned
 		int precision = 3, const std::string& colSep = " ") const;
 		
+		/** Get XML string representation of value.
+		 *
+		 * Get a string representation of the value of the object that can be 
+		 * used as an XML attribute.
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getXMLAttributeDataValueString() const;
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object

@@ -35,6 +35,11 @@
 #include "geoutils/Line3.hpp"
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Mesh.hpp"
+#include "ifobject/utils.hpp"
+#include "ifobject/xmlutils.hpp"
+#include "ifobject/xmlutils_private.hpp"
+#include "geoutils/xmlutils.hpp"
+#include "geoutils/xmlio/Range3XMLFactory.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -59,6 +64,8 @@ Range3ClassInfo::~Range3ClassInfo()
 // run-time type information instance constants
 const Range3ClassInfo Range3::range3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Range3::CLASS_INFO = &Range3::range3ClassInfo;
+
+const std::string Range3::XML_ELEMENT_NAME = "r3";
 
 Range3::Range3()
 {
@@ -592,6 +599,55 @@ initMin, double edgeLength, Ionflux::ObjectBase::IFObject* parentObject)
 unsigned int Range3::getMemSize() const
 {
     return sizeof *this;
+}
+
+std::string Range3::getXMLElementName() const
+{
+	return XML_ELEMENT_NAME;
+}
+
+std::string Range3::getXMLAttributeData() const
+{
+    std::string a0(Ionflux::ObjectBase::IFObject::getXMLAttributeData());
+    std::ostringstream d0;
+    if (a0.size() > 0)
+        d0 << a0 << " ";
+    Vector3 c0(getCenter());
+    Vector3 r0(getRadius());
+    d0 << "c=\"" << c0.getXMLAttributeDataValueString() << "\"" 
+        << " r=\"" << r0.getXMLAttributeDataValueString() << "\"";
+    return d0.str();
+}
+
+void Range3::getXMLChildData(std::string& target, unsigned int indentLevel)
+const
+{
+	std::ostringstream d0;
+	std::string bc0;
+	Ionflux::ObjectBase::IFObject::getXMLChildData(bc0, indentLevel);
+	d0 << bc0;
+	target = d0.str();
+}
+
+void Range3::loadFromXMLFile(const std::string& fileName)
+{
+	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
+	    fileName, *this, getXMLElementName());
+}
+
+Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+Range3::getXMLObjectFactory()
+{
+	static Ionflux::GeoUtils::XMLUtils::Range3XMLFactory* fac0 = 0;
+    if (fac0 == 0)
+    {
+        fac0 = Ionflux::GeoUtils::XMLUtils::Range3XMLFactory::create();
+        fac0->addRef();
+        Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* bFac = 
+            IFObject::getXMLObjectFactory();
+        bFac->addFactory(fac0);
+    }
+    return fac0;
 }
 
 }

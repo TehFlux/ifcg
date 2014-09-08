@@ -74,6 +74,8 @@ class Vector3
         double newZ = 1.);
         virtual void setElements(const Ionflux::Mapping::Point& 
         newElements);
+        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
+        newElements);
         virtual Ionflux::GeoUtils::Vector3 flip() const;
         virtual Ionflux::GeoUtils::Vector3 normalize() const;
         virtual Ionflux::GeoUtils::Vector3 cross(const 

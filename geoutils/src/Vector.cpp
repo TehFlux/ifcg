@@ -452,6 +452,22 @@ precision, const std::string& colSep) const
 	return status.str();
 }
 
+std::string Vector::getXMLAttributeDataValueString() const
+{
+	std::ostringstream status;
+	unsigned int numElements = getNumElements();
+	bool e0 = true;
+	for (unsigned int i = 0; i < numElements; i++)
+	{
+	    if (!e0)
+	        status << ",";
+	    else
+	        e0 = false;
+	    status << elements[i];
+	}
+	return status.str();
+}
+
 std::string Vector::getValueString() const
 {
 	std::ostringstream status;

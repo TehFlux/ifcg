@@ -209,6 +209,17 @@ class Vector3
 		 */
 		virtual void setElements(const Ionflux::Mapping::Point& newElements);
 		
+		/** Set elements.
+		 *
+		 * Set elements from a vector of doubles. If the vector contains fewer
+		 * than the required number of elements, the remaining elements will 
+		 * be left alone.
+		 *
+		 * \param newElements Element vector.
+		 */
+		virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
+		newElements);
+		
 		/** Flip vector.
 		 *
 		 * Create a new vector which is equal to the original vector 

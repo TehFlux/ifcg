@@ -54,6 +54,7 @@
 #include "geoutils/xmlio/Polygon3SetXMLFactory.hpp"
 #include "geoutils/xmlio/Shape3XMLFactory.hpp"
 #include "geoutils/xmlio/CameraXMLFactory.hpp"
+#include "geoutils/xmlio/Range3XMLFactory.hpp"
 
 /** \file xml_factories.hpp
  * \brief XML object factories.

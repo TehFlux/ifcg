@@ -169,6 +169,12 @@ void Vector3::setElements(const Ionflux::Mapping::Point& newElements)
 	elements[2] = newElements.getZ();
 }
 
+void Vector3::setElements(const Ionflux::ObjectBase::DoubleVector& 
+newElements)
+{
+	Vector::setElements(newElements);
+}
+
 Ionflux::GeoUtils::Vector3 Vector3::flip() const
 {
 	Vector3 result(*this);

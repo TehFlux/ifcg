@@ -648,6 +648,7 @@ class Vector
         const;
         virtual std::string getValueStringF(unsigned int fieldWidth = 5, 
         unsigned int precision = 3, const std::string& colSep = " ") const;
+        virtual std::string getXMLAttributeDataValueString() const;
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
@@ -1071,6 +1072,8 @@ class Vector3
         double newZ = 1.);
         virtual void setElements(const Ionflux::Mapping::Point& 
         newElements);
+        virtual void setElements(const Ionflux::ObjectBase::DoubleVector& 
+        newElements);
         virtual Ionflux::GeoUtils::Vector3 flip() const;
         virtual Ionflux::GeoUtils::Vector3 normalize() const;
         virtual Ionflux::GeoUtils::Vector3 cross(const 
@@ -1254,6 +1257,13 @@ class Range3
         virtual bool operator!=(const Ionflux::GeoUtils::Range3& other) 
         const;
         virtual std::string getValueString() const;
+		virtual std::string getXMLElementName() const;
+		virtual std::string getXMLAttributeData() const;
+		virtual void getXMLChildData(std::string& target, unsigned int 
+		indentLevel = 0) const;
+		virtual void loadFromXMLFile(const std::string& FileName);
+		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
+		getXMLObjectFactory();
 		virtual Ionflux::GeoUtils::Range3* copy() const;
 		static Ionflux::GeoUtils::Range3* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
