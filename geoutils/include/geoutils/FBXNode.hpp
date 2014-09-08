@@ -217,7 +217,7 @@ class FBXNode
 		 * will not be referenced and must be managed by the caller.
 		 *
 		 * \param needle name of node to be found.
-		 * \param recursive look for child node.
+		 * \param recursive look for child node recursively.
 		 *
 		 * \return Node with the specified name, or 0 if the node does not exist.
 		 */
@@ -274,6 +274,18 @@ class FBXNode
 		 */
 		virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
 		unsigned int width = 8, char fillChar = '0', unsigned int offset = 0);
+		
+		/** Find child node by name.
+		 *
+		 * Find a child node by name.
+		 *
+		 * \param needle name of node to be found.
+		 * \param recursive look for child node recursively.
+		 *
+		 * \return Node with the specified name, or 0 if the node does not exist.
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+		std::string& needle, bool recursive = true);
 		
 		/** Get string representation of value.
 		 *

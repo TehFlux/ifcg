@@ -236,6 +236,8 @@ class FBXNode
         virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
         unsigned int width = 8, char fillChar = '0', unsigned int offset = 
         0);
+        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+        std::string& needle, bool recursive = true);
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;

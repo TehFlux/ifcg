@@ -183,7 +183,7 @@ void FBXNode::addChildNodesFBX(bool recursive)
 	    Ionflux::GeoUtils::FBXNode* cn = getChildNodeFBX(i);
 	    if (cn != 0)
 	    {
-	        // <---- DEBUG ----- //
+	        /* <---- DEBUG ----- //
 	        std::cerr << "[FBXNode::addChildNodesFBX] DEBUG: "
 	            "adding child node: [" << cn->getValueString() << "]." 
 	            << std::endl;
@@ -542,6 +542,26 @@ width, char fillChar, unsigned int offset)
 	return offset;
 }
 
+Ionflux::GeoUtils::FBXNode* FBXNode::findChildNodeByName(const std::string&
+needle, bool recursive)
+{
+	if ((getName() == needle) 
+	    || !recursive)
+	    return this;
+	int numChildNodes = getNumChildNodes();
+	int i = 0;
+	FBXNode* result = 0;
+	while ((result == 0) 
+	    && (i < numChildNodes))
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	        result = n0->findChildNodeByName(needle, true);
+	    i++;
+	}
+	return result;
+}
+
 std::string FBXNode::getValueString() const
 {
 	std::ostringstream status;
@@ -800,8 +820,13 @@ indentLevel) const
 	if (d0.str().size() > 0)
 	    haveBCData = true;
 	bool xcFirst = true;
-	if (!xcFirst || haveBCData)
-	    d0 << "\n";
+    if (transformMatrix != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << transformMatrix->getXML0(indentLevel, "pname=\"transform_matrix\"");
+	    xcFirst = false;
+    }
 	if (!xcFirst || haveBCData)
 	    d0 << "\n";
     d0 << Ionflux::ObjectBase::XMLUtils::getXML0(childNodes, "fbxnodevec", "", 
