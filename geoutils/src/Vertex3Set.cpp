@@ -40,6 +40,14 @@
 #include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/Vertex3SetXMLFactory.hpp"
+#include "ifobject/objectutils.hpp"
+#include "ifobject/serialize.hpp"
+#include "ifobject/IFIOContext.hpp"
+
+using Ionflux::ObjectBase::pack;
+using Ionflux::ObjectBase::packObj;
+using Ionflux::ObjectBase::unpack;
+using Ionflux::ObjectBase::unpackObj;
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -65,6 +73,8 @@ const Vertex3SetClassInfo Vertex3Set::vertex3SetClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vertex3Set::CLASS_INFO = &Vertex3Set::vertex3SetClassInfo;
 
 const std::string Vertex3Set::XML_ELEMENT_NAME = "vertex3set";
+
+const Ionflux::ObjectBase::MagicSyllable Vertex3Set::MAGIC_SYLLABLE_OBJECT = 0x5653;
 
 Vertex3Set::Vertex3Set()
 {
@@ -410,6 +420,84 @@ void Vertex3Set::clearVertices()
 		if (*i != 0)
 			removeLocalRef(*i);
 	vertices.clear();
+}
+
+bool Vertex3Set::serialize(std::string& target) const
+{
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize Vertex3Set::deserialize(const std::string& source, Ionflux::ObjectBase::DataSize offset)
+{
+	return offset;
+}
+
+bool Vertex3Set::serialize(std::ostream& target, bool addMagicWord) const
+{
+    if (addMagicWord)
+        Ionflux::ObjectBase::pack(getMagicSyllableBase(), 
+            getMagicSyllable(), target);
+    Ionflux::ObjectBase::UInt64 numVerts = getNumVertices();
+    pack(numVerts, target);
+    for (Ionflux::ObjectBase::UInt64 i = 0; i < numVerts; i++)
+    {
+        Vertex3* cv = Ionflux::ObjectBase::nullPointerCheck(
+            getVertex(i), this, "serialize", "Vertex");
+        cv->serialize(target, false);
+    }
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize Vertex3Set::deserialize(std::istream& source, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+    if (offset != Ionflux::ObjectBase::DATA_SIZE_INVALID)
+    {
+        source.seekg(offset);
+        if (!source.good())
+        {
+            std::ostringstream status;
+            status << "Invalid stream offset: " << offset;
+            throw GeoUtilsError(getErrorString(status.str(), "deserialize"));
+        }
+    }
+    if (checkMagicWord)
+        Ionflux::ObjectBase::unpackAndCheckMagicWord(source, 
+            getMagicSyllableBase(), getMagicSyllable(), 
+            Ionflux::ObjectBase::DATA_SIZE_INVALID, 
+            this, "deserialize");
+    Ionflux::ObjectBase::UInt64 numVerts = 0;
+    unpack(source, numVerts);
+    for (Ionflux::ObjectBase::UInt64 i = 0; i < numVerts; i++)
+    {
+        Vertex3* cv = addVertex();
+        cv->deserialize(source, 
+            Ionflux::ObjectBase::DATA_SIZE_INVALID, false);
+    }
+	return source.tellg();
+}
+
+bool Vertex3Set::serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord) const
+{
+	std::ostream* os0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getOutputStream(), this, "serialize", "Output stream");
+    return serialize(*os0, addMagicWord);
+}
+
+Ionflux::ObjectBase::DataSize Vertex3Set::deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+	std::istream* is0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getInputStream(), this, "deserialize", "Input stream");
+    return deserialize(*is0, offset, checkMagicWord);
+}
+
+Ionflux::ObjectBase::MagicSyllable Vertex3Set::getMagicSyllable() const
+{
+    return MAGIC_SYLLABLE_OBJECT;
+}
+
+Ionflux::ObjectBase::MagicSyllable Vertex3Set::getMagicSyllableBase() const
+{
+    return MAGIC_SYLLABLE_BASE;
 }
 
 Ionflux::GeoUtils::Vertex3Set& Vertex3Set::operator=(const 

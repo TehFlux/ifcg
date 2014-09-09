@@ -39,6 +39,14 @@
 #include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/Vertex3XMLFactory.hpp"
+#include "ifobject/objectutils.hpp"
+#include "ifobject/serialize.hpp"
+#include "ifobject/IFIOContext.hpp"
+
+using Ionflux::ObjectBase::pack;
+using Ionflux::ObjectBase::packObj;
+using Ionflux::ObjectBase::unpack;
+using Ionflux::ObjectBase::unpackObj;
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -67,6 +75,8 @@ const Vertex3ClassInfo Vertex3::vertex3ClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vertex3::CLASS_INFO = &Vertex3::vertex3ClassInfo;
 
 const std::string Vertex3::XML_ELEMENT_NAME = "vert3";
+
+const Ionflux::ObjectBase::MagicSyllable Vertex3::MAGIC_SYLLABLE_OBJECT = 0x5645;
 
 Vertex3::Vertex3()
 : x(0.), y(0.), z(0.)
@@ -433,6 +443,107 @@ void Vertex3::setZ(double newZ)
 double Vertex3::getZ() const
 {
     return z;
+}
+
+bool Vertex3::serialize(std::string& target) const
+{
+	pack(x, target);
+	pack(y, target);
+	pack(z, target);
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize Vertex3::deserialize(const std::string& source, Ionflux::ObjectBase::DataSize offset)
+{
+	// x
+    offset = unpack(source, x, offset);
+	if (offset < 0)
+	{
+        std::ostringstream status;
+		status << "[Vertex3::deserialize] "
+			"Could not deserialize property 'x'.";
+        throw GeoUtilsError(status.str());
+	}
+	// y
+    offset = unpack(source, y, offset);
+	if (offset < 0)
+	{
+        std::ostringstream status;
+		status << "[Vertex3::deserialize] "
+			"Could not deserialize property 'y'.";
+        throw GeoUtilsError(status.str());
+	}
+	// z
+    offset = unpack(source, z, offset);
+	if (offset < 0)
+	{
+        std::ostringstream status;
+		status << "[Vertex3::deserialize] "
+			"Could not deserialize property 'z'.";
+        throw GeoUtilsError(status.str());
+	}
+	return offset;
+}
+
+bool Vertex3::serialize(std::ostream& target, bool addMagicWord) const
+{
+	if (addMagicWord)
+        Ionflux::ObjectBase::pack(getMagicSyllableBase(), 
+            getMagicSyllable(), target);
+	pack(x, target);
+	pack(y, target);
+	pack(z, target);
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize Vertex3::deserialize(std::istream& source, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+    if (offset != Ionflux::ObjectBase::DATA_SIZE_INVALID)
+    {
+        source.seekg(offset);
+        if (!source.good())
+        {
+            std::ostringstream status;
+            status << "Invalid stream offset: " << offset;
+            throw GeoUtilsError(getErrorString(status.str(), "deserialize"));
+        }
+    }
+    if (checkMagicWord)
+        Ionflux::ObjectBase::unpackAndCheckMagicWord(source, 
+            getMagicSyllableBase(), getMagicSyllable(), 
+            Ionflux::ObjectBase::DATA_SIZE_INVALID, 
+            this, "deserialize");
+	// x
+    unpack(source, x);
+	// y
+    unpack(source, y);
+	// z
+    unpack(source, z);
+	return source.tellg();
+}
+
+bool Vertex3::serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord) const
+{
+	std::ostream* os0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getOutputStream(), this, "serialize", "Output stream");
+    return serialize(*os0, addMagicWord);
+}
+
+Ionflux::ObjectBase::DataSize Vertex3::deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+	std::istream* is0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getInputStream(), this, "deserialize", "Input stream");
+    return deserialize(*is0, offset, checkMagicWord);
+}
+
+Ionflux::ObjectBase::MagicSyllable Vertex3::getMagicSyllable() const
+{
+    return MAGIC_SYLLABLE_OBJECT;
+}
+
+Ionflux::ObjectBase::MagicSyllable Vertex3::getMagicSyllableBase() const
+{
+    return MAGIC_SYLLABLE_BASE;
 }
 
 Ionflux::GeoUtils::Vertex3& Vertex3::operator=(const 

@@ -137,6 +137,12 @@ class Vertex3
 		parentObject = 0);
 		static Ionflux::GeoUtils::Vertex3* create(const Ionflux::Mapping::Point& 
 		initCoords, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual bool serialize(std::string& target) const;
+        virtual Ionflux::ObjectBase::DataSize deserialize(const std::string& source, int offset = 0);
+        virtual bool serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord = true) const;
+        virtual Ionflux::ObjectBase::DataSize deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset = Ionflux::ObjectBase::DATA_SIZE_INVALID, bool checkMagicWord = true);
+        virtual Ionflux::ObjectBase::MagicSyllable getMagicSyllable() const;
+        virtual Ionflux::ObjectBase::MagicSyllable getMagicSyllableBase() const;
         virtual void setX(double newX);
         virtual double getX() const;
         virtual void setY(double newY);

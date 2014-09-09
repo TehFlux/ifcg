@@ -29,6 +29,7 @@
 
 #include <string>
 #include <climits>
+#include "ifobject/types.hpp"
 #include "geoutils/types.hpp"
 
 namespace Ionflux
@@ -192,6 +193,9 @@ const Ionflux::GeoUtils::TransformNodes::InputNodeSpec
     DEFAULT_INPUT_NODE_SPEC = {0, 0};
 
 }
+
+/// Magic syllable (base, CG).
+const Ionflux::ObjectBase::MagicSyllable MAGIC_SYLLABLE_BASE = 0x4347;
 
 }
 

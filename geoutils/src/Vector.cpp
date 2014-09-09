@@ -37,6 +37,14 @@
 #include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/VectorXMLFactory.hpp"
+#include "ifobject/objectutils.hpp"
+#include "ifobject/serialize.hpp"
+#include "ifobject/IFIOContext.hpp"
+
+using Ionflux::ObjectBase::pack;
+using Ionflux::ObjectBase::packObj;
+using Ionflux::ObjectBase::unpack;
+using Ionflux::ObjectBase::unpackObj;
 
 using namespace std;
 
@@ -65,6 +73,8 @@ const VectorClassInfo Vector::vectorClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* Vector::CLASS_INFO = &Vector::vectorClassInfo;
 
 const std::string Vector::XML_ELEMENT_NAME = "v";
+
+const Ionflux::ObjectBase::MagicSyllable Vector::MAGIC_SYLLABLE_OBJECT = 0x5643;
 
 Vector::Vector()
 : elements(0)
@@ -482,6 +492,81 @@ std::string Vector::getValueString() const
 	    status << elements[i];
 	}
 	return status.str();
+}
+
+bool Vector::serialize(std::string& target) const
+{
+	if (!IFObject::serialize(target))
+		return false;
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize Vector::deserialize(const std::string& source, Ionflux::ObjectBase::DataSize offset)
+{
+	offset = IFObject::deserialize(source, offset);
+	if (offset < 0)
+		return -1;
+	return offset;
+}
+
+bool Vector::serialize(std::ostream& target, bool addMagicWord) const
+{
+    if (addMagicWord)
+        Ionflux::ObjectBase::pack(getMagicSyllableBase(), 
+            getMagicSyllable(), target);
+    Ionflux::ObjectBase::UInt64 numElements = getNumElements();
+    pack(numElements, target);
+    for (Ionflux::ObjectBase::UInt64 i = 0; i < numElements; i++)
+        pack(elements[i], target);
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize Vector::deserialize(std::istream& source, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+    if (offset != Ionflux::ObjectBase::DATA_SIZE_INVALID)
+    {
+        source.seekg(offset);
+        if (!source.good())
+        {
+            std::ostringstream status;
+            status << "Invalid stream offset: " << offset;
+            throw GeoUtilsError(getErrorString(status.str(), "deserialize"));
+        }
+    }
+    if (checkMagicWord)
+        Ionflux::ObjectBase::unpackAndCheckMagicWord(source, 
+            getMagicSyllableBase(), getMagicSyllable(), 
+            Ionflux::ObjectBase::DATA_SIZE_INVALID, 
+            this, "deserialize");
+    Ionflux::ObjectBase::UInt64 numElements = 0;
+    unpack(source, numElements);
+    for (Ionflux::ObjectBase::UInt64 i = 0; i < numElements; i++)
+        unpack(source, elements[i]);
+	return source.tellg();
+}
+
+bool Vector::serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord) const
+{
+	std::ostream* os0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getOutputStream(), this, "serialize", "Output stream");
+    return serialize(*os0, addMagicWord);
+}
+
+Ionflux::ObjectBase::DataSize Vector::deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+	std::istream* is0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getInputStream(), this, "deserialize", "Input stream");
+    return deserialize(*is0, offset, checkMagicWord);
+}
+
+Ionflux::ObjectBase::MagicSyllable Vector::getMagicSyllable() const
+{
+    return MAGIC_SYLLABLE_OBJECT;
+}
+
+Ionflux::ObjectBase::MagicSyllable Vector::getMagicSyllableBase() const
+{
+    return MAGIC_SYLLABLE_BASE;
 }
 
 Ionflux::GeoUtils::Vector& Vector::operator=(const 
