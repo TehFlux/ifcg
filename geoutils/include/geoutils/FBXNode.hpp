@@ -86,6 +86,10 @@ class FBXNode
 		std::string name;
 		/// Bounds.
 		Ionflux::GeoUtils::Range3* bounds;
+		/// Number of vertices (for mesh nodes).
+		unsigned int numVerts;
+		/// Number of faces (for mesh nodes).
+		unsigned int numFaces;
 		
 	public:
 		/// Node attribute type: unknown.
@@ -262,17 +266,28 @@ class FBXNode
 		unsigned int startIndex = 0, double scale0 = 1., bool applyNodeTransform0
 		= true) const;
 		
-		/** Get bounds (FBX).
+		/** Update bounds (FBX).
 		 *
-		 * Get the bounds of the node from the FBX hierarchy. The bounds will 
-		 * be set to the bounds of the mesh for mesh nodes and to zero for all
-		 * other nodes.
+		 * Update the bounds of the node from the FBX hierarchy. The bounds 
+		 * will be set to the bounds of the mesh for mesh nodes and to zero 
+		 * for all other nodes.
 		 *
-		 * \param recursive recursively get bounds.
+		 * \param recursive recursively update bounds.
+		 * \param localTransform local transformation to be applied to vertices.
 		 *
 		 * \return Bounds if the node is a mesh node, 0 otherwise.
 		 */
-		virtual Ionflux::GeoUtils::Range3* getBoundsFBX(bool recursive = false);
+		virtual Ionflux::GeoUtils::Range3* updateBoundsFBX(bool recursive = 
+		false, Ionflux::GeoUtils::Matrix4* localTransform = 0);
+		
+		/** Update mesh data (FBX).
+		 *
+		 * Update the mesh data of the node from the FBX hierarchy. The mesh 
+		 * data will be set only for mesh nodes.
+		 *
+		 * \param recursive recursively update mesh data.
+		 */
+		virtual void updateMeshDataFBX(bool recursive = false);
 		
 		/** Get node hierarchy bounds.
 		 *
@@ -290,6 +305,25 @@ class FBXNode
 		 */
 		virtual bool getHierarchyBounds(Ionflux::GeoUtils::Range3& target, bool 
 		valid = false);
+		
+		/** Get number of vertices of node hierarchy.
+		 *
+		 * Get the number of vertices of the node hierarchy starting at this 
+		 * node.
+		 *
+		 * \return number of vertices of the node hierarchy starting at this 
+		 * node.
+		 */
+		virtual unsigned int getHierarchyNumVerts();
+		
+		/** Get number of faces of node hierarchy.
+		 *
+		 * Get the number of faces of the node hierarchy starting at this 
+		 * node.
+		 *
+		 * \return number of faces of the node hierarchy starting at this node.
+		 */
+		virtual unsigned int getHierarchyNumFaces();
 		
 		/** Assign node IDs.
 		 *
@@ -608,6 +642,34 @@ class FBXNode
 		 * \param newBounds New value of bounds.
 		 */
 		virtual void setBounds(Ionflux::GeoUtils::Range3* newBounds);
+		
+		/** Get number of vertices (for mesh nodes).
+		 *
+		 * \return Current value of number of vertices (for mesh nodes).
+		 */
+		virtual unsigned int getNumVerts() const;
+		
+		/** Set number of vertices (for mesh nodes).
+		 *
+		 * Set new value of number of vertices (for mesh nodes).
+		 *
+		 * \param newNumVerts New value of number of vertices (for mesh nodes).
+		 */
+		virtual void setNumVerts(unsigned int newNumVerts);
+		
+		/** Get number of faces (for mesh nodes).
+		 *
+		 * \return Current value of number of faces (for mesh nodes).
+		 */
+		virtual unsigned int getNumFaces() const;
+		
+		/** Set number of faces (for mesh nodes).
+		 *
+		 * Set new value of number of faces (for mesh nodes).
+		 *
+		 * \param newNumFaces New value of number of faces (for mesh nodes).
+		 */
+		virtual void setNumFaces(unsigned int newNumFaces);
 };
 
 }

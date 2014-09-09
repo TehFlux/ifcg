@@ -93,10 +93,13 @@ class FBXNode
         recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
         unsigned int startIndex = 0, double scale0 = 1., bool 
         applyNodeTransform0 = true) const;
-        virtual Ionflux::GeoUtils::Range3* getBoundsFBX(bool recursive = 
-        false);
+        virtual Ionflux::GeoUtils::Range3* updateBoundsFBX(bool recursive =
+        false, Ionflux::GeoUtils::Matrix4* localTransform = 0);
+        virtual void updateMeshDataFBX(bool recursive = false);
         virtual bool getHierarchyBounds(Ionflux::GeoUtils::Range3& target, 
         bool valid = false);
+        virtual unsigned int getHierarchyNumVerts();
+        virtual unsigned int getHierarchyNumFaces();
         virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
         unsigned int width = 8, char fillChar = '0', unsigned int offset = 
         0);
@@ -146,6 +149,10 @@ class FBXNode
         virtual std::string getName() const;
         virtual void setBounds(Ionflux::GeoUtils::Range3* newBounds);
         virtual Ionflux::GeoUtils::Range3* getBounds() const;
+        virtual void setNumVerts(unsigned int newNumVerts);
+        virtual unsigned int getNumVerts() const;
+        virtual void setNumFaces(unsigned int newNumFaces);
+        virtual unsigned int getNumFaces() const;
 };
 
 }
