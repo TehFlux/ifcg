@@ -177,6 +177,7 @@ namespace GeoUtils
 
 class Matrix4;
 class Mesh;
+class FBXNodeSet;
 
 class FBXNodeClassInfo
 : public Ionflux::ObjectBase::IFClassInfo
@@ -233,11 +234,18 @@ class FBXNode
         recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
         unsigned int startIndex = 0, double scale0 = 1., bool 
         applyNodeTransform0 = true) const;
+        virtual Ionflux::GeoUtils::Range3* getBoundsFBX(bool recursive = 
+        false);
+        virtual bool getHierarchyBounds(Ionflux::GeoUtils::Range3& target, 
+        bool valid = false);
         virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
         unsigned int width = 8, char fillChar = '0', unsigned int offset = 
         0);
         virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
         std::string& needle, bool recursive = true);
+        virtual unsigned int 
+        findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType t,
+        Ionflux::GeoUtils::FBXNodeSet& target, bool recursive = true);
         virtual std::string getValueString() const;
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
@@ -277,6 +285,8 @@ class FBXNode
         const;
         virtual void setName(const std::string& newName);
         virtual std::string getName() const;
+        virtual void setBounds(Ionflux::GeoUtils::Range3* newBounds);
+        virtual Ionflux::GeoUtils::Range3* getBounds() const;
 };
 
 }

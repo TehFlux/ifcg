@@ -31,6 +31,7 @@
 #include "geoutils/types.hpp"
 #include "geoutils/constants.hpp"
 #include "geoutils/utils.hpp"
+#include "geoutils/Range3.hpp"
 #include "geoutils/fbxtypes.hpp"
 #include "ifobject/IFObject.hpp"
 
@@ -42,6 +43,7 @@ namespace GeoUtils
 
 class Matrix4;
 class Mesh;
+class FBXNodeSet;
 
 namespace XMLUtils
 {
@@ -82,6 +84,8 @@ class FBXNode
 		Ionflux::GeoUtils::FBXNodeAttributeType attributeType;
 		/// Name.
 		std::string name;
+		/// Bounds.
+		Ionflux::GeoUtils::Range3* bounds;
 		
 	public:
 		/// Node attribute type: unknown.
@@ -258,6 +262,35 @@ class FBXNode
 		unsigned int startIndex = 0, double scale0 = 1., bool applyNodeTransform0
 		= true) const;
 		
+		/** Get bounds (FBX).
+		 *
+		 * Get the bounds of the node from the FBX hierarchy. The bounds will 
+		 * be set to the bounds of the mesh for mesh nodes and to zero for all
+		 * other nodes.
+		 *
+		 * \param recursive recursively get bounds.
+		 *
+		 * \return Bounds if the node is a mesh node, 0 otherwise.
+		 */
+		virtual Ionflux::GeoUtils::Range3* getBoundsFBX(bool recursive = false);
+		
+		/** Get node hierarchy bounds.
+		 *
+		 * Get the bounds of the node hierarchy starting at this node. The 
+		 * target bounds will be extended if \c valid is set to \c true. 
+		 * Otherwise, the bounds will be set to the first valid bounds 
+		 * encountered while traversing the hierarchy and extended by any 
+		 * other bounds encountered after that.
+		 *
+		 * \param target where to store the bounds.
+		 * \param valid bounds valid flag.
+		 *
+		 * \return \c true if the bounds of the hierarchy are valid, \c false 
+		 * otherwise.
+		 */
+		virtual bool getHierarchyBounds(Ionflux::GeoUtils::Range3& target, bool 
+		valid = false);
+		
 		/** Assign node IDs.
 		 *
 		 * Recursively assign node IDs to the nodes contained in the hierarchy
@@ -286,6 +319,20 @@ class FBXNode
 		 */
 		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
 		std::string& needle, bool recursive = true);
+		
+		/** Find nodes by attribute type.
+		 *
+		 * Find nodes by attribute type.
+		 *
+		 * \param t node attribute type.
+		 * \param target where to store the nodes.
+		 * \param recursive look for child nodes recursively.
+		 *
+		 * \return number of nodes that have been found.
+		 */
+		virtual unsigned int 
+		findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType t, 
+		Ionflux::GeoUtils::FBXNodeSet& target, bool recursive = true);
 		
 		/** Get string representation of value.
 		 *
@@ -547,6 +594,20 @@ class FBXNode
 		 * \param newName New value of name.
 		 */
 		virtual void setName(const std::string& newName);
+		
+		/** Get bounds.
+		 *
+		 * \return Current value of bounds.
+		 */
+		virtual Ionflux::GeoUtils::Range3* getBounds() const;
+		
+		/** Set bounds.
+		 *
+		 * Set new value of bounds.
+		 *
+		 * \param newBounds New value of bounds.
+		 */
+		virtual void setBounds(Ionflux::GeoUtils::Range3* newBounds);
 };
 
 }
