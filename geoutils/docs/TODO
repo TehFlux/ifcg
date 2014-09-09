@@ -15,6 +15,9 @@ Up next
 New
 --------------------------------------------------------------------------------
 
++ Serialization
+  > Vector, Vertex3, Vertex3Set, Face, FaceSet
+
 + Mesh
   > getMeshType(): tri, quad, mixed, unknown
 
