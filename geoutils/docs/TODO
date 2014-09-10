@@ -15,15 +15,19 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ Serialization
-  > Face, FaceSet, FaceVector, NFace, VectorSet, VectorSetSet, FaceData
 
-+ Mesh
-  > getMeshType(): tri, quad, mixed, unknown
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ Mesh
+  > OBJ import/export
+  > binary import/export
+  > make face normals consistent
+
++ Serialization
+  > Face, FaceSet, FaceVector, NFace, VectorSet, VectorSetSet, FaceData
 
 + Vector buffer
   . same as the VertexAttribute buffer, but non-GL
@@ -33,11 +37,6 @@ Critical stuff
   > VertexAttribute
     . allocate(), resize(), append() [seems to work]
     . setDataComponents()
-
-+ Mesh
-  > OBJ import/export
-  > binary import/export
-  > make face normals consistent
 
 + OpenGL utility library
   > render points
