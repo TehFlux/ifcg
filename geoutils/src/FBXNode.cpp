@@ -95,7 +95,7 @@ const Ionflux::ObjectBase::IFClassInfo* FBXNode::CLASS_INFO = &FBXNode::fBXNodeC
 const std::string FBXNode::XML_ELEMENT_NAME = "fbxnode";
 
 FBXNode::FBXNode()
-: impl(0), transformMatrix(0), attributeType(TYPE_UNKNOWN), name(""), bounds(0), numVerts(0), numFaces(0)
+: impl(0), localTransform(0), globalTransform(0), attributeType(TYPE_UNKNOWN), name(""), bounds(0), numVerts(0), numFaces(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -103,7 +103,7 @@ FBXNode::FBXNode()
 }
 
 FBXNode::FBXNode(const Ionflux::GeoUtils::FBXNode& other)
-: impl(0), transformMatrix(0), attributeType(TYPE_UNKNOWN), name(""), bounds(0), numVerts(0), numFaces(0)
+: impl(0), localTransform(0), globalTransform(0), attributeType(TYPE_UNKNOWN), name(""), bounds(0), numVerts(0), numFaces(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -111,8 +111,8 @@ FBXNode::FBXNode(const Ionflux::GeoUtils::FBXNode& other)
 }
 
 FBXNode::FBXNode(FBXSDK_NAMESPACE::FbxNode* initImpl)
-: impl(0), transformMatrix(0), attributeType(TYPE_UNKNOWN), name(""), 
-bounds(0), numVerts(0), numFaces(0)
+: impl(0), localTransform(0), globalTransform(0), 
+attributeType(TYPE_UNKNOWN), name(""), bounds(0), numVerts(0), numFaces(0)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
@@ -143,20 +143,7 @@ void FBXNode::update()
 	    setAttributeType(getFBXNodeAttributeType(
 	        attr0->GetAttributeType()));
 	}
-	Matrix4 M0(getMatrix(impl->EvaluateLocalTransform(FBXSDK_TIME_ZERO)));
-	if (M0.eq(Matrix4::UNIT))
-	{
-	    if (transformMatrix != 0)
-	        setTransformMatrix(0);
-	    return;
-	}
-	Matrix4* m1 = transformMatrix;
-	if (m1 == 0)
-	{
-	    m1 = Matrix4::create();
-	    setTransformMatrix(m1);
-	}
-	m1->setElements(M0);
+	updateTransformFBX();
 }
 
 int FBXNode::getNumChildNodesFBX() const
@@ -246,7 +233,7 @@ std::string& needle, bool recursive)
 }
 
 unsigned int FBXNode::getMesh(Ionflux::GeoUtils::Mesh& target, bool 
-recursive, Ionflux::GeoUtils::Matrix4* localTransform, bool 
+recursive, Ionflux::GeoUtils::Matrix4* localTransform0, bool 
 applyNodeTransform0) const
 {
 	Ionflux::ObjectBase::nullPointerCheck(impl, this, "getMesh", 
@@ -320,17 +307,17 @@ applyNodeTransform0) const
 	        } else
 	            std::cerr << "<none>";
 	        std::cerr << ", localTransform = ";
-	        if ((localTransform != 0) 
-	            && !localTransform->eq(Matrix4::UNIT))
+	        if ((localTransform0 != 0) 
+	            && !localTransform0->eq(Matrix4::UNIT))
 	        {
-	            std::cerr << "[" << localTransform->getValueString() 
+	            std::cerr << "[" << localTransform0->getValueString() 
 	                << "]";
 	        } else
-	        if ((localTransform != 0) 
-	            && localTransform->eq(Matrix4::UNIT))
+	        if ((localTransform0 != 0) 
+	            && localTransform0->eq(Matrix4::UNIT))
 	        {
 	            std::cerr << "UNIT [" 
-	                << localTransform->getValueString() << "]";
+	                << localTransform0->getValueString() << "]";
 	        } else
 	            std::cerr << "<none>";
 	        std::cerr << ", bBox = [" << bb0.getValueString() 
@@ -338,16 +325,16 @@ applyNodeTransform0) const
 	            << "), extent = (" << e0.getValueString() << ")";
 	        std::cerr << std::endl;
 	        // ----- DEBUG ----> */
-	        if (transformMatrix != 0)
+	        if (localTransform != 0)
 	        {
 	            // apply transform of this node
-	            m0.transform(*transformMatrix);
+	            m0.transform(*localTransform);
 	        }
-	        if ((localTransform != 0) 
-	            && !localTransform->eq(Matrix4::UNIT))
+	        if ((localTransform0 != 0) 
+	            && !localTransform0->eq(Matrix4::UNIT))
 	        {
 	            // apply local transform
-	            m0.transform(*localTransform);
+	            m0.transform(*localTransform0);
 	        }
 	        m0.applyTransform(true);
 	        /* <---- DEBUG ----- //
@@ -373,11 +360,11 @@ applyNodeTransform0) const
 	bool useLT = false;
 	if (applyNodeTransform0)
 	{
-	    if (transformMatrix != 0)
-	        T0.multiplyLeft(*transformMatrix);
-	    if ((localTransform != 0) 
-	        && !localTransform->eq(Matrix4::UNIT))
+	    if (localTransform != 0)
 	        T0.multiplyLeft(*localTransform);
+	    if ((localTransform0 != 0) 
+	        && !localTransform0->eq(Matrix4::UNIT))
+	        T0.multiplyLeft(*localTransform0);
 	    if (!T0.eq(Matrix4::UNIT))
 	        useLT = true;
 	}
@@ -387,15 +374,15 @@ applyNodeTransform0) const
 	    std::cerr << "[FBXNode::getMesh] DEBUG: "
 	        "node '" << getName() << "': local transformation: [" 
 	        << T0.getValueString() << "]";
-	    if (transformMatrix != 0)
-	    {
-	        std::cerr << ", transformMatrix = [" 
-	            << transformMatrix->getValueString() << "]";
-	    }
 	    if (localTransform != 0)
 	    {
-	        std::cerr << ", localTransform = [" 
+	        std::cerr << ", transformMatrix = [" 
 	            << localTransform->getValueString() << "]";
+	    }
+	    if (localTransform0 != 0)
+	    {
+	        std::cerr << ", localTransform = [" 
+	            << localTransform0->getValueString() << "]";
 	    }
 	    std::cerr << std::endl;
 	}
@@ -421,7 +408,7 @@ applyNodeTransform0) const
 }
 
 unsigned int FBXNode::dumpMesh(const std::string& targetPath, bool 
-recursive, Ionflux::GeoUtils::Matrix4* localTransform, unsigned int 
+recursive, Ionflux::GeoUtils::Matrix4* localTransform0, unsigned int 
 startIndex, double scale0, bool applyNodeTransform0) const
 {
 	Ionflux::ObjectBase::nullPointerCheck(impl, this, "dumpMesh", 
@@ -435,7 +422,7 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	{
 	    // extract the mesh
 	    Mesh m0;
-	    getMesh(m0, false, localTransform, applyNodeTransform0);
+	    getMesh(m0, false, localTransform0, applyNodeTransform0);
 	    m0.update();
 	    std::string nn0(getName());
 	    std::ostringstream mn0;
@@ -476,11 +463,11 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	bool useLT = false;
 	if (applyNodeTransform0)
 	{
-	    if (transformMatrix != 0)
-	        T0.multiplyLeft(*transformMatrix);
-	    if ((localTransform != 0) 
-	        && !localTransform->eq(Matrix4::UNIT))
+	    if (localTransform != 0)
 	        T0.multiplyLeft(*localTransform);
+	    if ((localTransform0 != 0) 
+	        && !localTransform0->eq(Matrix4::UNIT))
+	        T0.multiplyLeft(*localTransform0);
 	    if (!T0.eq(Matrix4::UNIT))
 	        useLT = true;
 	}
@@ -490,15 +477,15 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	    std::cerr << "[FBXNode::dumpMesh] DEBUG: "
 	        "node '" << getName() << "': local transformation: [" 
 	        << T0.getValueString() << "]";
-	    if (transformMatrix != 0)
-	    {
-	        std::cerr << ", transformMatrix = [" 
-	            << transformMatrix->getValueString() << "]";
-	    }
 	    if (localTransform != 0)
 	    {
-	        std::cerr << ", localTransform = [" 
+	        std::cerr << ", transformMatrix = [" 
 	            << localTransform->getValueString() << "]";
+	    }
+	    if (localTransform0 != 0)
+	    {
+	        std::cerr << ", localTransform = [" 
+	            << localTransform0->getValueString() << "]";
 	    }
 	    std::cerr << std::endl;
 	}
@@ -526,8 +513,62 @@ startIndex, double scale0, bool applyNodeTransform0) const
 	return numMeshes;
 }
 
+void FBXNode::updateTransformFBX(bool recursive, 
+Ionflux::GeoUtils::Matrix4* localTransform0)
+{
+	Ionflux::ObjectBase::nullPointerCheck(impl, this, "updateBoundsFBX", 
+	    "Node implementation");
+	// local transform
+	Matrix4 M0(getMatrix(impl->EvaluateLocalTransform(FBXSDK_TIME_ZERO)));
+	if (M0.eq(Matrix4::UNIT))
+	{
+	    if (localTransform != 0)
+	        setLocalTransform(0);
+	} else
+	{
+	    Matrix4* m1 = localTransform;
+	    if (m1 == 0)
+	    {
+	        m1 = Matrix4::create();
+	        setLocalTransform(m1);
+	    }
+	    m1->setElements(M0);
+	}
+	// global transform
+	Matrix4* T0 = Matrix4::create();
+	addLocalRef(T0);
+	T0->setElements(Matrix4::UNIT);
+	bool useLT = false;
+	if (localTransform != 0)
+	    T0->multiplyLeft(*localTransform);
+	if ((localTransform0 != 0) 
+	    && !localTransform0->eq(Matrix4::UNIT))
+	    T0->multiplyLeft(*localTransform0);
+	if (!T0->eq(Matrix4::UNIT))
+	    useLT = true;
+	if (useLT)
+	    setGlobalTransform(T0);
+	if (recursive)
+	{
+	    // process child nodes
+	    int numChildNodes = getNumChildNodes();
+	    for (int i = 0; i < numChildNodes; i++)
+	    {
+	        FBXNode* n0 = getChildNode(i);
+	        if (n0 != 0)
+	        {
+	            if (useLT)
+	                n0->updateTransformFBX(true, T0);
+	            else
+	                n0->updateTransformFBX(true);
+	        }
+	    }
+	}
+	removeLocalRef(T0);
+}
+
 Ionflux::GeoUtils::Range3* FBXNode::updateBoundsFBX(bool recursive, 
-Ionflux::GeoUtils::Matrix4* localTransform)
+Ionflux::GeoUtils::Matrix4* localTransform0)
 {
 	Ionflux::ObjectBase::nullPointerCheck(impl, this, "updateBoundsFBX", 
 	    "Node implementation");
@@ -545,16 +586,16 @@ Ionflux::GeoUtils::Matrix4* localTransform)
 	        FbxVector4 v0 = fbm0->GetControlPointAt(i);
 	        Vertex3 cv;
 	        cv.setCoords(v0[0], v0[1], v0[2]);
-	        if (transformMatrix != 0)
+	        if (localTransform != 0)
 	        {
 	            // apply transformation of this node
-	            cv.transform(*transformMatrix);
+	            cv.transform(*localTransform);
 	        }
-	        if ((localTransform != 0) 
-	            && !localTransform->eq(Matrix4::UNIT))
+	        if ((localTransform0 != 0) 
+	            && !localTransform0->eq(Matrix4::UNIT))
 	        {
 	            // apply local transformation
-	            cv.transform(*localTransform);
+	            cv.transform(*localTransform0);
 	        }
 	        if (i == 0)
 	            bounds->setBounds(cv.getVector());
@@ -576,11 +617,11 @@ Ionflux::GeoUtils::Matrix4* localTransform)
 	// determine local transformation for child nodes
 	Matrix4 T0(Matrix4::UNIT);
 	bool useLT = false;
-	if (transformMatrix != 0)
-	    T0.multiplyLeft(*transformMatrix);
-	if ((localTransform != 0) 
-	    && !localTransform->eq(Matrix4::UNIT))
+	if (localTransform != 0)
 	    T0.multiplyLeft(*localTransform);
+	if ((localTransform0 != 0) 
+	    && !localTransform0->eq(Matrix4::UNIT))
+	    T0.multiplyLeft(*localTransform0);
 	if (!T0.eq(Matrix4::UNIT))
 	    useLT = true;
 	// process child nodes
@@ -693,6 +734,7 @@ width, char fillChar, unsigned int offset)
 	id0 << prefix << std::setw(width) << std::setfill(fillChar) 
 	    << std::right << offset;
 	setID(id0.str());
+	setIDNum(offset);
 	offset += 1;
 	int n0 = getNumChildNodes();
 	for (int i = 0; i < n0; i++)
@@ -704,7 +746,7 @@ width, char fillChar, unsigned int offset)
 	return offset;
 }
 
-Ionflux::GeoUtils::FBXNode* FBXNode::findChildNodeByName(const std::string&
+Ionflux::GeoUtils::FBXNode* FBXNode::findNodeByName(const std::string& 
 needle, bool recursive)
 {
 	if ((getName() == needle) 
@@ -718,7 +760,27 @@ needle, bool recursive)
 	{
 	    FBXNode* n0 = getChildNode(i);
 	    if (n0 != 0)
-	        result = n0->findChildNodeByName(needle, true);
+	        result = n0->findNodeByName(needle, true);
+	    i++;
+	}
+	return result;
+}
+
+Ionflux::GeoUtils::FBXNode* FBXNode::findNodeByID(const std::string& 
+needle, bool recursive)
+{
+	if ((getID() == needle) 
+	    || !recursive)
+	    return this;
+	int numChildNodes = getNumChildNodes();
+	int i = 0;
+	FBXNode* result = 0;
+	while ((result == 0) 
+	    && (i < numChildNodes))
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	        result = n0->findNodeByID(needle, true);
 	    i++;
 	}
 	return result;
@@ -753,8 +815,12 @@ std::string FBXNode::getValueString() const
 	std::string n0(getName());
 	if (n0.size() > 0)
 	    status << "; '" << n0 << "'";
-	if (transformMatrix != 0)
-	    status << "; [" << transformMatrix->getValueString() << "]";
+	if (localTransform != 0)
+	    status << "; local_t = [" 
+	        << localTransform->getValueString() << "]";
+	if (globalTransform != 0)
+	    status << "; global_t = [" 
+	        << globalTransform->getValueString() << "]";
 	return status.str();
 }
 
@@ -771,21 +837,38 @@ FBXSDK_NAMESPACE::FbxNode* FBXNode::getImpl() const
     return impl;
 }
 
-void FBXNode::setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
-newTransformMatrix)
+void FBXNode::setLocalTransform(Ionflux::GeoUtils::Matrix4* 
+newLocalTransform)
 {
-	if (transformMatrix == newTransformMatrix)
+	if (localTransform == newLocalTransform)
 		return;
-    if (newTransformMatrix != 0)
-        addLocalRef(newTransformMatrix);
-	if (transformMatrix != 0)
-		removeLocalRef(transformMatrix);
-	transformMatrix = newTransformMatrix;
+    if (newLocalTransform != 0)
+        addLocalRef(newLocalTransform);
+	if (localTransform != 0)
+		removeLocalRef(localTransform);
+	localTransform = newLocalTransform;
 }
 
-Ionflux::GeoUtils::Matrix4* FBXNode::getTransformMatrix() const
+Ionflux::GeoUtils::Matrix4* FBXNode::getLocalTransform() const
 {
-    return transformMatrix;
+    return localTransform;
+}
+
+void FBXNode::setGlobalTransform(Ionflux::GeoUtils::Matrix4* 
+newGlobalTransform)
+{
+	if (globalTransform == newGlobalTransform)
+		return;
+    if (newGlobalTransform != 0)
+        addLocalRef(newGlobalTransform);
+	if (globalTransform != 0)
+		removeLocalRef(globalTransform);
+	globalTransform = newGlobalTransform;
+}
+
+Ionflux::GeoUtils::Matrix4* FBXNode::getGlobalTransform() const
+{
+    return globalTransform;
 }
 
 unsigned int FBXNode::getNumChildNodes() const
@@ -1046,11 +1129,18 @@ indentLevel) const
 	if (d0.str().size() > 0)
 	    haveBCData = true;
 	bool xcFirst = true;
-    if (transformMatrix != 0)
+    if (localTransform != 0)
     {
         if (!xcFirst || haveBCData)
             d0 << "\n";
-	    d0 << transformMatrix->getXML0(indentLevel, "pname=\"transform_matrix\"");
+	    d0 << localTransform->getXML0(indentLevel, "pname=\"local_t\"");
+	    xcFirst = false;
+    }
+    if (globalTransform != 0)
+    {
+        if (!xcFirst || haveBCData)
+            d0 << "\n";
+	    d0 << globalTransform->getXML0(indentLevel, "pname=\"global_t\"");
 	    xcFirst = false;
     }
 	if (!xcFirst || haveBCData)

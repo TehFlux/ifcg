@@ -87,14 +87,16 @@ class FBXNode
         virtual Ionflux::GeoUtils::FBXNode* findChildNodeByNameFBX(const 
         std::string& needle, bool recursive = true);
         virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
-        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
+        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform0 = 0,
         bool applyNodeTransform0 = true) const;
         virtual unsigned int dumpMesh(const std::string& targetPath, bool 
-        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
+        recursive = false, Ionflux::GeoUtils::Matrix4* localTransform0 = 0,
         unsigned int startIndex = 0, double scale0 = 1., bool 
         applyNodeTransform0 = true) const;
+        virtual void updateTransformFBX(bool recursive = false, 
+        Ionflux::GeoUtils::Matrix4* localTransform0 = 0);
         virtual Ionflux::GeoUtils::Range3* updateBoundsFBX(bool recursive =
-        false, Ionflux::GeoUtils::Matrix4* localTransform = 0);
+        false, Ionflux::GeoUtils::Matrix4* localTransform0 = 0);
         virtual void updateMeshDataFBX(bool recursive = false);
         virtual bool getHierarchyBounds(Ionflux::GeoUtils::Range3& target, 
         bool valid = false);
@@ -103,8 +105,10 @@ class FBXNode
         virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
         unsigned int width = 8, char fillChar = '0', unsigned int offset = 
         0);
-        virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
+        virtual Ionflux::GeoUtils::FBXNode* findNodeByName(const 
         std::string& needle, bool recursive = true);
+        virtual Ionflux::GeoUtils::FBXNode* findNodeByID(const std::string&
+        needle, bool recursive = true);
         virtual unsigned int 
         findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType t,
         Ionflux::GeoUtils::FBXNodeSet& target, bool recursive = true);
@@ -122,9 +126,12 @@ class FBXNode
 		static Ionflux::GeoUtils::FBXNode* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 		virtual unsigned int getMemSize() const;
-        virtual void setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
-        newTransformMatrix);
-        virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;        
+        virtual void setLocalTransform(Ionflux::GeoUtils::Matrix4* 
+        newLocalTransform);
+        virtual Ionflux::GeoUtils::Matrix4* getLocalTransform() const;
+        virtual void setGlobalTransform(Ionflux::GeoUtils::Matrix4* 
+        newGlobalTransform);
+        virtual Ionflux::GeoUtils::Matrix4* getGlobalTransform() const;        
         virtual unsigned int getNumChildNodes() const;
         virtual Ionflux::GeoUtils::FBXNode* getChildNode(unsigned int 
         elementIndex = 0) const;

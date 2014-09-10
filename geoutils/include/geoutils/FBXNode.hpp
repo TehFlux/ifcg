@@ -76,8 +76,10 @@ class FBXNode
 	protected:
 		/// FBX node implementation.
 		FBXSDK_NAMESPACE::FbxNode* impl;
-		/// Transform matrix.
-		Ionflux::GeoUtils::Matrix4* transformMatrix;
+		/// Local transform matrix.
+		Ionflux::GeoUtils::Matrix4* localTransform;
+		/// Global transform matrix.
+		Ionflux::GeoUtils::Matrix4* globalTransform;
 		/// Child node vector.
 		std::vector<Ionflux::GeoUtils::FBXNode*> childNodes;
 		/// Attribute type.
@@ -238,13 +240,13 @@ class FBXNode
 		 *
 		 * \param target where to store the mesh data.
 		 * \param recursive recursively merge meshes.
-		 * \param localTransform local transformation to be applied to the mesh.
+		 * \param localTransform0 local transformation to be applied to the mesh.
 		 * \param applyNodeTransform0 apply node transformations.
 		 *
 		 * \return number of meshes that were merged.
 		 */
 		virtual unsigned int getMesh(Ionflux::GeoUtils::Mesh& target, bool 
-		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, bool 
+		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform0 = 0, bool 
 		applyNodeTransform0 = true) const;
 		
 		/** Dump mesh.
@@ -254,7 +256,7 @@ class FBXNode
 		 *
 		 * \param targetPath where to store the mesh data.
 		 * \param recursive recursively dump meshes.
-		 * \param localTransform local transformation to be applied to the mesh.
+		 * \param localTransform0 local transformation to be applied to the mesh.
 		 * \param startIndex start index for extracted meshes.
 		 * \param scale0 mesh scale factor.
 		 * \param applyNodeTransform0 apply node transformations.
@@ -262,9 +264,20 @@ class FBXNode
 		 * \return number of meshes that were merged.
 		 */
 		virtual unsigned int dumpMesh(const std::string& targetPath, bool 
-		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform = 0, 
+		recursive = false, Ionflux::GeoUtils::Matrix4* localTransform0 = 0, 
 		unsigned int startIndex = 0, double scale0 = 1., bool applyNodeTransform0
 		= true) const;
+		
+		/** Update transformations (FBX).
+		 *
+		 * Update the transformation matrices of the node from the FBX 
+		 * hierarchy.
+		 *
+		 * \param recursive recursively update transform matrices.
+		 * \param localTransform0 local transformation to be applied to the node.
+		 */
+		virtual void updateTransformFBX(bool recursive = false, 
+		Ionflux::GeoUtils::Matrix4* localTransform0 = 0);
 		
 		/** Update bounds (FBX).
 		 *
@@ -273,12 +286,12 @@ class FBXNode
 		 * for all other nodes.
 		 *
 		 * \param recursive recursively update bounds.
-		 * \param localTransform local transformation to be applied to vertices.
+		 * \param localTransform0 local transformation to be applied to vertices.
 		 *
 		 * \return Bounds if the node is a mesh node, 0 otherwise.
 		 */
 		virtual Ionflux::GeoUtils::Range3* updateBoundsFBX(bool recursive = 
-		false, Ionflux::GeoUtils::Matrix4* localTransform = 0);
+		false, Ionflux::GeoUtils::Matrix4* localTransform0 = 0);
 		
 		/** Update mesh data (FBX).
 		 *
@@ -342,17 +355,29 @@ class FBXNode
 		virtual unsigned int assignNodeIDs(const std::string& prefix = "", 
 		unsigned int width = 8, char fillChar = '0', unsigned int offset = 0);
 		
-		/** Find child node by name.
+		/** Find node by name.
 		 *
-		 * Find a child node by name.
+		 * Find a node by name.
 		 *
 		 * \param needle name of node to be found.
-		 * \param recursive look for child node recursively.
+		 * \param recursive look for node recursively.
 		 *
 		 * \return Node with the specified name, or 0 if the node does not exist.
 		 */
-		virtual Ionflux::GeoUtils::FBXNode* findChildNodeByName(const 
-		std::string& needle, bool recursive = true);
+		virtual Ionflux::GeoUtils::FBXNode* findNodeByName(const std::string& 
+		needle, bool recursive = true);
+		
+		/** Find node by ID.
+		 *
+		 * Find a node by ID.
+		 *
+		 * \param needle ID of node to be found.
+		 * \param recursive look for node recursively.
+		 *
+		 * \return Node with the specified name, or 0 if the node does not exist.
+		 */
+		virtual Ionflux::GeoUtils::FBXNode* findNodeByID(const std::string& 
+		needle, bool recursive = true);
 		
 		/** Find nodes by attribute type.
 		 *
@@ -494,20 +519,35 @@ class FBXNode
 		 */
 		virtual void setImpl(FBXSDK_NAMESPACE::FbxNode* newImpl);
 		
-		/** Get transform matrix.
+		/** Get local transform matrix.
 		 *
-		 * \return Current value of transform matrix.
+		 * \return Current value of local transform matrix.
 		 */
-		virtual Ionflux::GeoUtils::Matrix4* getTransformMatrix() const;
+		virtual Ionflux::GeoUtils::Matrix4* getLocalTransform() const;
 		
-		/** Set transform matrix.
+		/** Set local transform matrix.
 		 *
-		 * Set new value of transform matrix.
+		 * Set new value of local transform matrix.
 		 *
-		 * \param newTransformMatrix New value of transform matrix.
+		 * \param newLocalTransform New value of local transform matrix.
 		 */
-		virtual void setTransformMatrix(Ionflux::GeoUtils::Matrix4* 
-		newTransformMatrix);
+		virtual void setLocalTransform(Ionflux::GeoUtils::Matrix4* 
+		newLocalTransform);
+		
+		/** Get global transform matrix.
+		 *
+		 * \return Current value of global transform matrix.
+		 */
+		virtual Ionflux::GeoUtils::Matrix4* getGlobalTransform() const;
+		
+		/** Set global transform matrix.
+		 *
+		 * Set new value of global transform matrix.
+		 *
+		 * \param newGlobalTransform New value of global transform matrix.
+		 */
+		virtual void setGlobalTransform(Ionflux::GeoUtils::Matrix4* 
+		newGlobalTransform);
 		
 		/** Get number of childNodes.
 		 *
