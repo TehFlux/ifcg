@@ -73,8 +73,10 @@ MeshClassInfo::~MeshClassInfo()
 
 // public member constants
 const std::string Mesh::DEFAULT_ID = "mesh01";
-const Ionflux::GeoUtils::MeshNFaceTypeID Mesh::NFACE_TYPE_FACE = 0;
-const Ionflux::GeoUtils::MeshNFaceTypeID Mesh::NFACE_TYPE_EDGE = 1;
+const Ionflux::GeoUtils::MeshTypeID Mesh::TYPE_UNDEFINED = 0;
+const Ionflux::GeoUtils::MeshTypeID Mesh::TYPE_MIXED = 1;
+const Ionflux::GeoUtils::MeshTypeID Mesh::TYPE_TRI = 3;
+const Ionflux::GeoUtils::MeshTypeID Mesh::TYPE_QUAD = 4;
 
 // run-time type information instance constants
 const MeshClassInfo Mesh::meshClassInfo;
@@ -316,22 +318,22 @@ Ionflux::GeoUtils::BoxBoundsItem* Mesh::getItem(const std::string& itemID)
 	return 0;
 }
 
-Ionflux::GeoUtils::NFace* Mesh::getNFace(Ionflux::GeoUtils::MeshNFaceTypeID
+Ionflux::GeoUtils::NFace* Mesh::getNFace(Ionflux::GeoUtils::NFaceTypeID 
 typeID, unsigned int index) const
 {
-	if (typeID == NFACE_TYPE_FACE)
+	if (typeID == NFace::TYPE_FACE)
 	    return getFace(index);
-	if (typeID == NFACE_TYPE_EDGE)
+	if (typeID == NFace::TYPE_EDGE)
 	    return getEdge(index);
 	return 0;
 }
 
-unsigned int Mesh::getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID typeID) 
+unsigned int Mesh::getNumNFaces(Ionflux::GeoUtils::NFaceTypeID typeID) 
 const
 {
-	if (typeID == NFACE_TYPE_FACE)
+	if (typeID == NFace::TYPE_FACE)
 	    return getNumFaces();
-	if (typeID == NFACE_TYPE_EDGE)
+	if (typeID == NFace::TYPE_EDGE)
 	    return getNumEdges();
 	return 0;
 }
@@ -786,6 +788,33 @@ void Mesh::setFaceVertexColors(const Ionflux::GeoUtils::Vector4& color)
 	    if (cf != 0)
 	        cf->setVertexColors(color);
 	}
+}
+
+Ionflux::GeoUtils::MeshTypeID Mesh::getMeshType() const
+{
+	unsigned int numFaces = getNumFaces();
+	unsigned int i = 0;
+	unsigned int n0 = 0;
+	while (i < numFaces)
+	{
+	    Face* cf = getFace(i);
+	    if (cf != 0)
+	    {
+	        unsigned int cn = cf->getNumVertices();
+	        if (n0 == 0)
+	            n0 = cn;
+	        else
+	        if (cn != n0)
+	            return TYPE_MIXED;
+	    }
+	    i++;
+	}
+	if (n0 == 3)
+	    return TYPE_TRI;
+	else
+	if (n0 == 4)
+	    return TYPE_QUAD;
+	return TYPE_UNDEFINED;
 }
 
 bool Mesh::isTriMesh() const
@@ -1314,14 +1343,27 @@ lSubDivs, double length, double radius)
 	return m0;
 }
 
-std::string Mesh::getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID 
+std::string Mesh::getMeshTypeIDString(Ionflux::GeoUtils::MeshTypeID typeID)
+{
+	if (typeID == TYPE_UNDEFINED)
+	    return "undefined";
+	if (typeID == TYPE_TRI)
+	    return "tri";
+	if (typeID == TYPE_QUAD)
+	    return "quad";
+	if (typeID == TYPE_MIXED)
+	    return "mixed";
+	return "<unknown>";
+}
+
+unsigned int Mesh::getNumVerticesPerFace(Ionflux::GeoUtils::MeshTypeID 
 typeID)
 {
-	if (typeID == NFACE_TYPE_FACE)
-	    return "face";
-	if (typeID == NFACE_TYPE_EDGE)
-	    return "edge";
-	return "<unknown>";
+	if (typeID == TYPE_TRI)
+	    return 3;
+	if (typeID == TYPE_QUAD)
+	    return 4;
+	return 0;
 }
 
 void Mesh::setVertexSource(Ionflux::GeoUtils::Vertex3Set* newVertexSource)

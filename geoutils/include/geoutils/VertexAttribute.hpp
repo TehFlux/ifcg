@@ -37,6 +37,7 @@
 #include "geoutils/glconstants.hpp"
 #include "geoutils/FaceData.hpp"
 #include "geoutils/Mesh.hpp"
+#include "geoutils/NFace.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
@@ -320,17 +321,16 @@ class VertexAttribute
 		 *
 		 * \param mesh mesh.
 		 * \param attrType vertex attribute type.
-		 * \param nFaceType Mesh N-face type.
+		 * \param nFaceType N-face type.
 		 * \param faceDataType face data type.
 		 *
 		 * \return number of vertex attribute elements that were created.
 		 */
 		virtual unsigned int setData(const Ionflux::GeoUtils::Mesh& mesh, 
 		Ionflux::GeoUtils::VertexAttributeTypeID attrType = TYPE_POSITION, 
-		Ionflux::GeoUtils::MeshNFaceTypeID nFaceType = 
-		Ionflux::GeoUtils::Mesh::NFACE_TYPE_FACE, 
-		Ionflux::GeoUtils::FaceDataTypeID faceDataType = 
-		FaceData::TYPE_VERTEX_NORMAL);
+		Ionflux::GeoUtils::NFaceTypeID nFaceType = 
+		Ionflux::GeoUtils::NFace::TYPE_FACE, Ionflux::GeoUtils::FaceDataTypeID 
+		faceDataType = FaceData::TYPE_VERTEX_NORMAL);
 		
 		/** Get data (float).
 		 *

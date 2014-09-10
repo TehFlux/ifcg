@@ -42,6 +42,14 @@
 #include "ifobject/xmlutils_private.hpp"
 #include "geoutils/xmlutils.hpp"
 #include "geoutils/xmlio/NFaceXMLFactory.hpp"
+#include "ifobject/objectutils.hpp"
+#include "ifobject/serialize.hpp"
+#include "ifobject/IFIOContext.hpp"
+
+using Ionflux::ObjectBase::pack;
+using Ionflux::ObjectBase::packObj;
+using Ionflux::ObjectBase::unpack;
+using Ionflux::ObjectBase::unpackObj;
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -64,12 +72,16 @@ NFaceClassInfo::~NFaceClassInfo()
 
 // public member constants
 const unsigned int NFace::VERTEX_INDEX_NONE = UINT_MAX;
+const Ionflux::GeoUtils::NFaceTypeID NFace::TYPE_FACE = 0;
+const Ionflux::GeoUtils::NFaceTypeID NFace::TYPE_EDGE = 1;
 
 // run-time type information instance constants
 const NFaceClassInfo NFace::nFaceClassInfo;
 const Ionflux::ObjectBase::IFClassInfo* NFace::CLASS_INFO = &NFace::nFaceClassInfo;
 
 const std::string NFace::XML_ELEMENT_NAME = "nface";
+
+const Ionflux::ObjectBase::MagicSyllable NFace::MAGIC_SYLLABLE_OBJECT = 0x4e46;
 
 NFace::NFace()
 : Ionflux::GeoUtils::BoxBoundsItem(Ionflux::GeoUtils::Vector3::ZERO, Ionflux::GeoUtils::Vector3::ZERO, ""), polygon(0), vertexSource(0), faceData(0)
@@ -907,6 +919,16 @@ std::string NFace::getValueString() const
 	return status.str();
 }
 
+std::string NFace::getNFaceTypeIDString(Ionflux::GeoUtils::NFaceTypeID 
+typeID)
+{
+	if (typeID == TYPE_FACE)
+	    return "face";
+	if (typeID == TYPE_EDGE)
+	    return "edge";
+	return "<unknown>";
+}
+
 unsigned int NFace::getNumVertices() const
 {
     return vertices.size();
@@ -1023,6 +1045,79 @@ void NFace::setFaceData(Ionflux::GeoUtils::VectorSetSet* newFaceData)
 Ionflux::GeoUtils::VectorSetSet* NFace::getFaceData() const
 {
     return faceData;
+}
+
+bool NFace::serialize(std::string& target) const
+{
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize NFace::deserialize(const std::string& source, Ionflux::ObjectBase::DataSize offset)
+{
+	return offset;
+}
+
+bool NFace::serialize(std::ostream& target, bool addMagicWord) const
+{
+    if (addMagicWord)
+        Ionflux::ObjectBase::pack(getMagicSyllableBase(), 
+            getMagicSyllable(), target);
+    Ionflux::ObjectBase::packVec<unsigned int, 
+        Ionflux::ObjectBase::UInt64>(vertices, target);
+    // TODO: Pack face data.
+    Ionflux::ObjectBase::pack(
+        static_cast<Ionflux::ObjectBase::UInt8>(0), target);
+	return true;
+}
+
+Ionflux::ObjectBase::DataSize NFace::deserialize(std::istream& source, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+    if (offset != Ionflux::ObjectBase::DATA_SIZE_INVALID)
+    {
+        source.seekg(offset);
+        if (!source.good())
+        {
+            std::ostringstream status;
+            status << "Invalid stream offset: " << offset;
+            throw GeoUtilsError(getErrorString(status.str(), "deserialize"));
+        }
+    }
+    if (checkMagicWord)
+        Ionflux::ObjectBase::unpackAndCheckMagicWord(source, 
+            getMagicSyllableBase(), getMagicSyllable(), 
+            Ionflux::ObjectBase::DATA_SIZE_INVALID, 
+            this, "deserialize");
+    Ionflux::ObjectBase::unpackVec<unsigned int, 
+        Ionflux::ObjectBase::UInt64>(source, vertices);
+    if (Ionflux::ObjectBase::unpackNonNullCheck(source))
+    {
+        // TODO: Unpack face data.
+    }
+	return source.tellg();
+}
+
+bool NFace::serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord) const
+{
+	std::ostream* os0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getOutputStream(), this, "serialize", "Output stream");
+    return serialize(*os0, addMagicWord);
+}
+
+Ionflux::ObjectBase::DataSize NFace::deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset, bool checkMagicWord)
+{
+	std::istream* is0 = Ionflux::ObjectBase::nullPointerCheck(
+	    ioCtx.getInputStream(), this, "deserialize", "Input stream");
+    return deserialize(*is0, offset, checkMagicWord);
+}
+
+Ionflux::ObjectBase::MagicSyllable NFace::getMagicSyllable() const
+{
+    return MAGIC_SYLLABLE_OBJECT;
+}
+
+Ionflux::ObjectBase::MagicSyllable NFace::getMagicSyllableBase() const
+{
+    return MAGIC_SYLLABLE_BASE;
 }
 
 Ionflux::GeoUtils::NFace& NFace::operator=(const Ionflux::GeoUtils::NFace& 

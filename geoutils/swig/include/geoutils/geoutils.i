@@ -209,7 +209,8 @@ struct AAPlanePairIntersection
     double tFar;
 };
 
-typedef int MeshNFaceTypeID;
+typedef int NFaceTypeID;
+typedef Ionflux::ObjectBase::UInt8 MeshTypeID;
 
 typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;
 
@@ -4620,6 +4621,8 @@ Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const unsigned int VERTEX_INDEX_NONE;
+		static const Ionflux::GeoUtils::NFaceTypeID TYPE_FACE;
+		static const Ionflux::GeoUtils::NFaceTypeID TYPE_EDGE;
         
         NFace();
 		NFace(const Ionflux::GeoUtils::NFace& other);
@@ -4732,6 +4735,8 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::NFace& duplicate();
         virtual std::string getValueString() const;
+        static std::string 
+        getNFaceTypeIDString(Ionflux::GeoUtils::NFaceTypeID typeID);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -4755,7 +4760,13 @@ Ionflux::GeoUtils::TransformableObject
 		int v3 = Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, 
 		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
 		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
-		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual bool serialize(std::string& target) const;
+        virtual Ionflux::ObjectBase::DataSize deserialize(const std::string& source, int offset = 0);
+        virtual bool serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord = true) const;
+        virtual Ionflux::ObjectBase::DataSize deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset = Ionflux::ObjectBase::DATA_SIZE_INVALID, bool checkMagicWord = true);
+        virtual Ionflux::ObjectBase::MagicSyllable getMagicSyllable() const;
+        virtual Ionflux::ObjectBase::MagicSyllable getMagicSyllableBase() const;        
         virtual unsigned int getNumVertices() const;
         virtual unsigned int getVertex(unsigned int elementIndex = 0) 
         const;
@@ -4966,8 +4977,10 @@ Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const std::string DEFAULT_ID;
-		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_FACE;
-		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_EDGE;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_UNDEFINED;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_MIXED;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_TRI;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_QUAD;
         
         Mesh();
 		Mesh(const Ionflux::GeoUtils::Mesh& other);
@@ -4986,10 +4999,10 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID);
         virtual Ionflux::GeoUtils::NFace* 
-        getNFace(Ionflux::GeoUtils::MeshNFaceTypeID typeID, unsigned int 
-        index) const;
-        virtual unsigned int 
-        getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID typeID) const;
+        getNFace(Ionflux::GeoUtils::NFaceTypeID typeID, unsigned int index)
+        const;
+        virtual unsigned int getNumNFaces(Ionflux::GeoUtils::NFaceTypeID 
+        typeID) const;
         virtual int checkPlaneInner(const Ionflux::GeoUtils::Plane3& plane,
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual int checkSphereInner(const Ionflux::GeoUtils::Sphere3& 
@@ -5041,6 +5054,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual void setFaceVertexNormals(bool flip0 = false);
         virtual void setFaceVertexColors(const Ionflux::GeoUtils::Vector4& 
         color);
+        virtual Ionflux::GeoUtils::MeshTypeID getMeshType() const;
         virtual bool isTriMesh() const;
         virtual unsigned int createEdges();
         virtual void merge(Ionflux::GeoUtils::Mesh& other);
@@ -5058,7 +5072,9 @@ Ionflux::GeoUtils::TransformableObject
         unsigned int lSubDivs = 10, double length = 1., double radius = 
         0.05);
         static std::string 
-        getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID typeID);
+        getMeshTypeIDString(Ionflux::GeoUtils::MeshTypeID typeID);
+        static unsigned int 
+        getNumVerticesPerFace(Ionflux::GeoUtils::MeshTypeID typeID);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

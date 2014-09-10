@@ -87,10 +87,14 @@ Ionflux::GeoUtils::TransformableObject
 	public:
 		/// Default ID.
 		static const std::string DEFAULT_ID;
-		/// Mesh N-face type: face.
-		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_FACE;
-		/// Mesh N-face type: edge.
-		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_EDGE;
+		/// Mesh type: undefined.
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_UNDEFINED;
+		/// Mesh type: mixed.
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_MIXED;
+		/// Mesh type: tri.
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_TRI;
+		/// Mesh type: quad.
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_QUAD;
 		/// Class information instance.
 		static const MeshClassInfo meshClassInfo;
 		/// Class information.
@@ -209,9 +213,8 @@ Ionflux::GeoUtils::TransformableObject
 		 * \return N-face with the specified type and index, or 0 if no matching 
 		 * N-face exists.
 		 */
-		virtual Ionflux::GeoUtils::NFace* 
-		getNFace(Ionflux::GeoUtils::MeshNFaceTypeID typeID, unsigned int index) 
-		const;
+		virtual Ionflux::GeoUtils::NFace* getNFace(Ionflux::GeoUtils::NFaceTypeID
+		typeID, unsigned int index) const;
 		
 		/** Get number of N-faces.
 		 *
@@ -221,8 +224,8 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \return Number of N-faces of the specified type.
 		 */
-		virtual unsigned int getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID 
-		typeID) const;
+		virtual unsigned int getNumNFaces(Ionflux::GeoUtils::NFaceTypeID typeID) 
+		const;
 		
 		/** Check position relative to plane.
 		 *
@@ -508,6 +511,14 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void setFaceVertexColors(const Ionflux::GeoUtils::Vector4& 
 		color);
 		
+		/** Get mesh type.
+		 *
+		 * Get the mesh type.
+		 *
+		 * \return Mesh type.
+		 */
+		virtual Ionflux::GeoUtils::MeshTypeID getMeshType() const;
+		
 		/** Triangle mesh check.
 		 *
 		 * Check whether all faces of the mesh are triangles.
@@ -612,16 +623,28 @@ Ionflux::GeoUtils::TransformableObject
 		static Ionflux::GeoUtils::Mesh* fiber(unsigned int aSubDivs = 10, 
 		unsigned int lSubDivs = 10, double length = 1., double radius = 0.05);
 		
-		/** Get N-face type ID string.
+		/** Get mesh type ID string.
 		 *
-		 * Get a string representation for an N-face type ID.
+		 * Get a string representation for a mesh type ID.
 		 *
-		 * \param typeID N-face type ID.
+		 * \param typeID Mesh type ID.
 		 *
 		 * \return String representation.
 		 */
-		static std::string 
-		getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID typeID);
+		static std::string getMeshTypeIDString(Ionflux::GeoUtils::MeshTypeID 
+		typeID);
+		
+		/** Get number of vertices per face.
+		 *
+		 * Get number of vertices per face for a mesh type ID.
+		 *
+		 * \param typeID Mesh type ID.
+		 *
+		 * \return Number of vertices per face for the specified mesh type, or 0 
+		 * if the number of vertices per face is undefined.
+		 */
+		static unsigned int getNumVerticesPerFace(Ionflux::GeoUtils::MeshTypeID 
+		typeID);
 		
 		/** Assignment operator.
 		 *

@@ -49,8 +49,10 @@ Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const std::string DEFAULT_ID;
-		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_FACE;
-		static const Ionflux::GeoUtils::MeshNFaceTypeID NFACE_TYPE_EDGE;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_UNDEFINED;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_MIXED;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_TRI;
+		static const Ionflux::GeoUtils::MeshTypeID TYPE_QUAD;
         
         Mesh();
 		Mesh(const Ionflux::GeoUtils::Mesh& other);
@@ -69,10 +71,10 @@ Ionflux::GeoUtils::TransformableObject
         virtual Ionflux::GeoUtils::BoxBoundsItem* getItem(const 
         std::string& itemID);
         virtual Ionflux::GeoUtils::NFace* 
-        getNFace(Ionflux::GeoUtils::MeshNFaceTypeID typeID, unsigned int 
-        index) const;
-        virtual unsigned int 
-        getNumNFaces(Ionflux::GeoUtils::MeshNFaceTypeID typeID) const;
+        getNFace(Ionflux::GeoUtils::NFaceTypeID typeID, unsigned int index)
+        const;
+        virtual unsigned int getNumNFaces(Ionflux::GeoUtils::NFaceTypeID 
+        typeID) const;
         virtual int checkPlaneInner(const Ionflux::GeoUtils::Plane3& plane,
         double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
         virtual int checkSphereInner(const Ionflux::GeoUtils::Sphere3& 
@@ -124,6 +126,7 @@ Ionflux::GeoUtils::TransformableObject
         virtual void setFaceVertexNormals(bool flip0 = false);
         virtual void setFaceVertexColors(const Ionflux::GeoUtils::Vector4& 
         color);
+        virtual Ionflux::GeoUtils::MeshTypeID getMeshType() const;
         virtual bool isTriMesh() const;
         virtual unsigned int createEdges();
         virtual void merge(Ionflux::GeoUtils::Mesh& other);
@@ -141,7 +144,9 @@ Ionflux::GeoUtils::TransformableObject
         unsigned int lSubDivs = 10, double length = 1., double radius = 
         0.05);
         static std::string 
-        getNFaceTypeIDString(Ionflux::GeoUtils::MeshNFaceTypeID typeID);
+        getMeshTypeIDString(Ionflux::GeoUtils::MeshTypeID typeID);
+        static unsigned int 
+        getNumVerticesPerFace(Ionflux::GeoUtils::MeshTypeID typeID);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 

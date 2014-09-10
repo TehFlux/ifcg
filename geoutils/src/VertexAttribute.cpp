@@ -509,10 +509,10 @@ newData)
 
 unsigned int VertexAttribute::setData(const Ionflux::GeoUtils::Mesh& mesh, 
 Ionflux::GeoUtils::VertexAttributeTypeID attrType, 
-Ionflux::GeoUtils::MeshNFaceTypeID nFaceType, 
-Ionflux::GeoUtils::FaceDataTypeID faceDataType)
+Ionflux::GeoUtils::NFaceTypeID nFaceType, Ionflux::GeoUtils::FaceDataTypeID
+faceDataType)
 {
-	if ((nFaceType == Ionflux::GeoUtils::Mesh::NFACE_TYPE_FACE) 
+	if ((nFaceType == Ionflux::GeoUtils::NFace::TYPE_FACE) 
 	    && !mesh.isTriMesh())
 	{
 	    throw GeoUtilsError(getErrorString(
@@ -533,7 +533,7 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	    "numNFaces = " << numNFaces 
 	    << ", attrType = " << getTypeIDString(attrType) 
 	    << ", nFaceType = " 
-	        << Ionflux::GeoUtils::Mesh::getNFaceTypeIDString(nFaceType)
+	        << Ionflux::GeoUtils::NFace::getNFaceTypeIDString(nFaceType)
 	    << ", faceDataType = " << FaceData::getTypeIDString(faceDataType) 
 	    << std::endl;
 	// ----- DEBUG ----> */
@@ -555,7 +555,7 @@ Ionflux::GeoUtils::FaceDataTypeID faceDataType)
 	            {
 	                std::ostringstream status;
 	                status << "Inconsistent vertex count (type = " 
-	                    << Ionflux::GeoUtils::Mesh::getNFaceTypeIDString(
+	                    << Ionflux::GeoUtils::NFace::getNFaceTypeIDString(
 	                        nFaceType) << ", N-face = " << i << ", nv0 = " 
 	                    << nv0 << ", nv1 = " << nv1 << ")";
 	                throw GeoUtilsError(getErrorString(

@@ -434,17 +434,9 @@ Ionflux::ObjectBase::DataSize Vertex3Set::deserialize(const std::string& source,
 
 bool Vertex3Set::serialize(std::ostream& target, bool addMagicWord) const
 {
-    if (addMagicWord)
-        Ionflux::ObjectBase::pack(getMagicSyllableBase(), 
-            getMagicSyllable(), target);
-    Ionflux::ObjectBase::UInt64 numVerts = getNumVertices();
-    pack(numVerts, target);
-    for (Ionflux::ObjectBase::UInt64 i = 0; i < numVerts; i++)
-    {
-        Vertex3* cv = Ionflux::ObjectBase::nullPointerCheck(
-            getVertex(i), this, "serialize", "Vertex");
-        cv->serialize(target, false);
-    }
+    Ionflux::ObjectBase::IFObject::serialize(target, addMagicWord);
+    Ionflux::ObjectBase::packObjVec0(vertices, target, 
+        Ionflux::ObjectBase::DATA_SIZE_INVALID, false);
 	return true;
 }
 
@@ -460,19 +452,13 @@ Ionflux::ObjectBase::DataSize Vertex3Set::deserialize(std::istream& source, Ionf
             throw GeoUtilsError(getErrorString(status.str(), "deserialize"));
         }
     }
-    if (checkMagicWord)
-        Ionflux::ObjectBase::unpackAndCheckMagicWord(source, 
-            getMagicSyllableBase(), getMagicSyllable(), 
-            Ionflux::ObjectBase::DATA_SIZE_INVALID, 
-            this, "deserialize");
-    Ionflux::ObjectBase::UInt64 numVerts = 0;
-    unpack(source, numVerts);
-    for (Ionflux::ObjectBase::UInt64 i = 0; i < numVerts; i++)
-    {
-        Vertex3* cv = addVertex();
-        cv->deserialize(source, 
-            Ionflux::ObjectBase::DATA_SIZE_INVALID, false);
-    }
+    Ionflux::ObjectBase::IFObject::deserialize(source, 
+        Ionflux::ObjectBase::DATA_SIZE_INVALID, checkMagicWord);
+    Vertex3Vector v0;
+    Ionflux::ObjectBase::unpackObjVec0(source, v0, 
+        Ionflux::ObjectBase::DATA_SIZE_INVALID, false);
+    clearVertices();
+    addVertices(v0);
 	return source.tellg();
 }
 

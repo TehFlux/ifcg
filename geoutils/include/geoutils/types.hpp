@@ -30,6 +30,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include "ifobject/types.hpp"
 
 namespace Ionflux
 {
@@ -321,8 +322,11 @@ struct AAPlanePairIntersection
     double tFar;
 };
 
-/// Mesh N-face type ID.
-typedef int MeshNFaceTypeID;
+/// N-face type ID.
+typedef int NFaceTypeID;
+
+/// Mesh type ID.
+typedef Ionflux::ObjectBase::UInt8 MeshTypeID;
 
 /// Set of edges.
 typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;

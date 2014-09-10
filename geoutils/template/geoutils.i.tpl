@@ -209,7 +209,8 @@ struct AAPlanePairIntersection
     double tFar;
 };
 
-typedef int MeshNFaceTypeID;
+typedef int NFaceTypeID;
+typedef Ionflux::ObjectBase::UInt8 MeshTypeID;
 
 typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;
 

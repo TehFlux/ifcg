@@ -52,6 +52,8 @@ Ionflux::GeoUtils::TransformableObject
 {
     public:
 		static const unsigned int VERTEX_INDEX_NONE;
+		static const Ionflux::GeoUtils::NFaceTypeID TYPE_FACE;
+		static const Ionflux::GeoUtils::NFaceTypeID TYPE_EDGE;
         
         NFace();
 		NFace(const Ionflux::GeoUtils::NFace& other);
@@ -164,6 +166,8 @@ Ionflux::GeoUtils::TransformableObject
         Ionflux::GeoUtils::Matrix3& matrix);
         virtual Ionflux::GeoUtils::NFace& duplicate();
         virtual std::string getValueString() const;
+        static std::string 
+        getNFaceTypeIDString(Ionflux::GeoUtils::NFaceTypeID typeID);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
@@ -187,7 +191,13 @@ Ionflux::GeoUtils::TransformableObject
 		int v3 = Ionflux::GeoUtils::NFace::VERTEX_INDEX_NONE, 
 		Ionflux::GeoUtils::Vertex3Set* initVertexSource = 0, 
 		Ionflux::GeoUtils::FaceData* initUV = 0, Ionflux::GeoUtils::FaceData* 
-		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);        
+		initVertexColors = 0, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        virtual bool serialize(std::string& target) const;
+        virtual Ionflux::ObjectBase::DataSize deserialize(const std::string& source, int offset = 0);
+        virtual bool serialize(Ionflux::ObjectBase::IFIOContext& ioCtx, bool addMagicWord = true) const;
+        virtual Ionflux::ObjectBase::DataSize deserialize(Ionflux::ObjectBase::IFIOContext& ioCtx, Ionflux::ObjectBase::DataSize offset = Ionflux::ObjectBase::DATA_SIZE_INVALID, bool checkMagicWord = true);
+        virtual Ionflux::ObjectBase::MagicSyllable getMagicSyllable() const;
+        virtual Ionflux::ObjectBase::MagicSyllable getMagicSyllableBase() const;        
         virtual unsigned int getNumVertices() const;
         virtual unsigned int getVertex(unsigned int elementIndex = 0) 
         const;
