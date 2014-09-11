@@ -176,7 +176,7 @@ void Mesh::copyVertices()
 	setVertexSource(vertexSource->copy());
 }
 
-void Mesh::update()
+void Mesh::update(bool updateFaces, bool updateEdges)
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
 	    "update", "Vertex source");
@@ -193,7 +193,8 @@ void Mesh::update()
 	           to the vertex source of this mesh. */
 	        f->setVertexSource(vertexSource);
 	    }
-	    f->update();
+	    if (updateFaces)
+	        f->update();
 	}
 	// update edges.
 	for (NFaceVector::iterator i = edges.begin(); 
@@ -206,7 +207,8 @@ void Mesh::update()
 	           to the vertex source of this mesh. */
 	        e->setVertexSource(vertexSource);
 	    }
-	    e->update();
+	    if (updateEdges)
+	        e->update();
 	}
 	updateRadiusAndCenter();
 }

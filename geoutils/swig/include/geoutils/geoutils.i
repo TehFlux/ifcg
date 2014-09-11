@@ -4991,7 +4991,8 @@ Ionflux::GeoUtils::TransformableObject
         virtual ~Mesh();
         virtual Ionflux::GeoUtils::Range3 getBounds();
         virtual void copyVertices();
-        virtual void update();
+        virtual void update(bool updateFaces = true, bool updateEdges = 
+        true);
         virtual void clear();
         virtual void clearData();
         virtual void setFaceIDs();

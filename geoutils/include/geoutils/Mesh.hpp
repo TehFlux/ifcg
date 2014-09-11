@@ -160,8 +160,11 @@ Ionflux::GeoUtils::TransformableObject
 		/** Update.
 		 *
 		 * Update all state according to the faces of the mesh.
+		 *
+		 * \param updateFaces update faces.
+		 * \param updateEdges update edges.
 		 */
-		virtual void update();
+		virtual void update(bool updateFaces = true, bool updateEdges = true);
 		
 		/** Clear.
 		 *
