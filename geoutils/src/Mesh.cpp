@@ -113,7 +113,7 @@ Ionflux::GeoUtils::Vector3::ZERO, ""), vertexSource(0)
 	    addVertices(*initVerts);
 	if (initFaces != 0)
 	    addFaces(*initFaces);
-	update();
+	update(false, false);
 }
 
 Mesh::Mesh(Ionflux::GeoUtils::Vertex3Set* initVertexSource, const 
@@ -129,7 +129,7 @@ Ionflux::GeoUtils::Vector3::ZERO, ""), vertexSource(0)
 	    setVertexSource(Vertex3Set::create());
 	if (initFaces != 0)
 	    addFaces(*initFaces);
-	update();
+	update(false, false);
 }
 
 Mesh::~Mesh()
@@ -143,6 +143,11 @@ void Mesh::recalculateBounds()
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
 	    "recalculateBounds", "Vertex source");
+	// <---- DEBUG ----- //
+	std::cerr << "[Mesh::recalculateBounds] DEBUG: "
+	    "numVertices = " << getNumVertices() << ", useTransform = " 
+	    << useTransform() << ", useVI = " << useVI() << std::endl;
+	// ----- DEBUG ----> */
 	TransformableObject::recalculateBounds();
 	if (!useTransform() && !useVI())
 	{
@@ -150,6 +155,10 @@ void Mesh::recalculateBounds()
 	    bounds = *boundsCache;
 	    return;
 	}
+	// <---- DEBUG ----- //
+	std::cerr << "[Mesh::recalculateBounds] DEBUG: "
+	    "Calculating bounds for transformed mesh..." << std::endl;
+	// ----- DEBUG ----> */
 	// Adjust for transformation.
 	Mesh* m0 = copy();
 	addLocalRef(m0);
@@ -183,9 +192,22 @@ void Mesh::update(bool updateFaces, bool updateEdges)
 	// Determine the bounds.
 	recalculateBounds();
 	// update faces.
+	/* <---- DEBUG ----- //
+	std::cerr << "[Mesh::update] DEBUG: updating faces (numFaces = " 
+	    << getNumFaces() << ", updateFaces = " << updateFaces 
+	    << ", updateEdges = " << updateEdges << ")." << std::endl;
+	unsigned int k = 0;
+	// ----- DEBUG ----> */
 	for (FaceVector::iterator i = faces.begin(); 
 	    i != faces.end(); i++)
 	{
+	    /* <---- DEBUG ----- //
+	    if ((k % 10000) == 0)
+	    {
+	        std::cerr << "[Mesh::update] DEBUG: updating face #" << k 
+	            << "." << std::endl;
+	    }
+	    // ----- DEBUG ----> */
 	    Face* f = *i;
 	    if (f->getVertexSource() == 0)
 	    {
@@ -195,8 +217,15 @@ void Mesh::update(bool updateFaces, bool updateEdges)
 	    }
 	    if (updateFaces)
 	        f->update();
+	    /* <---- DEBUG ----- //
+	    k++;
+	    // ----- DEBUG ----> */
 	}
 	// update edges.
+	/* <---- DEBUG ----- //
+	std::cerr << "[Mesh::update] DEBUG: updating edges (numEdges = " 
+	    << getNumEdges() << ")." << std::endl;
+	// ----- DEBUG ----> */
 	for (NFaceVector::iterator i = edges.begin(); 
 	    i != edges.end(); i++)
 	{
@@ -1763,7 +1792,7 @@ other)
     addEdges(ev0);
     BoxBoundsItem::clear();
     TransformableObject::clear();
-    update();
+    update(false, false);
 	return *this;
 }
 

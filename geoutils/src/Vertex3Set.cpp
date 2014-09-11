@@ -109,6 +109,11 @@ void Vertex3Set::recalculateBounds()
 	Matrix4* tm0 = 0;
 	Matrix4* vm0 = 0;
 	Matrix4* im0 = 0;
+	/* <---- DEBUG ----- //
+	std::cerr << "[Vertex3Set::recalculateBounds] DEBUG: "
+	    "numVertices = " << getNumVertices() << ", useTransform = " 
+	    << useTransform() << ", useVI = " << useVI() << std::endl;
+	// ----- DEBUG ----> */
 	if (useTransform())
 	    tm0 = getTransformMatrix();
 	if (useVI())
