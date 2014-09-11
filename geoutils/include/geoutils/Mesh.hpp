@@ -544,6 +544,17 @@ Ionflux::GeoUtils::TransformableObject
 		 */
 		virtual void merge(Ionflux::GeoUtils::Mesh& other);
 		
+		/** Write OBJ data.
+		 *
+		 * Write OBJ data for the mesh.
+		 *
+		 * \param ioCtx I/O context.
+		 * \param precision decimal precision.
+		 * \param smoothShading smooth shading.
+		 */
+		virtual void writeOBJ(Ionflux::ObjectBase::IFIOContext& ioCtx, unsigned 
+		int precision = 6, bool smoothShading = false);
+		
 		/** Get string representation of value.
 		 *
 		 * Get a string representation of the value of the object.

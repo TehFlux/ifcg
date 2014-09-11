@@ -36,6 +36,7 @@
 #include "ifmapping/utils.hpp"
 #include "ifobject/utils.hpp"
 #include "ifobject/objectutils.hpp"
+#include "ifobject/IFIOContext.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Vertex.hpp"
 #include "geoutils/Edge.hpp"
@@ -935,6 +936,55 @@ void Mesh::merge(Ionflux::GeoUtils::Mesh& other)
 	}
 	if (ownSource)
 	    removeLocalRef(source);
+}
+
+void Mesh::writeOBJ(Ionflux::ObjectBase::IFIOContext& ioCtx, unsigned int 
+precision, bool smoothShading)
+{
+	std::string id0 = getID();
+	std::ostringstream d0;
+	if (id0.size() > 0)
+	{
+	    d0 << "o " << id0 << "\n";
+	    ioCtx.writeToOutputStream(d0.str());
+	}
+	// vertices
+	unsigned int numVerts = getNumVertices();
+	d0.str("");
+	d0 << std::fixed << std::setprecision(precision);
+	for (unsigned int i = 0; i < numVerts; i++)
+	{
+	    Vertex3* cv = Ionflux::ObjectBase::nullPointerCheck(getVertex(i), 
+	        this, "writeOBJ", "Vertex");
+	    d0.str("");
+	    d0 << "v " << cv->getX() << " " << cv->getY() << " " 
+	        << cv->getZ() << "\n";
+	    ioCtx.writeToOutputStream(d0.str());
+	}
+	// faces
+	d0.str("");
+	d0 << "s ";
+	if (smoothShading)
+	    d0 << "on";
+	else
+	    d0 << "off";
+	d0 << "\n";
+	ioCtx.writeToOutputStream(d0.str());
+	unsigned int numFaces = getNumFaces();
+	for (unsigned int i = 0; i < numFaces; i++)
+	{
+	    Face* cf = Ionflux::ObjectBase::nullPointerCheck(getFace(i), 
+	        this, "writeOBJ", "Face");
+	    d0.str("");
+	    d0 << "f";
+	    unsigned int nfv = cf->getNumVertices();
+	    for (unsigned int k = 0; k < nfv; k++)
+	    {
+	        d0 << " " << (cf->getVertex(k) + 1);
+	    }
+	    d0 << "\n";
+	    ioCtx.writeToOutputStream(d0.str());
+	}
 }
 
 std::string Mesh::getValueString() const

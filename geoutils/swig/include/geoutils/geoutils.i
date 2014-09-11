@@ -5058,6 +5058,8 @@ Ionflux::GeoUtils::TransformableObject
         virtual bool isTriMesh() const;
         virtual unsigned int createEdges();
         virtual void merge(Ionflux::GeoUtils::Mesh& other);
+        virtual void writeOBJ(Ionflux::ObjectBase::IFIOContext& ioCtx, 
+        unsigned int precision = 6, bool smoothShading = false);
         virtual std::string getValueString() const;
         static Ionflux::GeoUtils::Mesh* plane();
         static Ionflux::GeoUtils::Mesh* cube();
