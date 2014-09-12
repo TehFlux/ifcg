@@ -143,7 +143,7 @@ void Mesh::recalculateBounds()
 {
 	Ionflux::ObjectBase::nullPointerCheck(vertexSource, this, 
 	    "recalculateBounds", "Vertex source");
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	std::cerr << "[Mesh::recalculateBounds] DEBUG: "
 	    "numVertices = " << getNumVertices() << ", useTransform = " 
 	    << useTransform() << ", useVI = " << useVI() << std::endl;
@@ -155,7 +155,7 @@ void Mesh::recalculateBounds()
 	    bounds = *boundsCache;
 	    return;
 	}
-	// <---- DEBUG ----- //
+	/* <---- DEBUG ----- //
 	std::cerr << "[Mesh::recalculateBounds] DEBUG: "
 	    "Calculating bounds for transformed mesh..." << std::endl;
 	// ----- DEBUG ----> */
