@@ -901,6 +901,12 @@ bool operator!=(const Ionflux::GeoUtils::TransformNodes::InputNodeSpec& s0,
 
 }
 
+bool AAPlanePairIntersectionCompare::operator()(
+    const AAPlanePairIntersection& i0, const AAPlanePairIntersection& i1)
+{
+    return (i0.tNear < i1.tNear);
+}
+
 }
 
 }

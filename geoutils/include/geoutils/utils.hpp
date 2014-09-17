@@ -804,6 +804,14 @@ bool operator!=(const Ionflux::GeoUtils::TransformNodes::InputNodeSpec& s0,
 
 }
 
+/// Comparison object for axis-aligned plane pair intersection.
+struct AAPlanePairIntersectionCompare
+{
+    /// Comparison operator.
+    bool operator()(const AAPlanePairIntersection& i0, 
+        const AAPlanePairIntersection& i1);
+};
+
 }
 
 }

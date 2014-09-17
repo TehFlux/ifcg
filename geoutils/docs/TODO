@@ -15,13 +15,15 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ BGeoUtils
-  > faster mesh loading
-    (see blender/2.71/scripts/addons/io_scene_obj/import_obj.py)
++ generate Doxygen docs
 
 --------------------------------------------------------------------------------
 Critical stuff
 --------------------------------------------------------------------------------
+
++ BGeoUtils
+  > faster mesh loading
+    (see blender/2.71/scripts/addons/io_scene_obj/import_obj.py)
 
 + Mesh
   > OBJ import/export

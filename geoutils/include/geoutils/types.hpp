@@ -322,6 +322,10 @@ struct AAPlanePairIntersection
     double tFar;
 };
 
+/// Vector of axis-aligned plane pair intersections.
+typedef std::vector<Ionflux::GeoUtils::AAPlanePairIntersection> 
+    AAPlanePairIntersectionVector;
+
 /// N-face type ID.
 typedef int NFaceTypeID;
 

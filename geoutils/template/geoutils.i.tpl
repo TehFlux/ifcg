@@ -209,6 +209,9 @@ struct AAPlanePairIntersection
     double tFar;
 };
 
+typedef std::vector<Ionflux::GeoUtils::AAPlanePairIntersection> 
+    AAPlanePairIntersectionVector;
+
 typedef int NFaceTypeID;
 typedef Ionflux::ObjectBase::UInt8 MeshTypeID;
 
@@ -440,6 +443,12 @@ Ionflux::GeoUtils::TransformNodes::InputNodeSpec createInputNodeSpec(
     unsigned int outputID);
 
 }
+
+struct AAPlanePairIntersectionCompare
+{
+    bool operator()(const AAPlanePairIntersection& i0, 
+        const AAPlanePairIntersection& i1);
+};
 
 // xmlutils.hpp
 
@@ -714,4 +723,5 @@ $CameraXMLFactory
 %template(NFaceVector) std::vector<Ionflux::GeoUtils::NFace*>;
 %template(FaceVector) std::vector<Ionflux::GeoUtils::Face*>;
 %template(EdgeObjSet) std::set<Ionflux::GeoUtils::Edge>;
+%template(AAPlanePairIntersectionVector) std::vector<Ionflux::GeoUtils::AAPlanePairIntersection>;
 
