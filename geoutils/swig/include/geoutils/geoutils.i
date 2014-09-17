@@ -450,6 +450,9 @@ struct AAPlanePairIntersectionCompare
         const AAPlanePairIntersection& i1);
 };
 
+std::string getAAPlanePairIntersectionValueString(
+    const AAPlanePairIntersection& i0);
+
 // xmlutils.hpp
 
 void getSVGPolygons(const std::string& fileName, 

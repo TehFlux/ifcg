@@ -812,6 +812,10 @@ struct AAPlanePairIntersectionCompare
         const AAPlanePairIntersection& i1);
 };
 
+/// Get string representation for axis-aligned plane pair intersection.
+std::string getAAPlanePairIntersectionValueString(
+    const AAPlanePairIntersection& i0);
+
 }
 
 }

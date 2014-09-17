@@ -907,6 +907,19 @@ bool AAPlanePairIntersectionCompare::operator()(
     return (i0.tNear < i1.tNear);
 }
 
+std::string getAAPlanePairIntersectionValueString(
+    const AAPlanePairIntersection& i0)
+{
+    std::ostringstream status;
+    if (!i0.valid)
+    {
+        status << "<invalid>";
+        return status.str();
+    }
+    status << "tNear = " << i0.tNear << ", tFar = " << i0.tFar;
+    return status.str();
+}
+
 }
 
 }
