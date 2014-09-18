@@ -63,6 +63,9 @@ class Line3
         virtual bool operator!=(const Ionflux::GeoUtils::Line3& other) 
         const;
         virtual Ionflux::GeoUtils::Vector3 eval(double value);
+        virtual bool eval(Ionflux::GeoUtils::AAPlanePairIntersection& 
+        intersection, Ionflux::GeoUtils::Vector3& v0, 
+        Ionflux::GeoUtils::Vector3& v1);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value);
         virtual std::string getValueString() const;

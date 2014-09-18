@@ -173,6 +173,20 @@ class Line3
 		 */
 		virtual Ionflux::GeoUtils::Vector3 eval(double value);
 		
+		/** Evaluate the line.
+		 *
+		 * Evaluate the line with the specified intersection data.
+		 *
+		 * \param intersection intersection data.
+		 * \param v0 intersection coordinate vector (0).
+		 * \param v1 intersection coordinate vector (1).
+		 *
+		 * \return \c true if the intersection data is valid, \c false otherwise.
+		 */
+		virtual bool eval(Ionflux::GeoUtils::AAPlanePairIntersection& 
+		intersection, Ionflux::GeoUtils::Vector3& v0, Ionflux::GeoUtils::Vector3&
+		v1);
+		
 		/** Evaluate the mapping.
 		 *
 		 * Evaluate the mapping with the specified parameter.

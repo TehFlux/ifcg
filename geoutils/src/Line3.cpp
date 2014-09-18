@@ -201,6 +201,16 @@ Ionflux::GeoUtils::Vector3 Line3::eval(double value)
 	return p + value * u;
 }
 
+bool Line3::eval(Ionflux::GeoUtils::AAPlanePairIntersection& intersection, 
+Ionflux::GeoUtils::Vector3& v0, Ionflux::GeoUtils::Vector3& v1)
+{
+	if (!intersection.valid)
+	    return false;
+	v0 = eval(intersection.tNear);
+	v1 = eval(intersection.tFar);
+	return true;
+}
+
 Ionflux::Mapping::Point Line3::call(Ionflux::Mapping::MappingValue value)
 {
 	Vector3 result(eval(value));
