@@ -86,9 +86,9 @@ class Duplicate
 		static const unsigned int INPUT_SOURCE;
 		/// Output ID: target.
 		static const unsigned int OUTPUT_TARGET;
-		/// .
+		/// Default number of duplicates.
 		static const unsigned int DEFAULT_NUM_DUPLICATES;
-		/// .
+		/// Clamp range.
 		static const Ionflux::Mapping::Range CLAMP_RANGE;
 		/// Class information instance.
 		static const DuplicateClassInfo duplicateClassInfo;

@@ -179,7 +179,7 @@ class Face
 		 */
 		virtual Ionflux::GeoUtils::Vector3 getTangent();
 		
-		/** .
+		/** Get binormal vector.
 		 *
 		 * Get the binormal vector for the face.
 		 *
@@ -187,7 +187,7 @@ class Face
 		 */
 		virtual Ionflux::GeoUtils::Vector3 getBinormal();
 		
-		/** .
+		/** Get normal vector.
 		 *
 		 * Get the normal vector for the face.
 		 *
@@ -195,7 +195,7 @@ class Face
 		 */
 		virtual Ionflux::GeoUtils::Vector3 getNormal();
 		
-		/** .
+		/** Get tangent base matrix.
 		 *
 		 * Calculates the base matrix of the tangent space for the face.
 		 *
@@ -442,13 +442,13 @@ class Face
 		 *
 		 * \param fileName file name
 		 */
-		virtual void loadFromXMLFile(const std::string& FileName);
+		virtual void loadFromXMLFile(const std::string& fileName);
         
         /** Get XML object factory
 		 *
 		 * Get the XML object factory singleton for the class.
-		 *
-		 * \param fileName file name
+		 * 
+		 * return XML object factory
 		 */
 		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
 		getXMLObjectFactory();

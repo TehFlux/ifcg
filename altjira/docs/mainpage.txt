@@ -1,0 +1,11 @@
+/** \mainpage
+ * \section altjira
+ *
+ * Altjira (Ionflux' Image Processing Library) is an image processing 
+ * library written in C++. It is designed to be used with Python and uses 
+ * the well known GDK-PixBuf library for the low-level image handling.
+ * 
+ * Please see the 'docs' directory for additional documentation.
+ * 
+ * Copyright © 2009-2014 Jörn P. Meier &lt;mail@ionflux.org&gt;
+ */

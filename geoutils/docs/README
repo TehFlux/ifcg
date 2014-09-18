@@ -9,9 +9,8 @@ README
 What is it?
 --------------------------------------------------------------------------
 
-GeoUtils (Ionflux' Geometry Library) is a library that provides various 
-classes and functions to support geometric computations and for managing 
-geometric objects.
+GeoUtils (Ionflux' Geometry Library) is an utility library for computer 
+graphics applications.
 
 Implementations (in various states of completeness) are provided for 
 C++, Python and JavaScript.

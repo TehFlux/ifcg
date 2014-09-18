@@ -1,0 +1,11 @@
+/** \mainpage
+ * \section ifmapping
+ *
+ * IFMapping (Ionflux Mapping Library) is a library written in C++ that 
+ * provides types that can be used to construct functions, usually from |R 
+ * to |R^n. It is designed to be used with Python.
+ * 
+ * Please see the 'docs' directory for additional documentation.
+ * 
+ * Copyright © 2010-2014 Jörn P. Meier &lt;mail@ionflux.org&gt;
+ */

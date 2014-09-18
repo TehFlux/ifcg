@@ -462,13 +462,13 @@ class Polygon3Set
 		 *
 		 * \param fileName file name
 		 */
-		virtual void loadFromXMLFile(const std::string& FileName);
+		virtual void loadFromXMLFile(const std::string& fileName);
         
         /** Get XML object factory
 		 *
 		 * Get the XML object factory singleton for the class.
-		 *
-		 * \param fileName file name
+		 * 
+		 * return XML object factory
 		 */
 		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
 		getXMLObjectFactory();

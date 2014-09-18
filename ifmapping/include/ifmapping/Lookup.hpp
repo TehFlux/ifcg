@@ -65,15 +65,15 @@ class Lookup
 	private:
 		
 	protected:
-		/// .
+		/// Vector of entries.
 		std::vector<Ionflux::Mapping::MappingValue> entries;
 		/// Source mapping.
 		Ionflux::Mapping::Mapping* source;
 		
 	public:
-		/// .
+		/// Default number of entries.
 		static const unsigned int DEFAULT_NUM_ENTRIES;
-		/// .
+		/// Clamp range.
 		static const Ionflux::Mapping::Range CLAMP_RANGE;
 		/// Class information instance.
 		static const LookupClassInfo lookupClassInfo;
@@ -248,9 +248,9 @@ class Lookup
 		virtual int findEntry(Ionflux::Mapping::MappingValue needle, unsigned int
 		occurence = 1) const;
         
-		/** Get .
+		/** Get vector of entries.
 		 *
-		 * \return .
+		 * \return vector of entries.
 		 */
 		virtual std::vector<Ionflux::Mapping::MappingValue>& getEntries();
 		

@@ -352,7 +352,7 @@ std::string defaultStr(const std::string& source,
 
 }
 
-/** \file utility.hpp
+/** \file utils.hpp
  * \brief Utility functions (header).
  */
 #endif

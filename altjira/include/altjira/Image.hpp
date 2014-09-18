@@ -554,7 +554,7 @@ class Image
 		Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX = 0, 
 		unsigned int offsetY = 0);
 		
-		/** Transform values to colors..
+		/** Transform values to colors.
 		 *
 		 * Transform the values in the image to colors set by a color band.
 		 *
@@ -562,7 +562,7 @@ class Image
 		 */
 		virtual void valuesToColor(Ionflux::Altjira::ColorBand& colors);
 		
-		/** Color to alpha..
+		/** Color to alpha.
 		 *
 		 * Replace a reference color by transparency.
 		 *
@@ -570,7 +570,7 @@ class Image
 		 */
 		virtual void colorToAlpha(const Ionflux::Altjira::Color& color);
 		
-		/** Luminize..
+		/** Luminize.
 		 *
 		 * Apply the luminance of the source image to the image, keeping hue 
 		 * and saturation information of the original image.

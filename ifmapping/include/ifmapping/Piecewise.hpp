@@ -155,7 +155,7 @@ class Piecewise
 		virtual Ionflux::Mapping::MappingValue 
 		callWithParam(Ionflux::Mapping::MappingValue value) const;
 		
-		/** Create sawtooth function..
+		/** Create sawtooth function.
 		 *
 		 * Create a sawtooth function over the interval [0...1]. This is a 
 		 * piecewise function consisting of a linear segment which is repeated
@@ -173,7 +173,7 @@ class Piecewise
 		Ionflux::Mapping::MappingValue ampMin = 0., 
 		Ionflux::Mapping::MappingValue ampMax = 1.);
 		
-		/** Create step function..
+		/** Create step function.
 		 *
 		 * Create a step function over the interval [0...1]. This is a 
 		 * piecewise function consisting of constant segments of equal length 

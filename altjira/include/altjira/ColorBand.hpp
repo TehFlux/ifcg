@@ -74,7 +74,7 @@ class ColorBand
 		Ionflux::Mapping::Piecewise* blue;
 		/// Mapping for the alpha component.
 		Ionflux::Mapping::Piecewise* alpha;
-		/// Color stops..
+		/// Color stops.
 		std::vector<Ionflux::Altjira::ColorStop> colorStops;
 		
 		/** Initialize mappings.
@@ -137,7 +137,7 @@ class ColorBand
 		 */
 		virtual void update();
 		
-		/** Evaluate the color band..
+		/** Evaluate the color band.
 		 *
 		 * Evaluate the color band at the specified value and store the result
 		 * in the target color.
@@ -147,7 +147,7 @@ class ColorBand
 		 */
 		virtual void eval(double value, Ionflux::Altjira::FloatColor& target);
 		
-		/** Evaluate the color band..
+		/** Evaluate the color band.
 		 *
 		 * Evaluate the color band at the specified value and store the result
 		 * in the target color.
@@ -157,7 +157,7 @@ class ColorBand
 		 */
 		virtual void eval(double value, Ionflux::Altjira::ByteColor& target);
 		
-		/** Evaluate the color band..
+		/** Evaluate the color band.
 		 *
 		 * Evaluate the color band at the specified value and store the result
 		 * in the target color.
@@ -338,9 +338,9 @@ class ColorBand
 		virtual int findColorStop(Ionflux::Altjira::ColorStop needle, unsigned 
 		int occurence = 1) const;
         
-		/** Get color stops..
+		/** Get color stops.
 		 *
-		 * \return color stops..
+		 * \return color stops.
 		 */
 		virtual std::vector<Ionflux::Altjira::ColorStop>& getColorStops();
 		

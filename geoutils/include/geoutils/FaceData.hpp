@@ -67,17 +67,17 @@ class FaceData
 	private:
 		
 	protected:
-		/// .
+		/// data type.
 		Ionflux::GeoUtils::FaceDataTypeID dataType;
 		
 	public:
-		/// .
+		/// Face data type: undefined.
 		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_UNDEFINED;
-		/// .
+		/// Face data type: texture coordinate.
 		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_TEX_COORD;
-		/// .
+		/// Face data type: vertex color.
 		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_VERTEX_COLOR;
-		/// .
+		/// Face data type: vertex normal.
 		static const Ionflux::GeoUtils::FaceDataTypeID TYPE_VERTEX_NORMAL;
 		/// Class information instance.
 		static const FaceDataClassInfo faceDataClassInfo;
@@ -261,28 +261,28 @@ class FaceData
 		 *
 		 * \param fileName file name
 		 */
-		virtual void loadFromXMLFile(const std::string& FileName);
+		virtual void loadFromXMLFile(const std::string& fileName);
         
         /** Get XML object factory
 		 *
 		 * Get the XML object factory singleton for the class.
-		 *
-		 * \param fileName file name
+		 * 
+		 * return XML object factory
 		 */
 		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
 		getXMLObjectFactory();
 		
-		/** Get .
+		/** Get data type.
 		 *
-		 * \return Current value of .
+		 * \return Current value of data type.
 		 */
 		virtual Ionflux::GeoUtils::FaceDataTypeID getDataType() const;
 		
-		/** Set .
+		/** Set data type.
 		 *
-		 * Set new value of .
+		 * Set new value of data type.
 		 *
-		 * \param newDataType New value of .
+		 * \param newDataType New value of data type.
 		 */
 		virtual void setDataType(Ionflux::GeoUtils::FaceDataTypeID newDataType);
 };

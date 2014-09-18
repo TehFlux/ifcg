@@ -73,15 +73,15 @@ class Lookup3
 	private:
 		
 	protected:
-		/// .
+		/// Vector of entries.
 		std::vector<Ionflux::GeoUtils::Vector3*> entries;
 		/// Source mapping.
 		Ionflux::GeoUtils::Mapping::Vector3Mapping* source;
 		
 	public:
-		/// .
+		/// Default number of entries.
 		static const unsigned int DEFAULT_NUM_ENTRIES;
-		/// .
+		/// Clamp range.
 		static const Ionflux::Mapping::Range CLAMP_RANGE;
 		/// Class information instance.
 		static const Lookup3ClassInfo lookup3ClassInfo;
@@ -242,9 +242,9 @@ class Lookup3
 		virtual int findEntry(Ionflux::GeoUtils::Vector3* needle, unsigned int 
 		occurence = 1) const;
         
-		/** Get .
+		/** Get vector of entries.
 		 *
-		 * \return .
+		 * \return vector of entries.
 		 */
 		virtual std::vector<Ionflux::GeoUtils::Vector3*>& getEntries();
 		

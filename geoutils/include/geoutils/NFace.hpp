@@ -312,7 +312,7 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void getFaceDataByType(Ionflux::GeoUtils::FaceDataTypeID 
 		dataType, Ionflux::GeoUtils::VectorSetSet& target);
 		
-		/** Get face data by type and index..
+		/** Get face data by type and index.
 		 *
 		 * Get face data by type and index. This gets the face data record 
 		 * that represents the \c index-th occurence of face data of the 
@@ -396,7 +396,7 @@ Ionflux::GeoUtils::TransformableObject
 		virtual void getFaceDataByVertex(Ionflux::ObjectBase::UIntVector& 
 		faceVertexIndices, Ionflux::GeoUtils::VectorSetSet& target);
 		
-		/** .
+		/** Get polygon.
 		 *
 		 * Get a polygon corresponding to the (transformed) face. The polygon 
 		 * uses copies of the face vertices since polygons may be transformed 
@@ -451,7 +451,7 @@ Ionflux::GeoUtils::TransformableObject
 		virtual int checkSphereInner(const Ionflux::GeoUtils::Sphere3& sphere, 
 		double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Check box intersection..
+		/** Check box intersection.
 		 *
 		 * Check whether the specified box intersects the object. Unlike 
 		 * checkBox(), this function considers the inner structure of the 
@@ -963,13 +963,13 @@ Ionflux::GeoUtils::TransformableObject
 		 *
 		 * \param fileName file name
 		 */
-		virtual void loadFromXMLFile(const std::string& FileName);
+		virtual void loadFromXMLFile(const std::string& fileName);
         
         /** Get XML object factory
 		 *
 		 * Get the XML object factory singleton for the class.
-		 *
-		 * \param fileName file name
+		 * 
+		 * return XML object factory
 		 */
 		static Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 
 		getXMLObjectFactory();

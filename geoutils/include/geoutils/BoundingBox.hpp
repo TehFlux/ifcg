@@ -127,7 +127,7 @@ class BoundingBox
 		 */
 		virtual void clear();
 		
-		/** Add an item to the bounding box..
+		/** Add an item to the bounding box.
 		 *
 		 * The dimensions of the bounding box will be updated to reflect the 
 		 * new bounds. If maxRadius is specified, the item will not be added 
@@ -142,7 +142,7 @@ class BoundingBox
 		virtual bool addItem(Ionflux::GeoUtils::BoxBoundsItem* item, double 
 		maxRadius = 0.);
 		
-		/** Remove an item from the bounding box..
+		/** Remove an item from the bounding box.
 		 *
 		 * Remove an item from the bounding box.
 		 *
@@ -155,7 +155,7 @@ class BoundingBox
 		virtual bool removeItem(Ionflux::GeoUtils::BoxBoundsItem* item, bool 
 		update0 = true);
 		
-		/** Add items to the bounding box..
+		/** Add items to the bounding box.
 		 *
 		 * Add items from the specified set to the bounding box. If maxItems 
 		 * is specified, items will not be added if the number of items in the
@@ -173,7 +173,7 @@ class BoundingBox
 		Ionflux::GeoUtils::BoxBoundsItemSet& newItems, unsigned int maxItems = 0,
 		double maxRadius = 0.);
 		
-		/** Add items to the bounding box..
+		/** Add items to the bounding box.
 		 *
 		 * Add items from the specified set to the bounding box. This method 
 		 * removes the items which are added to the bounding box from the 
@@ -191,7 +191,7 @@ class BoundingBox
 		virtual unsigned int takeItems(Ionflux::GeoUtils::BoxBoundsItemSet& 
 		newItems, unsigned int maxItems = 0., double maxRadius = 0.);
 		
-		/** Test bounding box split..
+		/** Test bounding box split.
 		 *
 		 * Split the bounding box along the specified axis, but do not change 
 		 * the actual structure of the bounding box contents. The split 
@@ -210,7 +210,7 @@ class BoundingBox
 		Ionflux::GeoUtils::Split& split, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Update best split..
+		/** Update best split.
 		 *
 		 * Compare the quality parameters of a split to the quality parameters
 		 * of the best split as specified. If the split is better than the 
@@ -222,7 +222,7 @@ class BoundingBox
 		virtual void updateBestSplit(const Ionflux::GeoUtils::SplitParams& s, 
 		Ionflux::GeoUtils::SplitParams& best);
 		
-		/** Determine best split..
+		/** Determine best split.
 		 *
 		 * Tests all of the specified splits and returns the one where the 
 		 * difference between item counts in both sets is minimal. Returns 0 
@@ -243,7 +243,7 @@ class BoundingBox
 		0, double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE, bool 
 		preferLongestAxis = false, double longestAxisTolerance = 0.1);
 		
-		/** Split bounding box..
+		/** Split bounding box.
 		 *
 		 * Split the bounding box along the specified axis. If the set of 
 		 * splits contains multiple splits, the best split will be determined 
@@ -278,7 +278,7 @@ class BoundingBox
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE, bool preferLongestAxis = false, 
 		double longestAxisTolerance = 0.1);
 		
-		/** Get items above plane..
+		/** Get items above plane.
 		 *
 		 * Get the items which are above the specified plane (in direction of 
 		 * the normal of the plane).
@@ -292,7 +292,7 @@ class BoundingBox
 		getItemsAbovePlane(Ionflux::GeoUtils::Plane3& plane, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Get items which intersect line..
+		/** Get items which intersect line.
 		 *
 		 * Get the leaf items from the bounding box hierarchy which may be 
 		 * intersected by the specified line. Returns a set of leaf items. For
@@ -308,7 +308,7 @@ class BoundingBox
 		getItemsOnLine(Ionflux::GeoUtils::Line3& line, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Get items which intersect ray..
+		/** Get items which intersect ray.
 		 *
 		 * Get the leaf items from the bounding box hierarchy which may be 
 		 * intersected by the specified ray. Returns a set of leaf items. For 
@@ -326,7 +326,7 @@ class BoundingBox
 		getItemsOnRay(Ionflux::GeoUtils::Line3& ray, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Get items in sphere..
+		/** Get items in sphere.
 		 *
 		 * Get the items which are inside the specified sphere.
 		 *
@@ -339,7 +339,7 @@ class BoundingBox
 		getItemsInSphere(Ionflux::GeoUtils::Sphere3& sphere, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Get items in box..
+		/** Get items in box.
 		 *
 		 * Get the items which are inside the specified bounding box (which 
 		 * can be simply a BoxBoundsItem). If a leaf item intersects the box, 
@@ -354,7 +354,7 @@ class BoundingBox
 		getItemsInBox(Ionflux::GeoUtils::BoxBoundsItem& box, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Get containing leaf..
+		/** Get containing leaf.
 		 *
 		 * Return the leaf item that contains the specified item, or 0 if none
 		 * of the leaf items contains that item.
@@ -368,7 +368,7 @@ class BoundingBox
 		getContainingLeaf(Ionflux::GeoUtils::BoxBoundsItem* item, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Initialize hierarchy from source..
+		/** Initialize hierarchy from source.
 		 *
 		 * Initialize the bounding box hierarchy from the specified source. 
 		 * This walks through the hierarchy recursively and replaces 
@@ -380,7 +380,7 @@ class BoundingBox
 		 */
 		virtual void initFromSource(Ionflux::GeoUtils::ItemSource& source);
 		
-		/** Get bounding boxes..
+		/** Get bounding boxes.
 		 *
 		 * Get the bounding boxes from the hierarchy of which the bounding box
 		 * is the root.
@@ -389,7 +389,7 @@ class BoundingBox
 		 */
 		virtual void getBoundingBoxes(Ionflux::GeoUtils::BoundingBoxSet& target);
 		
-		/** Get leaves..
+		/** Get leaves.
 		 *
 		 * Get the leaf items from the hierarchy of which the bounding box is 
 		 * the root.
@@ -398,7 +398,7 @@ class BoundingBox
 		 */
 		virtual void getLeaves(Ionflux::GeoUtils::BoxBoundsItemSet& target);
 		
-		/** Get item path..
+		/** Get item path.
 		 *
 		 * Get the path for a leaf item in the hierarchy. Adds a list of  
 		 * bounding boxes to the target vector, from bottom to top, which 
@@ -415,7 +415,7 @@ class BoundingBox
 		virtual bool getItemPath(Ionflux::GeoUtils::BoxBoundsItem* item, 
 		Ionflux::GeoUtils::BoundingBoxVector& target);
 		
-		/** Compare bounding box hierarchies..
+		/** Compare bounding box hierarchies.
 		 *
 		 * Check whether the bounding box hierarchies are equal, i.e. they 
 		 * contain equal bounding boxes and the same leaf items in each node.
@@ -429,7 +429,7 @@ class BoundingBox
 		virtual bool compareHierarchy(Ionflux::GeoUtils::BoundingBox& other, 
 		double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Validate..
+		/** Validate.
 		 *
 		 * Recursively check that all items are contained within the bounds. 
 		 * Raises an excetion if this is not the case.

@@ -275,7 +275,7 @@ class BoxBoundsItem
 		Ionflux::GeoUtils::BoxBoundsItem& other, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
 		
-		/** Compare bounding boxes..
+		/** Compare bounding boxes.
 		 *
 		 * Returns RANGE_EQUAL if the ranges are equal within the tolerance, 
 		 * i.e. they have the same rMin and rMax values in each dimension. 
@@ -295,7 +295,7 @@ class BoxBoundsItem
 		Ionflux::GeoUtils::BoxBoundsItem& other, double t = 
 		Ionflux::GeoUtils::DEFAULT_TOLERANCE) const;
 		
-		/** Check box intersection..
+		/** Check box intersection.
 		 *
 		 * Check whether the specified box intersects the bounding box. 
 		 * Returns 1 if the bounding box is inside the other box, 0 if the 
@@ -310,7 +310,7 @@ class BoxBoundsItem
 		virtual int checkBox(const Ionflux::GeoUtils::BoxBoundsItem& other, 
 		double t = Ionflux::GeoUtils::DEFAULT_TOLERANCE);
 		
-		/** Check box intersection..
+		/** Check box intersection.
 		 *
 		 * Check whether the specified box intersects the object. Unlike 
 		 * checkBox(), this function considers the inner structure of the 

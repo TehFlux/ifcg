@@ -109,7 +109,7 @@ typedef Rectangle<unsigned int> ImageRect;
 
 class Image;
 
-// Vector of images.
+/// Vector of images.
 typedef std::vector<Ionflux::Altjira::Image*> ImageVector;
 
 /** GIMP GIH brush rank specification.
@@ -123,12 +123,12 @@ struct GIHRankSpec
     unsigned int size;
 };
 
-// Vector of GIMP GIH rank specifications.
+/// Vector of GIMP GIH rank specifications.
 typedef std::vector<Ionflux::Altjira::GIHRankSpec> GIHRankSpecVector;
 
 class Color;
 
-// Vector of colors.
+/// Vector of colors.
 typedef std::vector<Ionflux::Altjira::Color*> ColorVector;
 
 }
