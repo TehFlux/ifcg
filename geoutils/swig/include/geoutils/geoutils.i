@@ -7536,6 +7536,10 @@ class VectorXMLFactory
         Ionflux::GeoUtils::Vector& target, const std::string& elementName =
         "") const;
         virtual Ionflux::GeoUtils::Vector* createObject() const;
+        virtual Ionflux::GeoUtils::Vector* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vector* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::VectorXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7586,6 +7590,10 @@ class Vector2XMLFactory
         Ionflux::GeoUtils::Vector2& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Vector2* createObject() const;
+        virtual Ionflux::GeoUtils::Vector2* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vector2* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Vector2XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7636,6 +7644,10 @@ class Vector3XMLFactory
         Ionflux::GeoUtils::Vector3& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Vector3* createObject() const;
+        virtual Ionflux::GeoUtils::Vector3* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vector3* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Vector3XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7686,6 +7698,10 @@ class Vector4XMLFactory
         Ionflux::GeoUtils::Vector4& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Vector4* createObject() const;
+        virtual Ionflux::GeoUtils::Vector4* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vector4* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Vector4XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7736,6 +7752,10 @@ class VectorNXMLFactory
         Ionflux::GeoUtils::VectorN& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::VectorN* createObject() const;
+        virtual Ionflux::GeoUtils::VectorN* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::VectorN* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::VectorNXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::VectorNXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7786,6 +7806,10 @@ class VectorSetXMLFactory
         Ionflux::GeoUtils::VectorSet& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::GeoUtils::VectorSet* createObject() const;
+        virtual Ionflux::GeoUtils::VectorSet* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::VectorSet* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::VectorSetXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7836,6 +7860,10 @@ class VectorSetSetXMLFactory
         Ionflux::GeoUtils::VectorSetSet& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::GeoUtils::VectorSetSet* createObject() const;
+        virtual Ionflux::GeoUtils::VectorSetSet* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::VectorSetSet* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory* copy() 
 		const;
 		static Ionflux::GeoUtils::XMLUtils::VectorSetSetXMLFactory* 
@@ -7887,6 +7915,10 @@ class Object3XMLFactory
         Ionflux::GeoUtils::Object3& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Object3* createObject() const;
+        virtual Ionflux::GeoUtils::Object3* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Object3* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Object3XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Object3XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7937,6 +7969,10 @@ class MatrixXMLFactory
         Ionflux::GeoUtils::Matrix& target, const std::string& elementName =
         "") const;
         virtual Ionflux::GeoUtils::Matrix* createObject() const;
+        virtual Ionflux::GeoUtils::Matrix* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Matrix* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::MatrixXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -7987,6 +8023,10 @@ class Matrix2XMLFactory
         Ionflux::GeoUtils::Matrix2& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Matrix2* createObject() const;
+        virtual Ionflux::GeoUtils::Matrix2* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Matrix2* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Matrix2XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8037,6 +8077,10 @@ class Matrix3XMLFactory
         Ionflux::GeoUtils::Matrix3& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Matrix3* createObject() const;
+        virtual Ionflux::GeoUtils::Matrix3* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Matrix3* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Matrix3XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8087,6 +8131,10 @@ class Matrix4XMLFactory
         Ionflux::GeoUtils::Matrix4& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Matrix4* createObject() const;
+        virtual Ionflux::GeoUtils::Matrix4* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Matrix4* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Matrix4XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8137,6 +8185,10 @@ class MatrixMNXMLFactory
         Ionflux::GeoUtils::MatrixMN& target, const std::string& elementName
         = "") const;
         virtual Ionflux::GeoUtils::MatrixMN* createObject() const;
+        virtual Ionflux::GeoUtils::MatrixMN* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::MatrixMN* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::MatrixMNXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::MatrixMNXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8187,6 +8239,10 @@ class FaceDataXMLFactory
         Ionflux::GeoUtils::FaceData& target, const std::string& elementName
         = "") const;
         virtual Ionflux::GeoUtils::FaceData* createObject() const;
+        virtual Ionflux::GeoUtils::FaceData* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::FaceData* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::FaceDataXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8237,6 +8293,10 @@ class DeferredTransformXMLFactory
         Ionflux::GeoUtils::DeferredTransform& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::GeoUtils::DeferredTransform* createObject() const;
+        virtual Ionflux::GeoUtils::DeferredTransform* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::DeferredTransform* loadFromXMLFile(const
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* copy() 
 		const;
 		static Ionflux::GeoUtils::XMLUtils::DeferredTransformXMLFactory* 
@@ -8289,6 +8349,11 @@ class TransformableObjectXMLFactory
         elementName = "") const;
         virtual Ionflux::GeoUtils::TransformableObject* createObject() 
         const;
+        virtual Ionflux::GeoUtils::TransformableObject* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::TransformableObject* 
+        loadFromXMLFile(const std::string& fileName, const std::string& 
+        elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory* 
 		copy() const;
 		static Ionflux::GeoUtils::XMLUtils::TransformableObjectXMLFactory* 
@@ -8340,6 +8405,10 @@ class Vertex2XMLFactory
         Ionflux::GeoUtils::Vertex2& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Vertex2* createObject() const;
+        virtual Ionflux::GeoUtils::Vertex2* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vertex2* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Vertex2XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8390,6 +8459,10 @@ class Vertex3XMLFactory
         Ionflux::GeoUtils::Vertex3& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::Vertex3* createObject() const;
+        virtual Ionflux::GeoUtils::Vertex3* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vertex3* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Vertex3XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8440,6 +8513,10 @@ class Vertex3SetXMLFactory
         Ionflux::GeoUtils::Vertex3Set& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::GeoUtils::Vertex3Set* createObject() const;
+        virtual Ionflux::GeoUtils::Vertex3Set* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Vertex3Set* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Vertex3SetXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8490,6 +8567,10 @@ class FaceXMLFactory
         Ionflux::GeoUtils::Face& target, const std::string& elementName = 
         "") const;
         virtual Ionflux::GeoUtils::Face* createObject() const;
+        virtual Ionflux::GeoUtils::Face* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Face* loadFromXMLFile(const std::string&
+        fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::FaceXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::FaceXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8540,6 +8621,10 @@ class EdgeXMLFactory
         Ionflux::GeoUtils::Edge& target, const std::string& elementName = 
         "") const;
         virtual Ionflux::GeoUtils::Edge* createObject() const;
+        virtual Ionflux::GeoUtils::Edge* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Edge* loadFromXMLFile(const std::string&
+        fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::EdgeXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8590,6 +8675,10 @@ class MeshXMLFactory
         Ionflux::GeoUtils::Mesh& target, const std::string& elementName = 
         "") const;
         virtual Ionflux::GeoUtils::Mesh* createObject() const;
+        virtual Ionflux::GeoUtils::Mesh* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Mesh* loadFromXMLFile(const std::string&
+        fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::MeshXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::MeshXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8641,6 +8730,11 @@ class TransformableGroupXMLFactory
         elementName = "") const;
         virtual Ionflux::GeoUtils::TransformableGroup* createObject() 
         const;
+        virtual Ionflux::GeoUtils::TransformableGroup* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::TransformableGroup* 
+        loadFromXMLFile(const std::string& fileName, const std::string& 
+        elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* copy()
 		const;
 		static Ionflux::GeoUtils::XMLUtils::TransformableGroupXMLFactory* 
@@ -8692,6 +8786,10 @@ class Polygon3XMLFactory
         Ionflux::GeoUtils::Polygon3& target, const std::string& elementName
         = "") const;
         virtual Ionflux::GeoUtils::Polygon3* createObject() const;
+        virtual Ionflux::GeoUtils::Polygon3* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Polygon3* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Polygon3XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8742,6 +8840,10 @@ class Polygon3SetXMLFactory
         Ionflux::GeoUtils::Polygon3Set& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::GeoUtils::Polygon3Set* createObject() const;
+        virtual Ionflux::GeoUtils::Polygon3Set* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Polygon3Set* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Polygon3SetXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8792,6 +8894,10 @@ class Shape3XMLFactory
         Ionflux::GeoUtils::Shape3& target, const std::string& elementName =
         "") const;
         virtual Ionflux::GeoUtils::Shape3* createObject() const;
+        virtual Ionflux::GeoUtils::Shape3* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Shape3* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::Shape3XMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -8842,6 +8948,10 @@ class CameraXMLFactory
         Ionflux::GeoUtils::Camera& target, const std::string& elementName =
         "") const;
         virtual Ionflux::GeoUtils::Camera* createObject() const;
+        virtual Ionflux::GeoUtils::Camera* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::Camera* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::CameraXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::CameraXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

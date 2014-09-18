@@ -370,8 +370,10 @@ class VectorN
 		 * Initialize the object from an XML file.
 		 *
 		 * \param fileName file name
+		 * \param elementName element name
 		 */
-		virtual void loadFromXMLFile(const std::string& fileName);
+		virtual void loadFromXMLFile(const std::string& fileName, const 
+		std::string& elementName = "");
         
         /** Get XML object factory
 		 *

@@ -402,6 +402,10 @@ class FBXNodeXMLFactory
         Ionflux::GeoUtils::FBXNode& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::GeoUtils::FBXNode* createObject() const;
+        virtual Ionflux::GeoUtils::FBXNode* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::GeoUtils::FBXNode* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::GeoUtils::XMLUtils::FBXNodeXMLFactory* copy() const;
 		static Ionflux::GeoUtils::XMLUtils::FBXNodeXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

@@ -1158,10 +1158,14 @@ indentLevel) const
 	target = d0.str();
 }
 
-void FBXNode::loadFromXMLFile(const std::string& fileName)
+void FBXNode::loadFromXMLFile(const std::string& fileName, const 
+std::string& elementName)
 {
+	std::string en0(elementName);
+	if (en0.size() == 0)
+	    en0 = getXMLElementName();
 	Ionflux::ObjectBase::XMLUtils::loadFromXMLFile(
-	    fileName, *this, getXMLElementName());
+	    fileName, *this, en0);
 }
 
 Ionflux::ObjectBase::XMLUtils::IFXMLObjectFactory* 

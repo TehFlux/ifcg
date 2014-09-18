@@ -2888,6 +2888,10 @@ class PointXMLFactory
         Ionflux::Mapping::Point& target, const std::string& elementName = 
         "") const;
         virtual Ionflux::Mapping::Point* createObject() const;
+        virtual Ionflux::Mapping::Point* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::Point* loadFromXMLFile(const std::string&
+        fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::PointXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::PointXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -2938,6 +2942,10 @@ class PointSetXMLFactory
         Ionflux::Mapping::PointSet& target, const std::string& elementName 
         = "") const;
         virtual Ionflux::Mapping::PointSet* createObject() const;
+        virtual Ionflux::Mapping::PointSet* createObject(const std::string&
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::PointSet* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::PointSetXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::PointSetXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -2988,6 +2996,10 @@ class PointMappingXMLFactory
         Ionflux::Mapping::PointMapping& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::Mapping::PointMapping* createObject() const;
+        virtual Ionflux::Mapping::PointMapping* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::PointMapping* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::PointMappingXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -3038,6 +3050,10 @@ class BezierCurveXMLFactory
         Ionflux::Mapping::BezierCurve& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::Mapping::BezierCurve* createObject() const;
+        virtual Ionflux::Mapping::BezierCurve* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::BezierCurve* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::BezierCurveXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -3088,6 +3104,10 @@ class BezierSplineXMLFactory
         Ionflux::Mapping::BezierSpline& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::Mapping::BezierSpline* createObject() const;
+        virtual Ionflux::Mapping::BezierSpline* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::BezierSpline* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::BezierSplineXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -3138,6 +3158,10 @@ class PointSampleXMLFactory
         Ionflux::Mapping::PointSample& target, const std::string& 
         elementName = "") const;
         virtual Ionflux::Mapping::PointSample* createObject() const;
+        virtual Ionflux::Mapping::PointSample* createObject(const 
+        std::string& data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::PointSample* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::PointSampleXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::PointSampleXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
@@ -3188,6 +3212,10 @@ class SegmentXMLFactory
         Ionflux::Mapping::Segment& target, const std::string& elementName =
         "") const;
         virtual Ionflux::Mapping::Segment* createObject() const;
+        virtual Ionflux::Mapping::Segment* createObject(const std::string& 
+        data, const std::string& elementName = "") const;
+        virtual Ionflux::Mapping::Segment* loadFromXMLFile(const 
+        std::string& fileName, const std::string& elementName = "") const;
 		virtual Ionflux::Mapping::XMLUtils::SegmentXMLFactory* copy() const;
 		static Ionflux::Mapping::XMLUtils::SegmentXMLFactory* 
 		upcast(Ionflux::ObjectBase::IFObject* other);
