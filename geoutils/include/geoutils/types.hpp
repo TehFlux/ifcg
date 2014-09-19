@@ -311,6 +311,9 @@ typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
 /// Face data type ID.
 typedef int FaceDataTypeID;
 
+/// Box face mask.
+typedef Ionflux::ObjectBase::UInt8 PlaneMask;
+
 /// Axis-aligned plane pair intersection.
 struct AAPlanePairIntersection
 {
@@ -320,6 +323,10 @@ struct AAPlanePairIntersection
     double tNear;
     /// Intersection parameter for the far plane.
     double tFar;
+    /// Plane mask for the near plane.
+    Ionflux::GeoUtils::PlaneMask nearPlane;
+    /// Plane mask for the far plane.
+    Ionflux::GeoUtils::PlaneMask farPlane;
 };
 
 /// Vector of axis-aligned plane pair intersections.

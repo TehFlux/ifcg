@@ -31,6 +31,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cfloat>
+#include "ifmapping/utils.hpp"
 #include "geoutils/GeoUtilsError.hpp"
 #include "geoutils/Line3.hpp"
 #include "geoutils/Vector3.hpp"
@@ -359,8 +360,7 @@ result, double t) const
 	Range xr = getAxisRange(axis);
 	double xv = line.getU().getElement(axis);
 	double xp = line.getP().getElement(axis);
-	result.tNear = -DBL_MAX;
-	result.tFar = DBL_MAX;
+	result = createAAPlanePairIntersection();
 	if (eq(xv, 0., t))
 	{
 	    // Line is parallel to the planes.
@@ -389,6 +389,44 @@ result, double t) const
 	    result.tNear = t2;
 	}
 	result.valid = true;
+	// set the intersection planes
+	double s0 = Ionflux::Mapping::sign(xv);
+	if (axis == AXIS_X)
+	{
+	    if (s0 > 0.)
+	    {
+	        result.nearPlane = PLANE_X0;
+	        result.farPlane = PLANE_X1;
+	    } else
+	    {
+	        result.nearPlane = PLANE_X1;
+	        result.farPlane = PLANE_X0;
+	    }
+	} else
+	if (axis == AXIS_Y)
+	{
+	    if (s0 > 0.)
+	    {
+	        result.nearPlane = PLANE_Y0;
+	        result.farPlane = PLANE_Y1;
+	    } else
+	    {
+	        result.nearPlane = PLANE_Y1;
+	        result.farPlane = PLANE_Y0;
+	    }
+	} else
+	if (axis == AXIS_Z)
+	{
+	    if (s0 > 0.)
+	    {
+	        result.nearPlane = PLANE_Z0;
+	        result.farPlane = PLANE_Z1;
+	    } else
+	    {
+	        result.nearPlane = PLANE_Z1;
+	        result.farPlane = PLANE_Z0;
+	    }
+	}
 	return result.valid;
 }
 
@@ -399,8 +437,6 @@ Ionflux::GeoUtils::AAPlanePairIntersection& result, double t) const
 	   see http://www.siggraph.org/education/materials/HyperGraph/
 	     raytrace/rtinter3.htm */
 	AAPlanePairIntersection r0;
-	result.tNear = -DBL_MAX;
-	result.tFar = DBL_MAX;
 	for (int i = 0; i < 3; i++)
 	{
 	    if (!intersect(line, i, r0, t))
@@ -412,6 +448,10 @@ Ionflux::GeoUtils::AAPlanePairIntersection& result, double t) const
 	        result.tNear = r0.tNear;
 	    if (r0.tFar < result.tFar)
 	        result.tFar = r0.tFar;
+	    if (gtOrEq(r0.tNear, result.tNear, t))
+	        result.nearPlane |= r0.nearPlane;
+	    if (ltOrEq(r0.tFar, result.tFar, t))
+	        result.farPlane |= r0.farPlane;
 	}
 	if (lt(result.tNear, result.tFar, t))
 	    result.valid = true;

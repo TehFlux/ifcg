@@ -201,12 +201,15 @@ typedef std::vector<Ionflux::GeoUtils::Vector*> VectorVector;
 typedef std::vector<Ionflux::GeoUtils::VectorSet*> VectorSetVector;
 
 typedef int FaceDataTypeID;
+typedef Ionflux::ObjectBase::UInt8 PlaneMask;
 
 struct AAPlanePairIntersection
 {
     bool valid;
     double tNear;
     double tFar;
+    Ionflux::GeoUtils::PlaneMask nearPlane;
+    Ionflux::GeoUtils::PlaneMask farPlane;
 };
 
 typedef std::vector<Ionflux::GeoUtils::AAPlanePairIntersection> 
@@ -221,6 +224,7 @@ typedef std::set<Ionflux::GeoUtils::Edge> EdgeObjSet;
 
 const double DEFAULT_TOLERANCE = 1.0e-6;
 
+const Ionflux::GeoUtils::AxisID AXIS_UNDEFINED = -1;
 const Ionflux::GeoUtils::AxisID AXIS_X = 0;
 const Ionflux::GeoUtils::AxisID AXIS_Y = 1;
 const Ionflux::GeoUtils::AxisID AXIS_Z = 2;
@@ -339,6 +343,16 @@ const Ionflux::GeoUtils::TransformNodes::InputNodeSpec
 
 }
 
+const Ionflux::ObjectBase::MagicSyllable MAGIC_SYLLABLE_BASE = 0x4347;
+
+const Ionflux::GeoUtils::PlaneMask PLANE_UNDEFINED = 0;
+const Ionflux::GeoUtils::PlaneMask PLANE_X0 = 1;
+const Ionflux::GeoUtils::PlaneMask PLANE_X1 = 2;
+const Ionflux::GeoUtils::PlaneMask PLANE_Y0 = 4;
+const Ionflux::GeoUtils::PlaneMask PLANE_Y1 = 8;
+const Ionflux::GeoUtils::PlaneMask PLANE_Z0 = 16;
+const Ionflux::GeoUtils::PlaneMask PLANE_Z1 = 32;
+
 // utils.hpp
 
 class Vertex3;
@@ -450,6 +464,15 @@ struct AAPlanePairIntersectionCompare
         const AAPlanePairIntersection& i1);
 };
 
+Ionflux::GeoUtils::AAPlanePairIntersection createAAPlanePairIntersection(
+    bool valid = false, double tNear = -DBL_MAX, 
+    double tFar = DBL_MAX, 
+    Ionflux::GeoUtils::PlaneMask nearPlane = PLANE_UNDEFINED, 
+    Ionflux::GeoUtils::PlaneMask farPlane = PLANE_UNDEFINED);
+bool operator==(const Ionflux::GeoUtils::AAPlanePairIntersection& i0, 
+    const Ionflux::GeoUtils::AAPlanePairIntersection& i1);
+std::string getPlaneMaskValueString(
+    Ionflux::GeoUtils::PlaneMask mask);
 std::string getAAPlanePairIntersectionValueString(
     const AAPlanePairIntersection& i0);
 

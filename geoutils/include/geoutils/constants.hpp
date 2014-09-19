@@ -41,6 +41,8 @@ namespace GeoUtils
 /// Default tolerance for comparisons.
 const double DEFAULT_TOLERANCE = 1.0e-6;
 
+/// Axis ID: undefined.
+const Ionflux::GeoUtils::AxisID AXIS_UNDEFINED = -1;
 /// Axis ID: X.
 const Ionflux::GeoUtils::AxisID AXIS_X = 0;
 /// Axis ID: Y.
@@ -196,6 +198,21 @@ const Ionflux::GeoUtils::TransformNodes::InputNodeSpec
 
 /// Magic syllable (base, CG).
 const Ionflux::ObjectBase::MagicSyllable MAGIC_SYLLABLE_BASE = 0x4347;
+
+/// Plane mask: undefined.
+const Ionflux::GeoUtils::PlaneMask PLANE_UNDEFINED = 0;
+/// Plane mask: X (0).
+const Ionflux::GeoUtils::PlaneMask PLANE_X0 = 1;
+/// Plane mask: X (1).
+const Ionflux::GeoUtils::PlaneMask PLANE_X1 = 2;
+/// Plane mask: Y (0).
+const Ionflux::GeoUtils::PlaneMask PLANE_Y0 = 4;
+/// Plane mask: Y (1).
+const Ionflux::GeoUtils::PlaneMask PLANE_Y1 = 8;
+/// Plane mask: Z (0).
+const Ionflux::GeoUtils::PlaneMask PLANE_Z0 = 16;
+/// Plane mask: Z (1).
+const Ionflux::GeoUtils::PlaneMask PLANE_Z1 = 32;
 
 }
 

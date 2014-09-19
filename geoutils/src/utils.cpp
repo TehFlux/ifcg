@@ -907,6 +907,85 @@ bool AAPlanePairIntersectionCompare::operator()(
     return (i0.tNear < i1.tNear);
 }
 
+Ionflux::GeoUtils::AAPlanePairIntersection createAAPlanePairIntersection(
+    bool valid, double tNear, double tFar, 
+    Ionflux::GeoUtils::PlaneMask nearPlane, 
+    Ionflux::GeoUtils::PlaneMask farPlane)
+{
+    AAPlanePairIntersection result;
+    result.valid = valid;
+    result.tNear = tNear;
+    result.tFar = tFar;
+    result.nearPlane = nearPlane;
+    result.farPlane = farPlane;
+    return result;
+}
+
+bool operator==(const Ionflux::GeoUtils::AAPlanePairIntersection& i0, 
+    const Ionflux::GeoUtils::AAPlanePairIntersection& i1)
+{
+    if (i0.valid != i1.valid)
+        return false;
+    if (i0.tNear != i1.tNear)
+        return false;
+    if (i0.tFar != i1.tFar)
+        return false;
+    if (i0.nearPlane != i1.nearPlane)
+        return false;
+    if (i0.farPlane != i1.farPlane)
+        return false;
+    return true;
+}
+
+std::string getPlaneMaskValueString(Ionflux::GeoUtils::PlaneMask mask)
+{
+    if (mask == PLANE_UNDEFINED)
+        return "<undefined>";
+    std::ostringstream status;
+    bool first = true;
+    if ((mask & PLANE_X0) != 0)
+    {
+        status << "x0";
+        first = false;
+    }
+    if ((mask & PLANE_X1) != 0)
+    {
+        if (!first)
+            status << ",";
+        status << "x1";
+        first = false;
+    }
+    if ((mask & PLANE_Y0) != 0)
+    {
+        if (!first)
+            status << ",";
+        status << "y0";
+        first = false;
+    }
+    if ((mask & PLANE_Y1) != 0)
+    {
+        if (!first)
+            status << ",";
+        status << "y1";
+        first = false;
+    }
+    if ((mask & PLANE_Z0) != 0)
+    {
+        if (!first)
+            status << ",";
+        status << "z0";
+        first = false;
+    }
+    if ((mask & PLANE_Z1) != 0)
+    {
+        if (!first)
+            status << ",";
+        status << "z1";
+        first = false;
+    }
+    return status.str();
+}
+
 std::string getAAPlanePairIntersectionValueString(
     const AAPlanePairIntersection& i0)
 {
@@ -916,7 +995,9 @@ std::string getAAPlanePairIntersectionValueString(
         status << "<invalid>";
         return status.str();
     }
-    status << "tNear = " << i0.tNear << ", tFar = " << i0.tFar;
+    status << "tNear = " << i0.tNear << ", tFar = " << i0.tFar 
+        << ", nearPlane = " << getPlaneMaskValueString(i0.nearPlane) 
+        << ", farPlane = " << getPlaneMaskValueString(i0.farPlane);
     return status.str();
 }
 

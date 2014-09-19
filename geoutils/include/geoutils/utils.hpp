@@ -27,6 +27,7 @@
  * 
  * ========================================================================== */
 #include <string>
+#include <cfloat>
 #include "ifobject/types.hpp"
 #include "ifmapping/Point.hpp"
 #include "geoutils/types.hpp"
@@ -811,6 +812,19 @@ struct AAPlanePairIntersectionCompare
     bool operator()(const AAPlanePairIntersection& i0, 
         const AAPlanePairIntersection& i1);
 };
+
+/// Create axis-aligned plane pair intersection.
+Ionflux::GeoUtils::AAPlanePairIntersection createAAPlanePairIntersection(
+    bool valid = false, double tNear = -DBL_MAX, double tFar = DBL_MAX, 
+    Ionflux::GeoUtils::PlaneMask nearPlane = PLANE_UNDEFINED, 
+    Ionflux::GeoUtils::PlaneMask farPlane = PLANE_UNDEFINED);
+
+/// Comparison operator.
+bool operator==(const Ionflux::GeoUtils::AAPlanePairIntersection& i0, 
+    const Ionflux::GeoUtils::AAPlanePairIntersection& i1);
+
+/// Get string representation for plane mask.
+std::string getPlaneMaskValueString(Ionflux::GeoUtils::PlaneMask mask);
 
 /// Get string representation for axis-aligned plane pair intersection.
 std::string getAAPlanePairIntersectionValueString(
