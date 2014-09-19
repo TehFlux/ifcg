@@ -221,7 +221,7 @@ std::string Line3::getValueString() const
 {
 	std::ostringstream status;
 	status << "p = (" << p.getValueString() 
-	    << "), u = (" << u.getValueString();
+	    << "), u = (" << u.getValueString() << ")";
 	return status.str();
 }
 
