@@ -537,6 +537,21 @@ class Vector3
 		 */
 		static Ionflux::GeoUtils::Vector3 axis(Ionflux::GeoUtils::AxisID axisID);
 		
+		/** Get other axis direction vectors.
+		 *
+		 * Get the other axis direction vectors that are orthogonal to the 
+		 * specified coordinate axis. The two axes will be set in the order so
+		 * that they will yield the specified axis if calculating the 
+		 * cross-product \c axis0 \c x \c axis1, i.e. they form a right-handed
+		 * coordinate system in this order.
+		 *
+		 * \param axisID Axis.
+		 * \param axis0 where to store the other axis (0).
+		 * \param axis1 where to store the other axis (1).
+		 */
+		static void getOtherAxes(Ionflux::GeoUtils::AxisID axisID, 
+		Ionflux::GeoUtils::Vector3& axis0, Ionflux::GeoUtils::Vector3& axis1);
+		
 		/** Assignment operator.
 		 *
 		 * Assign an object.

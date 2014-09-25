@@ -471,6 +471,32 @@ Ionflux::GeoUtils::Vector3 Vector3::axis(Ionflux::GeoUtils::AxisID axisID)
 	return ZERO;
 }
 
+void Vector3::getOtherAxes(Ionflux::GeoUtils::AxisID axisID, 
+Ionflux::GeoUtils::Vector3& axis0, Ionflux::GeoUtils::Vector3& axis1)
+{
+	if (axisID == AXIS_X)
+	{
+	    axis0 = E_Y;
+	    axis1 = E_Z;
+	} else
+	if (axisID == AXIS_Y)
+	{
+	    axis0 = E_Z;
+	    axis1 = E_X;
+	} else
+	if (axisID == AXIS_Z)
+	{
+	    axis0 = E_X;
+	    axis1 = E_Y;
+	} else
+	{
+	    ostringstream status;
+	    status << "[Vector3::getOtherAxes] "
+	        "Invalid axis: " << axisID;
+	    throw GeoUtilsError(status.str());
+	}
+}
+
 void Vector3::setX0(double newX0)
 {
 	elements[0] = newX0;

@@ -128,6 +128,9 @@ class Vector3
         virtual unsigned int getNumElements() const;
         static Ionflux::GeoUtils::Vector3 axis(Ionflux::GeoUtils::AxisID 
         axisID);
+        static void getOtherAxes(Ionflux::GeoUtils::AxisID axisID, 
+        Ionflux::GeoUtils::Vector3& axis0, Ionflux::GeoUtils::Vector3& 
+        axis1);
 		virtual std::string getXMLElementName() const;
 		virtual std::string getXMLAttributeData() const;
 		virtual void getXMLChildData(std::string& target, unsigned int 
