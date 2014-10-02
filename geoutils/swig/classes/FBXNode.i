@@ -107,6 +107,10 @@ class FBXNode
         0);
         virtual Ionflux::GeoUtils::FBXNode* findNodeByName(const 
         std::string& needle, bool recursive = true);
+        virtual unsigned int findNodesByName(Ionflux::GeoUtils::FBXNodeSet&
+        target, const Ionflux::ObjectBase::StringVector* includeList = 0, 
+        const Ionflux::ObjectBase::StringVector* excludeList = 0, bool 
+        recursive = true);
         virtual Ionflux::GeoUtils::FBXNode* findNodeByID(const std::string&
         needle, bool recursive = true);
         virtual unsigned int 

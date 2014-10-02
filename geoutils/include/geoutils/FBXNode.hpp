@@ -367,6 +367,26 @@ class FBXNode
 		virtual Ionflux::GeoUtils::FBXNode* findNodeByName(const std::string& 
 		needle, bool recursive = true);
 		
+		/** Find nodes by name.
+		 *
+		 * Find nodes by name. A node will be added to the target set if its 
+		 * name matches one of the names in \c includeList. If \c includeList 
+		 * is 0, all nodes will be added to the target set. However, if the 
+		 * name of a node matches one of the names in \c excludeList, it will 
+		 * not be added to the target set.
+		 *
+		 * \param target where to store the nodes.
+		 * \param includeList list of node names to be included.
+		 * \param excludeList list of node names to be excluded.
+		 * \param recursive look for node recursively.
+		 *
+		 * \return Number of nodes that were found.
+		 */
+		virtual unsigned int findNodesByName(Ionflux::GeoUtils::FBXNodeSet& 
+		target, const Ionflux::ObjectBase::StringVector* includeList = 0, const 
+		Ionflux::ObjectBase::StringVector* excludeList = 0, bool recursive = 
+		true);
+		
 		/** Find node by ID.
 		 *
 		 * Find a node by ID.

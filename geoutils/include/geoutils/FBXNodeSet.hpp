@@ -100,6 +100,20 @@ class FBXNodeSet
 		 */
 		virtual ~FBXNodeSet();
 		
+		/** Find nodes by attribute type.
+		 *
+		 * Find nodes from the set by attribute type.
+		 *
+		 * \param t node attribute type.
+		 * \param target where to store the nodes.
+		 * \param recursive look for child nodes recursively.
+		 *
+		 * \return number of nodes that have been found.
+		 */
+		virtual unsigned int 
+		findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType t, 
+		Ionflux::GeoUtils::FBXNodeSet& target, bool recursive = true);
+		
 		/** Assignment operator.
 		 *
 		 * Assign an object.

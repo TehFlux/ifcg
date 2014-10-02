@@ -53,6 +53,9 @@ class FBXNodeSet
 		FBXNodeSet(const Ionflux::GeoUtils::FBXNodeSet& other);
         FBXNodeSet(Ionflux::GeoUtils::FBXNodeVector& initNodes);
         virtual ~FBXNodeSet();
+        virtual unsigned int 
+        findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType t,
+        Ionflux::GeoUtils::FBXNodeSet& target, bool recursive = true);
 		virtual Ionflux::GeoUtils::FBXNodeSet* copy() const;
 		static Ionflux::GeoUtils::FBXNodeSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

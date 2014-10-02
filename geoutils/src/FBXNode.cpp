@@ -30,6 +30,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 #include <fbxsdk.h>
 #include "ifobject/utils.hpp"
 #include "ifobject/objectutils.hpp"
@@ -764,6 +765,54 @@ needle, bool recursive)
 	    i++;
 	}
 	return result;
+}
+
+unsigned int FBXNode::findNodesByName(Ionflux::GeoUtils::FBXNodeSet& 
+target, const Ionflux::ObjectBase::StringVector* includeList, const 
+Ionflux::ObjectBase::StringVector* excludeList, bool recursive)
+{
+	unsigned int numNodes = 0;
+	bool exclude = false;
+	std::string nn0 = getName();
+	if (excludeList != 0)
+	{
+	    Ionflux::ObjectBase::StringVector::const_iterator i = 
+	        std::find(excludeList->begin(), excludeList->end(), nn0);
+	    if (i != excludeList->end())
+	        exclude = true;
+	}
+	if (!exclude)
+	{
+	    if (includeList != 0)
+	    {
+	        Ionflux::ObjectBase::StringVector::const_iterator i = 
+	            std::find(includeList->begin(), includeList->end(), nn0);
+	        if (i != includeList->end())
+	        {
+	            target.addNode(this);
+	            numNodes++;
+	        }
+	    } else
+	    {
+	        target.addNode(this);
+	        numNodes++;
+	    }
+	}
+	if (!recursive || exclude)
+	    return numNodes;
+	int numChildNodes = getNumChildNodes();
+	int i = 0;
+	while (i < numChildNodes)
+	{
+	    FBXNode* n0 = getChildNode(i);
+	    if (n0 != 0)
+	    {
+	        numNodes += n0->findNodesByName(target, includeList, 
+	            excludeList, true);
+	    }
+	    i++;
+	}
+	return numNodes;
 }
 
 Ionflux::GeoUtils::FBXNode* FBXNode::findNodeByID(const std::string& 

@@ -248,6 +248,10 @@ class FBXNode
         0);
         virtual Ionflux::GeoUtils::FBXNode* findNodeByName(const 
         std::string& needle, bool recursive = true);
+        virtual unsigned int findNodesByName(Ionflux::GeoUtils::FBXNodeSet&
+        target, const Ionflux::ObjectBase::StringVector* includeList = 0, 
+        const Ionflux::ObjectBase::StringVector* excludeList = 0, bool 
+        recursive = true);
         virtual Ionflux::GeoUtils::FBXNode* findNodeByID(const std::string&
         needle, bool recursive = true);
         virtual unsigned int 
@@ -337,6 +341,9 @@ class FBXNodeSet
 		FBXNodeSet(const Ionflux::GeoUtils::FBXNodeSet& other);
         FBXNodeSet(Ionflux::GeoUtils::FBXNodeVector& initNodes);
         virtual ~FBXNodeSet();
+        virtual unsigned int 
+        findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType t,
+        Ionflux::GeoUtils::FBXNodeSet& target, bool recursive = true);
 		virtual Ionflux::GeoUtils::FBXNodeSet* copy() const;
 		static Ionflux::GeoUtils::FBXNodeSet* 
 		upcast(Ionflux::ObjectBase::IFObject* other);

@@ -86,6 +86,21 @@ FBXNodeSet::~FBXNodeSet()
 	// TODO: Nothing ATM. ;-)
 }
 
+unsigned int 
+FBXNodeSet::findNodesByAttributeType(Ionflux::GeoUtils::FBXNodeAttributeType
+t, Ionflux::GeoUtils::FBXNodeSet& target, bool recursive)
+{
+	unsigned int n0 = getNumNodes();
+	unsigned int numNodes = 0;
+	for (unsigned int i = 0; i < n0; i++)
+	{
+	    FBXNode* cn = getNode(i);
+	    if (cn != 0)
+	        numNodes += cn->findNodesByAttributeType(t, target, recursive);
+	}
+	return numNodes;
+}
+
 unsigned int FBXNodeSet::getNumNodes() const
 {
     return nodes.size();
