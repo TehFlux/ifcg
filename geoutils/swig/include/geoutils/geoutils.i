@@ -3671,6 +3671,8 @@ class Line3
         virtual bool eval(Ionflux::GeoUtils::AAPlanePairIntersection& 
         intersection, Ionflux::GeoUtils::Vector3& v0, 
         Ionflux::GeoUtils::Vector3& v1);
+        virtual Ionflux::GeoUtils::AxisID getAxis(double t = 
+        DEFAULT_TOLERANCE);
         virtual Ionflux::Mapping::Point call(Ionflux::Mapping::MappingValue
         value);
         virtual std::string getValueString() const;

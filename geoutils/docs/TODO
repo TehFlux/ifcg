@@ -15,7 +15,7 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-+ generate Doxygen docs
+
 
 --------------------------------------------------------------------------------
 Critical stuff
@@ -52,10 +52,12 @@ Critical stuff
   > shaders
     . specular reflection (Blinn-Phong)
     . texture (see FMViewer)
-  > textures
+  > Texture
     . copy GeoUtils::Image to texture (see FMViewer::ImageQuad, 
       Altjira::Drawable)
   > render to Image
+    . FramebufferObject
+    . Renderbuffer
 
 + VertexAttribute: make it a TransformableObject
 

@@ -211,6 +211,30 @@ Ionflux::GeoUtils::Vector3& v0, Ionflux::GeoUtils::Vector3& v1)
 	return true;
 }
 
+Ionflux::GeoUtils::AxisID Line3::getAxis(double t)
+{
+	AxisID result = AXIS_UNDEFINED;
+	int i = 0;
+	bool finished = false;
+	while ((i < 3) 
+	    && !finished)
+	{
+	    double x = u.getElement(i);
+	    if (!eq(x, 0., t))
+	    {
+	        if (result != AXIS_UNDEFINED)
+	        {
+	            // already have an axis
+	            result = AXIS_UNDEFINED;
+	            finished = true;
+	        } else
+	            result = i;
+	    }
+	    i++;
+	}
+	return result;
+}
+
 Ionflux::Mapping::Point Line3::call(Ionflux::Mapping::MappingValue value)
 {
 	Vector3 result(eval(value));

@@ -187,6 +187,17 @@ class Line3
 		intersection, Ionflux::GeoUtils::Vector3& v0, Ionflux::GeoUtils::Vector3&
 		v1);
 		
+		/** Get axis.
+		 *
+		 * Get the axis that the line is parallel to.
+		 *
+		 * \param t tolerance.
+		 *
+		 * \return Axis that the line is parallel to, or AXIS_UNDEFINED if the 
+		 * line is not parallel to any axis.
+		 */
+		virtual Ionflux::GeoUtils::AxisID getAxis(double t = DEFAULT_TOLERANCE);
+		
 		/** Evaluate the mapping.
 		 *
 		 * Evaluate the mapping with the specified parameter.
