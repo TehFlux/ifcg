@@ -152,14 +152,20 @@ GLenum getOpenGLPrimitive(Ionflux::GeoUtils::PrimitiveID primitive)
 void enableOpenGLBackFaceCulling(bool enable)
 {
     glCullFace(GL_BACK);
-    glEnable(GL_CULL_FACE);
+    if (enable)
+        glEnable(GL_CULL_FACE);
+    else
+        glDisable(GL_CULL_FACE);
 }
 
 void enableOpenGLDepthBufferTest(bool enable)
 {
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_TRUE);
-    glEnable(GL_DEPTH_TEST);
+    if (enable)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
 }
 
 void setOpenGLLineWidth(double width)
