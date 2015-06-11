@@ -1,6 +1,6 @@
 ==========================================================================
 IFCG - Ionflux Computer Graphics Toolkit
-Copyright © 2013 Joern P. Meier
+Copyright © 2013-2015 Joern P. Meier
 mail@ionflux.org
 --------------------------------------------------------------------------
 README
@@ -29,6 +29,12 @@ GeoUtils     2D/3D geometry library.
              features such as polygon and mesh transformations and an 
              AABB tree. It also contains a fully featured modular 
              transform node framework.
+             
+IFVG         Volumetric graphics library
+             IFVG is a library for volumetric graphics processing and 
+             visualization. It includes an efficient and versatile 
+             octree data structure, a mesh voxelization engine and an 
+             OpenGL viewer.
 
 Dependencies
 --------------------------------------------------------------------------
