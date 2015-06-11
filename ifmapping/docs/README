@@ -20,19 +20,26 @@ too hard to generate bindings for other languages as well.
 Features
 --------------------------------------------------------------------------
 
-+ Modular, chainable functions |R -> |R and |R -> |R³
-+ Bezier curves and splines
-+ Adaptive sampling of functions
-+ Root finding
-+ Floating point comparisons with tolerance
+• Modular, chainable functions |R -> |R and |R -> |R³
+• Bezier curves and splines
+• Adaptive sampling of functions
+• Root finding
+• Floating point comparisons with tolerance
 
 Dependencies
 --------------------------------------------------------------------------
 
 IFMapping depends on the following packages:
 
-+ Ionflux Object Base System (http://sf.net/projects/iftools)
-+ Ionflux Template Processor (http://sf.net/projects/iftools)
+• Ionflux Object Base System (http://sf.net/projects/iftools)
+• Ionflux Template Processor (http://sf.net/projects/iftools)
+
+The following dependencies are optional:
+
+• Python >= 3.3
+  required for the Python bindings
+• libnoise (http://libnoise.sourceforge.net)
+  required for noise mappings
 
 Make sure you get a recent SVN version of Ionflux Object Base System. 
 Older packages will most likely not work.
