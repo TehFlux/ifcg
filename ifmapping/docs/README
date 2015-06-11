@@ -1,6 +1,6 @@
 ==========================================================================
 IFMapping - Ionflux Mapping Library
-Copyright © 2010-2014 Joern P. Meier
+Copyright © 2010-2015 Joern P. Meier
 mail@ionflux.org
 --------------------------------------------------------------------------
 README
@@ -25,6 +25,7 @@ Features
 • Adaptive sampling of functions
 • Root finding
 • Floating point comparisons with tolerance
+• Noise mappings (libnoise based, optional)
 
 Dependencies
 --------------------------------------------------------------------------
@@ -40,6 +41,8 @@ The following dependencies are optional:
   required for the Python bindings
 • libnoise (http://libnoise.sourceforge.net)
   required for noise mappings
+• pynoise (http://home.gna.org/pynoise/)
+  required for the Python bindings for noise mappings
 
 Make sure you get a recent SVN version of Ionflux Object Base System. 
 Older packages will most likely not work.
