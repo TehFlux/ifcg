@@ -1,0 +1,70 @@
+================================================================================
+IFVG - Ionflux' Volumetric Graphics Library
+Copyright © 2014 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Node data
+================================================================================
+
+Node data can be attached to any node. See the table below for a listing of 
+currently supported data types.
+
+To add a new node data type that is fully supported by the implementation, 
+the following functions must be extended:
+
+Node::createDataImpl()
+Node::clearDataImpl()
+Node::getDataTypeString()
+Node::getDataTypeNumElements()
+Node::getDataValueString()
+Node::getDataImplMemSize()
+Node::getDataImplSerializedSize()
+
+The following functions need to be extended for NodeDataImpl and possibly 
+implemented for the new data type:
+
+[serialize] pack()
+[serialize] unpack()
+
+In addition, the following functions must be extended for data types that 
+have a VoxelClassID member:
+
+Node::dataTypeHasVoxelClassInfo()
+Node::getImplVoxelClass()
+Node::setImplVoxelClass()
+
+If the node data type supports boundary faces, the following function should 
+be extended:
+
+Node::getImplBoundaryFaces()
+
+In addition, a constant of type NodeDataType with an appropriate value 
+must be defined in Node.
+
+If the node data type supports a color index, the following functions should 
+be extended:
+
+Node::dataTypeHasColorIndex()
+Node::getImplColorIndex()
+Node::setImplColorIndex()
+
+Currently supported data types are:
+
+  Type                    Name        Size       Description
+  ----------------------------------------------------------------------------
+  DATA_TYPE_NULL          null           0       no data
+  DATA_TYPE_DENSITY       density        1       single value density
+  DATA_TYPE_COLOR_RGBA    color_rgba     4       color (RGBA)
+  DATA_TYPE_DISTANCE_8    distance_8     8       distance field (8 elements)
+  DATA_TYPE_COLOR_NORMAL  color_normal   7       color (RGBA) / normal (vec3)
+  DATA_TYPE_FACE_VEC      face_vec       *1)     vector of faces
+  DATA_TYPE_VOXEL_CLASS   voxel_class    0 *2)   voxel class *1)
+  DATA_TYPE_VOXEL_IOB     voxel_iob      *2)     voxel inside/outside/boundary
+
+*1) The size of the data is the size of the face vector.
+
+*2) The voxel class data type packs the data into the data pointer. 
+    Therefore, no additional space is allocated for the data.
+
+*3) The size of the data is the size of the NodeDataIOB structure.
+

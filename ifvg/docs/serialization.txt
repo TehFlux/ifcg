@@ -1,0 +1,140 @@
+================================================================================
+IFVG - Ionflux' Volumetric Graphics Library
+Copyright © 2014 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Serialization
+================================================================================
+
+Node implementation hierarchy
+--------------------------------------------------------------------------------
+
+The format of the node implementation serialization is defined as follows:
+
+Name                  Size (bytes)   Description
+-------------------------------------------------------------------------
+header                               Hierarchy header
+  magic_word          4              Magic word (VGHE)
+  po_map_offset       8              Offset to the pointer/offset map
+  impl_array_stride   2              Stride (in bytes) for node 
+                                     implementation arrays
+  impl_size           2              Size (in bytes) of one serialized 
+                                     node implementation record, as returned 
+                                     by Node::getImplSerializedSize()
+  data_impl_size      2              Size (in bytes) of one node data 
+                                     record, excluding data (i.e. of type 
+                                     NODE_DATA_NULL), as returned by 
+                                     Node::getDataImplSerializedSize()
+  data_value_size     1              Size (in bytes) of one node data 
+                                     value, as returned by 
+                                     Node::getDataValueSerializedSize()
+  root_node_depth     1              Depth of the root node
+  root_node_pointer   8              Root node pointer
+root_node                            Root node data
+  magic_word          4              Magic word (VGNR)
+  node_impl           *1)            Root node implementation data
+  magic_word          4              Magic word (VGND)
+  node_data           *1)            Root node data
+nodes [0...n]                        Node implementation data
+  magic_word          4              Magic word (VGNO)
+  node_impl           *1)            Node implementation data
+  magic_word          4              Magic word (VGND)
+  node_data           *1)            Node data
+po_map                               Pointer/offset map
+  magic_word          4              Magic word (VGOM)
+  po_map_data         *1)            Pointer/offset map data
+
+*1) serialized size of the data element, see following notes.
+
+The root node is stored as the first node in the stream, followed by the 
+other nodes in order of increasing depth.
+
+The size of nodes is the serialized size of the nodes, plus the serialized 
+size of the node data (see below).
+
+The size of po_map_data is the serialized size of the pointer/offset map.
+
+--------------------------------------------------------------------------------
+Node implementation
+--------------------------------------------------------------------------------
+
+The format of the node implementation serialization is defined as follows:
+
+Name                  Size (bytes)   Description
+-------------------------------------------------------------------------
+loc                   6              Node location code
+valid                 1              Child node valid mask
+leaf                  1              Child node leaf mask
+parent                8              Parent pointer
+data                  8              Data pointer
+child                 8              Child pointer
+
+--------------------------------------------------------------------------------
+Node data
+--------------------------------------------------------------------------------
+
+The format of the node data implementation serialization is defined as 
+follows:
+
+Name                  Size (bytes)   Description
+-------------------------------------------------------------------------
+data_type             1              Node data type
+data                  *3)            Node data
+
+*3) The serialized size of the data depends on the data type, see 
+    node_data.txt
+
+--------------------------------------------------------------------------------
+Pointer/offset map
+--------------------------------------------------------------------------------
+
+The pointer/offset map is used together with impl_array_stride to convert 
+the pointers stored in the serialization of the node hierarchy to offsets 
+within the stream. Using the pointer/offset map, each node can be 
+deserialized from the stream in any order if its pointer address is known.
+
+The format of the pointer/offset map serialization is defined as follows:
+
+Name                  Size (bytes)   Description
+-------------------------------------------------------------------------
+num_entries           8              Number of entries of the map
+data                  *4)            Pointer/offset map data
+
+*4) The serialized size of the pointer/offset map data is 16 bytes times the 
+    number of entries of the map. Each entry consists of a pointer (8 bytes) 
+    and an offset (8 bytes).
+
+--------------------------------------------------------------------------------
+Mesh
+--------------------------------------------------------------------------------
+
+The format of the mesh serialization is defined as follows:
+
+Name                      Size (bytes)   Description
+-------------------------------------------------------------------------
+header                                   Mesh header
+  magic_word              4              Magic word (VGME)
+  id                                     ID string
+    size                  8              String size
+    data                  *5)            String data
+  id_num                  8              ID number
+  type                    1              Mesh type *6)
+vertices                                 Vertex list
+  num_vertices            8              Number of vertices
+  vertex [0...n]                         vertex data
+    x                     8              X coordinate
+    y                     8              Y coordinate
+    z                     8              Z coordinate
+faces
+  num_faces               8              Number of faces
+  face [0...n]                           face data
+    vertex_index [0..n]   8              vertex index *7)
+
+*5) the size of the string data is the size of the string
+
+*6) The mesh type is one of the Ionflux::GeoUtils::MeshTypeID constants 
+    defined in Ionflux::GeoUtils::Mesh. It indicates whether the mesh is a 
+    tri- or quad-mesh.
+
+*7) Each face has a number of vertex indices corresponding to the mesh type.
+

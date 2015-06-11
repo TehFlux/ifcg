@@ -1,0 +1,181 @@
+================================================================================
+IFVG - Ionflux' Volumetric Graphics Library
+Copyright © 2014 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+Notes
+================================================================================
+
+Implementation
+--------------------------------------------------------------------------------
+
+The implementation of the IFVG voxel tree is inspired by the following 
+papers:
+
+Frisken and Perry, 2002
+  Simple and Efficient Traversal Methods for Quadtrees and Octrees
+
+Elseberg et al., 2013
+  One billion points in the cloud – an octree for efficient processing of 3D 
+  laser scans
+
+While the first of the papers focuses on efficient traversal, the second 
+focuses on minimal memory usage.
+
+The IFVG implementation takes some ideas from both sources to satisfy the 
+additional requirement that the code should be robust, easy to extend and 
+debug, support arbitrary types of node data and fit in well with the IFCG 
+libraries that it is based on.
+
+See node_data.txt for documentation on the supported node data types.
+
+--------------------------------------------------------------------------------
+Location codes
+--------------------------------------------------------------------------------
+
+Binary location codes unfortunately do not work for tree orders other than 2. 
+However, everything else (especially NodeImpl) should support trees of an 
+arbitrary order.
+
+Such trees could still be addressed using more than one bit per depth level 
+and dimension, but this is currently not implemented.
+
+--------------------------------------------------------------------------------
+Memory management
+--------------------------------------------------------------------------------
+
+A NodeImpl can be referenced by exactly one other NodeImpl (because each 
+NodeImpl has at most one parent NodeImpl). This reference should be added as 
+soon as the NodeImpl is added as a child to the parent NodeImpl.
+
+Other objects (i.e. Node) can have additional references to a NodeImpl.
+
+However, since NodeImpl expects all of its child nodes to be allocated in a 
+single array, it cannot destroy individual nodes. Therefore, the reference 
+count on all child nodes must be exactly one (i.e. the reference from the 
+parent NodeImpl) when the parent is destroyed or the child pointer is 
+re-allocated.
+
+Therefore, objects that are not a NodeImpl and reference a NodeImpl that 
+has a parent should check that the NodeImpl has a reference from its 
+parent before referencing/unreferencing the NodeImpl (see Node::setImpl for 
+an example).
+
+Callers of functions that return a new Node object should make sure that 
+this object gets cleaned up.
+
+VERY IMPORTANT:
+
+It is an error to keep Node objects that reference internal nodes (i.e. any 
+nodes but the root node) within a voxel tree past the lifetime of the 
+implementation node hierarchy. To avoid this, clean up any Node objects that 
+reference internal nodes before the root node is deallocated.
+
+This is especially important when inserting nodes via Node::insertChild() or 
+locating nodes via Node::locateChild(). These functions return a Node object 
+that references an internal node of the tree.
+
+--------------------------------------------------------------------------------
+Voxelization
+--------------------------------------------------------------------------------
+
+Voxelization of polygon mesh faces is done according to 
+
+Huang et al., 1998
+  An accurate method for voxelizing polygon meshes
+
+This is implemented in NodeVoxelizationProcessor::processImpl(), 
+Node::voxelizeInsertFaces and Node::voxelizeImplFaces().
+
+Node::voxelizeInsertFaces inserts each face into the octree node that 
+completely contains its voxelization. 
+
+The computation of voxelization data (TriangleVoxelizationData) is currently 
+done on the fly whenever necessary, since it is reasonably fast to compute. 
+However, the data could also be precomputed and stored for each face to 
+save processing time at the expense of additional memory.
+
+NodeVoxelizationProcessor allows various voxelization targets to be defined. 
+The default VOXELIZATION_TARGET_CLASS sets the voxel class of each voxel that 
+is filled by the voxelization to VOXEL_CLASS_FILLED.
+
+--------------------------------------------------------------------------------
+Voxel inside/outside classification
+--------------------------------------------------------------------------------
+
+Inside/outside classification of voxels is done according to
+
+Nooruddin and Turk, 2003
+  Simplification and repair of polygonal models using volumetric techniques
+
+This is implemented in the functions NodeIntersectionProcessor::processImpl(), 
+NodeIntersectionProcessor::setIOBData() and 
+NodeIOBEvalProcessor::processImpl(), according to the following scheme:
+
+  [1] cast ray (intersect leaf voxels only)
+  [2] iterate over intersections (once in each direction)
+      [3] set current state according to previous state and current 
+          voxel class:
+          undefined, filled -> inside
+          undefined, empty/undefined -> outside
+          inside, filled -> no change
+          inside, empty/undefined -> outside, intersection +1
+          outside, empty/undefined -> no change
+          outside, filled -> inside
+      [4] set intersections according to traversal direction
+      [5] (on backward iteration) if ray is valid: set ray votes based 
+          on intersection count
+  [6] continue at 1 until desired number of rays has been cast
+  [7] evaluate votes for each voxel
+
+Empty regions of the tree need to be filled with leaf voxels before any rays 
+are cast, so any region can be assigned a voxel class (VOXEL_CLASS_INSIDE 
+or VOXEL_CLASS_OUTSIDE, respectively).
+
+NodeIntersectionProcessor::processImpl() collects the intersections between 
+a ray and the octree nodes and sets the data type and voxel class of each 
+voxel that is hit by the ray to the data type and voxel class that have been 
+set on the NodeIntersectionProcessor.
+
+NodeIntersectionProcessor::setIOBData() sets the 
+intersection counters and ray votes.
+
+NodeIOBEvalProcessor::processImpl() evaluates the ray votes. Data is attached 
+to the octree nodes as a data record of type Node::DATA_TYPE_VOXEL_IOB.
+
+--------------------------------------------------------------------------------
+Voxel boundary classification
+--------------------------------------------------------------------------------
+
+Classification of voxels as boundary voxels and extraction of boundary faces 
+can be done in the same iteration as inside/outside classification.
+
+This works according to the following algorithm:
+
+  [1] cast ray (intersect leaf voxels only)
+  [2] iterate over intersections (once in each direction)
+      [3] set current state according to previous state and current 
+          voxel class:
+          undefined, filled -> inside
+          undefined, empty/undefined -> outside
+          inside, filled -> no change
+          inside, empty/undefined -> outside
+          outside, empty/undefined -> no change
+          outside, filled -> inside
+      [4] (on forward iteration) if state changed from inside -> outside:
+          if current voxel is not at the target depth:
+            insert voxel at ray entry point at target depth
+            recursively do boundary calculation for new ray intersections
+          else:
+            mark current voxel as boundary voxel
+            mark near plane of ray intersection as boundary face
+      [5] (on backward iteration) if state changed from inside -> outside:
+          if current voxel is not at the target depth:
+            insert voxel at ray entry point at target depth
+            recursively do boundary calculation for new ray intersections
+          else:
+            mark current voxel as boundary voxel
+            mark far plane of ray intersection as boundary face
+      [6] update intersections (add new voxels)
+  [7] continue at 1 until desired number of rays has been cast
+

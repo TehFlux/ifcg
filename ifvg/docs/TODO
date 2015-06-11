@@ -1,0 +1,280 @@
+================================================================================
+IFVG - Ionflux' Volumetric Graphics Library
+Copyright © 2014 Jörn P. Meier
+mail@ionflux.org
+--------------------------------------------------------------------------------
+TODO
+================================================================================
+
+Up next
+--------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------
+New
+--------------------------------------------------------------------------------
+
++ support casting rays from any plane
+
++ NodeIntersectionProcessor
+  > support multiple passes (interior/exterior, wall thickness, boundary) 
+    in any order, specified by the user
+
+--------------------------------------------------------------------------------
+Critical stuff
+--------------------------------------------------------------------------------
+
++ function or node processor to propagate IOB data correctly and completely 
+  to child nodes
+
++ Voxel colors
+  > color index data type
+
++ Assign wall thickness color indices within the visualization script
+  > alternatively: assign color index based on wall thickness in 
+    Node::getImplColor()
+
++ ColorSpec
+  . replace Node::getImplColor() parameters
+  . color set (for mapping color indices)
+  . leaf color index
+  . use node color index
+  . ranges and offsets for depth based colors and color indices
+  . voxel class colors
+
++ Testing
+  > Node::getImplVertexAttributes(), Node::getImplMesh()
+    . set range for automatic color assignment (so color indices that are 
+      assigned explicitly within some range are skipped)
+
++ Visualization
+  > boundary faces
+    . any voxel class
+    . any set of voxels extracted by a filter
+
++ calculate boundary faces for any set of voxels (e.g. passing a filter)
+  > visualize interior voxels
+
++ Efficient neighborhood iteration
+  > initialize a neighborhood and advance it by an offset
+    . if this yields an empty neighborhood, advance to the next non-empty 
+      neighborhood
+    . use non-recursive ray casting
+
++ Filters and node processors
+  > make sure maximum depth is checked to terminate the recursion at the 
+    maximum depth level
+  > if 'fill' is set, the node needs to be filled before the filter 
+    is tested, otherwise the filter might get an incorrect leaf status
+  > see Node::intersectRayImpl()
+
++ extract boundary face mesh
+  > Context::getVoxelMesh()
+  > Node::getImplMesh()
+
++ Interior/exterior/boundary classification
+  > ray stabbing
+  > collapse filled voxels
+
++ Voxelize the whole input data set
+  > level 9, 10
+
++ Extrude voxels into 'inside' region.
+  (see Bischoff, (2005) "Automatic Restoration of Polygon Models")
+
++ Script to merge node hierarchy files
+
++ Get the code to run on OS X.
+
++ Node
+  > collapseImpl(): collapse nodes with equal data
+    . collapse on voxelization
+    . collapse voxel classes
+  > dataImplEqual(): data equality check
+  > copyDataImpl(): copy data
+  > copyImpl()
+    . deep copy
+
++ Node processors
+  > collapse voxel class (post-processor)
+  > propagate voxel classes up the tree (post-processor).
+
++ Ray traversal
+  > data needs to be collapsed as soon as possible (keep the octree sparse)
+
++ Node::voxelizeImplFaces() uses too much RAM
+
++ NodeArray
+  > 1-3 D
+  > contains node implementations (referenced?)
+  > location code
+  > size (in nodes, for each dimension and total)
+  > convert to/from octree region
+
++ Visualization (OpenGL viewer)
+  > Visualizing a very large and dense octree is not feasible
+    . render boundary surfaces
+    . only add edge segments that are not occupied by a child node
+  > octree intersection tests
+  > color/normal points
+
++ Sparse voxel octree
+  > merge sub-trees
+    . rescale octree (by powers of two)
+  > convert nodes to voxel arrays (and back)
+  > extract voxel boundary surface
+  > traversal methods (Frisken 2002)
+    . ray traversal (DDA)
+  > find non-manifold voxels (voxels sharing only one edge/vertex with 
+    another voxel)
+    . repair them
+
+--------------------------------------------------------------------------------
+Important stuff
+--------------------------------------------------------------------------------
+
++ Color filter for assigning voxel colors
+  > color index, leaf status, depth, voxel class, wall thickness
+  > can be implemented as a node processor
+
++ Non-recursive ray casting
+  > extrude voxels
+  > check non-manifold voxels
+  > extract boundary surface
+
++ boolean operations
+  > apply to two sets of voxels
+    . use filters for source/target voxels
+
++ Non-recursive ray casting
+  > algorithm:
+    [1] calculate intersection points for current node
+    [2] set current intersection parameters tNear, tFar and tCur = tNear
+    [3] while current node is not null and not finished:
+      [4] if there are intersections:
+          [5] if the node  passes the filter:
+              process node
+          [6] if recursive and not finished and there are child nodes:
+              [7] locate child node at ray entry point tNear
+                make this node the current node
+                update tNear, tFar, tCur = tNear
+            else if there are no child nodes:
+              while (tNear <= tCur) and not finished:
+                [note: (tNear <= tCur) if the current node is the parent 
+                  node of a node that has already been processed]
+                [8] locate next node at ray exit point tFar
+                  [note: the next node is either a node at the same 
+                    level, containing the ray exit point (the next child) 
+                    or the parent node. In any case, searching for a node 
+                    at the current level containing the ray exit point 
+                    should yield the correct result]
+                [9] if node exists:
+                    make this node the current node
+                    update tNear, tFar
+                  else:
+                    finished
+              if not finished:
+                [10] set tCur = tNear
+          else if there are no intersections:
+            finished
+
++ intersectRayImpl(): support pre- and postprocessor
+
++ Mesh node data type
+  > store either a reference to the file or the mesh itself
+  > together with the octree serialization, this should be a very powerful 
+    method to store meshes and allow out-of-core random access (solves the 
+    massive mesh size problem)
+
++ NodeFilter
+  > OR-combination of filters
+  > negate a filter
+
++ Use a more efficient mesh type
+  . vertex buffer
+  . face buffer
+
++ Testing
+  > getNodeFaceMask()
+  > getImplFaceColorNormal() (+sanity check)
+  > Node, Context
+    . region location
+    . neighbor location
+
++ Extract node neighbourhood (NodeArray may be useful)
+
++ Visualization
+  > color voxels based on filters
+    . set of filter/color pairs
+
++ Octree out-of-core traversal
+  > span multiple files
+  > I/O context collects data about the serialization of a part of 
+    the octree
+  > collected in the Context
+    . query by node ID
+    . best way to organize the IOContexts would probably be an octree
+  > deserializeImplChildNodes()
+    . if a node has valid child nodes but the child node pointer is null, 
+      the child nodes can be obtained from the stream
+    . use the Context to obtain the correct IOContext
+  > locate node
+
++ A lot of calls to Node::getImplDepth() in recursive functions could be 
+  saved by passing the current depth along in a parameter.
+
++ 'glad' stuff is platform-dependent and should be generated using 
+  a builder.
+  (python main.py --profile core --api "gl=3.3" --generator c 
+    --spec=gl --out-path=generated)
+  > requires ssl support in urllib2
+
++ Viewer
+  > QnD raytracer that renders to an image
+  > interactive viewer (OpenGL)
+
+--------------------------------------------------------------------------------
+Nice to have
+--------------------------------------------------------------------------------
+
++ Merge node hierarchies
+  > merge voxel classes
+  > deep copy support
+
++ Node data as linked list
+  > this would make it easy to attach additional data to a node
+    . intersection data
+
++ NodeDataBuffer
+  > keep all data of a certain type in one buffer
+
++ calculate fractional density for octree nodes
+  > visualization by density threshold
+
++ extensible node data type system (currently, functions need to be 
+  extended all over the place for adding a new data type)
+
++ Progressive voxelization with visual feedback
+
++ FBX import (GeoUtils)
+  > see if there is really animation for some parts of the data and 
+    extract the relevant frame [doesn't seem so]
+
++ Add better functions to add/remove child nodes from a NodeImpl.
+  > reference count
+    . If 'parent' is set on a NodeImpl, it must also be referenced.
+      If 'parent' is set to zero, it must be unreferenced.
+
++ Viewer
+  > Scanline renderer
+    . Bitmap, Blender, SVG
+    . render leaf nodes on the lowest level as filled boxes
+    . render non-leaf nodes as outline boxes
+
+--------------------------------------------------------------------------------
+Side-tracks
+--------------------------------------------------------------------------------
+
+
+

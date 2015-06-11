@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""IFVG local configuration.
+
+This is used by the scripts in 'scripts' and 'test'."""
+import CGeoUtils as cg
+import CIFVG as vg
+
+fluxPath = '/home/flux4/recent/p'
+dataBasePath = fluxPath + '/data'
+
+dataSetName = 'unnamed_data_set'
+
+fbxPath = fluxPath + '/misc/' + dataSetName
+
+fbxHierarchyPath = dataBasePath + '/other'
+fbxHierarchyFile = fbxHierarchyPath + '/' + dataSetName + '-01.xml'
+
+meshPath = dataBasePath + '/meshes'
+voxelizationPath = dataBasePath + '/voxelization'
+
+transformMeshes = True
+
+meshOutputFileFormat = 'vgmesh'
+meshOutputScale = 0.002
+
+octreeMaxNumLevels = 11
+octreeOrder = 2
+octreeScale = 1.
+octreeMargin = 4
+octreeVisScale = 4.
+octreeVisDataType = vg.Node.DATA_TYPE_VOXEL_CLASS
+octreeVisVoxelClass = vg.VOXEL_CLASS_FILLED
+
+voxelizeDepth = 8
+voxelizeTarget = vg.VOXELIZATION_TARGET_CLASS
+voxelizeFillNodes = True
+voxelizePruneEmpty = False
+
+inputDataBoundingBox = cg.Range3(
+    cg.Vector3(1467.88, -9.90465, 501.741), 
+    cg.Vector3(2401.46, 1104.01, 871.601))
+
+geoutilsDir = '/home/flux4/recent/geoutils'
+shaderSourceDir = geoutilsDir + '/data/shaders'
+
+rayHitDataType = vg.Node.DATA_TYPE_VOXEL_CLASS
+rayHitVoxelClass = vg.VOXEL_CLASS_HIT
+

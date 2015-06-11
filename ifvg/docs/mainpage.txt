@@ -1,0 +1,12 @@
+/** \mainpage
+ * \section IVFG
+ *
+ * IFVG (Ionflux' Volumetric Graphics Library) is a library that provides 
+ * various classes and functions to support volumetric graphics.
+ * 
+ * Please see the 'docs' directory for additional documentation.
+ * 
+ * This code is experimental, use at your own risk.
+ * 
+ * Copyright © 2014 Jörn P. Meier &lt;mail@ionflux.org&gt;
+ */
