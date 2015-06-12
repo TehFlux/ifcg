@@ -93,7 +93,7 @@ def createLUT(identifier, name, fileName, op):
             d += ', '
             if (k % 8 == 0):
                 d += '\n    '
-          d += ("'\\x%02x'" % rc)
+          d += ("(unsigned char)'\\x%02x'" % rc)
     l0 = lutTemplate % (identifier, identifier, identifier.lower(), 
         name, name, identifier, d, identifier.lower(), name)
     f = open(fileName, 'w')
