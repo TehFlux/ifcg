@@ -130,8 +130,7 @@ if (not config.CheckPkgConfig("sigc++-2.0")):
     missingDeps += ['sigc++']
 else:
     geoutilsEnv.MergeFlags(['!pkg-config --cflags --libs sigc++-2.0'])
-if (not config.CheckLibWithHeader("gsl", "gsl/gsl_vector.h", 
-    'C', autoadd = 0)):
+if (not config.CheckPkgConfig("gsl")):
     missingDeps += ['gsl']
 if (not config.CheckLibWithHeader("ifobject", "ifobject/IFObject.hpp", 
     'C++', autoadd = 0)):
@@ -425,8 +424,8 @@ else:
 
 # geoutils shared library
 geoutilsLibEnv = geoutilsEnv.Clone()
-geoutilsLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 'ifmapping', 
-    'gsl', 'gslcblas'])
+geoutilsLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 'ifmapping'])
+geoutilsLibEnv.MergeFlags(['!pkg-config --cflags --libs gsl'])
 geoutilsLib = geoutilsLibEnv.SharedLibrary(target = "lib/geoutils", 
     source = geoutilsLibSources)
 
