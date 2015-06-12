@@ -121,7 +121,9 @@ def checkPkgConfig(ctx, pkg):
     ctx.Result(result)
     return result
 
-config = geoutilsEnv.Configure(custom_tests = { 
+configEnv = geoutilsEnv.Clone()
+configEnv.Append(LIBS = ['dl'])
+config = configEnv.Configure(custom_tests = { 
     "CheckProgram" : checkProgram, 
     "CheckPkgConfig" : checkPkgConfig })
 
