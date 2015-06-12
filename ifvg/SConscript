@@ -121,7 +121,9 @@ def checkPkgConfig(ctx, pkg):
     ctx.Result(result)
     return result
 
-config = ifvgEnv.Configure(custom_tests = { 
+configEnv = ifvgEnv.Clone()
+configEnv.Append(LIBS = ['dl'])
+config = configEnv.Configure(custom_tests = { 
     "CheckProgram" : checkProgram, 
     "CheckPkgConfig" : checkPkgConfig })
 
@@ -151,9 +153,6 @@ if (not config.CheckLibWithHeader("geoutils", "geoutils/geoutils.hpp",
 if (not config.CheckLibWithHeader("altjirageoutils", 
     "geoutils/altjirageoutils.hpp", 'C++', autoadd = 0)):
     missingDeps += ['altjirageoutils']
-if (not config.CheckLibWithHeader("geoutilsgl", 
-    "geoutils/geoutilsgl.hpp", 'C++', autoadd = 0)):
-    missingDeps += ['altjirageoutils']
 if (not config.CheckLibWithHeader("fbxsdk", 
     "fbxsdk.h", 'C++', autoadd = 0)):
     missingDeps += ['fbxsdk']
@@ -180,6 +179,9 @@ if (not config.CheckLibWithHeader("python" + lc.pythonVersion,
 
 missingDeps = []
 buildViewerLib = True
+if (not config.CheckLibWithHeader("geoutilsgl", 
+    "geoutils/geoutilsgl.hpp", 'C++', autoadd = 0)):
+    missingDeps += ['geoutilsgl']
 if (not config.CheckLibWithHeader("glfw", "GLFW/glfw3.h", 'C', 
     autoadd = 0)):
     missingDeps += ["GLFW"]
