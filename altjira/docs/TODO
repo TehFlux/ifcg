@@ -15,7 +15,8 @@ Up next
 New
 --------------------------------------------------------------------------------
 
-
++ Fix 'narrowing conversion' warnings.
+  > find a more elegant solution for the LUTs, avoiding the cast
 
 --------------------------------------------------------------------------------
 Critical stuff
