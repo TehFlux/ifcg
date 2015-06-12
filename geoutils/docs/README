@@ -59,7 +59,7 @@ OpenGL utility library:
 
 • OpenGL (should be provided with your OS)
 • GLUT (http://freeglut.sourceforge.net)
-• glad (https://github.com/Dav1dde/glad)
+• glad (https://github.com/Dav1dde/glad), see notes
 • GLFW (http://www.glfw.org)
 
 Make sure you get a recent SVN version of Ionflux Object Base System. 
@@ -92,6 +92,20 @@ adjust the settings as required.
 
 If everything is set up correctly, you can build the project with 
 'scons' in the main directory.
+
+Notes
+--------------------------------------------------------------------------
+
+For building the OpenGL utility library, an OpenGL loader needs to be 
+generated for the specific system and OpenGL version using glad. This 
+is expected to be compiled into a dynamic library named libglad.so (or 
+similar, depending on the system). A suitable OpenGL loader can be 
+generated using glad in the following way:
+
+python main.py --profile core --api "gl=3.3" --generator c \
+    --spec=gl --out-path=generated
+
+See also http://www.glfw.org/docs/latest/context.html#context_glext_auto
 
 Using
 --------------------------------------------------------------------------
