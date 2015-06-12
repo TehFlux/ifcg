@@ -15,7 +15,7 @@ baseName = 'geoutils'
 ## Prefix.
 ## Set this if you do not want to use the default or the SCons command line 
 ## parameter.
-prefix = '/home/flux4/usr'
+prefix = '/home/ionflux/usr'
 
 # Enable debug mode.
 debug = True
@@ -28,45 +28,49 @@ pythonSitePackagesPath = ('/python' + pythonVersion + '/lib/python'
 
 # Ionflux Object Base system template path
 #ifobjectTemplatePath = 'template'
-ifobjectTemplatePath = '/home/flux4/svn/iftools/trunk/ifobject/template'
+ifobjectTemplatePath = '/home/ionflux/svn/iftools/trunk/ifobject/template'
 
 # The SWIG interface template file.
 swigInterfaceTemplateFile = [
     'template/' + baseName + '.i.tpl', 
     'template/altjira' + baseName + '.i.tpl', 
-    'template/' + baseName + 'fbx.i.tpl'
+    'template/' + baseName + 'fbx.i.tpl', 
+    'template/' + baseName + 'gl.i.tpl'
 ]
 # The SWIG interface file.
 swigInterfaceFile = [
     'swig/include/' + baseName + '/' + baseName + '.i', 
     'swig/include/' + baseName + '/altjira'  + baseName + '.i', 
-    'swig/include/' + baseName + '/'  + baseName + 'fbx.i'
+    'swig/include/' + baseName + '/'  + baseName + 'fbx.i', 
+    'swig/include/' + baseName + '/'  + baseName + 'gl.i'
 ]
 
 # Paths.
 PATH = 'bin'
 CPPPATH = [
-    prefix + '/python' + pythonVersion + '/include/python' 
+    '/opt/tinyxml/include',
+    '/opt/libnoise/include', 
+    '/opt/libnoise/include/noise', 
+    '/opt/fbx-2015.1/include', 
+    '/opt/python' + pythonVersion + '/include/python' 
         + pythonVersion, 
-    '/home/flux4/svn/iftools/trunk/ifobject/include', 
-    '/home/flux4/svn/iftools/trunk/ifobject/swig/include', 
-    '/home/flux4/svn/iftools/trunk/iftemplate/include', 
-    '/home/flux4/svn/ifcg/trunk/ifmapping/include', 
-    '/home/flux4/svn/ifcg/trunk/ifmapping/swig/include', 
-    '/home/flux4/svn/ifcg/trunk/altjira/include', 
-    '/home/flux4/svn/ifcg/trunk/altjira/swig/include', 
-    '/home/flux4/svn/ifcg/trunk/geoutils/swig/include', 
-    prefix + '/include', 
-    prefix + '/include/noise', 
-    '/home/flux4/usr/fbx20151/include'
+    '/home/ionflux/svn/iftools/trunk/ifobject/include', 
+    '/home/ionflux/svn/iftools/trunk/ifobject/swig/include', 
+    '/home/ionflux/svn/iftools/trunk/iftemplate/include', 
+    '/home/ionflux/svn/ifcg/trunk/ifmapping/include', 
+    '/home/ionflux/svn/ifcg/trunk/ifmapping/swig/include', 
+    '/home/ionflux/svn/ifcg/trunk/altjira/include', 
+    '/home/ionflux/svn/ifcg/trunk/altjira/swig/include', 
+    '/home/ionflux/svn/ifcg/trunk/geoutils/swig/include'
 ]
 LIBPATH = [
-    prefix + '/python' + pythonVersion + '/lib', prefix + '/lib', 
-    '/home/flux4/svn/iftools/trunk/ifobject/lib', 
-    '/home/flux4/svn/iftools/trunk/iftemplate/lib', 
-    '/home/flux4/svn/ifcg/trunk/ifmapping/lib', 
-    '/home/flux4/svn/ifcg/trunk/altjira/lib', 
-    prefix + '/noise/lib', 
-    '/home/flux4/usr/fbx20151/lib/gcc4/x64/debug'
+    '/opt/tinyxml/lib', 
+    '/opt/libnoise/lib', 
+    '/opt/fbx-2015.1/lib/gcc4/x64/debug', 
+    '/opt/python' + pythonVersion + '/lib', 
+    '/home/ionflux/svn/iftools/trunk/ifobject/lib', 
+    '/home/ionflux/svn/iftools/trunk/iftemplate/lib', 
+    '/home/ionflux/svn/ifcg/trunk/ifmapping/lib', 
+    '/home/ionflux/svn/ifcg/trunk/altjira/lib'
 ]
 

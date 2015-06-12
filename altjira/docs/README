@@ -26,28 +26,33 @@ too hard to generate bindings for other languages as well.
 Features
 --------------------------------------------------------------------------
 
-+ Colors (RGBA)
-+ Color space conversion (HSV, HSL, RGB)
-+ Color bands to quickly generate ranges of colors
-+ Image loading, PNG writing
-+ Image pixel manipulation
-+ Image processing (filters, compositing, normal map generation, …)
-+ Blend modes
-+ Gradients
-+ Drawing (using cairo)
-+ libnoise support
+• Colors (RGBA)
+• Color space conversion (HSV, HSL, RGB)
+• Color bands to quickly generate ranges of colors
+• Image loading, PNG writing
+• Image pixel manipulation
+• Image processing (filters, compositing, normal map generation, …)
+• Blend modes
+• Gradients
+• Drawing (using cairo)
+• libnoise support
 
 Dependencies
 --------------------------------------------------------------------------
 
 Altjira depends on the following packages:
 
-+ Ionflux Object Base System (http://sf.net/projects/iftools)
-+ Ionflux Template Processor (http://sf.net/projects/iftools)
-+ IFMapping - Ionflux Mapping Library 
+• Ionflux Object Base System (http://sf.net/projects/iftools)
+• Ionflux Template Processor (http://sf.net/projects/iftools)
+• IFMapping - Ionflux Mapping Library 
   (http://xi.ionflux.org/projects/stuff)
-+ GDK-PixBuf (http://library.gnome.org/devel/gdk-pixbuf/, available 
+• GDK-PixBuf (http://library.gnome.org/devel/gdk-pixbuf/, available 
   on most Linux distributions)
+
+The following dependencies are optional:
+
+• Python >= 3.3
+  required for the Python bindings
 
 Make sure you get a recent SVN version of Ionflux Object Base System. 
 Older packages will most likely not work.

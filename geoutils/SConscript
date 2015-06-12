@@ -472,7 +472,7 @@ testEnv.Append(LIBS = ['ifobject', 'geoutils', 'altjirageoutils', 'tinyxml'],
     CPPPATH = ['test/include', '.'])
 
 cgeoutilstest14Bin = testEnv.Program('test/bin/cgeoutilstest14', 
-	['test/build/cgeoutilstest14.cpp'])
+	['build/test/cgeoutilstest14.cpp'])
 
 targetTests = [cgeoutilstest14Bin]
 

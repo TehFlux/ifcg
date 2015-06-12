@@ -23,31 +23,44 @@ as well.
 Features
 --------------------------------------------------------------------------
 
-+ Basic vector math
-+ Matrix transformations
-+ Primitive 3D objects (Vertex, Line, Plane, Box, Sphere)
-+ 3D Meshes
-+ Tangent space (UV) calculations
-+ Intersection checking
-+ Axis-aligned bounding box (AABB) tree data structure
-+ Node-based modular transform and drawing
-+ Procedural brush creation for GIMP (http://www.gimp.org/)
-+ Integration with Blender (http://www.blender.org/) via Python
-+ Drawing polygons and transformed images with SVG and PNG support
-+ OpenGL viewer
+• Basic vector math
+• Matrix transformations
+• Primitive 3D objects (Vertex, Line, Plane, Box, Sphere)
+• 3D Meshes
+• Tangent space (UV) calculations
+• Intersection checking
+• Axis-aligned bounding box (AABB) tree data structure
+• Node-based modular transform and drawing
+• Procedural brush creation for GIMP (http://www.gimp.org/)
+• Integration with Blender (http://www.blender.org/) via Python
+• Drawing polygons and transformed images with SVG and PNG support
+• OpenGL viewer
 
 Dependencies
 --------------------------------------------------------------------------
 
 GeoUtils depends on the following packages:
 
-+ Ionflux Object Base System (http://sf.net/projects/iftools)
-+ Ionflux Template Processor (http://sf.net/projects/iftools)
-+ IFMapping - Ionflux Mapping Library (http://sf.net/projects/ifcg)
-+ Altjira - Ionflux' Image Processing Library (optional, required for 
+• Ionflux Object Base System (http://sf.net/projects/iftools)
+• Ionflux Template Processor (http://sf.net/projects/iftools)
+• IFMapping - Ionflux Mapping Library (http://sf.net/projects/ifcg)
+• Altjira - Ionflux' Image Processing Library (optional, required for 
   pixel based image output, http://sf.net/projects/ifcg)
-+ Autodesk FBX SDK (optional, required for FBX file I/O, 
-  http://www.autodesk.com/products/fbx/overview)
+  
+The following dependencies are optional:
+
+• Python >= 3.3
+  required for the Python bindings
+• Autodesk FBX SDK (http://www.autodesk.com/products/fbx/overview)
+  required for FBX file I/O
+
+The following dependencies are optional and required for the GeoUtils 
+OpenGL utility library:
+
+• OpenGL (should be provided with your OS)
+• GLUT (http://freeglut.sourceforge.net)
+• glad (https://github.com/Dav1dde/glad)
+• GLFW (http://www.glfw.org)
 
 Make sure you get a recent SVN version of Ionflux Object Base System. 
 Older packages will most likely not work.
