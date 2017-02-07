@@ -121,7 +121,7 @@ while (not viewer.getShutdownFlag()):
         if (e0.getEventType() == ggl.ViewerEvent.TYPE_KEY):
             # handle key event
             if ((e0.getKeyCode() == 256) 
-                and (e0.getKeyAction() == 1)):
+                and (e0.getAction() == 1)):
                 # escape
                 viewer.closeWindow()
                 viewer.shutdown(False)
