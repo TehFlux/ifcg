@@ -42,7 +42,7 @@ IFCG depends on the following packages:
 * Ionflux Tools (https://github.com/TehFlux/iftools, optional, required for 
   generating the source files from the class configuration files)
 
-Make sure you get a recent SVN version of Ionflux Object Base System and 
+Make sure you get a recent development version of Ionflux Object Base System and 
 Ionflux Tools. Older packages will most likely not work.
 
 You can checkout the recent source code from GitHub like this:
