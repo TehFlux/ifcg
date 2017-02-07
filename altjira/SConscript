@@ -67,7 +67,7 @@ env0['PATH'] += (':' + lc.PATH)
 env = Environment(ENV = env0, 
     CPPPATH = ['include', 'deps/MersenneTwister/include'] + lc.CPPPATH, 
     LIBPATH = ['lib'] + lc.LIBPATH)
-env.MergeFlags(['-Wall', '-Wno-deprecated', '-O2'])
+env.MergeFlags(['-Wall', '-Wno-deprecated', '-O2', '-std=c++11'])
 
 if (hasattr(lc, 'debug') and lc.debug):
     debugDefault = 'yes'
@@ -118,7 +118,9 @@ def checkPkgConfig(ctx, pkg):
     ctx.Result(result)
     return result
 
-config = altjiraEnv.Configure(custom_tests = { 
+configEnv = altjiraEnv.Clone()
+configEnv.MergeFlags(['-std=c++11'])
+config = configEnv.Configure(custom_tests = { 
     "CheckProgram" : checkProgram, 
     "CheckPkgConfig" : checkPkgConfig })
 
