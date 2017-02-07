@@ -48,7 +48,7 @@ Ionflux Tools. Older packages will most likely not work.
 
 You can checkout the recent source code from GitHub like this:
 
-git clone https://github.com/TehFlux/ifcg.git
+git clone https://github.com/TehFlux/ifcg.git  
 git clone https://github.com/TehFlux/iftools.git
 
 The individual libraries that are part of IFCG may have additional 
