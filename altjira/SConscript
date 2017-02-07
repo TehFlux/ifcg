@@ -423,6 +423,8 @@ lookupTables = altjiraEnv.LookupTable(target = lutHeaders, source = [])
 # altjira shared library
 altjiraLibEnv = altjiraEnv.Clone()
 altjiraLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 'ifmapping'])
+altjiraLibEnv.MergeFlags([
+    '!pkg-config --cflags --libs gdk-pixbuf-2.0'])
 altjiraLib = altjiraLibEnv.SharedLibrary(target = "lib/altjira", 
     source = altjiraLibSources)
 
