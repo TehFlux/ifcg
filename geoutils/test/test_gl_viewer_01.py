@@ -44,7 +44,8 @@ print("  %s" % viewer.getString())
 
 print("Initializing shaders...")
 
-p0 = ggl.Program()
+p0 = ggl.Program.create()
+mm.addLocalRef(p0)
 p0.init()
 p0.use()
 
@@ -141,8 +142,9 @@ while (not viewer.getShutdownFlag()):
                 h = h0
                 ar = ar0
 
-viewer.shutdown()
 mm.removeLocalRef(vao0)
+mm.removeLocalRef(p0)
+viewer.shutdown()
 mm.removeLocalRef(viewer)
 
 print("All done!")
