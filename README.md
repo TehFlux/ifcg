@@ -1,5 +1,5 @@
 # IFCG - Ionflux Computer Graphics Toolkit
-Copyright © 2013-2017 ⚫ Joern P. Meier <webmaster@ionflux.org>
+Copyright © 2013-2017 • Jörn Meier <webmaster@ionflux.org>
 
 ---
 ## README
