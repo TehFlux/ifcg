@@ -1,13 +1,11 @@
-==========================================================================
-IFCG - Ionflux Computer Graphics Toolkit
-Copyright © 2013-2015 Joern P. Meier
-mail@ionflux.org
---------------------------------------------------------------------------
-README
-==========================================================================
+# IFCG - Ionflux Computer Graphics Toolkit
+Copyright © 2013-2017 Joern P. Meier <mail@ionflux.org>
 
-What is it?
---------------------------------------------------------------------------
+---
+## README
+---
+
+### What is it?
 
 The Ionflux Computer Graphics Toolkit (IFCG) is a collection of 
 libraries for 2D and 3D graphics processing. The toolkit is written 
@@ -36,30 +34,27 @@ IFVG         Volumetric graphics library
              octree data structure, a mesh voxelization engine and an 
              OpenGL viewer.
 
-Dependencies
---------------------------------------------------------------------------
+### Dependencies
 
 IFCG depends on the following packages:
 
-+ Ionflux Object Base System (http://sf.net/projects/iftools)
-+ Ionflux Tools (http://sf.net/projects/iftools, optional, required for 
+* Ionflux Object Base System (http://sf.net/projects/iftools)
+* Ionflux Tools (http://sf.net/projects/iftools, optional, required for 
   generating the source files from the class configuration files)
 
 Make sure you get a recent SVN version of Ionflux Object Base System and 
 Ionflux Tools. Older packages will most likely not work.
 
-You can checkout the recent source code from SVN like this:
+You can checkout the recent source code from GitHub like this:
 
-svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/ifobject ifobject-svn
-
-svn co https://iftools.svn.sourceforge.net/svnroot/iftools/trunk/iftools iftools-svn
+git clone https://github.com/TehFlux/ifcg.git
+git clone https://github.com/TehFlux/iftools.git
 
 The individual libraries that are part of IFCG may have additional 
 dependencies. Please refer to the documentation included with these 
 libraries.
 
-Building
---------------------------------------------------------------------------
+### Building
 
 Build all of the dependencies before you try to build IFCG. There 
 are build instructions included with the individual projects.
@@ -80,8 +75,7 @@ adjust the settings as required.
 If everything is set up correctly, you can build the project with 
 'scons' in the main directory.
 
-Using
---------------------------------------------------------------------------
+### Using
 
 The libraries in this project are intended for developers, so you should 
 be able to derive how it is meant to be used from the source code 
@@ -90,8 +84,7 @@ questions, you can still contact me by mail (mail@ionflux.org).
 
 Enjoy!
 
-Licensing
---------------------------------------------------------------------------
+### Licensing
 
 This software is released under the terms of the GNU General Public 
 License version 2.
