@@ -13,26 +13,27 @@ primarily in C++ and has full Python bindings for all components.
 
 Components of IFCG include:
 
-IFMapping    Mapping library.
-             IFMapping is used to create mappings of scalar values to 
-             scalar values or vectors at run-time. The library is based 
-             on modules that can be chained and combined as necessary 
-             to create the desired mapping.
+#### IFMapping
 
-Altjira      Image processing library.
-             Altjira is used for processing of 2D images.
+*Mapping library.* IFMapping is used to create mappings of scalar values 
+to scalar values or vectors at run-time. The library is based on modules 
+that can be chained and combined as necessary to create the desired mapping.
 
-GeoUtils     2D/3D geometry library.
-             GeoUtils is a 2D and 3D geometry library. It provides 
-             features such as polygon and mesh transformations and an 
-             AABB tree. It also contains a fully featured modular 
-             transform node framework.
+#### Altjira
+
+*Image processing library.* Altjira is used for processing of 2D images.
+
+#### GeoUtils
+
+* 2D/3D geometry library.* GeoUtils is a 2D and 3D geometry library. It provides 
+features such as polygon and mesh transformations and an AABB tree. It also 
+contains a fully featured modular transform node framework.
              
-IFVG         Volumetric graphics library
-             IFVG is a library for volumetric graphics processing and 
-             visualization. It includes an efficient and versatile 
-             octree data structure, a mesh voxelization engine and an 
-             OpenGL viewer.
+#### IFVG 
+
+*Volumetric graphics library.* IFVG is a library for volumetric graphics 
+processing and visualization. It includes an efficient and versatile 
+octree data structure, a mesh voxelization engine and an OpenGL viewer.
 
 ### Dependencies
 
