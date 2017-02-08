@@ -957,8 +957,8 @@ bool Image::hasAlpha() const
 
 void Image::clamp(Ionflux::Altjira::ImageRect& r0) const
 {
-	Ionflux::Mapping::Range xRange = { 0, width };
-	Ionflux::Mapping::Range yRange = { 0, height };
+	Ionflux::Mapping::Range xRange = { 0, static_cast<double>(width) };
+	Ionflux::Mapping::Range yRange = { 0, static_cast<double>(height) };
 	unsigned int ex = Ionflux::Mapping::clamp(r0.x + r0.width, xRange);
 	unsigned int ey = Ionflux::Mapping::clamp(r0.y + r0.height, yRange);
 	if (ex < r0.x)

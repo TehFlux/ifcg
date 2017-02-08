@@ -97,8 +97,8 @@ void initRectangle(Ionflux::Altjira::ImageRect& r, double x, double y,
 Ionflux::Altjira::ImageRect intersect(const Ionflux::Altjira::ImageRect& r0, 
     const Ionflux::Altjira::ImageRect& r1)
 {
-	Ionflux::Mapping::Range xRange = { r1.x, r1.x + r1.width };
-	Ionflux::Mapping::Range yRange = { r1.y, r1.y + r1.height };
+	Ionflux::Mapping::Range xRange = { static_cast<double>(r1.x), static_cast<double>(r1.x + r1.width) };
+	Ionflux::Mapping::Range yRange = { static_cast<double>(r1.y), static_cast<double>(r1.y + r1.height) };
 	ImageRect result;
 	result.x = Ionflux::Mapping::clamp(r0.x, xRange);
 	result.y = Ionflux::Mapping::clamp(r0.y, yRange);

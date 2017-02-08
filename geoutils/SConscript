@@ -68,7 +68,7 @@ env0 = os.environ
 env0['PATH'] += (':' + lc.PATH)
 
 env = Environment(ENV = env0, 
-    CPPPATH = ['include'] + lc.CPPPATH, 
+    CPPPATH = ['include', 'swig/include'] + lc.CPPPATH, 
     LIBPATH = ['lib'] + lc.LIBPATH)
 env.MergeFlags(['-Wall', '-Wno-deprecated', '-O2', '-std=c++11'])
 
@@ -530,7 +530,7 @@ glGeoUtilsWrapper = glGeoUtilsEnv.SWIGPython(target = [
     source = lc.swigInterfaceFile[3])
 
 glGeoUtilsPyModuleEnv = glGeoUtilsEnv.Clone()
-glGeoUtilsPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping', 
+glGeoUtilsPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping', 'altjira', 
     'geoutils', 'geoutilsgl', 'python' + lc.pythonVersion])
 
 glGeoUtilsPyModule = glGeoUtilsPyModuleEnv.SharedLibrary(
