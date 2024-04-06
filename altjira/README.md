@@ -36,7 +36,7 @@ Altjira depends on the following packages:
 
 + [Ionflux Object Base System](https://github.com/TehFlux/iftools)
 + [Ionflux Template Processor](https://github.com/TehFlux/iftools)
-+ [IFMapping - Ionflux Mapping Library](https://github.com/TehFlux/iftools)
++ [IFMapping - Ionflux Mapping Library](https://github.com/TehFlux/ifcg)
 + [GDK-PixBuf](https://docs.gtk.org/gdk-pixbuf/) (available on most Linux distributions)
 
 The following dependencies are optional, but highly recommended:
@@ -76,7 +76,7 @@ Altjira uses [SCons](http://www.scons.org/) as the build system.
 
 If you want to use custom configuration for the build process (for example, Python and ibrary paths), copy `site_scons/local_config.py.default` to `site_scons/local_config.py` and adjust the settings as required.
 
-It is recommended to use a [virtualenv](https://virtualenv.pypa.io/en/latest/) for the Python components of IFTemplate.
+It is recommended to use a [virtualenv](https://virtualenv.pypa.io/en/latest/) for the Python components of Altjira.
 
 You can easily create a virtualenv with e.g. `virtualenv ifcg_env` in a directory of your choice and then configure the build process to use this virtualenv for installation in `site_scons/local_config.py`.
 
@@ -94,7 +94,7 @@ Install with
 
 `scons install prefix=<installation base directory>`
 
-where <installation base directory> ist the directory where the Ionflux Object Base System should be installed.
+where <installation base directory> ist the directory where Altjira should be installed.
 
 ### WARNING
  
@@ -104,6 +104,6 @@ where <installation base directory> ist the directory where the Ionflux Object B
 
 ### Using
 
-This library is intended for developers, so you should be able to derive how it is meant to be used from the source code documentation and the scripts in the 'test' directory. If you have any questions, you can still contact me by mail.
+This library is intended for developers, so you should be able to derive how it is meant to be used from the source code documentation and the scripts in the `test` directory. If you have any questions, you can still contact me by mail.
 
 **Enjoy!**

@@ -58,7 +58,7 @@ IFMapping uses [SCons](http://www.scons.org/) as the build system.
 
 If you want to use custom configuration for the build process (for example, Python and ibrary paths), copy `site_scons/local_config.py.default` to `site_scons/local_config.py` and adjust the settings as required.
 
-It is recommended to use a [virtualenv](https://virtualenv.pypa.io/en/latest/) for the Python components of IFTemplate.
+It is recommended to use a [virtualenv](https://virtualenv.pypa.io/en/latest/) for the Python components of IFMapping.
 
 You can easily create a virtualenv with e.g. `virtualenv ifcg_env` in a directory of your choice and then configure the build process to use this virtualenv for installation in `site_scons/local_config.py`.
 
@@ -76,7 +76,7 @@ Install with
 
 `scons install prefix=<installation base directory>`
 
-where <installation base directory> ist the directory where the Ionflux Object Base System should be installed.
+where <installation base directory> ist the directory where IFMapping should be installed.
 
 ### WARNING
  
@@ -86,6 +86,6 @@ where <installation base directory> ist the directory where the Ionflux Object B
 
 ### Using
 
-This library is intended for developers, so you should be able to derive how it is meant to be used from the source code documentation and the scripts in the 'test' directory. If you have any questions, you can still contact me by mail.
+This library is intended for developers, so you should be able to derive how it is meant to be used from the source code documentation and the scripts in the `test` directory. If you have any questions, you can still contact me by mail.
 
 **Enjoy!**
