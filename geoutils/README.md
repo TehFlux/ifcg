@@ -51,7 +51,6 @@ The following dependencies are optional, but highly recommended:
 
 If you want to build the GeoUtils GL library, which provides OpenGL rendering capabilities, you will also need to provide the following dependencies:
 
-
 + OpenGL  
   this should be provided with your OS
 + [GLUT](http://freeglut.sourceforge.net)

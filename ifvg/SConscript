@@ -111,7 +111,7 @@ def checkPkgConfig(ctx, pkg):
         p0 = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT)
         d = p0.stdout.read()
-        if (d.find('was not found') != -1):
+        if (d.find(b'was not found') != -1):
             result = 0
         else:
             ctx.sconf.env.MergeFlags('!' + cmd)
@@ -153,28 +153,28 @@ if (not config.CheckLibWithHeader("geoutils", "geoutils/geoutils.hpp",
 if (not config.CheckLibWithHeader("altjirageoutils", 
     "geoutils/altjirageoutils.hpp", 'C++', autoadd = 0)):
     missingDeps += ['altjirageoutils']
-if (not config.CheckLibWithHeader("fbxsdk", 
-    "fbxsdk.h", 'C++', autoadd = 0)):
-    missingDeps += ['fbxsdk']
+#if (not config.CheckLibWithHeader("fbxsdk", 
+#    "fbxsdk.h", 'C++', autoadd = 0)):
+#    missingDeps += ['fbxsdk']
 
 if (len(missingDeps) > 0):
-    print "***********************************************************"
-    print "IFVG cannot be built because the following dependencies"
-    print "were not found:"
-    print " "
+    print("***********************************************************")
+    print("IFVG cannot be built because the following dependencies")
+    print("were not found:")
+    print(" ")
     for it in missingDeps:
-        print "  " + it
-    print " "
-    print "***********************************************************"
+        print("  " + it)
+    print(" ")
+    print("***********************************************************")
     Exit(1)
 
 buildPyModule = True
 missingDeps = []
 if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
     "Python.h", 'C', autoadd = 0)):
-    print "***************************************************"
-    print "Python not found - Python modules will NOT be built!"
-    print "***************************************************"
+    print("***************************************************")
+    print("Python not found - Python modules will NOT be built!")
+    print("***************************************************")
     buildPyModule = False
 
 missingDeps = []
@@ -193,14 +193,14 @@ if (not config.CheckLibWithHeader("glad", "glad/glad.h", 'C', autoadd = 0)):
     missingDeps += ["GLUT"]
 
 if (len(missingDeps) > 0):
-    print "********************************************************"
-    print "IFVG/Viewer  will NOT be built because the following "
-    print "dependencies were not found:"
-    print " "
+    print("********************************************************")
+    print("IFVG/Viewer  will NOT be built because the following ")
+    print("dependencies were not found:")
+    print(" ")
     for it in missingDeps:
-        print "  " + it
-    print " "
-    print "********************************************************"
+        print("  " + it)
+    print(" ")
+    print("********************************************************")
     buildViewerLib = False
 
 haveIFClassgen = True
@@ -211,9 +211,9 @@ if (not config.CheckProgram("iftpl0")):
     haveIFTpl = False
 haveSWIG = True
 if (not config.CheckProgram("swig")):
-    print "*************************************************"
-    print "SWIG not found - Python module will NOT be built!"
-    print "*************************************************"
+    print("*************************************************")
+    print("SWIG not found - Python module will NOT be built!")
+    print("*************************************************")
     haveSWIG = False
     buildPyModule = False
 
@@ -260,9 +260,9 @@ if (haveIFClassgen):
         ]
     allTargets += sources
 else:
-    print "**********************************************************"
-    print "ifclassgen not found - source files will NOT be generated!"
-    print "**********************************************************"
+    print("**********************************************************")
+    print("ifclassgen not found - source files will NOT be generated!")
+    print("**********************************************************")
 
 # XML object factory configuration files.
 if (haveIFTpl):
@@ -278,10 +278,10 @@ if (haveIFTpl):
     # Nothing here.
     allTargets += classXMLFactory
 else:
-    print "***********************************************************"
-    print "iftpl not found -  XML factory configuration files will NOT "
-    print "be generated!"
-    print "***********************************************************"
+    print("***********************************************************")
+    print("iftpl not found -  XML factory configuration files will NOT ")
+    print("be generated!")
+    print("***********************************************************")
 
 # XML object factory source files.
 xmlFactoryHeaders = []
@@ -298,10 +298,10 @@ if (haveIFClassgen):
         ifvgLibSources += [ 'build/xmlio/' + it + 'XMLFactory.cpp' ]
     allTargets += xmlFactorySources
 else:
-    print "**********************************************************"
-    print "ifclassgen not found - XML factory source files will NOT "
-    print "be generated!"
-    print "**********************************************************"
+    print("**********************************************************")
+    print("ifclassgen not found - XML factory source files will NOT ")
+    print("be generated!")
+    print("**********************************************************")
 
 # Interface declarations.
 if (haveIFTpl):
@@ -339,14 +339,14 @@ if (haveIFTpl):
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[1]]) ]
     allTargets += (classInterfaces + interfaces)
 else:
-    print "****************************************************************"
-    print "iftpl not found -  Interface declarations will NOT be generated!"
-    print "****************************************************************"
+    print("****************************************************************")
+    print("iftpl not found -  Interface declarations will NOT be generated!")
+    print("****************************************************************")
 
 # ifvg shared library
 ifvgLibEnv = ifvgEnv.Clone()
 ifvgLibEnv.Append(LIBS = ['ifobject', 'tinyxml', 'ifmapping', 'altjira', 
-    'geoutils', 'altjirageoutils', 'fbxsdk'])
+    'geoutils', 'altjirageoutils'])
 ifvgLib = ifvgLibEnv.SharedLibrary(target = "lib/ifvg", 
     source = ifvgLibSources)
 
@@ -383,7 +383,7 @@ ifvgWrapper = ifvgEnv.SWIGPython(target = [
 ifvgPyModuleEnv = ifvgEnv.Clone()
 ifvgPyModuleEnv.Append(LIBS = ['ifvg', 'python' + lc.pythonVersion])
 ifvgPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping', 'altjira', 
-    'geoutils', 'geoutilsfbx', 'altjirageoutils'])
+    'geoutils', 'altjirageoutils'])
 
 ifvgPyModule = ifvgPyModuleEnv.SharedLibrary(
     target = 'swig/python/_CIFVG', 
@@ -398,8 +398,7 @@ ifvgViewerLibWrapper = ifvgViewerEnv.SWIGPython(target = [
 
 ifvgViewerLibPyModuleEnv = ifvgViewerEnv.Clone()
 ifvgViewerLibPyModuleEnv.Append(LIBS = ['ifobject', 'ifmapping', 
-    'geoutils', 'geoutilsfbx', 'ifvg', 'ifvgviewer', 
-    'python' + lc.pythonVersion])
+    'geoutils', 'ifvg', 'ifvgviewer', 'python' + lc.pythonVersion])
 
 ifvgViewerLibPyModule = ifvgViewerLibPyModuleEnv.SharedLibrary(
     target = 'swig/python/_CIFVGViewer', 
@@ -431,7 +430,7 @@ if (buildPyModule):
         pyModuleTargets += ['swig/python/CIFVGViewer.py', 
             ifvgViewerLibPyModule]
     installPyModules = ifvgEnv.Install(
-        prefix + lc.pythonSitePackagesPath, pyModuleTargets)
+        lc.pythonSitePackagesPath, pyModuleTargets)
 
 allTargets += (targetLibs + targetBins + targetTests)
 if (buildPyModule):

@@ -46,7 +46,7 @@ def buildSource(source, target, env):
         c0 = ("ifclassgen0 -t " + lc.ifobjectTemplatePath 
             + " -c " + sourcePath + " -m conf/main.conf -i " 
             + targetIncludePath + " -s " + targetSrcPath + " " + cn)
-        print c0
+        print(c0)
         sp0 = subprocess.call(shlex.split(c0))
 
 def buildClassInterface(source, target, env):
@@ -63,7 +63,7 @@ def buildClassInterface(source, target, env):
         cn = classNames[k]
         c0 = ("iftpl0 -I " + lc.ifobjectTemplatePath 
             + " swig.interface " + sourceFiles[k] + " conf/main.conf")
-        print c0
+        print(c0)
         f0 = open(target[k].path, 'w')
         sp0 = subprocess.call(shlex.split(c0), stdout = f0)
         f0.close()
@@ -82,7 +82,7 @@ def buildInterface(source, target, env):
         elif (ext == '.tpl'):
             templateFile = it.path
     tplData = {}
-    p0 = re.compile("/\*.*?\*/", re.DOTALL)
+    p0 = re.compile("/\\*.*?\\*/", re.DOTALL)
     for k in range(0, len(classNames)):
         cn = classNames[k]
         tplData[cn] = p0.sub('', open(sourceFiles[k]).read())
@@ -105,7 +105,7 @@ def buildClassXMLFactory(source, target, env):
         c0 = ("iftpl0 -I " + lc.ifobjectTemplatePath 
             + " xml.conf.xml_object_factory conf/class/" + cn 
             + ".conf conf/main.conf")
-        print c0
+        print(c0)
         f0 = open("conf/class/xmlio/" + cn + "XMLFactory.conf", 'w')
         sp0 = subprocess.call(shlex.split(c0), stdout = f0)
         f0.close()
