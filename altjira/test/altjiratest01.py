@@ -53,39 +53,39 @@ c1 = ai.Color(0., 1., 0., 1.)
 #print ("Done (" + str(width * height) +" pixels filled in " + str(t1 - t0) 
 #    + " secs, " + str(width * height / (t1 - t0)) + " px/s)")
 
-print "Fill test..."
+print("Fill test...")
 t0 = time.time()
 img0.fill(c1)
 t1 = time.time()
 img0.writeToFile(outputDir + os.path.sep + 'test02.png')
-print ("Done (" + str(width * height) +" pixels filled in " + str(t1 - t0) 
+print("Done (" + str(width * height) +" pixels filled in " + str(t1 - t0) 
     + " secs, " + str(width * height / (t1 - t0)) + " px/s)")
 
-print "Color space conversion..."
+print("Color space conversion...")
 c2 = ai.Color(0.6, 0.3, 0.9, 1.)
-print "c2 = " + c2.getHex()
+print("c2 = " + c2.getHex())
 fc0 = ai.FloatColor()
 c2.getFloatColor(fc0)
-print "fc0 (RGB #0) = " + ai.getString(fc0)
+print("fc0 (RGB #0) = " + ai.getString(fc0))
 ai.toHSV(fc0)
-print "fc0 (HSV #1) = " + ai.getString(fc0)
+print("fc0 (HSV #1) = " + ai.getString(fc0))
 ai.toRGB(fc0)
-print "fc0 (RGB #2) = " + ai.getString(fc0)
+print("fc0 (RGB #2) = " + ai.getString(fc0))
 ai.toHSL(fc0)
-print "fc0 (HSL #3) = " + ai.getString(fc0)
+print("fc0 (HSL #3) = " + ai.getString(fc0))
 ai.toRGB(fc0)
-print "fc0 (RGB #4) = " + ai.getString(fc0)
+print("fc0 (RGB #4) = " + ai.getString(fc0))
 
-print "Copy test..."
+print("Copy test...")
 t0 = time.time()
 img1 = ai.Image(img0)
 t1 = time.time()
 img0.writeToFile(outputDir + os.path.sep + 'test03.png')
-print ("Done (image with " + str(img0.getWidth() * img0.getHeight()) 
+print("Done (image with " + str(img0.getWidth() * img0.getHeight()) 
     + " pixels copied in " + str(t1 - t0) + " secs, " 
     + str(img0.getWidth() * img0.getHeight() / (t1 - t0)) + " px/s)")
 
-print "Region fill test..."
+print("Region fill test...")
 img0.fill(c0)
 r0 = ai.ImageRect()
 r0.x = 0
@@ -97,9 +97,9 @@ img1.fill(img0, r0, 100, 100)
 t1 = time.time()
 img0.writeToFile(outputDir + os.path.sep + 'test04a.png')
 img1.writeToFile(outputDir + os.path.sep + 'test04b.png')
-print ("Done (" + str(r0.width * r0.height) + " pixels filled in " 
+print("Done (" + str(r0.width * r0.height) + " pixels filled in " 
     + str(t1 - t0) + " secs, " + str(r0.width * r0.height / (t1 - t0)) 
     + " px/s)")
 
-print "All tests completed!"
+print("All tests completed!")
 

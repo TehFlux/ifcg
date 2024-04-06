@@ -108,7 +108,7 @@ def checkPkgConfig(ctx, pkg):
         p0 = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT)
         d = p0.stdout.read()
-        if (d.find('was not found') != -1):
+        if (d.find(b'was not found') != -1):
             result = 0
         else:
             ctx.sconf.env.MergeFlags('!' + cmd)
@@ -144,22 +144,22 @@ if (not config.CheckLibWithHeader("ifmapping", "ifmapping/ifmapping.hpp",
     missingDeps += ['ifmapping']
 
 if (len(missingDeps) > 0):
-    print "**********************************************************"
-    print "Altjira cannot be built because the following dependencies"
-    print "were not found:"
-    print " "
+    print("**********************************************************")
+    print("Altjira cannot be built because the following dependencies")
+    print("were not found:")
+    print(" ")
     for it in missingDeps:
-        print "  " + it
-    print " "
-    print "**********************************************************"
+        print("  " + it)
+    print(" ")
+    print("**********************************************************")
     Exit(1)
 
 buildPyModule = True
 if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
     "Python.h", 'C', autoadd = 0)):
-    print "***************************************************"
-    print "Python not found - Python module will NOT be built!"
-    print "***************************************************"
+    print("***************************************************")
+    print("Python not found - Python module will NOT be built!")
+    print("***************************************************")
     buildPyModule = False
 
 haveIFClassgen = True
@@ -170,15 +170,15 @@ if (not config.CheckProgram("iftpl0")):
     haveIFTpl = False
 haveSWIG = True
 if (not config.CheckProgram("swig")):
-    print "*************************************************"
-    print "SWIG not found - Python module will NOT be built!"
-    print "*************************************************"
+    print("*************************************************")
+    print("SWIG not found - Python module will NOT be built!")
+    print("*************************************************")
     haveSWIG = False
     buildPyModule = False
 
 buildNoiseLib = True
 missingDeps = []
-if (not config.CheckLibWithHeader("noise", "noise.h", 'C++', 
+if (not config.CheckLibWithHeader("noise", "noise/noise.h", 'C++', 
     autoadd = 0)):
     missingDeps += ['libnoise']
 if (not config.CheckLibWithHeader("ifmappingnoise",
@@ -186,14 +186,14 @@ if (not config.CheckLibWithHeader("ifmappingnoise",
     missingDeps += ['ifmappingnoise']
 
 if (len(missingDeps) > 0):
-    print "*****************************************************"
-    print "AltjiraNoise will NOT be built because the following "
-    print "dependencies were not found:"
-    print " "
+    print("*****************************************************")
+    print("AltjiraNoise will NOT be built because the following ")
+    print("dependencies were not found:")
+    print(" ")
     for it in missingDeps:
-        print "  " + it
-    print " "
-    print "*****************************************************"
+        print("  " + it)
+    print(" ")
+    print("*****************************************************")
     buildAltjiraDraw = False
 
 buildAltjiraDraw = True
@@ -204,14 +204,14 @@ if (not config.CheckPkgConfig("librsvg-2.0")):
     missingDeps += ['rsvg']
 
 if (len(missingDeps) > 0):
-    print "****************************************************"
-    print "AltjiraDraw will NOT be built because the following "
-    print "dependencies were not found:"
-    print " "
+    print("****************************************************")
+    print("AltjiraDraw will NOT be built because the following ")
+    print("dependencies were not found:")
+    print(" ")
     for it in missingDeps:
-        print "  " + it
-    print " "
-    print "****************************************************"
+        print("  " + it)
+    print(" ")
+    print("****************************************************")
     buildAltjiraDraw = False
 
 altjiraEnv = config.Finish()
@@ -356,9 +356,9 @@ if (haveIFClassgen):
         ]
     allTargets += sources
 else:
-    print "**********************************************************"
-    print "ifclassgen not found - source files will NOT be generated!"
-    print "**********************************************************"
+    print("**********************************************************")
+    print("ifclassgen not found - source files will NOT be generated!")
+    print("**********************************************************")
 
 # Interface declarations.
 if (haveIFTpl):
@@ -399,9 +399,9 @@ if (haveIFTpl):
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[2]]) ]
     allTargets += (classInterfaces + interfaces)
 else:
-    print "****************************************************************"
-    print "iftpl not found -  Interface declarations will NOT be generated!"
-    print "****************************************************************"
+    print("****************************************************************")
+    print("iftpl not found -  Interface declarations will NOT be generated!")
+    print("****************************************************************")
 
 ## tinyxml
 #tinyxmlLib = env.SharedLibrary(target = 'deps/tinyxml/lib/tinyxml', 
@@ -533,7 +533,7 @@ if (buildPyModule):
     if (buildAltjiraDraw):
         pyModuleTargets += ['swig/python/AltjiraDraw.py', 
             altjiraDrawPyModule]
-    installPyModules = altjiraEnv.Install(prefix + lc.pythonSitePackagesPath, 
+    installPyModules = altjiraEnv.Install(lc.pythonSitePackagesPath, 
         pyModuleTargets)
 
 allTargets += (lookupTables + targetLibs + targetBins + targetTests)

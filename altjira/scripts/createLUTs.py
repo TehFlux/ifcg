@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ==========================================================================
 # Altjira - Ionflux' Image Processing Library
@@ -78,9 +78,9 @@ def createLUT(identifier, name, fileName, op):
     """Create LUT for operation."""
     d = ""
     k = 0
-    for i in xrange(0, 256):
+    for i in range(0, 256):
         x0 = float(i) / 255.
-        for j in xrange(0, 256):
+        for j in range(0, 256):
           k = 256 * i + j
           y0 = float(j) / 255.
           r = op(x0, y0)
