@@ -76,7 +76,7 @@ GeoUtils uses [SCons](http://www.scons.org/) as the build system.
 
 If you want to use custom configuration for the build process (for example, Python and ibrary paths), copy `site_scons/local_config.py.default` to `site_scons/local_config.py` and adjust the settings as required.
 
-It is recommended to use a [virtualenv](https://virtualenv.pypa.io/en/latest/) for the Python components of Altjira.
+It is recommended to use a [virtualenv](https://virtualenv.pypa.io/en/latest/) for the Python components of GeoUtils.
 
 You can easily create a virtualenv with e.g. `virtualenv ifcg_env` in a directory of your choice and then configure the build process to use this virtualenv for installation in `site_scons/local_config.py`.
 
