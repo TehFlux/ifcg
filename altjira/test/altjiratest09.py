@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ==========================================================================
 # Altjira - Ionflux' Image Processing Library
-# Copyright © 2009-2010 Jörn P. Meier
+# Copyright © 2009-2024 Jörn P. Meier
 # mail@ionflux.org
 # --------------------------------------------------------------------------
 # altjiratest09.py          Test script.

@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ==========================================================================
 # Altjira - Ionflux' Image Processing Library
-# Copyright © 2009-2011 Jörn P. Meier
+# Copyright © 2009-2024 Jörn P. Meier
 # mail@ionflux.org
 # --------------------------------------------------------------------------
 # altjiradrawtest02.py          Test script.
@@ -13,7 +13,7 @@
 # Altjira - Ionflux' Image Processing Library is free software; you can 
 # redistribute it and/or modify it under the terms of the GNU General 
 # Public  License as published by the Free Software Foundation; either 
-# version 2 of the License, or (at your option) any later version.
+# version 3 of the License, or (at your option) any later version.
 # 
 # Altjira - Ionflux' Image Processing Library is distributed in the hope 
 # that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -27,7 +27,7 @@
 # 
 # ==========================================================================
 """AltjiraDraw test 02."""
-import time, os, math
+import os
 import Altjira as ai
 import AltjiraDraw as ad
 import CGeoUtils as cg
