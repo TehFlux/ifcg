@@ -1,0 +1,27 @@
+pynoise - a python wrapper for libnoise
+---------------------------------------------------
+
+Requirements for compiling
+---------------
+
+  swig      - http://www.swig.org
+  libnoise  - http://libnoise.sf.net
+
+
+Building
+---------------
+
+pynoise now uses the standard python distutils. To install, use
+
+  $ python setup.py install
+
+The files noiseutils.cpp and noiseutils.h are from the libnoise website. They 
+are included with this project for ease of install. If you wish to use newer 
+versions of these files, simply copy them over files in this directory.
+
+
+Contact
+---------------
+
+Email: dunk@dunkfordyce.co.uk
+IRC: d1223m on irc.freenode.net (#python3d, #soya)

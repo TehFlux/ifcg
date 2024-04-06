@@ -7,5 +7,5 @@
  * 
  * Please see the 'docs' directory for additional documentation.
  * 
- * Copyright © 2010-2014 Jörn P. Meier &lt;mail@ionflux.org&gt;
+ * Copyright © 2010-2024 Jörn P. Meier &lt;webmaster@ionflux.org&gt;
  */

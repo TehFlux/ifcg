@@ -1,0 +1,254 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import os, subprocess, shutil, shlex, string, copy
+
+# Create a default local configuration file if it does not exist.
+if (not os.path.isfile('site_scons/local_config.py')):
+    shutil.copy('site_scons/local_config.py.default', 
+        'site_scons/local_config.py')
+
+import local_config as lc
+
+Help("""
+Type 'scons' to build the default targets.
+Type 'scons install' to install to default location.
+Type 'scons <target>' to build a specific target.
+
+You can add local configuration to site_scons/local_config.py.
+
+Targets:
+  (default)                    Everything.
+  all                          Everything
+  libs                         Shared libraries.
+  programs                     Programs.
+  tests                        Test programs.
+  pymodule                     Python module.
+  install                      Install headers, libraries and programs.
+
+Options:
+  prefix=<target directory>    Installation prefix
+                               (default: /usr/local)
+  debug=<yes|no>               Whether to use debug compiler flags 
+                               (default: yes)
+""")
+
+env0 = os.environ
+env0['PATH'] += (':' + lc.PATH)
+
+env = Environment(ENV = env0, 
+    CPPPATH = ['include', 'include/model', 'include/module'] + lc.CPPPATH, 
+    LIBPATH = ['lib'] + lc.LIBPATH)
+env.MergeFlags(['-Wall', '-Wno-deprecated', '-O2'])
+
+noiseEnv = env.Clone()
+
+if (ARGUMENTS.get('debug', 'no') == 'yes'):
+    env.Append(CCFLAGS = '-g')
+
+if (hasattr(lc, 'prefix')):
+    defaultPrefix = lc.prefix
+else:
+    defaultPrefix = '/usr/local'
+prefix = ARGUMENTS.get('prefix', defaultPrefix)
+
+noiseEnv.VariantDir('build', 'src')
+
+def checkProgram(ctx, cmd):
+    """Check for installed program."""
+    ctx.Message('Checking for ' + cmd + '... ')
+    try:
+        subprocess.call(cmd, stdout=subprocess.PIPE, 
+            stderr=subprocess.STDOUT)
+        result = 1
+    except Exception:
+        result = 0
+    ctx.Result(result)
+    return result
+
+config = noiseEnv.Configure(custom_tests = { 
+    "CheckProgram" : checkProgram })
+
+buildPyModule = True
+if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
+    "Python.h", 'C', autoadd = 0)):
+    print("***************************************************")
+    print("Python not found - Python module will NOT be built!")
+    print("***************************************************")
+    buildPyModule = False
+
+haveSWIG = True
+if (not config.CheckProgram("swig")):
+    print("*************************************************")
+    print("SWIG not found - Python module will NOT be built!")
+    print("*************************************************")
+    haveSWIG = False
+    buildPyModule = False
+
+noiseEnv = config.Finish()
+
+swigIncludes = ''
+for it in noiseEnv['CPPPATH']:
+    swigIncludes += ('-I' + it + ' ')
+swigPythonBuilder = Builder(action = "swig -c++ -python "
+    + swigIncludes + "-outdir swig/python -o $TARGET $SOURCE")
+
+noiseEnv.Append(BUILDERS = { 'SWIGPython' : swigPythonBuilder})
+
+noiseLibHeaders0 = [
+    'include/basictypes.h',
+    'include/exception.h', 
+    'include/interp.h', 
+    'include/latlon.h', 
+    'include/mathconsts.h', 
+    'include/misc.h', 
+    'include/noisegen.h', 
+    'include/noise.h', 
+    'include/vectortable.h', 
+    'include/noiseutils.h'
+]
+
+noiseLibModelHeaders = [
+    'include/model/cylinder.h', 
+    'include/model/line.h', 
+    'include/model/model.h', 
+    'include/model/plane.h', 
+    'include/model/sphere.h'
+]
+
+noiseLibModuleHeaders = [
+    'include/module/abs.h', 
+    'include/module/add.h', 
+    'include/module/billow.h', 
+    'include/module/blend.h', 
+    'include/module/cache.h', 
+    'include/module/checkerboard.h', 
+    'include/module/clamp.h', 
+    'include/module/const.h', 
+    'include/module/curve.h', 
+    'include/module/cylinders.h', 
+    'include/module/displace.h', 
+    'include/module/exponent.h', 
+    'include/module/invert.h', 
+    'include/module/max.h', 
+    'include/module/min.h', 
+    'include/module/modulebase.h', 
+    'include/module/module.h', 
+    'include/module/multiply.h', 
+    'include/module/perlin.h', 
+    'include/module/power.h', 
+    'include/module/ridgedmulti.h', 
+    'include/module/rotatepoint.h', 
+    'include/module/scalebias.h', 
+    'include/module/scalepoint.h', 
+    'include/module/select.h', 
+    'include/module/spheres.h', 
+    'include/module/terrace.h', 
+    'include/module/translatepoint.h', 
+    'include/module/turbulence.h', 
+    'include/module/voronoi.h'
+]
+
+noiseLibHeaders = (noiseLibHeaders0 + noiseLibModelHeaders 
+    + noiseLibModuleHeaders)
+
+noiseLibSources = ['build/latlon.cpp', 
+    'build/noisegen.cpp', 
+    'build/noiseutils.cpp', 
+    'build/model/cylinder.cpp', 
+    'build/model/line.cpp', 
+    'build/model/plane.cpp', 
+    'build/model/sphere.cpp', 
+    'build/module/abs.cpp', 
+    'build/module/add.cpp', 
+    'build/module/billow.cpp', 
+    'build/module/blend.cpp', 
+    'build/module/cache.cpp', 
+    'build/module/checkerboard.cpp', 
+    'build/module/clamp.cpp', 
+    'build/module/const.cpp', 
+    'build/module/curve.cpp', 
+    'build/module/cylinders.cpp', 
+    'build/module/displace.cpp', 
+    'build/module/exponent.cpp', 
+    'build/module/invert.cpp', 
+    'build/module/max.cpp', 
+    'build/module/min.cpp', 
+    'build/module/modulebase.cpp', 
+    'build/module/multiply.cpp', 
+    'build/module/perlin.cpp', 
+    'build/module/power.cpp', 
+    'build/module/ridgedmulti.cpp', 
+    'build/module/rotatepoint.cpp', 
+    'build/module/scalebias.cpp', 
+    'build/module/scalepoint.cpp', 
+    'build/module/select.cpp', 
+    'build/module/spheres.cpp', 
+    'build/module/terrace.cpp', 
+    'build/module/translatepoint.cpp', 
+    'build/module/turbulence.cpp', 
+    'build/module/voronoi.cpp'
+]
+
+allTargets = []
+
+# noise shared library
+noiseLibEnv = noiseEnv.Clone()
+#noiseLibEnv.Append(LIBS = [])
+noiseLib = noiseLibEnv.SharedLibrary(target = "lib/" + lc.baseName, 
+    source = noiseLibSources)
+
+targetLibs = [noiseLib]
+
+# programs.
+targetBins = []
+
+# tests
+
+targetTests = []
+
+# Python module.
+noiseWrapper = noiseEnv.SWIGPython(target = [ 
+        'swig/noise_wrap.cxx', 'swig/python/noise.py'], 
+    source = 'swig/noise.i')
+
+noisePyModuleEnv = noiseEnv.Clone()
+noisePyModuleEnv.Append(LIBS = ['noise', 'python' + lc.pythonVersion])
+
+noisePyModule = noisePyModuleEnv.SharedLibrary(
+    target = 'swig/python/_noise', 
+    source = 'swig/noise_wrap.cxx', SHLIBPREFIX = '', SHLIBSUFFIX = '.so')
+
+allHeaders = noiseLibHeaders
+
+installBinTargets = [targetBins]
+
+installHeaders0 = noiseEnv.Install(prefix + '/include/' + lc.baseName, 
+    noiseLibHeaders0 + [lc.swigInterfaceFile])
+installModelHeaders = noiseEnv.Install(prefix + '/include/' + lc.baseName 
+    + '/model', noiseLibModelHeaders)
+installModuleHeaders = noiseEnv.Install(prefix + '/include/' + lc.baseName 
+    + '/module', noiseLibModuleHeaders)
+installHeaders = [installHeaders0, installModelHeaders, installModuleHeaders]
+installLibs = noiseEnv.Install(prefix + '/lib', targetLibs)
+installBins = noiseEnv.Install(prefix + '/bin', installBinTargets)
+if (buildPyModule):
+    installPyModule = noiseEnv.Install(lc.pythonSitePackagesPath, 
+        ['swig/python/noise.py', noisePyModule])
+
+allTargets += (targetLibs + targetBins + targetTests)
+if (buildPyModule):
+    allTargets += [noisePyModule]
+
+installTargets = [installHeaders, installLibs, installBins]
+if (buildPyModule):
+    installTargets += [installPyModule]
+
+aliasLibs = Alias('libs', targetLibs)
+aliasBins = Alias('programs', targetBins)
+aliasTests = Alias('tests', targetTests)
+aliasAll = Alias('all', allTargets)
+aliasInstall = Alias('install', installTargets)
+if (buildPyModule):
+    aliasPyModule = Alias('pymodule', noisePyModule)
+
+Default('all')

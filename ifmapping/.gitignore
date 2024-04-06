@@ -1,0 +1,4 @@
+deps/libnoise/swig/noise_wrap.cxx
+deps/libnoise/swig/noise_wrap.os
+deps/libnoise/swig/python/*
+temp/

@@ -110,7 +110,7 @@ def checkPkgConfig(ctx, pkg):
         p0 = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT)
         d = p0.stdout.read()
-        if (d.find('was not found') != -1):
+        if (d.find(b'was not found') != -1):
             result = 0
         else:
             ctx.sconf.env.MergeFlags('!' + cmd)
@@ -139,22 +139,22 @@ if (not config.CheckLibWithHeader("ifobject", "ifobject/IFObject.hpp",
     missingDeps += ['ifobject']
 
 if (len(missingDeps) > 0):
-    print "************************************************************"
-    print "IFMapping cannot be built because the following dependencies"
-    print "were not found:"
-    print " "
+    print("************************************************************")
+    print("IFMapping cannot be built because the following dependencies")
+    print("were not found:")
+    print(" ")
     for it in missingDeps:
-        print "  " + it
-    print " "
-    print "************************************************************"
+        print("  " + it)
+    print(" ")
+    print("************************************************************")
     Exit(1)
 
 buildPyModule = True
 if (not config.CheckLibWithHeader("python" + lc.pythonVersion, 
     "Python.h", 'C', autoadd = 0)):
-    print "***************************************************"
-    print "Python not found - Python module will NOT be built!"
-    print "***************************************************"
+    print("***************************************************")
+    print("Python not found - Python module will NOT be built!")
+    print("***************************************************")
     buildPyModule = False
 
 haveIFClassgen = True
@@ -165,18 +165,18 @@ if (not config.CheckProgram("iftpl0")):
     haveIFTpl = False
 haveSWIG = True
 if (not config.CheckProgram("swig")):
-    print "*************************************************"
-    print "SWIG not found - Python module will NOT be built!"
-    print "*************************************************"
+    print("*************************************************")
+    print("SWIG not found - Python module will NOT be built!")
+    print("*************************************************")
     haveSWIG = False
     buildPyModule = False
 
 buildNoiseLib = True
-if (not config.CheckLibWithHeader("noise", "noise.h", 'C++', 
+if (not config.CheckLibWithHeader("noise", "noise/noise.h", 'C++', 
     autoadd = 0)):
-    print "*******************************************************"
-    print "libnoise not found - Noise utilities will NOT be built!"
-    print "*******************************************************"
+    print("*******************************************************")
+    print("libnoise not found - Noise utilities will NOT be built!")
+    print("*******************************************************")
     buildNoiseLib = False
 
 ifmappingEnv = config.Finish()
@@ -221,9 +221,9 @@ if (haveIFClassgen):
             ]
     allTargets += sources
 else:
-    print "**********************************************************"
-    print "ifclassgen not found - source files will NOT be generated!"
-    print "**********************************************************"
+    print("**********************************************************")
+    print("ifclassgen not found - source files will NOT be generated!")
+    print("**********************************************************")
 
 # XML object factory configuration files.
 if (haveIFTpl):
@@ -239,10 +239,10 @@ if (haveIFTpl):
     # Nothing here.
     allTargets += classXMLFactory
 else:
-    print "***********************************************************"
-    print "iftpl not found -  XML factory configuration files will NOT "
-    print "be generated!"
-    print "***********************************************************"
+    print("***********************************************************")
+    print("iftpl not found - XML factory configuration files will NOT ")
+    print("be generated!")
+    print("***********************************************************")
 
 # XML object factory source files.
 xmlFactoryHeaders = []
@@ -259,10 +259,10 @@ if (haveIFClassgen):
         ifmappingLibSources += [ 'build/xmlio/' + it + 'XMLFactory.cpp' ]
     allTargets += xmlFactorySources
 else:
-    print "**********************************************************"
-    print "ifclassgen not found - XML factory source files will NOT "
-    print "be generated!"
-    print "**********************************************************"
+    print("**********************************************************")
+    print("ifclassgen not found - XML factory source files will NOT ")
+    print("be generated!")
+    print("**********************************************************")
 
 # Interface declarations.
 if (haveIFTpl):
@@ -300,9 +300,9 @@ if (haveIFTpl):
         source = interfaceTargets + [lc.swigInterfaceTemplateFile[1]])]
     allTargets += (classInterfaces + [interfaces])
 else:
-    print "****************************************************************"
-    print "iftpl not found -  Interface declarations will NOT be generated!"
-    print "****************************************************************"
+    print("****************************************************************")
+    print("iftpl not found -  Interface declarations will NOT be generated!")
+    print("****************************************************************")
 
 ## tinyxml
 #tinyxmlLib = env.SharedLibrary(target = 'deps/tinyxml/lib/tinyxml', 
@@ -397,7 +397,7 @@ if (buildPyModule):
     if (buildNoiseLib):
         pyModuleTargets += ['swig/python/IFMappingNoise.py', 
             ifmappingNoisePyModule]
-    installPyModules = ifmappingEnv.Install(prefix + lc.pythonSitePackagesPath, 
+    installPyModules = ifmappingEnv.Install(lc.pythonSitePackagesPath, 
         pyModuleTargets)
 
 allTargets += (targetLibs + targetBins + targetTests)
