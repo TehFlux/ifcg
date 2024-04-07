@@ -1,6 +1,6 @@
 /* ==========================================================================
  * Altjira - Ionflux' Image Processing Library
- * Copyright © 2008-2010 Jörn P. Meier
+ * Copyright © 2008-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Image.cpp                       Image (implementation).
@@ -11,7 +11,7 @@
  * Altjira - Ionflux' Image Processing Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * Altjira - Ionflux' Image Processing Library is distributed in the hope 
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -996,6 +996,48 @@ Ionflux::Mapping::PointSet& target, unsigned int maxIters) const
 	if (pointsOK < numPoints)
 	    throw AltjiraError("[Image::getRandomPoints] "
 	        "Maximum number of iterations exceeded!");
+}
+
+void Image::getColorDifference(const Ionflux::Altjira::Color& refColor, 
+Ionflux::Altjira::Image& targetImage, Ionflux::Mapping::Mapping* mapping) 
+const
+{
+	unsigned int iMax = min(width, targetImage.width);
+	unsigned int jMax = min(height, targetImage.height);
+	Color pixel;
+	Color diffColor(Color::WHITE);
+	
+	for (unsigned int i = 0; i < iMax; i++)
+	{
+		for (unsigned int j = 0; j < jMax; j++)
+		{
+			getPixel(i, j, pixel);
+			double diff = pixel.getMeanSquaredError(refColor);
+			if (mapping != 0)
+				diff = Ionflux::Mapping::clamp(mapping->call(diff));
+			diffColor.setComponents(diff, diff, diff, 1.);
+			targetImage.setPixel(i, j, diffColor);
+		}
+	}
+}
+
+void Image::getChannel(Ionflux::Altjira::ChannelID channel, 
+Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace colorSpace) 
+const
+{
+	unsigned int iMax = min(width, target.getNumCols());
+	unsigned int jMax = min(height, target.getNumRows());
+	FloatColor pixel;
+	pixel.space = getColorSpaceForChannel(channel, colorSpace);
+	for (unsigned int i = 0; i < iMax; i++)
+	{
+		for (unsigned int j = 0; j < jMax; j++)
+		{
+			getPixel(i, j, pixel);
+			double chValue = getComponent(pixel, channel);
+			target.setValue(j, i, chValue);
+		}
+	}
 }
 
 Ionflux::ObjectBase::UInt64 Image::getSize() const

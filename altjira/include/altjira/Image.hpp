@@ -2,7 +2,7 @@
 #define IONFLUX_ALTJIRA_IMAGE
 /* ==========================================================================
  * Altjira - Ionflux' Image Processing Library
- * Copyright © 2008-2010 Jörn P. Meier
+ * Copyright © 2008-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Image.hpp                       Image (header).
@@ -13,7 +13,7 @@
  * Altjira - Ionflux' Image Processing Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * Altjira - Ionflux' Image Processing Library is distributed in the hope 
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -612,6 +612,32 @@ class Image
 		 */
 		virtual void getRandomPoints(unsigned int numPoints, 
 		Ionflux::Mapping::PointSet& target, unsigned int maxIters = 100) const;
+		
+		/** Get color difference.
+		 *
+		 * Calculate the difference of image pixels compared to a reference 
+		 * color and store the result in the target image.
+		 *
+		 * \param refColor Reference color.
+		 * \param targetImage Target image.
+		 * \param mapping Result mapping.
+		 */
+		virtual void getColorDifference(const Ionflux::Altjira::Color& refColor, 
+		Ionflux::Altjira::Image& targetImage, Ionflux::Mapping::Mapping* mapping 
+		= 0) const;
+		
+		/** Get channel.
+		 *
+		 * Get an image channel. The channel data will be stored in the target
+		 * matrix.
+		 *
+		 * \param channel Channel.
+		 * \param target Target matrix.
+		 * \param colorSpace Color space.
+		 */
+		virtual void getChannel(Ionflux::Altjira::ChannelID channel, 
+		Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace colorSpace
+		= Ionflux::Altjira::Color::SPACE_HSV) const;
 		
 		/** Get size.
 		 *

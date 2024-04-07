@@ -1,9 +1,9 @@
 /* ==========================================================================
  * Altjira - Ionflux' Image Processing Library
- * Copyright © 2009 Jörn P. Meier
+ * Copyright © 2009-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * imageutility.cpp               Image utility functions (implementation).
+ * imageutils.cpp               Image utility functions (implementation).
  * =========================================================================
  *
  * This file is part of Altjira - Ionflux' Image Processing Library.
@@ -11,7 +11,7 @@
  * Altjira - Ionflux' Image Processing Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * Altjira - Ionflux' Image Processing Library is distributed in the hope 
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -46,7 +46,8 @@ void init()
     if (!initialized)
     {
         // Initialize the GObject system.
-        g_type_init();
+        // [2024-04-07] g_type_init is deprecated
+        //g_type_init();
         initialized = true;
     }
 }

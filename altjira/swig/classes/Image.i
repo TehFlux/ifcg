@@ -1,6 +1,6 @@
 /* ==========================================================================
  * Altjira - Ionflux' Image Processing Library
- * Copyright © 2008-2010 Jörn P. Meier
+ * Copyright © 2008-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Image.i                         Image (interface).
@@ -11,7 +11,7 @@
  * Altjira - Ionflux' Image Processing Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * Altjira - Ionflux' Image Processing Library is distributed in the hope 
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -178,6 +178,12 @@ class Image
         virtual void getRandomPoints(unsigned int numPoints, 
         Ionflux::Mapping::PointSet& target, unsigned int maxIters = 100) 
         const;
+        virtual void getColorDifference(const Ionflux::Altjira::Color& 
+        refColor, Ionflux::Altjira::Image& targetImage, 
+        Ionflux::Mapping::Mapping* mapping = 0) const;
+        virtual void getChannel(Ionflux::Altjira::ChannelID channel, 
+        Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace 
+        colorSpace = Ionflux::Altjira::Color::SPACE_HSV) const;
         virtual Ionflux::ObjectBase::UInt64 getSize() const;
         virtual std::string getString() const;
         static Ionflux::Altjira::Image* create(unsigned int initWidth, 

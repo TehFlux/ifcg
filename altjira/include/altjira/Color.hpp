@@ -2,7 +2,7 @@
 #define IONFLUX_ALTJIRA_COLOR
 /* ==========================================================================
  * Altjira - Ionflux' Image Processing Library
- * Copyright © 2008-2010 Jörn P. Meier
+ * Copyright © 2008-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Color.hpp                       Color (header).
@@ -13,7 +13,7 @@
  * Altjira - Ionflux' Image Processing Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * Altjira - Ionflux' Image Processing Library is distributed in the hope 
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -363,6 +363,18 @@ class Color
 		 * \param value Value.
 		 */
 		virtual void multiply(Ionflux::Altjira::Color& target, double value);
+		
+		/** Get mean squared error.
+		 *
+		 * Get the mean squared error between the color and the reference 
+		 * color. The alpha value is ignored.
+		 *
+		 * \param refColor Reference color.
+		 *
+		 * \return Result of the calculation.
+		 */
+		virtual double getMeanSquaredError(const Ionflux::Altjira::Color& 
+		refColor);
 		
 		/** Pre-multiply alpha.
 		 *

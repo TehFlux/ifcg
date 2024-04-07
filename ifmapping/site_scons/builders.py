@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # ==========================================================================
 # Ionflux Object Base System
-# Copyright © 2006-2013 Joern P. Meier
+# Copyright © 2006-2024 Joern P. Meier
 # mail@ionflux.org
 # --------------------------------------------------------------------------
 # builders.py                  SCons builders.
@@ -12,7 +12,7 @@
 # 
 # Ionflux Object Base System is free software; you can redistribute it 
 # and/or modify it under the terms of the GNU General Public License as 
-# published by the Free Software Foundation; either version 2 of the 
+# published by the Free Software Foundation; either version 3 of the 
 # License, or (at  your option) any later version.
 # 
 # Ionflux Object Base System is distributed in the hope that it will be 
@@ -106,4 +106,3 @@ def buildClassXMLFactory(source, target, env):
         f0 = open("conf/class/xmlio/" + cn + "XMLFactory.conf", 'w')
         sp0 = subprocess.call(shlex.split(c0), stdout = f0)
         f0.close()
-

@@ -238,6 +238,8 @@ class Color
         Ionflux::Altjira::ByteColor& other);
         virtual void multiply(Ionflux::Altjira::Color& target, double 
         value);
+        virtual double getMeanSquaredError(const Ionflux::Altjira::Color& 
+        refColor);
         virtual void preMultiply(Ionflux::Altjira::Color& target);
         virtual void divideAlpha(Ionflux::Altjira::Color& target);
         virtual bool operator==(const Ionflux::Altjira::Color& other) 
@@ -1073,6 +1075,12 @@ class Image
         virtual void getRandomPoints(unsigned int numPoints, 
         Ionflux::Mapping::PointSet& target, unsigned int maxIters = 100) 
         const;
+        virtual void getColorDifference(const Ionflux::Altjira::Color& 
+        refColor, Ionflux::Altjira::Image& targetImage, 
+        Ionflux::Mapping::Mapping* mapping = 0) const;
+        virtual void getChannel(Ionflux::Altjira::ChannelID channel, 
+        Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace 
+        colorSpace = Ionflux::Altjira::Color::SPACE_HSV) const;
         virtual Ionflux::ObjectBase::UInt64 getSize() const;
         virtual std::string getString() const;
         static Ionflux::Altjira::Image* create(unsigned int initWidth, 
