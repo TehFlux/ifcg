@@ -22,10 +22,6 @@ New
 Critical stuff
 --------------------------------------------------------------------------------
 
-+ Build files
-  > update to state of the art
-  > add sources.py
-
 + Use Ionflux::ObjectBase::XMLUtils for XML I/O.
 
 + All uses of 'new' within the library should be checked for 0 return values.
