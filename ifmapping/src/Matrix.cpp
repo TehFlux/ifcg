@@ -72,12 +72,15 @@ Matrix::Matrix(const Ionflux::Mapping::Matrix& other)
 	*this = other;
 }
 
-Matrix::Matrix(unsigned int initNumRows, unsigned int initNumCols)
+Matrix::Matrix(unsigned int initNumRows, unsigned int initNumCols, const 
+Ionflux::ObjectBase::DoubleVector* const initValues)
 : values(0), numRows(initNumRows), numCols(initNumCols)
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	init(initNumRows, initNumCols);
+	if (initValues != nullptr)
+		setValues(*initValues);
 }
 
 Matrix::~Matrix()
@@ -137,6 +140,31 @@ void Matrix::setValue(unsigned int row, unsigned int col, double v)
 	    throw MappingError(status.str());
 	}
 	values[row * numCols + col] = v;
+}
+
+void Matrix::setValues(const Ionflux::ObjectBase::DoubleVector newValues)
+{
+	unsigned int numValues = newValues.size();
+	unsigned int i = 0;
+	unsigned int k = 0;
+	while ((k < numValues) && (i < numRows))
+	{
+		unsigned int j = 0;
+		while ((k < numValues) && (j < numCols))
+		{
+			values[i * numCols + j] = newValues[k];
+			k++;
+			j++;
+		}
+		i++;
+	}
+}
+
+void Matrix::getValues(Ionflux::ObjectBase::DoubleVector& target)
+{
+	for (unsigned int i = 0; i < numRows; i++)
+		for (unsigned int j = 0; j < numCols; j++)
+			target.push_back(values[i * numCols + j]);
 }
 
 double Matrix::getValue(unsigned int row, unsigned int col) const
@@ -329,7 +357,21 @@ parentObject)
     Matrix* newObject = new Matrix();
     if (newObject == 0)
     {
-        return 0;
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::Matrix* Matrix::create(unsigned int initNumRows, unsigned
+int initNumCols, const Ionflux::ObjectBase::DoubleVector* const initValues,
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix* newObject = new Matrix(initNumRows, initNumCols, initValues);
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
     }
     if (parentObject != 0)
         parentObject->addLocalRef(newObject);

@@ -101,8 +101,10 @@ class Matrix
 		 *
 		 * \param initNumRows Number of rows.
 		 * \param initNumCols Number of columns.
+		 * \param initValues Initial values.
 		 */
-		Matrix(unsigned int initNumRows, unsigned int initNumCols = 0);
+		Matrix(unsigned int initNumRows, unsigned int initNumCols = 0, const 
+		Ionflux::ObjectBase::DoubleVector* const initValues = nullptr);
 		
 		/** Destructor.
 		 *
@@ -129,6 +131,26 @@ class Matrix
 		 * \param v Value.
 		 */
 		virtual void setValue(unsigned int row, unsigned int col, double v);
+		
+		/** Set values from vector.
+		 *
+		 * Set values from a vector.
+		 *
+		 * \param newValues Values.
+		 */
+		virtual void setValues(const Ionflux::ObjectBase::DoubleVector 
+		newValues);
+		
+		/** Get values.
+		 *
+		 * Get values.
+		 * 
+		 * The values will be stored in the \c target vector in row-major 
+		 * order.
+		 *
+		 * \param target Target vector.
+		 */
+		virtual void getValues(Ionflux::ObjectBase::DoubleVector& target);
 		
 		/** Get value.
 		 *
@@ -280,6 +302,20 @@ class Matrix
 		 */
 		static Ionflux::Mapping::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Matrix object.
+		 *
+		 * \param initNumRows Number of rows.
+		 * \param initNumCols Number of columns.
+		 * \param initValues Initial values.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::Matrix* create(unsigned int initNumRows, 
+		unsigned int initNumCols = 0, const Ionflux::ObjectBase::DoubleVector* 
+		const initValues = nullptr, Ionflux::ObjectBase::IFObject* parentObject =
+		0);
 		
 		/** Get allocated size in memory.
 		 *

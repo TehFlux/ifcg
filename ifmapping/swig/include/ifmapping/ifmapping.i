@@ -2877,12 +2877,17 @@ class Matrix
         
         Matrix();
 		Matrix(const Ionflux::Mapping::Matrix& other);
-        Matrix(unsigned int initNumRows, unsigned int initNumCols = 0);
+        Matrix(unsigned int initNumRows, unsigned int initNumCols = 0, 
+        const Ionflux::ObjectBase::DoubleVector* const initValues = 
+        nullptr);
         virtual ~Matrix();
         virtual void init(unsigned int newNumRows = 0, unsigned int 
         newNumCols = 0);
         virtual void setValue(unsigned int row, unsigned int col, double 
         v);
+        virtual void setValues(const Ionflux::ObjectBase::DoubleVector 
+        newValues);
+        virtual void getValues(Ionflux::ObjectBase::DoubleVector& target);
         virtual double getValue(unsigned int row, unsigned int col) const;
         virtual void getRow(unsigned int row, 
         Ionflux::ObjectBase::DoubleVector& target) const;
@@ -2905,6 +2910,10 @@ class Matrix
 		static Ionflux::Mapping::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 		virtual unsigned int getMemSize() const;
+		static Ionflux::Mapping::Matrix* create(unsigned int initNumRows, 
+		unsigned int initNumCols = 0, const Ionflux::ObjectBase::DoubleVector* 
+		const initValues = nullptr, Ionflux::ObjectBase::IFObject* parentObject =
+		0);
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
 };
