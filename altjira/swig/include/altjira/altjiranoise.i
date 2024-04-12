@@ -4,7 +4,7 @@
 %include <exception.i>
 %module AltjiraNoise
 %import "altjira.i"
-%import "noise.i"
+%import "noise/noise.i"
 %{
 #include "altjira/altjira.hpp"
 #include "altjira/altjiranoise.hpp"

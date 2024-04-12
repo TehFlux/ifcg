@@ -82,7 +82,7 @@ void vecToColor(const Ionflux::GeoUtils::Vector4& v,
     target.setComponents(v[0], v[1], v[2], v[3]);
 }
 
-double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v)
+double sample(Ionflux::Mapping::Matrix& m, Ionflux::GeoUtils::Vertex3& v)
 {
     int x0 = static_cast<int>(v.getX());
     int y0 = static_cast<int>(v.getY());
@@ -92,7 +92,7 @@ double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v)
     return m.v(y0, x0);
 }
 
-double sampleMulti(Ionflux::Altjira::Matrix& m, 
+double sampleMulti(Ionflux::Mapping::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 
     Ionflux::GeoUtils::Matrix3* t, 
     Ionflux::GeoUtils::MatrixSamplingMethod method)
@@ -126,7 +126,7 @@ double sampleMulti(Ionflux::Altjira::Matrix& m,
     return r0 / numVerts;
 }
 
-Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Altjira::Matrix& m, 
+Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Mapping::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 
     const Ionflux::GeoUtils::Vector3& offset, double phi0, double phi1, 
     double dPhi, 
@@ -152,9 +152,9 @@ Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Altjira::Matrix& m,
     return result;
 }
 
-void sampleMultiRotMatrix(Ionflux::Altjira::Matrix& m, 
-    Ionflux::GeoUtils::Vertex3Set& vs, Ionflux::Altjira::Matrix& r0, 
-    Ionflux::Altjira::Matrix& r1, const Ionflux::GeoUtils::Vector3& offset, 
+void sampleMultiRotMatrix(Ionflux::Mapping::Matrix& m, 
+    Ionflux::GeoUtils::Vertex3Set& vs, Ionflux::Mapping::Matrix& r0, 
+    Ionflux::Mapping::Matrix& r1, const Ionflux::GeoUtils::Vector3& offset, 
     double phi0, double phi1, double dPhi, 
     Ionflux::GeoUtils::MatrixSamplingMethod method)
 {

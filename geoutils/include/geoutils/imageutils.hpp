@@ -2,7 +2,7 @@
 #define IONFLUX_GEOUTILS_IMAGE_UTILS
 /* ==========================================================================
  * GeoUtils - Ionflux' Geometry Library
- * Copyright © 2009-2012 Jörn P. Meier
+ * Copyright © 2009-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * imageutils.hpp                  Image utility functions (header).
@@ -13,7 +13,7 @@
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * GeoUtils - Ionflux' Geometry Library is distributed in the hope that it 
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied 
@@ -26,8 +26,8 @@
  * 02111-1307 USA
  * 
  * ========================================================================== */
+#include "ifmapping/Matrix.hpp"
 #include "altjira/Color.hpp"
-#include "altjira/Matrix.hpp"
 #include "geoutils/Vector2.hpp"
 #include "geoutils/Vector3.hpp"
 #include "geoutils/Vector4.hpp"
@@ -101,7 +101,7 @@ void vecToColor(const Ionflux::GeoUtils::Vector4& v,
  *
  * \return sample value
  */
-double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v);
+double sample(Ionflux::Mapping::Matrix& m, Ionflux::GeoUtils::Vertex3& v);
 
 /** Sample matrix.
  *
@@ -116,7 +116,7 @@ double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v);
  *
  * \return sample value
  */
-double sampleMulti(Ionflux::Altjira::Matrix& m, 
+double sampleMulti(Ionflux::Mapping::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 
     Ionflux::GeoUtils::Matrix3* t = 0, 
     Ionflux::GeoUtils::MatrixSamplingMethod method = SAMPLE_AVERAGE);
@@ -137,7 +137,7 @@ double sampleMulti(Ionflux::Altjira::Matrix& m,
  *
  * \return sample value
  */
-Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Altjira::Matrix& m, 
+Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Mapping::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 
     const Ionflux::GeoUtils::Vector3& offset, double phi0, double phi1, 
     double dPhi, 
@@ -162,9 +162,9 @@ Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Altjira::Matrix& m,
  *
  * \return sample value
  */
-void sampleMultiRotMatrix(Ionflux::Altjira::Matrix& m, 
-    Ionflux::GeoUtils::Vertex3Set& vs, Ionflux::Altjira::Matrix& r0, 
-    Ionflux::Altjira::Matrix& r1, const Ionflux::GeoUtils::Vector3& offset, 
+void sampleMultiRotMatrix(Ionflux::Mapping::Matrix& m, 
+    Ionflux::GeoUtils::Vertex3Set& vs, Ionflux::Mapping::Matrix& r0, 
+    Ionflux::Mapping::Matrix& r1, const Ionflux::GeoUtils::Vector3& offset, 
     double phi0, double phi1, double dPhi, 
     Ionflux::GeoUtils::MatrixSamplingMethod method = SAMPLE_AVERAGE);
 

@@ -11,7 +11,7 @@
  * GeoUtils - Ionflux' Geometry Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * GeoUtils - Ionflux' Geometry Library is distributed in the hope that it 
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied 
@@ -284,7 +284,6 @@ void Image::drawSVG(Ionflux::GeoUtils::SVG& svg, int originX, int originY)
 	// Set up transformations.
 	cairo_translate(context, 0.5 * width + originX, 0.5 * height + originY);
 	// Render the SVG.
-	g_type_init();
 	RsvgHandle* rsvg0 = 0;
 	std::string source = svg.getSource();
 	if (svg.getType() == SVG::TYPE_DATA)
@@ -498,7 +497,7 @@ std::string Image::getString() const
 	return Drawable::getString();
 }
 
-void Image::getValueMatrix(Ionflux::Altjira::Matrix& target)
+void Image::getValueMatrix(Ionflux::Mapping::Matrix& target)
 {
 	target.init(height, width);
 	Ionflux::Altjira::ByteColor sc;
@@ -516,7 +515,7 @@ void Image::getValueMatrix(Ionflux::Altjira::Matrix& target)
 	    }
 }
 
-void Image::setValueMatrix(const Ionflux::Altjira::Matrix& m)
+void Image::setValueMatrix(const Ionflux::Mapping::Matrix& m)
 {
 	Ionflux::Altjira::FloatColor tc0;
 	Ionflux::Altjira::ByteColor tc1;

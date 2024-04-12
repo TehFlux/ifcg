@@ -56,19 +56,19 @@ void colorToVec(const Ionflux::Altjira::Color& c,
     Ionflux::GeoUtils::Vector4& target);
 void vecToColor(const Ionflux::GeoUtils::Vector4& v, 
     Ionflux::Altjira::Color& target);
-double sample(Ionflux::Altjira::Matrix& m, Ionflux::GeoUtils::Vertex3& v);
-double sampleMulti(Ionflux::Altjira::Matrix& m, 
+double sample(Ionflux::Mapping::Matrix& m, Ionflux::GeoUtils::Vertex3& v);
+double sampleMulti(Ionflux::Mapping::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 
     Ionflux::GeoUtils::Matrix3* t = 0, 
     Ionflux::GeoUtils::MatrixSamplingMethod method = SAMPLE_AVERAGE);
-Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Altjira::Matrix& m, 
+Ionflux::GeoUtils::Vector2 sampleMultiRot(Ionflux::Mapping::Matrix& m, 
     Ionflux::GeoUtils::Vertex3Set& vs, 
     const Ionflux::GeoUtils::Vector3& offset, double phi0, double phi1, 
     double dPhi, 
     Ionflux::GeoUtils::MatrixSamplingMethod method = SAMPLE_AVERAGE);
-void sampleMultiRotMatrix(Ionflux::Altjira::Matrix& m, 
-    Ionflux::GeoUtils::Vertex3Set& vs, Ionflux::Altjira::Matrix& r0, 
-    Ionflux::Altjira::Matrix& r1, const Ionflux::GeoUtils::Vector3& offset, 
+void sampleMultiRotMatrix(Ionflux::Mapping::Matrix& m, 
+    Ionflux::GeoUtils::Vertex3Set& vs, Ionflux::Mapping::Matrix& r0, 
+    Ionflux::Mapping::Matrix& r1, const Ionflux::GeoUtils::Vector3& offset, 
     double phi0, double phi1, double dPhi, 
     Ionflux::GeoUtils::MatrixSamplingMethod method = SAMPLE_AVERAGE);
 

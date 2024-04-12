@@ -4,7 +4,7 @@
 %include <exception.i>
 %module IFMappingNoise
 %import "ifmapping.i"
-%import "noise.i"
+%import "noise/noise.i"
 %{
 #include "ifmapping/ifmapping.hpp"
 #include "ifmapping/xml_factories.hpp"
