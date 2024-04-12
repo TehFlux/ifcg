@@ -35,7 +35,7 @@
 #include "altjira/ColorBlender.hpp"
 #include "altjira/ColorBand.hpp"
 #include <climits>
-#include "ifobject/IFObject.hpp"
+#include "altjira/PixelSource.hpp"
 
 namespace Ionflux
 {
@@ -62,7 +62,7 @@ class ImageClassInfo
  * An image.
  */
 class Image
-: virtual public Ionflux::ObjectBase::IFObject
+: public Ionflux::Altjira::PixelSource
 {
 	private:
 		
@@ -364,7 +364,7 @@ class Image
 		 * \return \c true on success, \c false otherwise.
 		 */
 		virtual bool getPixel(unsigned int x, unsigned int y, 
-		Ionflux::Altjira::ByteColor& color);
+		Ionflux::Altjira::ByteColor& color) const;
 		
 		/** Get pixel color.
 		 *
@@ -523,7 +523,7 @@ class Image
 		 *
 		 * \return \c true on success, \c false otherwise.
 		 */
-		virtual bool setChannel(Ionflux::Altjira::Image& other, 
+		virtual bool setChannel(const Ionflux::Altjira::Image& other, 
 		Ionflux::Altjira::ChannelID source, Ionflux::Altjira::ChannelID target, 
 		Ionflux::Mapping::Mapping* mapping = 0, Ionflux::Altjira::ColorSpace 
 		sourceSpace = Ionflux::Altjira::Color::SPACE_UNDEFINED, 
@@ -531,6 +531,27 @@ class Image
 		Ionflux::Altjira::Color::SPACE_UNDEFINED, const 
 		Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX = 0, 
 		unsigned int offsetY = 0);
+		
+		/** Set channel.
+		 *
+		 * Set a channel of an image area to the value of a matrix area. The 
+		 * function will try to determine the target color space automatically
+		 * from the channel. The specified target color space will be used as 
+		 * a hint.
+		 *
+		 * \param matrix Matrix.
+		 * \param targetChannel Target Channel.
+		 * \param mapping Channel mapping.
+		 * \param sourceRect Source rectangle.
+		 * \param offsetX Target offset for filling (X).
+		 * \param offsetY Target offset for filling (Y).
+		 * \param targetSpace Target color space.
+		 */
+		virtual void setChannel(const Ionflux::Mapping::Matrix& matrix, 
+		Ionflux::Altjira::ChannelID targetChannel, Ionflux::Mapping::Mapping* 
+		mapping = 0, const Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned 
+		int offsetX = 0, unsigned int offsetY = 0, Ionflux::Altjira::ColorSpace 
+		targetSpace = Ionflux::Altjira::Color::SPACE_HSV);
 		
 		/** Apply alpha mask.
 		 *
@@ -658,23 +679,6 @@ class Image
 		 */
 		virtual std::string getString() const;
 		
-		/** Create image.
-		 *
-		 * Create a new image object.
-		 *
-		 * \param initWidth Width.
-		 * \param initHeight Height.
-		 * \param initAlpha Create alpha channel.
-		 * \param initBitsPerSample Bits pers sample.
-		 * \param initColorSpace Color space.
-		 *
-		 * \return New image.
-		 */
-		static Ionflux::Altjira::Image* create(unsigned int initWidth, unsigned 
-		int initHeight, bool initAlpha = true, unsigned int initBitsPerSample = 
-		8, Ionflux::Altjira::ColorSpace initColorSpace = 
-		Ionflux::Altjira::Color::SPACE_RGB);
-		
 		/** Assignment operator.
 		 *
 		 * Assign an object.
@@ -716,6 +720,33 @@ class Image
 		 * \return Pointer to the new instance.
 		 */
 		static Ionflux::Altjira::Image* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Image object.
+		 *
+		 * \param fileName File name of an image to be loaded.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Image* create(const std::string& fileName, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Image object.
+		 *
+		 * \param initWidth Width.
+		 * \param initHeight Height.
+		 * \param initAlpha Create alpha channel.
+		 * \param initBitsPerSample Bits pers sample.
+		 * \param initColorSpace Color space.
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Altjira::Image* create(unsigned int initWidth, unsigned 
+		int initHeight, bool initAlpha = true, unsigned int initBitsPerSample = 
+		8, Ionflux::Altjira::ColorSpace initColorSpace = 
+		Ionflux::Altjira::Color::SPACE_RGB, Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 		
 		/** Get allocated size in memory.

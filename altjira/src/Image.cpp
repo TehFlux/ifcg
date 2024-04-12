@@ -55,7 +55,7 @@ ImageClassInfo::ImageClassInfo()
 {
 	name = "Image";
 	desc = "Image";
-	baseClassInfo.push_back(Ionflux::ObjectBase::IFObject::CLASS_INFO);
+	baseClassInfo.push_back(Ionflux::Altjira::PixelSource::CLASS_INFO);
 }
 
 ImageClassInfo::~ImageClassInfo()
@@ -423,7 +423,7 @@ Ionflux::Altjira::Color& color)
 }
 
 bool Image::getPixel(unsigned int x, unsigned int y, 
-Ionflux::Altjira::ByteColor& color)
+Ionflux::Altjira::ByteColor& color) const
 {
 	if ((x < 0) && (x >= width))
 	    return false;
@@ -775,7 +775,7 @@ sourceRect, unsigned int offsetX, unsigned int offsetY)
 	return true;;
 }
 
-bool Image::setChannel(Ionflux::Altjira::Image& other, 
+bool Image::setChannel(const Ionflux::Altjira::Image& other, 
 Ionflux::Altjira::ChannelID source, Ionflux::Altjira::ChannelID target, 
 Ionflux::Mapping::Mapping* mapping, Ionflux::Altjira::ColorSpace 
 sourceSpace, Ionflux::Altjira::ColorSpace targetSpace, const 
@@ -783,20 +783,20 @@ Ionflux::Altjira::ImageRect* sourceRect, unsigned int offsetX, unsigned int
 offsetY)
 {
 	if (other.getNumChannels() != numChannels)
-	    return false;
+		return false;
 	unsigned int sw = other.getWidth();
 	unsigned int sh = other.getHeight();
 	ImageRect sr;
 	if (sourceRect == 0)
 	{
-	    sr.x = 0;
-	    sr.y = 0;
-	    sr.width = sw;
-	    sr.height = sh;
+		sr.x = 0;
+		sr.y = 0;
+		sr.width = sw;
+		sr.height = sh;
 	} else
 	{
-	    sr = *sourceRect;
-	    other.clamp(sr);
+		sr = *sourceRect;
+		other.clamp(sr);
 	}
 	ImageRect tr;
 	tr.x = offsetX;
@@ -806,9 +806,9 @@ offsetY)
 	clamp(tr);
 	/* <---- DEBUG ----- //
 	cerr << "[Image.setChannel] DEBUG: sr = [" << sr.x << ", " << sr.y 
-	    << ", " << sr.width << ", " << sr.height << "], tr = [" << tr.x 
-	    << ", " << tr.y << ", " << tr.width << ", " << tr.height << "]" 
-	    << endl;
+		<< ", " << sr.width << ", " << sr.height << "], tr = [" << tr.x 
+		<< ", " << tr.y << ", " << tr.width << ", " << tr.height << "]" 
+		<< endl;
 	// <---- DEBUG ----- */
 	unsigned int iMax = min(sr.width, tr.width);
 	unsigned int jMax = min(sr.height, tr.height);
@@ -817,17 +817,58 @@ offsetY)
 	ByteColor tc;
 	tc.space = getColorSpaceForChannel(target, targetSpace);
 	for (unsigned int i = 0; i < iMax; i++)
-	    for (unsigned int j = 0; j < jMax; j++)
-	    {
-	        other.getPixel(sr.x + i, sr.y + j, sc);
-	        getPixel(tr.x + i, tr.y + j, tc);
-	        ByteColorValue v0 = getComponent(sc, source);
-	        if (mapping != 0)
-	            v0 = floatToByte((*mapping)(byteToFloat(v0)));
-	        setComponent(tc, target, v0);
-	        setPixel(tr.x + i, tr.y + j, tc);
-	    }
-	return true;;
+	{
+		for (unsigned int j = 0; j < jMax; j++)
+		{
+			other.getPixel(sr.x + i, sr.y + j, sc);
+			getPixel(tr.x + i, tr.y + j, tc);
+			ByteColorValue v0 = getComponent(sc, source);
+			if (mapping != 0)
+				v0 = floatToByte((*mapping)(byteToFloat(v0)));
+			setComponent(tc, target, v0);
+			setPixel(tr.x + i, tr.y + j, tc);
+		}
+	}
+	return true;
+}
+
+void Image::setChannel(const Ionflux::Mapping::Matrix& matrix, 
+Ionflux::Altjira::ChannelID targetChannel, Ionflux::Mapping::Mapping* 
+mapping, const Ionflux::Altjira::ImageRect* sourceRect, unsigned int 
+offsetX, unsigned int offsetY, Ionflux::Altjira::ColorSpace targetSpace)
+{
+	ImageRect mDim;
+	mDim.x = 0;
+	mDim.y = 0;
+	mDim.width = matrix.getNumCols();
+	mDim.height = matrix.getNumRows();
+	ImageRect sr;
+	if (sourceRect == 0)
+		sr = mDim;
+	else
+		sr = intersect(mDim, *sourceRect);
+	ImageRect tr;
+	tr.x = offsetX;
+	tr.y = offsetY;
+	tr.width = sr.width;
+	tr.height = sr.height;
+	clamp(tr);
+	unsigned int iMax = min(sr.width, tr.width);
+	unsigned int jMax = min(sr.height, tr.height);
+	ByteColor pixel;
+	pixel.space = getColorSpaceForChannel(targetChannel, targetSpace);
+	for (unsigned int i = 0; i < iMax; i++)
+	{
+		for (unsigned int j = 0; j < jMax; j++)
+		{
+			getPixel(tr.x + i, tr.y + j, pixel);
+			double v0 = matrix.v(j, i);
+			if (mapping != 0)
+				v0 = (*mapping)(v0);
+			setComponent(pixel, targetChannel, floatToByte(v0));
+			setPixel(tr.x + i, tr.y + j, pixel);
+		}
+	}
 }
 
 bool Image::mask(Ionflux::Altjira::Image& other, 
@@ -1054,16 +1095,6 @@ std::string Image::getString() const
 	return state.str();
 }
 
-Ionflux::Altjira::Image* Image::create(unsigned int initWidth, unsigned int
-initHeight, bool initAlpha, unsigned int initBitsPerSample, 
-Ionflux::Altjira::ColorSpace initColorSpace)
-{
-	Image* result = create();
-	result->createNewData(initWidth, initHeight, initAlpha, 
-	    initBitsPerSample, initColorSpace);
-	return result;
-}
-
 unsigned int Image::getNumChannels() const
 {
     return numChannels;
@@ -1105,7 +1136,7 @@ other)
     createNewData(other.getWidth(), other.getHeight(), 
         other.hasAlpha(), other.getBitsPerSample(), other.getColorSpace());
     fill(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Altjira::Image* Image::copy() const
@@ -1125,6 +1156,35 @@ Ionflux::Altjira::Image* Image::create(Ionflux::ObjectBase::IFObject*
 parentObject)
 {
     Image* newObject = new Image();
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Image* Image::create(const std::string& fileName, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Image* newObject = new Image(fileName);
+    if (newObject == 0)
+    {
+        throw AltjiraError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Altjira::Image* Image::create(unsigned int initWidth, unsigned int
+initHeight, bool initAlpha, unsigned int initBitsPerSample, 
+Ionflux::Altjira::ColorSpace initColorSpace, Ionflux::ObjectBase::IFObject*
+parentObject)
+{
+    Image* newObject = new Image(initWidth, initHeight, initAlpha, 
+    initBitsPerSample, initColorSpace);
     if (newObject == 0)
     {
         throw AltjiraError("Could not allocate object.");

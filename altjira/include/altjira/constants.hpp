@@ -28,6 +28,7 @@
  * ========================================================================== */
 
 #include <string>
+#include <limits>
 #include "ifmapping/types.hpp"
 #include "altjira/types.hpp"
 
@@ -82,6 +83,9 @@ const Ionflux::Altjira::FillRule FILL_RULE_EVEN_ODD = 1;
 const std::string DEFAULT_FONT_DESCRIPTION = "Bitstream Vera Sans";
 /// Default font size.
 const double DEFAULT_FONT_SIZE = 20.;
+
+// Infinite extent.
+const unsigned int EXTENT_INFINITE = std::numeric_limits<unsigned int>::max();
 
 }
 

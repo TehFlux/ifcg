@@ -270,7 +270,7 @@ Ionflux::Altjira::ImagePattern& other)
     Ionflux::Altjira::Pattern::operator=(other);
     if (image != other.image)
         setImage(other.image);
-	return *this;
+    return *this;
 }
 
 Ionflux::Altjira::ImagePattern* ImagePattern::copy() const

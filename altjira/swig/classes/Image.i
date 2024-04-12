@@ -45,7 +45,7 @@ class ImageClassInfo
 };
 
 class Image
-: virtual public Ionflux::ObjectBase::IFObject
+: public Ionflux::Altjira::PixelSource
 {
     public:
 		static const Ionflux::Altjira::ImageType TYPE_PNG;
@@ -127,7 +127,7 @@ class Image
         virtual bool setPixel(unsigned int x, unsigned int y, const 
         Ionflux::Altjira::Color& color);
         virtual bool getPixel(unsigned int x, unsigned int y, 
-        Ionflux::Altjira::ByteColor& color);
+        Ionflux::Altjira::ByteColor& color) const;
         virtual bool getPixel(unsigned int x, unsigned int y, 
         Ionflux::Altjira::FloatColor& color) const;
         virtual bool getPixel(unsigned int x, unsigned int y, 
@@ -153,7 +153,7 @@ class Image
         const Ionflux::Mapping::Matrix& matrix, const 
         Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);
-        virtual bool setChannel(Ionflux::Altjira::Image& other, 
+        virtual bool setChannel(const Ionflux::Altjira::Image& other, 
         Ionflux::Altjira::ChannelID source, Ionflux::Altjira::ChannelID 
         target, Ionflux::Mapping::Mapping* mapping = 0, 
         Ionflux::Altjira::ColorSpace sourceSpace = 
@@ -162,6 +162,12 @@ class Image
         Ionflux::Altjira::Color::SPACE_UNDEFINED, const 
         Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);
+        virtual void setChannel(const Ionflux::Mapping::Matrix& matrix, 
+        Ionflux::Altjira::ChannelID targetChannel, 
+        Ionflux::Mapping::Mapping* mapping = 0, const 
+        Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX =
+        0, unsigned int offsetY = 0, Ionflux::Altjira::ColorSpace 
+        targetSpace = Ionflux::Altjira::Color::SPACE_HSV);
         virtual bool mask(Ionflux::Altjira::Image& other, 
         Ionflux::Altjira::ChannelID source = Ionflux::Altjira::CH_VALUE, 
         Ionflux::Mapping::Mapping* mapping = 0, 
@@ -186,16 +192,19 @@ class Image
         colorSpace = Ionflux::Altjira::Color::SPACE_HSV) const;
         virtual Ionflux::ObjectBase::UInt64 getSize() const;
         virtual std::string getString() const;
-        static Ionflux::Altjira::Image* create(unsigned int initWidth, 
-        unsigned int initHeight, bool initAlpha = true, unsigned int 
-        initBitsPerSample = 8, Ionflux::Altjira::ColorSpace initColorSpace 
-        = Ionflux::Altjira::Color::SPACE_RGB);
 		virtual Ionflux::Altjira::Image* copy() const;
 		static Ionflux::Altjira::Image* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		static Ionflux::Altjira::Image* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 		virtual unsigned int getMemSize() const;
+		static Ionflux::Altjira::Image* create(const std::string& fileName, 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Altjira::Image* create(unsigned int initWidth, unsigned 
+		int initHeight, bool initAlpha = true, unsigned int initBitsPerSample = 
+		8, Ionflux::Altjira::ColorSpace initColorSpace = 
+		Ionflux::Altjira::Color::SPACE_RGB, Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
         virtual unsigned int getNumChannels() const;
         virtual unsigned int getBitsPerSample() const;
         virtual Ionflux::Altjira::ColorSpace getColorSpace() const;

@@ -1,5 +1,10 @@
 # Completed
 
+## Image
+
+- ▶️ 🔴🐒 *[2024-04-12]* **Fill an image using a pixel source with coordinate lookup.**
+    - [x] Image is a PixelSource *[🐁 completed: 2024-04-12]*
+
 ## General
 
 - [x] 🟠🐒 *[2024-04-12]* Move Matrix type to IFMapping. *[🐁 completed: 2024-04-12]*

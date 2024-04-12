@@ -1,19 +1,17 @@
-#ifndef IONFLUX_ALTJIRA
-#define IONFLUX_ALTJIRA
 /* ==========================================================================
  * Altjira - Ionflux' Image Processing Library
- * Copyright © 2009-2010 Jörn P. Meier
+ * Copyright © 2008-2024 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
- * altjira.hpp                    Altjira library (header).
+ * PixelSource.i                   Pixel source (interface).
  * =========================================================================
- *
+ * 
  * This file is part of Altjira - Ionflux' Image Processing Library.
  * 
  * Altjira - Ionflux' Image Processing Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
- * version 2 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * Altjira - Ionflux' Image Processing Library is distributed in the hope 
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
@@ -26,27 +24,42 @@
  * 02111-1307 USA
  * 
  * ========================================================================== */
-
-#include "altjira/types.hpp"
-#include "altjira/utils.hpp"
-#include "altjira/imageutils.hpp"
-#include "altjira/constants.hpp"
-#include "altjira/AltjiraError.hpp"
-#include "altjira/Color.hpp"
-#include "altjira/ColorBand.hpp"
-#include "altjira/ColorBlender.hpp"
-#include "altjira/BlendSrcOver.hpp"
-#include "altjira/BlendMultiply.hpp"
-#include "altjira/BlendLighten.hpp"
-#include "altjira/BlendDarken.hpp"
-#include "altjira/BlendPlus.hpp"
-#include "altjira/BlendChannel.hpp"
+%{
 #include "altjira/PixelSource.hpp"
-#include "altjira/Image.hpp"
-#include "altjira/ImageSet.hpp"
-#include "altjira/ColorSet.hpp"
+%}
 
-/** \file altjira.hpp
- * \brief Altjira library (header).
- */
-#endif
+namespace Ionflux
+{
+
+namespace Altjira
+{
+
+class PixelSourceClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        PixelSourceClassInfo();
+        virtual ~PixelSourceClassInfo();
+};
+
+class PixelSource
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        PixelSource();
+		PixelSource(const Ionflux::Altjira::PixelSource& other);
+        virtual ~PixelSource();
+        virtual unsigned int getWidth() const = 0;
+        virtual unsigned int getHeight() const = 0;
+        virtual bool getPixel(unsigned int x, unsigned int y, 
+        Ionflux::Altjira::ByteColor& color) const = 0;
+        virtual bool getPixel(unsigned int x, unsigned int y, 
+        Ionflux::Altjira::FloatColor& color) const = 0;
+        virtual bool getPixel(unsigned int x, unsigned int y, 
+        Ionflux::Altjira::Color& color) const = 0;
+};
+
+}
+
+}

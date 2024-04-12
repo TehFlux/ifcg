@@ -1,8 +1,6 @@
 # In Progress
 
-## Matrix
-
-- ▶️ 🔴🐁 *[2024-04-12]* Extract matrix columns or rows.
+*nothing here yet*
 
 ---
 ### Priorities
