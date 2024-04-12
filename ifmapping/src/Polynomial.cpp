@@ -210,7 +210,7 @@ Ionflux::Mapping::Polynomial& other)
 {
     ChainableMapping::operator=(other);
     coefficients = other.coefficients;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Polynomial* Polynomial::copy() const

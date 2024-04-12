@@ -197,7 +197,7 @@ Ionflux::Mapping::BrentLinearRootFinder& other)
 {
 if (this == &other)
     return *this;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::BrentLinearRootFinder* BrentLinearRootFinder::copy() 

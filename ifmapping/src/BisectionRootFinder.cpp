@@ -140,7 +140,7 @@ Ionflux::Mapping::BisectionRootFinder& other)
 {
 if (this == &other)
     return *this;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::BisectionRootFinder* BisectionRootFinder::copy() const

@@ -791,7 +791,7 @@ Ionflux::Mapping::Segment& other)
         setP1(other.p1->copy());
     else
         setP1(0);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Segment* Segment::copy() const

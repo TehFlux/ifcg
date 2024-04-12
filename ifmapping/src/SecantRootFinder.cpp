@@ -113,7 +113,7 @@ Ionflux::Mapping::SecantRootFinder& other)
 {
 if (this == &other)
     return *this;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::SecantRootFinder* SecantRootFinder::copy() const

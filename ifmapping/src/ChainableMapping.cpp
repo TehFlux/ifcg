@@ -173,7 +173,7 @@ Ionflux::Mapping::ChainableMapping& other)
     setFunc(other.func);
     scale = other.scale;
     offset = other.offset;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::ChainableMapping* 

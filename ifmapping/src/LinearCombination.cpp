@@ -217,7 +217,7 @@ Ionflux::Mapping::LinearCombination& other)
     }
     clearPieces();
     addPieces(v0);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::LinearCombination* LinearCombination::copy() const

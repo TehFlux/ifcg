@@ -258,7 +258,7 @@ Ionflux::Mapping::Rescale& other)
 {
     args = other.args;
     setFunc(other.func);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Rescale* Rescale::copy() const

@@ -93,7 +93,7 @@ Ionflux::Mapping::Cubic& Cubic::operator=(const Ionflux::Mapping::Cubic&
 other)
 {
     Linear::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Cubic* Cubic::copy() const

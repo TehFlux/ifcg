@@ -121,7 +121,7 @@ other)
 {
     ChainableMapping::operator=(other);
     exponent = other.exponent;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Power* Power::copy() const

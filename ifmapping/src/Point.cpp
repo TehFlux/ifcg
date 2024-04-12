@@ -307,7 +307,7 @@ other)
     x = other.x;
     y = other.y;
     z = other.z;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Point* Point::copy() const

@@ -132,7 +132,7 @@ Ionflux::Mapping::BezierSplineKey& other)
 {
     BezierSpline::operator=(other);
     t = other.t;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::BezierSplineKey* BezierSplineKey::copy() const

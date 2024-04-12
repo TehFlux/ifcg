@@ -140,7 +140,7 @@ other)
     *counterImpl = *other.counterImpl;
     modulus = other.modulus;
     adjustment = other.adjustment;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Count* Count::copy() const

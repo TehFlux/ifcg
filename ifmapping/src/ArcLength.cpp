@@ -233,7 +233,7 @@ Ionflux::Mapping::ArcLength& other)
     setFunc(other.func);
     refParam = other.refParam;
     relativeError = other.relativeError;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::ArcLength* ArcLength::copy() const

@@ -170,7 +170,7 @@ other)
 {
     setMapping(other.mapping);
     param = other.param;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Piece* Piece::copy() const

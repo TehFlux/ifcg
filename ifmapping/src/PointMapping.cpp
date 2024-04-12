@@ -215,7 +215,7 @@ Ionflux::Mapping::PointMapping& other)
 {
 if (this == &other)
     return *this;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::PointMapping* PointMapping::copy() const

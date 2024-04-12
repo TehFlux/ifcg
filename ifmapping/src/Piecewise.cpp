@@ -330,7 +330,7 @@ Ionflux::Mapping::Piecewise& other)
     }
     clearPieces();
     addPieces(v0);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Piecewise* Piecewise::copy() const

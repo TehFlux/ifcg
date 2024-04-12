@@ -206,7 +206,7 @@ Ionflux::Mapping::PointMappingSet& other)
         addMapping(*i);
         removeLocalRef(*i);
     }
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::PointMappingSet* PointMappingSet::copy() const

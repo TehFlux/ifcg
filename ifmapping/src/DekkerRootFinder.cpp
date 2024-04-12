@@ -169,7 +169,7 @@ Ionflux::Mapping::DekkerRootFinder& other)
 {
 if (this == &other)
     return *this;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::DekkerRootFinder* DekkerRootFinder::copy() const

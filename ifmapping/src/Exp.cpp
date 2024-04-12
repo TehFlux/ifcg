@@ -93,7 +93,7 @@ Exp::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::Exp& Exp::operator=(const Ionflux::Mapping::Exp& other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Exp* Exp::copy() const

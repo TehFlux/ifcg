@@ -137,7 +137,7 @@ other)
     ChainableMapping::operator=(other);
     maxIters = other.maxIters;
     acceptRange = other.acceptRange;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Accept* Accept::copy() const

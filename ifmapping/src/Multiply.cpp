@@ -204,7 +204,7 @@ Ionflux::Mapping::Multiply& other)
         addFunc(*i);
         removeLocalRef(*i);
     }
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Multiply* Multiply::copy() const

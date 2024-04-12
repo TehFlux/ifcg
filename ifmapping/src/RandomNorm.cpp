@@ -121,7 +121,7 @@ Ionflux::Mapping::RandomNorm& other)
     ChainableMapping::operator=(other);
     mean = other.mean;
     stdDev = other.stdDev;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::RandomNorm* RandomNorm::copy() const

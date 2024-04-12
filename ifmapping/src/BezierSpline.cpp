@@ -386,7 +386,7 @@ Ionflux::Mapping::BezierSpline& other)
     // <---- DEBUG ----- */
     clearSegments();
     addSegments(v0);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::BezierSpline* BezierSpline::copy() const

@@ -267,7 +267,7 @@ Ionflux::Mapping::BezierCurve& other)
 {
     PointSet::operator=(other);
     validate();
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::BezierCurve* BezierCurve::copy() const

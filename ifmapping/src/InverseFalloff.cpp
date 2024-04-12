@@ -120,7 +120,7 @@ Ionflux::Mapping::InverseFalloff& other)
 {
     ChainableMapping::operator=(other);
     exponent = other.exponent;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::InverseFalloff* InverseFalloff::copy() const

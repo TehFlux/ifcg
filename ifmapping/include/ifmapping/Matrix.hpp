@@ -141,6 +141,30 @@ class Matrix
 		 */
 		virtual double getValue(unsigned int row, unsigned int col) const;
 		
+		/** Get row.
+		 *
+		 * Get the specified row of the matrix.
+		 * 
+		 * The result will be stored in \c target.
+		 *
+		 * \param row Row index.
+		 * \param target Target vector.
+		 */
+		virtual void getRow(unsigned int row, Ionflux::ObjectBase::DoubleVector& 
+		target) const;
+		
+		/** Get column.
+		 *
+		 * Get the specified column of the matrix.
+		 * 
+		 * The result will be stored in \c target.
+		 *
+		 * \param col Column index.
+		 * \param target Target vector.
+		 */
+		virtual void getCol(unsigned int col, Ionflux::ObjectBase::DoubleVector& 
+		target) const;
+		
 		/** Get value.
 		 *
 		 * Get the value at the specified position.

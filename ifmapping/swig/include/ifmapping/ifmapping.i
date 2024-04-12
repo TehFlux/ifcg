@@ -2884,6 +2884,10 @@ class Matrix
         virtual void setValue(unsigned int row, unsigned int col, double 
         v);
         virtual double getValue(unsigned int row, unsigned int col) const;
+        virtual void getRow(unsigned int row, 
+        Ionflux::ObjectBase::DoubleVector& target) const;
+        virtual void getCol(unsigned int col, 
+        Ionflux::ObjectBase::DoubleVector& target) const;
         virtual double v(unsigned int row, unsigned int col) const;
         virtual void normalize();
         virtual void rescale();

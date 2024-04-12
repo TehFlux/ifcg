@@ -95,7 +95,7 @@ Ionflux::Mapping::Random& Random::operator=(const Ionflux::Mapping::Random&
 other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Random* Random::copy() const

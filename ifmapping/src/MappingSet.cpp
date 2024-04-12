@@ -202,7 +202,7 @@ Ionflux::Mapping::MappingSet& other)
         addMapping(*i);
         removeLocalRef(*i);
     }
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::MappingSet* MappingSet::copy() const

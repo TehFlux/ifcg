@@ -33,7 +33,6 @@
 #include <cmath>
 #include "ifmapping/MappingError.hpp"
 
-using namespace std;
 using namespace Ionflux::ObjectBase;
 
 namespace Ionflux
@@ -144,8 +143,26 @@ double Matrix::getValue(unsigned int row, unsigned int col) const
 {
 	if ((row >= numRows) 
 	    || (col >= numCols))
-	    throw MappingError("Index out of bounds!");
+	    throw MappingError("Index out of bounds.");
 	return values[row * numCols + col];
+}
+
+void Matrix::getRow(unsigned int row, Ionflux::ObjectBase::DoubleVector& 
+target) const
+{
+	if (row >= numRows) 
+	    throw MappingError("Row index out of bounds.");
+	for (unsigned int i = 0; i < numCols; i++)
+		target.push_back(values[row * numCols + i]);
+}
+
+void Matrix::getCol(unsigned int col, Ionflux::ObjectBase::DoubleVector& 
+target) const
+{
+	if (col >= numCols) 
+	    throw MappingError("Column index out of bounds.");
+	for (unsigned int i = 0; i < numRows; i++)
+		target.push_back(values[i * numCols + col]);
 }
 
 double Matrix::v(unsigned int row, unsigned int col) const
@@ -252,7 +269,7 @@ bool Matrix::operator!=(const Ionflux::Mapping::Matrix& other) const
 
 std::string Matrix::getString() const
 {
-	ostringstream state;
+	std::ostringstream state;
 	state << getClassName() << "[";
 	for (unsigned int i = 0; i < numRows; i++)
 	{
@@ -285,12 +302,12 @@ Ionflux::Mapping::Matrix& Matrix::operator=(const Ionflux::Mapping::Matrix&
 other)
 {
     if (values == other.values)
-        return *this;
+    	return *this;
     allocate(other.numRows, other.numCols);
     for (unsigned int i = 0; i < numRows; i++)
-        for (unsigned int j = 0; j < numCols; j++)
-            values[i * numCols + j] = other.values[i * numCols + j];
-	return *this;
+    	for (unsigned int j = 0; j < numCols; j++)
+    		values[i * numCols + j] = other.values[i * numCols + j];
+    return *this;
 }
 
 Ionflux::Mapping::Matrix* Matrix::copy() const

@@ -117,7 +117,7 @@ Ionflux::Mapping::Constant& Constant::operator=(const
 Ionflux::Mapping::Constant& other)
 {
     constValue = other.constValue;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Constant* Constant::copy() const

@@ -164,7 +164,7 @@ Ionflux::Mapping::PointCoord& other)
     setFunc(other.func);
     coord = other.coord;
     offset = other.offset;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::PointCoord* PointCoord::copy() const

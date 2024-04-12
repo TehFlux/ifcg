@@ -141,7 +141,7 @@ other)
     ChainableMapping::operator=(other);
     lower = other.lower;
     upper = other.upper;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Linear* Linear::copy() const

@@ -93,7 +93,7 @@ Sin::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::Sin& Sin::operator=(const Ionflux::Mapping::Sin& other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Sin* Sin::copy() const

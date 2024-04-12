@@ -94,7 +94,7 @@ Ionflux::Mapping::ArcTan& ArcTan::operator=(const Ionflux::Mapping::ArcTan&
 other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::ArcTan* ArcTan::copy() const

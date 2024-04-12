@@ -246,7 +246,7 @@ other)
         i != v0.end(); i++)
         addEntry(*i);
     setSource(other.source);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Lookup* Lookup::copy() const

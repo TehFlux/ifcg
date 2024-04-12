@@ -94,7 +94,7 @@ Ionflux::Mapping::ArcSin& ArcSin::operator=(const Ionflux::Mapping::ArcSin&
 other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::ArcSin* ArcSin::copy() const

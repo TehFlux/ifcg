@@ -88,7 +88,7 @@ Ionflux::Mapping::MappingError& other)
 if (this == &other)
     return *this;
 setReason(other.getReason());
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::MappingError* MappingError::copy() const

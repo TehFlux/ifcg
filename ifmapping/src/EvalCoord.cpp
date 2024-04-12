@@ -196,7 +196,7 @@ Ionflux::Mapping::EvalCoord& other)
     coord = other.coord;
     offset = other.offset;
     precision = other.precision;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::EvalCoord* EvalCoord::copy() const

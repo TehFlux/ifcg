@@ -93,7 +93,7 @@ Cos::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::Cos& Cos::operator=(const Ionflux::Mapping::Cos& other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Cos* Cos::copy() const

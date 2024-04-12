@@ -205,7 +205,7 @@ Ionflux::Mapping::PointSample& other)
         setCoords(other.coords->copy());
     else
         setCoords(0);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::PointSample* PointSample::copy() const

@@ -93,7 +93,7 @@ Tan::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::Tan& Tan::operator=(const Ionflux::Mapping::Tan& other)
 {
     ChainableMapping::operator=(other);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Tan* Tan::copy() const

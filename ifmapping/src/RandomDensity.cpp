@@ -128,7 +128,7 @@ Ionflux::Mapping::RandomDensity& other)
 {
     ChainableMapping::operator=(other);
     maxIters = other.maxIters;
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::RandomDensity* RandomDensity::copy() const

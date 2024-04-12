@@ -258,7 +258,7 @@ Ionflux::Mapping::PointSet& other)
     }
     clearPoints();
     addPoints(v0);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::PointSet* PointSet::copy() const

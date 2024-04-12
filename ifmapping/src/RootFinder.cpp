@@ -214,7 +214,7 @@ Ionflux::Mapping::RootFinder& RootFinder::operator=(const
 Ionflux::Mapping::RootFinder& other)
 {
     setFunc(other.func);
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::RootFinder* 

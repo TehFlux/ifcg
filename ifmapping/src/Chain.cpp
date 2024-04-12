@@ -203,7 +203,7 @@ other)
         addFunc(*i);
         removeLocalRef(*i);
     }
-	return *this;
+    return *this;
 }
 
 Ionflux::Mapping::Chain* Chain::copy() const
