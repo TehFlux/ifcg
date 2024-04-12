@@ -144,6 +144,11 @@ Ionflux::Altjira::FloatColor& color) const
 	    if (matrixC2->isWithinBounds(y, x))
 	        result.c2 = matrixC2->v(y, x);
 	}
+	if (matrixAlpha != 0)
+	{
+	    if (matrixAlpha->isWithinBounds(y, x))
+	        result.alpha = matrixAlpha->v(y, x);
+	}
 	toColorSpace(result, color.space);
 	color = result;
 	return true;
@@ -162,12 +167,12 @@ Ionflux::Altjira::Color& color) const
 void MatrixSource::setDefaultColor(const Ionflux::Altjira::FloatColor& 
 newDefaultColor)
 {
-    defaultColor = newDefaultColor;
+	defaultColor = newDefaultColor;
 }
 
 Ionflux::Altjira::FloatColor MatrixSource::getDefaultColor() const
 {
-    return defaultColor;
+	return defaultColor;
 }
 
 void MatrixSource::setColorSpace(Ionflux::Altjira::ColorSpace 
@@ -185,107 +190,108 @@ Ionflux::Altjira::ColorSpace MatrixSource::getColorSpace() const
 
 void MatrixSource::setMatrixC0(Ionflux::Mapping::Matrix* newMatrixC0)
 {
-    if (matrixC0 == newMatrixC0)
-        return;
-    if (newMatrixC0 != 0)
-        addLocalRef(newMatrixC0);
-    if (matrixC0 != 0)
-        removeLocalRef(matrixC0);
-    matrixC0 = newMatrixC0;
+	if (matrixC0 == newMatrixC0)
+		return;
+	if (newMatrixC0 != 0)
+		addLocalRef(newMatrixC0);
+	if (matrixC0 != 0)
+		removeLocalRef(matrixC0);
+	matrixC0 = newMatrixC0;
 }
 
 Ionflux::Mapping::Matrix* MatrixSource::getMatrixC0() const
 {
-    return matrixC0;
+	return matrixC0;
 }
 
 void MatrixSource::setMatrixC1(Ionflux::Mapping::Matrix* newMatrixC1)
 {
-    if (matrixC1 == newMatrixC1)
-        return;
-    if (newMatrixC1 != 0)
-        addLocalRef(newMatrixC1);
-    if (matrixC1 != 0)
-        removeLocalRef(matrixC1);
-    matrixC1 = newMatrixC1;
+	if (matrixC1 == newMatrixC1)
+		return;
+	if (newMatrixC1 != 0)
+		addLocalRef(newMatrixC1);
+	if (matrixC1 != 0)
+		removeLocalRef(matrixC1);
+	matrixC1 = newMatrixC1;
 }
 
 Ionflux::Mapping::Matrix* MatrixSource::getMatrixC1() const
 {
-    return matrixC1;
+	return matrixC1;
 }
 
 void MatrixSource::setMatrixC2(Ionflux::Mapping::Matrix* newMatrixC2)
 {
-    if (matrixC2 == newMatrixC2)
-        return;
-    if (newMatrixC2 != 0)
-        addLocalRef(newMatrixC2);
-    if (matrixC2 != 0)
-        removeLocalRef(matrixC2);
-    matrixC2 = newMatrixC2;
+	if (matrixC2 == newMatrixC2)
+		return;
+	if (newMatrixC2 != 0)
+		addLocalRef(newMatrixC2);
+	if (matrixC2 != 0)
+		removeLocalRef(matrixC2);
+	matrixC2 = newMatrixC2;
 }
 
 Ionflux::Mapping::Matrix* MatrixSource::getMatrixC2() const
 {
-    return matrixC2;
+	return matrixC2;
 }
 
 void MatrixSource::setMatrixAlpha(Ionflux::Mapping::Matrix* newMatrixAlpha)
 {
-    if (matrixAlpha == newMatrixAlpha)
-        return;
-    if (newMatrixAlpha != 0)
-        addLocalRef(newMatrixAlpha);
-    if (matrixAlpha != 0)
-        removeLocalRef(matrixAlpha);
-    matrixAlpha = newMatrixAlpha;
+	if (matrixAlpha == newMatrixAlpha)
+		return;
+	if (newMatrixAlpha != 0)
+		addLocalRef(newMatrixAlpha);
+	if (matrixAlpha != 0)
+		removeLocalRef(matrixAlpha);
+	matrixAlpha = newMatrixAlpha;
 }
 
 Ionflux::Mapping::Matrix* MatrixSource::getMatrixAlpha() const
 {
-    return matrixAlpha;
+	return matrixAlpha;
 }
 
 void MatrixSource::setWidth(unsigned int newWidth)
 {
-    width = newWidth;
+	width = newWidth;
 }
 
 unsigned int MatrixSource::getWidth() const
 {
-    return width;
+	return width;
 }
 
 void MatrixSource::setHeight(unsigned int newHeight)
 {
-    height = newHeight;
+	height = newHeight;
 }
 
 unsigned int MatrixSource::getHeight() const
 {
-    return height;
+	return height;
 }
 
 Ionflux::Altjira::MatrixSource& MatrixSource::operator=(const 
 Ionflux::Altjira::MatrixSource& other)
 {
-    if (this == &other)
-        return *this;
-    defaultColor = other.defaultColor;
-    width = other.width;
-    height = other.height;
-    setMatrixC0(other.getMatrixC0());
-    setMatrixC1(other.getMatrixC1());
-    setMatrixC2(other.getMatrixC2());
-    return *this;
+	if (this == &other)
+	    return *this;
+	defaultColor = other.defaultColor;
+	width = other.width;
+	height = other.height;
+	setMatrixC0(other.getMatrixC0());
+	setMatrixC1(other.getMatrixC1());
+	setMatrixC2(other.getMatrixC2());
+	setMatrixAlpha(other.getMatrixAlpha());
+	return *this;
 }
 
 Ionflux::Altjira::MatrixSource* MatrixSource::copy() const
 {
-    MatrixSource* newMatrixSource = create();
-    *newMatrixSource = *this;
-    return newMatrixSource;
+	MatrixSource* newMatrixSource = create();
+	*newMatrixSource = *this;
+	return newMatrixSource;
 }
 
 Ionflux::Altjira::MatrixSource* 

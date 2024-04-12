@@ -150,7 +150,14 @@ class MatrixSource
 		
 		/** Get pixel color.
 		 *
-		 * Get pixel color.
+		 * Get pixel color for the specified indices.
+		 * 
+		 * A default color component is used if a matrix for a component is 
+		 * undefined or any of the indices is out of bounds for that matrix.
+		 * 
+		 * If any of the indices are out of bounds for the pixel source and 
+		 * the extent for that index is not infinite, an out of bounds 
+		 * exception will be thrown.
 		 *
 		 * \param x Pixel coordinate (X).
 		 * \param y Pixel coordinate (Y).
