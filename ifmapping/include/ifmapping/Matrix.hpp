@@ -1,41 +1,39 @@
-#ifndef IONFLUX_ALTJIRA_MATRIX
-#define IONFLUX_ALTJIRA_MATRIX
+#ifndef IONFLUX_MAPPING_MATRIX
+#define IONFLUX_MAPPING_MATRIX
 /* ==========================================================================
- * Altjira - Ionflux' Image Processing Library
- * Copyright © 2008-2024 Jörn P. Meier
+ * IFMapping - Ionflux Mapping Library
+ * Copyright © 2010 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Matrix.hpp                      Matrix (header).
  * =========================================================================
  * 
- * This file is part of Altjira - Ionflux' Image Processing Library.
+ * This file is part of IFMapping - Ionflux Mapping Library.
  * 
- * Altjira - Ionflux' Image Processing Library is free software; you can 
+ * IFMapping - Ionflux Mapping Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
  * version 3 of the License, or (at your option) any later version.
  * 
- * Altjira - Ionflux' Image Processing Library is distributed in the hope 
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ * IFMapping - Ionflux Mapping Library is distributed in the hope that it 
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along 
- * with Altjira - Ionflux' Image Processing Library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
+ * with IFMapping - Ionflux Mapping Library; if not, write to the Free 
+ * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
  * 02111-1307 USA
  * 
  * ========================================================================== */
 
 #include "ifmapping/types.hpp"
-#include "altjira/types.hpp"
-#include "altjira/constants.hpp"
 #include "ifobject/IFObject.hpp"
 
 namespace Ionflux
 {
 
-namespace Altjira
+namespace Mapping
 {
 
 /// Class information for class Matrix.
@@ -50,7 +48,7 @@ class MatrixClassInfo
 };
 
 /** Matrix.
- * \ingroup altjira
+ * \ingroup ifmapping
  *
  * A matrix of float numbers.
  */
@@ -95,7 +93,7 @@ class Matrix
 		 *
 		 * \param other Other object.
 		 */
-		Matrix(const Ionflux::Altjira::Matrix& other);
+		Matrix(const Ionflux::Mapping::Matrix& other);
 		
 		/** Constructor.
 		 *
@@ -196,7 +194,7 @@ class Matrix
 		 *
 		 * \return Result of the comparison.
 		 */
-		virtual bool operator==(const Ionflux::Altjira::Matrix& other) const;
+		virtual bool operator==(const Ionflux::Mapping::Matrix& other) const;
 		
 		/** Comparison operator: inequality.
 		 *
@@ -206,7 +204,7 @@ class Matrix
 		 *
 		 * \return Result of the comparison.
 		 */
-		virtual bool operator!=(const Ionflux::Altjira::Matrix& other) const;
+		virtual bool operator!=(const Ionflux::Mapping::Matrix& other) const;
 		
 		/** Get string representation.
 		 *
@@ -224,8 +222,8 @@ class Matrix
 		 *
 		 * \return The object itself.
 		 */
-		virtual Ionflux::Altjira::Matrix& operator=(const 
-		Ionflux::Altjira::Matrix& other);
+		virtual Ionflux::Mapping::Matrix& operator=(const 
+		Ionflux::Mapping::Matrix& other);
 		
 		/** Copy.
 		 *
@@ -233,7 +231,7 @@ class Matrix
 		 *
 		 * \return Newly allocated copy of the object.
 		 */
-		virtual Ionflux::Altjira::Matrix* copy() const;
+		virtual Ionflux::Mapping::Matrix* copy() const;
 		
 		/** Upcast.
 		 *
@@ -243,7 +241,7 @@ class Matrix
 		 *
 		 * \return The more specific object, or 0 if the cast failed.
 		 */
-		static Ionflux::Altjira::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::Mapping::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
 		
 		/** Create instance.
@@ -256,7 +254,7 @@ class Matrix
 		 *
 		 * \return Pointer to the new instance.
 		 */
-		static Ionflux::Altjira::Matrix* create(Ionflux::ObjectBase::IFObject* 
+		static Ionflux::Mapping::Matrix* create(Ionflux::ObjectBase::IFObject* 
 		parentObject = 0);
 		
 		/** Get allocated size in memory.

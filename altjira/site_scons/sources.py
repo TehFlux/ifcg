@@ -22,7 +22,6 @@ altjiraLibHeaders = [
 	'include/altjira/BlendChannel.hpp', 
 	'include/altjira/Image.hpp', 
 	'include/altjira/ImageSet.hpp', 
-	'include/altjira/Matrix.hpp', 
 	'include/altjira/ColorSet.hpp'
 ]
 
@@ -41,7 +40,6 @@ altjiraLibSources = [
 	'build/BlendChannel.cpp', 
 	'build/Image.cpp', 
 	'build/ImageSet.cpp', 
-	'build/Matrix.cpp', 
 	'build/ColorSet.cpp'
 ]
 
@@ -58,7 +56,6 @@ altjiraLibClasses = [
 	'BlendChannel', 
 	'Image', 
 	'ImageSet', 
-	'Matrix', 
 	'ColorSet'
 ]
 

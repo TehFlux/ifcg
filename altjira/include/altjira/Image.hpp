@@ -29,10 +29,10 @@
 
 #include "ifmapping/Mapping.hpp"
 #include "ifmapping/PointSet.hpp"
+#include "ifmapping/Matrix.hpp"
 #include "altjira/Color.hpp"
 #include "altjira/constants.hpp"
 #include "altjira/ColorBlender.hpp"
-#include "altjira/Matrix.hpp"
 #include "altjira/ColorBand.hpp"
 #include <climits>
 #include "ifobject/IFObject.hpp"
@@ -498,7 +498,7 @@ class Image
 		 * \return \c true on success, \c false otherwise.
 		 */
 		virtual bool convolveFill(const Ionflux::Altjira::Image& other, const 
-		Ionflux::Altjira::Matrix& matrix, const Ionflux::Altjira::ImageRect* 
+		Ionflux::Mapping::Matrix& matrix, const Ionflux::Altjira::ImageRect* 
 		sourceRect = 0, unsigned int offsetX = 0, unsigned int offsetY = 0);
 		
 		/** Set channel.
@@ -628,15 +628,18 @@ class Image
 		
 		/** Get channel.
 		 *
-		 * Get an image channel. The channel data will be stored in the target
-		 * matrix.
+		 * Extract an image channel. The channel data will be stored in the 
+		 * target matrix.
+		 * 
+		 * The optional \c colorSpace parameter is used as a hint for 
+		 * extracting the channel.
 		 *
 		 * \param channel Channel.
 		 * \param target Target matrix.
 		 * \param colorSpace Color space.
 		 */
 		virtual void getChannel(Ionflux::Altjira::ChannelID channel, 
-		Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace colorSpace
+		Ionflux::Mapping::Matrix& target, Ionflux::Altjira::ColorSpace colorSpace
 		= Ionflux::Altjira::Color::SPACE_HSV) const;
 		
 		/** Get size.

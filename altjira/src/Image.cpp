@@ -703,7 +703,7 @@ unsigned int offsetX, unsigned int offsetY)
 }
 
 bool Image::convolveFill(const Ionflux::Altjira::Image& other, const 
-Ionflux::Altjira::Matrix& matrix, const Ionflux::Altjira::ImageRect* 
+Ionflux::Mapping::Matrix& matrix, const Ionflux::Altjira::ImageRect* 
 sourceRect, unsigned int offsetX, unsigned int offsetY)
 {
 	if (other.getNumChannels() != numChannels)
@@ -1022,7 +1022,7 @@ const
 }
 
 void Image::getChannel(Ionflux::Altjira::ChannelID channel, 
-Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace colorSpace) 
+Ionflux::Mapping::Matrix& target, Ionflux::Altjira::ColorSpace colorSpace) 
 const
 {
 	unsigned int iMax = min(width, target.getNumCols());

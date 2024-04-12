@@ -2852,6 +2852,64 @@ class ArcLength
 }
 
 
+%{
+#include "ifmapping/Matrix.hpp"
+%}
+
+namespace Ionflux
+{
+
+namespace Mapping
+{
+
+class MatrixClassInfo
+: public Ionflux::ObjectBase::IFClassInfo
+{
+    public:
+        MatrixClassInfo();
+        virtual ~MatrixClassInfo();
+};
+
+class Matrix
+: public Ionflux::ObjectBase::IFObject
+{
+    public:
+        
+        Matrix();
+		Matrix(const Ionflux::Mapping::Matrix& other);
+        Matrix(unsigned int initNumRows, unsigned int initNumCols = 0);
+        virtual ~Matrix();
+        virtual void init(unsigned int newNumRows = 0, unsigned int 
+        newNumCols = 0);
+        virtual void setValue(unsigned int row, unsigned int col, double 
+        v);
+        virtual double getValue(unsigned int row, unsigned int col) const;
+        virtual double v(unsigned int row, unsigned int col) const;
+        virtual void normalize();
+        virtual void rescale();
+        virtual void setGaussian(double stdDev = 0.);
+        virtual void setInversePower(double exponent = 2., double falloff =
+        0.0001);
+        virtual bool operator==(const Ionflux::Mapping::Matrix& other) 
+        const;
+        virtual bool operator!=(const Ionflux::Mapping::Matrix& other) 
+        const;
+        virtual std::string getString() const;
+		virtual Ionflux::Mapping::Matrix* copy() const;
+		static Ionflux::Mapping::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
+		other);
+		static Ionflux::Mapping::Matrix* create(Ionflux::ObjectBase::IFObject* 
+		parentObject = 0);
+		virtual unsigned int getMemSize() const;
+        virtual unsigned int getNumRows() const;
+        virtual unsigned int getNumCols() const;
+};
+
+}
+
+}
+
+
 
 %{
 #include "ifmapping/xmlio/PointXMLFactory.hpp"

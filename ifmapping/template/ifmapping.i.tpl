@@ -223,6 +223,7 @@ $SecantRootFinder
 $DekkerRootFinder
 $BrentLinearRootFinder
 $ArcLength
+$Matrix
 
 $PointXMLFactory
 $PointSetXMLFactory

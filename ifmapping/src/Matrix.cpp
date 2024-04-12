@@ -1,37 +1,37 @@
 /* ==========================================================================
- * Altjira - Ionflux' Image Processing Library
- * Copyright © 2008-2024 Jörn P. Meier
+ * IFMapping - Ionflux Mapping Library
+ * Copyright © 2010 Jörn P. Meier
  * mail@ionflux.org
  * --------------------------------------------------------------------------
  * Matrix.cpp                      Matrix (implementation).
  * =========================================================================
  * 
- * This file is part of Altjira - Ionflux' Image Processing Library.
+ * This file is part of IFMapping - Ionflux Mapping Library.
  * 
- * Altjira - Ionflux' Image Processing Library is free software; you can 
+ * IFMapping - Ionflux Mapping Library is free software; you can 
  * redistribute it and/or modify it under the terms of the GNU General 
  * Public License as published by the Free Software Foundation; either 
  * version 3 of the License, or (at your option) any later version.
  * 
- * Altjira - Ionflux' Image Processing Library is distributed in the hope 
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the 
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ * IFMapping - Ionflux Mapping Library is distributed in the hope that it 
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ * the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along 
- * with Altjira - Ionflux' Image Processing Library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
+ * with IFMapping - Ionflux Mapping Library; if not, write to the Free 
+ * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
  * 02111-1307 USA
  * 
  * ========================================================================== */
 
-#include "altjira/Matrix.hpp"
+#include "ifmapping/Matrix.hpp"
 #include <cmath>
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
 #include <cmath>
-#include "altjira/AltjiraError.hpp"
+#include "ifmapping/MappingError.hpp"
 
 using namespace std;
 using namespace Ionflux::ObjectBase;
@@ -39,7 +39,7 @@ using namespace Ionflux::ObjectBase;
 namespace Ionflux
 {
 
-namespace Altjira
+namespace Mapping
 {
 
 MatrixClassInfo::MatrixClassInfo()
@@ -65,7 +65,7 @@ Matrix::Matrix()
 	// TODO: Nothing ATM. ;-)
 }
 
-Matrix::Matrix(const Ionflux::Altjira::Matrix& other)
+Matrix::Matrix(const Ionflux::Mapping::Matrix& other)
 : values(0), numRows(0), numCols(0)
 {
 	// NOTE: The following line is required for run-time type information.
@@ -115,7 +115,7 @@ void Matrix::allocate(unsigned int newNumRows, unsigned int newNumCols)
 	    return;
 	values = new double[size];
 	if (values == 0)
-	    throw AltjiraError("Could not allocate value buffer.");
+	    throw MappingError("Could not allocate value buffer.");
 }
 
 void Matrix::init(unsigned int newNumRows, unsigned int newNumCols)
@@ -135,7 +135,7 @@ void Matrix::setValue(unsigned int row, unsigned int col, double v)
 	    status << "[Matrix::setValue] "
 	        "Index out of bounds: (" << row << ", " << col << ") "
 	        "(size = (" << numRows << ", " << numCols << "))";
-	    throw AltjiraError(status.str());
+	    throw MappingError(status.str());
 	}
 	values[row * numCols + col] = v;
 }
@@ -144,7 +144,7 @@ double Matrix::getValue(unsigned int row, unsigned int col) const
 {
 	if ((row >= numRows) 
 	    || (col >= numCols))
-	    throw AltjiraError("Index out of bounds!");
+	    throw MappingError("Index out of bounds!");
 	return values[row * numCols + col];
 }
 
@@ -232,7 +232,7 @@ void Matrix::setInversePower(double exponent, double falloff)
 	normalize();
 }
 
-bool Matrix::operator==(const Ionflux::Altjira::Matrix& other) const
+bool Matrix::operator==(const Ionflux::Mapping::Matrix& other) const
 {
 	if ((other.numRows != numRows) 
 	    || (other.numCols != numCols))
@@ -244,7 +244,7 @@ bool Matrix::operator==(const Ionflux::Altjira::Matrix& other) const
 	return true;
 }
 
-bool Matrix::operator!=(const Ionflux::Altjira::Matrix& other) const
+bool Matrix::operator!=(const Ionflux::Mapping::Matrix& other) const
 {
 	// TODO: Implementation.
 	return !(*this == other);;
@@ -281,7 +281,7 @@ unsigned int Matrix::getNumCols() const
     return numCols;
 }
 
-Ionflux::Altjira::Matrix& Matrix::operator=(const Ionflux::Altjira::Matrix&
+Ionflux::Mapping::Matrix& Matrix::operator=(const Ionflux::Mapping::Matrix&
 other)
 {
     if (values == other.values)
@@ -293,20 +293,20 @@ other)
 	return *this;
 }
 
-Ionflux::Altjira::Matrix* Matrix::copy() const
+Ionflux::Mapping::Matrix* Matrix::copy() const
 {
     Matrix* newMatrix = create();
     *newMatrix = *this;
     return newMatrix;
 }
 
-Ionflux::Altjira::Matrix* Matrix::upcast(Ionflux::ObjectBase::IFObject* 
+Ionflux::Mapping::Matrix* Matrix::upcast(Ionflux::ObjectBase::IFObject* 
 other)
 {
     return dynamic_cast<Matrix*>(other);
 }
 
-Ionflux::Altjira::Matrix* Matrix::create(Ionflux::ObjectBase::IFObject* 
+Ionflux::Mapping::Matrix* Matrix::create(Ionflux::ObjectBase::IFObject* 
 parentObject)
 {
     Matrix* newObject = new Matrix();

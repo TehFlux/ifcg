@@ -394,64 +394,6 @@ Ionflux::Altjira::ColorSpace getColorSpaceForChannel(
 
 
 %{
-#include "altjira/Matrix.hpp"
-%}
-
-namespace Ionflux
-{
-
-namespace Altjira
-{
-
-class MatrixClassInfo
-: public Ionflux::ObjectBase::IFClassInfo
-{
-    public:
-        MatrixClassInfo();
-        virtual ~MatrixClassInfo();
-};
-
-class Matrix
-: public Ionflux::ObjectBase::IFObject
-{
-    public:
-        
-        Matrix();
-		Matrix(const Ionflux::Altjira::Matrix& other);
-        Matrix(unsigned int initNumRows, unsigned int initNumCols = 0);
-        virtual ~Matrix();
-        virtual void init(unsigned int newNumRows = 0, unsigned int 
-        newNumCols = 0);
-        virtual void setValue(unsigned int row, unsigned int col, double 
-        v);
-        virtual double getValue(unsigned int row, unsigned int col) const;
-        virtual double v(unsigned int row, unsigned int col) const;
-        virtual void normalize();
-        virtual void rescale();
-        virtual void setGaussian(double stdDev = 0.);
-        virtual void setInversePower(double exponent = 2., double falloff =
-        0.0001);
-        virtual bool operator==(const Ionflux::Altjira::Matrix& other) 
-        const;
-        virtual bool operator!=(const Ionflux::Altjira::Matrix& other) 
-        const;
-        virtual std::string getString() const;
-		virtual Ionflux::Altjira::Matrix* copy() const;
-		static Ionflux::Altjira::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
-		other);
-		static Ionflux::Altjira::Matrix* create(Ionflux::ObjectBase::IFObject* 
-		parentObject = 0);
-		virtual unsigned int getMemSize() const;
-        virtual unsigned int getNumRows() const;
-        virtual unsigned int getNumCols() const;
-};
-
-}
-
-}
-
-
-%{
 #include "altjira/ColorBand.hpp"
 %}
 
@@ -1047,7 +989,7 @@ class Image
         Ionflux::Altjira::ColorBlender* blender = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);
         virtual bool convolveFill(const Ionflux::Altjira::Image& other, 
-        const Ionflux::Altjira::Matrix& matrix, const 
+        const Ionflux::Mapping::Matrix& matrix, const 
         Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);
         virtual bool setChannel(Ionflux::Altjira::Image& other, 
@@ -1079,7 +1021,7 @@ class Image
         refColor, Ionflux::Altjira::Image& targetImage, 
         Ionflux::Mapping::Mapping* mapping = 0) const;
         virtual void getChannel(Ionflux::Altjira::ChannelID channel, 
-        Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace 
+        Ionflux::Mapping::Matrix& target, Ionflux::Altjira::ColorSpace 
         colorSpace = Ionflux::Altjira::Color::SPACE_HSV) const;
         virtual Ionflux::ObjectBase::UInt64 getSize() const;
         virtual std::string getString() const;

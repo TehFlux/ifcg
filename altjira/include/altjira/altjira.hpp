@@ -32,7 +32,6 @@
 #include "altjira/imageutils.hpp"
 #include "altjira/constants.hpp"
 #include "altjira/AltjiraError.hpp"
-#include "altjira/Matrix.hpp"
 #include "altjira/Color.hpp"
 #include "altjira/ColorBand.hpp"
 #include "altjira/ColorBlender.hpp"

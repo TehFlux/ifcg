@@ -41,6 +41,7 @@
 #include "ifmapping/MappingError.hpp"
 #include "ifmapping/BezierSplineKey.hpp"
 #include "ifmapping/AnimatedSpline.hpp"
+#include "ifmapping/Matrix.hpp"
 
 /** \file ifmapping.hpp
  * \brief Ionflux Mapping Library (header).

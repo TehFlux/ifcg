@@ -248,7 +248,6 @@ Ionflux::Altjira::ColorSpace getColorSpaceForChannel(
 
 // Classes.
 
-$Matrix
 $ColorBand
 $ColorBlender
 $BlendSrcOver

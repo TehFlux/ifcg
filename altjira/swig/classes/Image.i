@@ -150,7 +150,7 @@ class Image
         Ionflux::Altjira::ColorBlender* blender = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);
         virtual bool convolveFill(const Ionflux::Altjira::Image& other, 
-        const Ionflux::Altjira::Matrix& matrix, const 
+        const Ionflux::Mapping::Matrix& matrix, const 
         Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);
         virtual bool setChannel(Ionflux::Altjira::Image& other, 
@@ -182,7 +182,7 @@ class Image
         refColor, Ionflux::Altjira::Image& targetImage, 
         Ionflux::Mapping::Mapping* mapping = 0) const;
         virtual void getChannel(Ionflux::Altjira::ChannelID channel, 
-        Ionflux::Altjira::Matrix& target, Ionflux::Altjira::ColorSpace 
+        Ionflux::Mapping::Matrix& target, Ionflux::Altjira::ColorSpace 
         colorSpace = Ionflux::Altjira::Color::SPACE_HSV) const;
         virtual Ionflux::ObjectBase::UInt64 getSize() const;
         virtual std::string getString() const;
