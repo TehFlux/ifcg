@@ -145,6 +145,17 @@ class PixelSource
 		virtual Ionflux::Altjira::PixelSource& operator=(const 
 		Ionflux::Altjira::PixelSource& other);
 		
+		/** Upcast.
+		 *
+		 * Cast an IFObject to the most specific type.
+		 *
+		 * \param other Other object.
+		 *
+		 * \return The more specific object, or 0 if the cast failed.
+		 */
+		static Ionflux::Altjira::PixelSource* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
+		
 		/** Get allocated size in memory.
 		 *
 		 * Get the allocated size in memory for the object.

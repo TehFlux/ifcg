@@ -80,6 +80,12 @@ Ionflux::Altjira::PixelSource& other)
     return *this;
 }
 
+Ionflux::Altjira::PixelSource* 
+PixelSource::upcast(Ionflux::ObjectBase::IFObject* other)
+{
+    return dynamic_cast<PixelSource*>(other);
+}
+
 unsigned int PixelSource::getMemSize() const
 {
     return sizeof *this;

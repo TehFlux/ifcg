@@ -20,7 +20,8 @@ altjiraLibHeaders = [
 	'include/altjira/BlendDarken.hpp', 
 	'include/altjira/BlendPlus.hpp', 
 	'include/altjira/BlendChannel.hpp', 
-	'include/altjira/PixelSource.hpp', 
+	'include/altjira/PixelSource.hpp',  
+	'include/altjira/MatrixSource.hpp', 
 	'include/altjira/Image.hpp', 
 	'include/altjira/ImageSet.hpp', 
 	'include/altjira/ColorSet.hpp'
@@ -39,7 +40,8 @@ altjiraLibSources = [
 	'build/BlendDarken.cpp', 
 	'build/BlendPlus.cpp', 
 	'build/BlendChannel.cpp', 
-	'build/PixelSource.cpp', 
+	'build/PixelSource.cpp',  
+	'build/MatrixSource.cpp', 
 	'build/Image.cpp', 
 	'build/ImageSet.cpp', 
 	'build/ColorSet.cpp'
@@ -57,6 +59,7 @@ altjiraLibClasses = [
 	'BlendPlus', 
 	'BlendChannel', 
 	'PixelSource', 
+	'MatrixSource', 
 	'Image', 
 	'ImageSet', 
 	'ColorSet'

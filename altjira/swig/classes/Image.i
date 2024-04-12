@@ -135,6 +135,9 @@ class Image
         virtual bool fill(const Ionflux::Altjira::ByteColor& color);
         virtual bool fill(const Ionflux::Altjira::FloatColor& color);
         virtual bool fill(const Ionflux::Altjira::Color& color);
+        virtual bool fill(const Ionflux::Altjira::PixelSource& source, 
+        const Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int 
+        offsetX = 0, unsigned int offsetY = 0);
         virtual bool fill(const Ionflux::Altjira::Image& other, const 
         Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX =
         0, unsigned int offsetY = 0);

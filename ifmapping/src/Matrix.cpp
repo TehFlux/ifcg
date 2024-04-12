@@ -128,6 +128,13 @@ void Matrix::init(unsigned int newNumRows, unsigned int newNumCols)
 	        values[i * numCols + j] = 0.;
 }
 
+bool Matrix::isWithinBounds(unsigned int row, unsigned int col) const
+{
+	if ((row >= numRows) || (col >= numCols))
+		return false;
+	return true;
+}
+
 void Matrix::setValue(unsigned int row, unsigned int col, double v)
 {
 	if ((row >= numRows) 

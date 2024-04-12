@@ -424,6 +424,21 @@ class Image
 		
 		/** Fill.
 		 *
+		 * Fill the image using a pixel source as the source.
+		 *
+		 * \param source Pixel source.
+		 * \param sourceRect Source rectangle.
+		 * \param offsetX Target offset for filling (X).
+		 * \param offsetY Target offset for filling (Y).
+		 *
+		 * \return \c true on success, \c false otherwise.
+		 */
+		virtual bool fill(const Ionflux::Altjira::PixelSource& source, const 
+		Ionflux::Altjira::ImageRect* sourceRect = 0, unsigned int offsetX = 0, 
+		unsigned int offsetY = 0);
+		
+		/** Fill.
+		 *
 		 * Fill the image using another image as the source.
 		 *
 		 * \param other Image.

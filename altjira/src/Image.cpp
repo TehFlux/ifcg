@@ -515,7 +515,48 @@ bool Image::fill(const Ionflux::Altjira::Color& color)
 {
 	ByteColor bc;
 	color.getByteColor(bc);
-	return fill(bc);;
+	return fill(bc);
+}
+
+bool Image::fill(const Ionflux::Altjira::PixelSource& source, const 
+Ionflux::Altjira::ImageRect* sourceRect, unsigned int offsetX, unsigned int
+offsetY)
+{
+	ImageRect sDim;
+	sDim.x = 0;
+	sDim.y = 0;
+	sDim.width = source.getWidth();
+	sDim.height = source.getHeight();
+	ImageRect sr;
+	if (sourceRect == 0)
+		sr = sDim;
+	else
+		sr = intersect(sDim, *sourceRect);
+	ImageRect tr;
+	tr.x = offsetX;
+	tr.y = offsetY;
+	tr.width = sr.width;
+	tr.height = sr.height;
+	clamp(tr);
+	unsigned int iMax = min(sr.width, tr.width);
+	unsigned int jMax = min(sr.height, tr.height);
+	/* <---- DEBUG ----- //
+	cerr << "[Image.fill] DEBUG: sr = [" << sr.x << ", " << sr.y 
+		<< ", " << sr.width << ", " << sr.height << "], tr = [" << tr.x 
+		<< ", " << tr.y << ", " << tr.width << ", " << tr.height << "]" 
+		<< endl;
+	// <---- DEBUG ----- */
+	FloatColor sc;
+	sc.space = Color::SPACE_RGB;
+	for (unsigned int i = 0; i < iMax; i++)
+	{
+		for (unsigned int j = 0; j < jMax; j++)
+		{
+			source.getPixel(i, j, sc);
+			setPixel(i, j, sc);
+		}
+	}
+	return true;
 }
 
 bool Image::fill(const Ionflux::Altjira::Image& other, const 
@@ -572,7 +613,7 @@ offsetY)
 	        pt[2] = ps[2];
 	        pt[3] = ps[3];
 	    }
-	return true;;
+	return true;
 }
 
 bool Image::composite(const Ionflux::Altjira::Image& other, const 
@@ -1097,53 +1138,53 @@ std::string Image::getString() const
 
 unsigned int Image::getNumChannels() const
 {
-    return numChannels;
+	return numChannels;
 }
 
 unsigned int Image::getBitsPerSample() const
 {
-    return bitsPerSample;
+	return bitsPerSample;
 }
 
 Ionflux::Altjira::ColorSpace Image::getColorSpace() const
 {
-    return colorSpace;
+	return colorSpace;
 }
 
 unsigned int Image::getWidth() const
 {
-    return width;
+	return width;
 }
 
 unsigned int Image::getHeight() const
 {
-    return height;
+	return height;
 }
 
 unsigned int Image::getRowStride() const
 {
-    return rowStride;
+	return rowStride;
 }
 
 Ionflux::Altjira::PixelData Image::getPixels() const
 {
-    return pixels;
+	return pixels;
 }
 
 Ionflux::Altjira::Image& Image::operator=(const Ionflux::Altjira::Image& 
 other)
 {
-    createNewData(other.getWidth(), other.getHeight(), 
-        other.hasAlpha(), other.getBitsPerSample(), other.getColorSpace());
-    fill(other);
-    return *this;
+	createNewData(other.getWidth(), other.getHeight(), 
+	    other.hasAlpha(), other.getBitsPerSample(), other.getColorSpace());
+	fill(other);
+	return *this;
 }
 
 Ionflux::Altjira::Image* Image::copy() const
 {
-    Image* newImage = create();
-    *newImage = *this;
-    return newImage;
+	Image* newImage = create();
+	*newImage = *this;
+	return newImage;
 }
 
 Ionflux::Altjira::Image* Image::upcast(Ionflux::ObjectBase::IFObject* 

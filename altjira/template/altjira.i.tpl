@@ -259,6 +259,7 @@ $BlendDarken
 $BlendPlus
 $BlendChannel
 $PixelSource
+$MatrixSource
 $Image
 $ImageSet
 $ColorSet

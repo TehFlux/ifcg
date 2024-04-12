@@ -58,6 +58,8 @@ class PixelSource
         Ionflux::Altjira::FloatColor& color) const = 0;
         virtual bool getPixel(unsigned int x, unsigned int y, 
         Ionflux::Altjira::Color& color) const = 0;
+		static Ionflux::Altjira::PixelSource* 
+		upcast(Ionflux::ObjectBase::IFObject* other);
 };
 
 }

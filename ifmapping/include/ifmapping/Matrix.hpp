@@ -50,7 +50,7 @@ class MatrixClassInfo
 /** Matrix.
  * \ingroup ifmapping
  *
- * A matrix of float numbers.
+ * A matrix of floating point numbers.
  */
 class Matrix
 : public Ionflux::ObjectBase::IFObject
@@ -121,6 +121,18 @@ class Matrix
 		 */
 		virtual void init(unsigned int newNumRows = 0, unsigned int newNumCols = 
 		0);
+		
+		/** Check whether indices are within bounds.
+		 *
+		 * Check whether the specified indices are within bounds of the 
+		 * matrix.
+		 *
+		 * \param row Row.
+		 * \param col Column.
+		 *
+		 * \return \c true if indices are within bounds, \c false otherwise.
+		 */
+		virtual bool isWithinBounds(unsigned int row, unsigned int col) const;
 		
 		/** Set value.
 		 *

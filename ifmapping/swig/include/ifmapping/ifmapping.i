@@ -2883,6 +2883,8 @@ class Matrix
         virtual ~Matrix();
         virtual void init(unsigned int newNumRows = 0, unsigned int 
         newNumCols = 0);
+        virtual bool isWithinBounds(unsigned int row, unsigned int col) 
+        const;
         virtual void setValue(unsigned int row, unsigned int col, double 
         v);
         virtual void setValues(const Ionflux::ObjectBase::DoubleVector 

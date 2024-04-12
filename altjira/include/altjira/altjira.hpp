@@ -42,6 +42,7 @@
 #include "altjira/BlendPlus.hpp"
 #include "altjira/BlendChannel.hpp"
 #include "altjira/PixelSource.hpp"
+#include "altjira/MatrixSource.hpp"
 #include "altjira/Image.hpp"
 #include "altjira/ImageSet.hpp"
 #include "altjira/ColorSet.hpp"
