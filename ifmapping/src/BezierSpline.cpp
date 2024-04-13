@@ -256,13 +256,13 @@ std::string BezierSpline::getValueString() const
 
 unsigned int BezierSpline::getNumSegments() const
 {
-    return segments.size();
+	return segments.size();
 }
 
 Ionflux::Mapping::BezierCurve* BezierSpline::getSegment(unsigned int 
 elementIndex) const
 {
-    if (elementIndex < segments.size())
+	if (elementIndex < segments.size())
 		return segments[elementIndex];
 	return 0;
 }
@@ -270,7 +270,7 @@ elementIndex) const
 int BezierSpline::findSegment(Ionflux::Mapping::BezierCurve* needle, 
 unsigned int occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::BezierCurve* currentSegment = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -278,22 +278,22 @@ unsigned int occurence) const
 	{
 		currentSegment = segments[i];
 		if (currentSegment == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::BezierCurve*>& BezierSpline::getSegments()
 {
-    return segments;
+	return segments;
 }
 
 void BezierSpline::addSegment(Ionflux::Mapping::BezierCurve* addElement)
@@ -327,7 +327,7 @@ void BezierSpline::addSegments(Ionflux::Mapping::BezierSpline* newSegments)
 void BezierSpline::removeSegment(Ionflux::Mapping::BezierCurve* 
 removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::BezierCurve* currentSegment = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -349,17 +349,17 @@ removeElement)
 
 void BezierSpline::removeSegmentIndex(unsigned int removeIndex)
 {
-    if (removeIndex > segments.size())
-        return;
+	if (removeIndex > segments.size())
+		return;
 	Ionflux::Mapping::BezierCurve* e0 = segments[removeIndex];
-    segments.erase(segments.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	segments.erase(segments.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void BezierSpline::clearSegments()
 {
-    std::vector<Ionflux::Mapping::BezierCurve*>::iterator i;
+	std::vector<Ionflux::Mapping::BezierCurve*>::iterator i;
 	for (i = segments.begin(); i != segments.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -369,31 +369,31 @@ void BezierSpline::clearSegments()
 Ionflux::Mapping::BezierSpline& BezierSpline::operator=(const 
 Ionflux::Mapping::BezierSpline& other)
 {
-    BezierCurveVector v0;
-    for (BezierCurveVector::const_iterator i = other.segments.begin(); 
-        i != other.segments.end(); i++)
-    {
-        BezierCurve* c0 = *i;
-        if (c0 != 0)
-            v0.push_back(c0->copy());
-        else
-            v0.push_back(0);
-    }
-    /* <---- DEBUG ----- //
-    std::ostringstream message;
-    message << "Segments: " << other.getNumSegments();
-    log(IFLogMessage(message.str(), VL_DEBUG, this, "operator="));
-    // <---- DEBUG ----- */
-    clearSegments();
-    addSegments(v0);
-    return *this;
+	BezierCurveVector v0;
+	for (BezierCurveVector::const_iterator i = other.segments.begin(); 
+	    i != other.segments.end(); i++)
+	{
+	    BezierCurve* c0 = *i;
+	    if (c0 != 0)
+	        v0.push_back(c0->copy());
+	    else
+	        v0.push_back(0);
+	}
+	/* <---- DEBUG ----- //
+	std::ostringstream message;
+	message << "Segments: " << other.getNumSegments();
+	log(IFLogMessage(message.str(), VL_DEBUG, this, "operator="));
+	// <---- DEBUG ----- */
+	clearSegments();
+	addSegments(v0);
+	return *this;
 }
 
 Ionflux::Mapping::BezierSpline* BezierSpline::copy() const
 {
-    BezierSpline* newBezierSpline = create();
-    *newBezierSpline = *this;
-    return newBezierSpline;
+	BezierSpline* newBezierSpline = create();
+	*newBezierSpline = *this;
+	return newBezierSpline;
 }
 
 Ionflux::Mapping::BezierSpline* 

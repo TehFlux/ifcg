@@ -113,22 +113,22 @@ void Power::setExponent(int newExponent)
 
 int Power::getExponent() const
 {
-    return exponent;
+	return exponent;
 }
 
 Ionflux::Mapping::Power& Power::operator=(const Ionflux::Mapping::Power& 
 other)
 {
-    ChainableMapping::operator=(other);
-    exponent = other.exponent;
-    return *this;
+	ChainableMapping::operator=(other);
+	exponent = other.exponent;
+	return *this;
 }
 
 Ionflux::Mapping::Power* Power::copy() const
 {
-    Power* newPower = create();
-    *newPower = *this;
-    return newPower;
+	Power* newPower = create();
+	*newPower = *this;
+	return newPower;
 }
 
 Ionflux::Mapping::Power* Power::upcast(Ionflux::ObjectBase::IFObject* 

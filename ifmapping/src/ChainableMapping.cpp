@@ -113,8 +113,8 @@ void ChainableMapping::setFunc(Ionflux::Mapping::Mapping* newFunc)
 {
 	if (func == newFunc)
 		return;
-    if (newFunc != 0)
-        addLocalRef(newFunc);
+	if (newFunc != 0)
+		addLocalRef(newFunc);
 	if (func != 0)
 		removeLocalRef(func);
 	func = newFunc;
@@ -122,7 +122,7 @@ void ChainableMapping::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* ChainableMapping::getFunc() const
 {
-    return func;
+	return func;
 }
 
 void ChainableMapping::setScale(Ionflux::Mapping::MappingValue newScale)
@@ -132,7 +132,7 @@ void ChainableMapping::setScale(Ionflux::Mapping::MappingValue newScale)
 
 Ionflux::Mapping::MappingValue ChainableMapping::getScale() const
 {
-    return scale;
+	return scale;
 }
 
 void ChainableMapping::setOffset(Ionflux::Mapping::MappingValue newOffset)
@@ -142,7 +142,7 @@ void ChainableMapping::setOffset(Ionflux::Mapping::MappingValue newOffset)
 
 Ionflux::Mapping::MappingValue ChainableMapping::getOffset() const
 {
-    return offset;
+	return offset;
 }
 
 void ChainableMapping::setResultScale(Ionflux::Mapping::MappingValue 
@@ -153,7 +153,7 @@ newResultScale)
 
 Ionflux::Mapping::MappingValue ChainableMapping::getResultScale() const
 {
-    return resultScale;
+	return resultScale;
 }
 
 void ChainableMapping::setResultOffset(Ionflux::Mapping::MappingValue 
@@ -164,16 +164,16 @@ newResultOffset)
 
 Ionflux::Mapping::MappingValue ChainableMapping::getResultOffset() const
 {
-    return resultOffset;
+	return resultOffset;
 }
 
 Ionflux::Mapping::ChainableMapping& ChainableMapping::operator=(const 
 Ionflux::Mapping::ChainableMapping& other)
 {
-    setFunc(other.func);
-    scale = other.scale;
-    offset = other.offset;
-    return *this;
+	setFunc(other.func);
+	scale = other.scale;
+	offset = other.offset;
+	return *this;
 }
 
 Ionflux::Mapping::ChainableMapping* 

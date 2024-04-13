@@ -124,22 +124,22 @@ void BezierSplineKey::setT(Ionflux::Mapping::MappingValue newT)
 
 Ionflux::Mapping::MappingValue BezierSplineKey::getT() const
 {
-    return t;
+	return t;
 }
 
 Ionflux::Mapping::BezierSplineKey& BezierSplineKey::operator=(const 
 Ionflux::Mapping::BezierSplineKey& other)
 {
-    BezierSpline::operator=(other);
-    t = other.t;
-    return *this;
+	BezierSpline::operator=(other);
+	t = other.t;
+	return *this;
 }
 
 Ionflux::Mapping::BezierSplineKey* BezierSplineKey::copy() const
 {
-    BezierSplineKey* newBezierSplineKey = create();
-    *newBezierSplineKey = *this;
-    return newBezierSplineKey;
+	BezierSplineKey* newBezierSplineKey = create();
+	*newBezierSplineKey = *this;
+	return newBezierSplineKey;
 }
 
 Ionflux::Mapping::BezierSplineKey* 

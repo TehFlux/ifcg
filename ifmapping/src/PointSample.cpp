@@ -67,10 +67,10 @@ PointSample::PointSample()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-    refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	refData->mmDebug = true;
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -80,9 +80,9 @@ PointSample::PointSample(const Ionflux::Mapping::PointSample& other)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	*this = other;
 }
 
@@ -94,18 +94,18 @@ initArcLength)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	if (initCoords != 0)
 	    setCoords(initCoords);
 }
 
 PointSample::~PointSample()
 {
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -165,15 +165,15 @@ void PointSample::setParam(Ionflux::Mapping::MappingValue newParam)
 
 Ionflux::Mapping::MappingValue PointSample::getParam() const
 {
-    return param;
+	return param;
 }
 
 void PointSample::setCoords(Ionflux::Mapping::Point* newCoords)
 {
 	if (coords == newCoords)
 		return;
-    if (newCoords != 0)
-        addLocalRef(newCoords);
+	if (newCoords != 0)
+		addLocalRef(newCoords);
 	if (coords != 0)
 		removeLocalRef(coords);
 	coords = newCoords;
@@ -181,7 +181,7 @@ void PointSample::setCoords(Ionflux::Mapping::Point* newCoords)
 
 Ionflux::Mapping::Point* PointSample::getCoords() const
 {
-    return coords;
+	return coords;
 }
 
 void PointSample::setArcLength(Ionflux::Mapping::MappingValue newArcLength)
@@ -191,28 +191,28 @@ void PointSample::setArcLength(Ionflux::Mapping::MappingValue newArcLength)
 
 Ionflux::Mapping::MappingValue PointSample::getArcLength() const
 {
-    return arcLength;
+	return arcLength;
 }
 
 Ionflux::Mapping::PointSample& PointSample::operator=(const 
 Ionflux::Mapping::PointSample& other)
 {
-    if (this == &other)
-        return *this;
-    param = other.param;
-    arcLength = other.arcLength;
-    if (other.coords != 0)
-        setCoords(other.coords->copy());
-    else
-        setCoords(0);
-    return *this;
+	if (this == &other)
+	    return *this;
+	param = other.param;
+	arcLength = other.arcLength;
+	if (other.coords != 0)
+	    setCoords(other.coords->copy());
+	else
+	    setCoords(0);
+	return *this;
 }
 
 Ionflux::Mapping::PointSample* PointSample::copy() const
 {
-    PointSample* newPointSample = create();
-    *newPointSample = *this;
-    return newPointSample;
+	PointSample* newPointSample = create();
+	*newPointSample = *this;
+	return newPointSample;
 }
 
 Ionflux::Mapping::PointSample* 

@@ -92,15 +92,15 @@ Exp::callWithParam(Ionflux::Mapping::MappingValue value) const
 
 Ionflux::Mapping::Exp& Exp::operator=(const Ionflux::Mapping::Exp& other)
 {
-    ChainableMapping::operator=(other);
-    return *this;
+	ChainableMapping::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::Exp* Exp::copy() const
 {
-    Exp* newExp = create();
-    *newExp = *this;
-    return newExp;
+	Exp* newExp = create();
+	*newExp = *this;
+	return newExp;
 }
 
 Ionflux::Mapping::Exp* Exp::upcast(Ionflux::ObjectBase::IFObject* other)

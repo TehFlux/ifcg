@@ -135,13 +135,13 @@ std::string PointSet::getValueString() const
 
 unsigned int PointSet::getNumPoints() const
 {
-    return points.size();
+	return points.size();
 }
 
 Ionflux::Mapping::Point* PointSet::getPoint(unsigned int elementIndex) 
 const
 {
-    if (elementIndex < points.size())
+	if (elementIndex < points.size())
 		return points[elementIndex];
 	return 0;
 }
@@ -149,7 +149,7 @@ const
 int PointSet::findPoint(Ionflux::Mapping::Point* needle, unsigned int 
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Point* currentPoint = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -157,22 +157,22 @@ occurence) const
 	{
 		currentPoint = points[i];
 		if (currentPoint == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::Point*>& PointSet::getPoints()
 {
-    return points;
+	return points;
 }
 
 void PointSet::addPoint(Ionflux::Mapping::Point* addElement)
@@ -205,7 +205,7 @@ void PointSet::addPoints(Ionflux::Mapping::PointSet* newPoints)
 
 void PointSet::removePoint(Ionflux::Mapping::Point* removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Point* currentPoint = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -227,17 +227,17 @@ void PointSet::removePoint(Ionflux::Mapping::Point* removeElement)
 
 void PointSet::removePointIndex(unsigned int removeIndex)
 {
-    if (removeIndex > points.size())
-        return;
+	if (removeIndex > points.size())
+		return;
 	Ionflux::Mapping::Point* e0 = points[removeIndex];
-    points.erase(points.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	points.erase(points.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void PointSet::clearPoints()
 {
-    std::vector<Ionflux::Mapping::Point*>::iterator i;
+	std::vector<Ionflux::Mapping::Point*>::iterator i;
 	for (i = points.begin(); i != points.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -247,25 +247,25 @@ void PointSet::clearPoints()
 Ionflux::Mapping::PointSet& PointSet::operator=(const 
 Ionflux::Mapping::PointSet& other)
 {
-    PointVector v0;
-    for (unsigned int i = 0; i < other.points.size(); i++)
-    {
-        Point* p0 = other.points[i];
-        if (p0 != 0)
-            v0.push_back(p0->copy());
-        else
-            v0.push_back(0);
-    }
-    clearPoints();
-    addPoints(v0);
-    return *this;
+	PointVector v0;
+	for (unsigned int i = 0; i < other.points.size(); i++)
+	{
+	    Point* p0 = other.points[i];
+	    if (p0 != 0)
+	        v0.push_back(p0->copy());
+	    else
+	        v0.push_back(0);
+	}
+	clearPoints();
+	addPoints(v0);
+	return *this;
 }
 
 Ionflux::Mapping::PointSet* PointSet::copy() const
 {
-    PointSet* newPointSet = create();
-    *newPointSet = *this;
-    return newPointSet;
+	PointSet* newPointSet = create();
+	*newPointSet = *this;
+	return newPointSet;
 }
 
 Ionflux::Mapping::PointSet* PointSet::upcast(Ionflux::ObjectBase::IFObject*

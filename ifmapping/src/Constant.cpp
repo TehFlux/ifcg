@@ -110,21 +110,21 @@ void Constant::setConstValue(Ionflux::Mapping::MappingValue newConstValue)
 
 Ionflux::Mapping::MappingValue Constant::getConstValue() const
 {
-    return constValue;
+	return constValue;
 }
 
 Ionflux::Mapping::Constant& Constant::operator=(const 
 Ionflux::Mapping::Constant& other)
 {
-    constValue = other.constValue;
-    return *this;
+	constValue = other.constValue;
+	return *this;
 }
 
 Ionflux::Mapping::Constant* Constant::copy() const
 {
-    Constant* newConstant = create();
-    *newConstant = *this;
-    return newConstant;
+	Constant* newConstant = create();
+	*newConstant = *this;
+	return newConstant;
 }
 
 Ionflux::Mapping::Constant* Constant::upcast(Ionflux::ObjectBase::IFObject*

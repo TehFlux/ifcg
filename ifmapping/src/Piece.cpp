@@ -143,8 +143,8 @@ void Piece::setMapping(Ionflux::Mapping::Mapping* newMapping)
 {
 	if (mapping == newMapping)
 		return;
-    if (newMapping != 0)
-        addLocalRef(newMapping);
+	if (newMapping != 0)
+		addLocalRef(newMapping);
 	if (mapping != 0)
 		removeLocalRef(mapping);
 	mapping = newMapping;
@@ -152,7 +152,7 @@ void Piece::setMapping(Ionflux::Mapping::Mapping* newMapping)
 
 Ionflux::Mapping::Mapping* Piece::getMapping() const
 {
-    return mapping;
+	return mapping;
 }
 
 void Piece::setParam(Ionflux::Mapping::MappingValue newParam)
@@ -162,22 +162,22 @@ void Piece::setParam(Ionflux::Mapping::MappingValue newParam)
 
 Ionflux::Mapping::MappingValue Piece::getParam() const
 {
-    return param;
+	return param;
 }
 
 Ionflux::Mapping::Piece& Piece::operator=(const Ionflux::Mapping::Piece& 
 other)
 {
-    setMapping(other.mapping);
-    param = other.param;
-    return *this;
+	setMapping(other.mapping);
+	param = other.param;
+	return *this;
 }
 
 Ionflux::Mapping::Piece* Piece::copy() const
 {
-    Piece* newPiece = create();
-    *newPiece = *this;
-    return newPiece;
+	Piece* newPiece = create();
+	*newPiece = *this;
+	return newPiece;
 }
 
 Ionflux::Mapping::Piece* Piece::upcast(Ionflux::ObjectBase::IFObject* 

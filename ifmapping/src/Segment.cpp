@@ -74,10 +74,10 @@ Segment::Segment()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-    refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	refData->mmDebug = true;
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -87,9 +87,9 @@ Segment::Segment(const Ionflux::Mapping::Segment& other)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	*this = other;
 }
 
@@ -100,9 +100,9 @@ Ionflux::Mapping::MappingValue t0, Ionflux::Mapping::MappingValue t1)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	if (initFunc != 0)
 	{
 	    setFunc(initFunc);
@@ -120,9 +120,9 @@ initP1)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	if (initFunc != 0)
 	    setFunc(initFunc);
 	if (initP0 != 0)
@@ -135,9 +135,9 @@ initP1)
 Segment::~Segment()
 {
 	clearSegments();
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -613,8 +613,8 @@ void Segment::setFunc(Ionflux::Mapping::PointMapping* newFunc)
 {
 	if (func == newFunc)
 		return;
-    if (newFunc != 0)
-        addLocalRef(newFunc);
+	if (newFunc != 0)
+		addLocalRef(newFunc);
 	if (func != 0)
 		removeLocalRef(func);
 	func = newFunc;
@@ -622,15 +622,15 @@ void Segment::setFunc(Ionflux::Mapping::PointMapping* newFunc)
 
 Ionflux::Mapping::PointMapping* Segment::getFunc() const
 {
-    return func;
+	return func;
 }
 
 void Segment::setP0(Ionflux::Mapping::PointSample* newP0)
 {
 	if (p0 == newP0)
 		return;
-    if (newP0 != 0)
-        addLocalRef(newP0);
+	if (newP0 != 0)
+		addLocalRef(newP0);
 	if (p0 != 0)
 		removeLocalRef(p0);
 	p0 = newP0;
@@ -638,15 +638,15 @@ void Segment::setP0(Ionflux::Mapping::PointSample* newP0)
 
 Ionflux::Mapping::PointSample* Segment::getP0() const
 {
-    return p0;
+	return p0;
 }
 
 void Segment::setP1(Ionflux::Mapping::PointSample* newP1)
 {
 	if (p1 == newP1)
 		return;
-    if (newP1 != 0)
-        addLocalRef(newP1);
+	if (newP1 != 0)
+		addLocalRef(newP1);
 	if (p1 != 0)
 		removeLocalRef(p1);
 	p1 = newP1;
@@ -654,18 +654,18 @@ void Segment::setP1(Ionflux::Mapping::PointSample* newP1)
 
 Ionflux::Mapping::PointSample* Segment::getP1() const
 {
-    return p1;
+	return p1;
 }
 
 unsigned int Segment::getNumSegments() const
 {
-    return segments.size();
+	return segments.size();
 }
 
 Ionflux::Mapping::Segment* Segment::getSegment(unsigned int elementIndex) 
 const
 {
-    if (elementIndex < segments.size())
+	if (elementIndex < segments.size())
 		return segments[elementIndex];
 	return 0;
 }
@@ -673,7 +673,7 @@ const
 int Segment::findSegment(Ionflux::Mapping::Segment* needle, unsigned int 
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Segment* currentSegment = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -681,22 +681,22 @@ occurence) const
 	{
 		currentSegment = segments[i];
 		if (currentSegment == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::Segment*>& Segment::getSegments()
 {
-    return segments;
+	return segments;
 }
 
 void Segment::addSegment(Ionflux::Mapping::Segment* addElement)
@@ -729,7 +729,7 @@ void Segment::addSegments(Ionflux::Mapping::Segment* newSegments)
 
 void Segment::removeSegment(Ionflux::Mapping::Segment* removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Segment* currentSegment = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -751,17 +751,17 @@ void Segment::removeSegment(Ionflux::Mapping::Segment* removeElement)
 
 void Segment::removeSegmentIndex(unsigned int removeIndex)
 {
-    if (removeIndex > segments.size())
-        return;
+	if (removeIndex > segments.size())
+		return;
 	Ionflux::Mapping::Segment* e0 = segments[removeIndex];
-    segments.erase(segments.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	segments.erase(segments.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void Segment::clearSegments()
 {
-    std::vector<Ionflux::Mapping::Segment*>::iterator i;
+	std::vector<Ionflux::Mapping::Segment*>::iterator i;
 	for (i = segments.begin(); i != segments.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -775,30 +775,30 @@ void Segment::setArcLength(Ionflux::Mapping::MappingValue newArcLength)
 
 Ionflux::Mapping::MappingValue Segment::getArcLength() const
 {
-    return arcLength;
+	return arcLength;
 }
 
 Ionflux::Mapping::Segment& Segment::operator=(const 
 Ionflux::Mapping::Segment& other)
 {
-    if (this == &other)
-        return *this;
-    if (other.p0 != 0)
-        setP0(other.p0->copy());
-    else
-        setP0(0);
-    if (other.p1 != 0)
-        setP1(other.p1->copy());
-    else
-        setP1(0);
-    return *this;
+	if (this == &other)
+	    return *this;
+	if (other.p0 != 0)
+	    setP0(other.p0->copy());
+	else
+	    setP0(0);
+	if (other.p1 != 0)
+	    setP1(other.p1->copy());
+	else
+	    setP1(0);
+	return *this;
 }
 
 Ionflux::Mapping::Segment* Segment::copy() const
 {
-    Segment* newSegment = create();
-    *newSegment = *this;
-    return newSegment;
+	Segment* newSegment = create();
+	*newSegment = *this;
+	return newSegment;
 }
 
 Ionflux::Mapping::Segment* Segment::upcast(Ionflux::ObjectBase::IFObject* 

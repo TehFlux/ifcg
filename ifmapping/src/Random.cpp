@@ -94,15 +94,15 @@ Random::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::Random& Random::operator=(const Ionflux::Mapping::Random&
 other)
 {
-    ChainableMapping::operator=(other);
-    return *this;
+	ChainableMapping::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::Random* Random::copy() const
 {
-    Random* newRandom = create();
-    *newRandom = *this;
-    return newRandom;
+	Random* newRandom = create();
+	*newRandom = *this;
+	return newRandom;
 }
 
 Ionflux::Mapping::Random* Random::upcast(Ionflux::ObjectBase::IFObject* 

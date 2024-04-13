@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import IFObjectBase as ib
 import IFMapping as im
 import math as m
@@ -11,8 +13,8 @@ print("IFMapping test: %s" % testName)
 mm = ib.IFObject()
 if (enableMemDebug):
     mmh = ib.IFMMEventHandler.getInstance()
-    mmh.clearLogFile()
     mmh.setLogFileName('temp/memdebug.log')
+    mmh.clearLogFile()
 
 relativeError0 = 1e-5
 t0 = 0.

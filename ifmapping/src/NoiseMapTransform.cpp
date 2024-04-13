@@ -117,8 +117,8 @@ void NoiseMapTransform::setFunc(Ionflux::Mapping::Mapping* newFunc)
 {
 	if (func == newFunc)
 		return;
-    if (newFunc != 0)
-        addLocalRef(newFunc);
+	if (newFunc != 0)
+		addLocalRef(newFunc);
 	if (func != 0)
 		removeLocalRef(func);
 	func = newFunc;
@@ -126,7 +126,7 @@ void NoiseMapTransform::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* NoiseMapTransform::getFunc() const
 {
-    return func;
+	return func;
 }
 
 void NoiseMapTransform::setScale(Ionflux::Mapping::MappingValue newScale)
@@ -136,7 +136,7 @@ void NoiseMapTransform::setScale(Ionflux::Mapping::MappingValue newScale)
 
 Ionflux::Mapping::MappingValue NoiseMapTransform::getScale() const
 {
-    return scale;
+	return scale;
 }
 
 void NoiseMapTransform::setOffset(Ionflux::Mapping::MappingValue newOffset)
@@ -146,7 +146,7 @@ void NoiseMapTransform::setOffset(Ionflux::Mapping::MappingValue newOffset)
 
 Ionflux::Mapping::MappingValue NoiseMapTransform::getOffset() const
 {
-    return offset;
+	return offset;
 }
 
 void NoiseMapTransform::setResultScale(Ionflux::Mapping::MappingValue 
@@ -157,7 +157,7 @@ newResultScale)
 
 Ionflux::Mapping::MappingValue NoiseMapTransform::getResultScale() const
 {
-    return resultScale;
+	return resultScale;
 }
 
 void NoiseMapTransform::setResultOffset(Ionflux::Mapping::MappingValue 
@@ -168,7 +168,7 @@ newResultOffset)
 
 Ionflux::Mapping::MappingValue NoiseMapTransform::getResultOffset() const
 {
-    return resultOffset;
+	return resultOffset;
 }
 
 Ionflux::Mapping::Noise::NoiseMapTransform* 

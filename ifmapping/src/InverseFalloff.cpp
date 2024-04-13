@@ -112,22 +112,22 @@ newExponent)
 
 Ionflux::Mapping::MappingValue InverseFalloff::getExponent() const
 {
-    return exponent;
+	return exponent;
 }
 
 Ionflux::Mapping::InverseFalloff& InverseFalloff::operator=(const 
 Ionflux::Mapping::InverseFalloff& other)
 {
-    ChainableMapping::operator=(other);
-    exponent = other.exponent;
-    return *this;
+	ChainableMapping::operator=(other);
+	exponent = other.exponent;
+	return *this;
 }
 
 Ionflux::Mapping::InverseFalloff* InverseFalloff::copy() const
 {
-    InverseFalloff* newInverseFalloff = create();
-    *newInverseFalloff = *this;
-    return newInverseFalloff;
+	InverseFalloff* newInverseFalloff = create();
+	*newInverseFalloff = *this;
+	return newInverseFalloff;
 }
 
 Ionflux::Mapping::InverseFalloff* 

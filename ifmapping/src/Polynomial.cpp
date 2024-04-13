@@ -127,13 +127,13 @@ Polynomial::callWithParam(Ionflux::Mapping::MappingValue value) const
 
 unsigned int Polynomial::getNumCoefficients() const
 {
-    return coefficients.size();
+	return coefficients.size();
 }
 
 Ionflux::Mapping::MappingValue Polynomial::getCoefficient(unsigned int 
 elementIndex) const
 {
-    if (elementIndex < coefficients.size())
+	if (elementIndex < coefficients.size())
 		return coefficients[elementIndex];
 	return 0;
 }
@@ -141,7 +141,7 @@ elementIndex) const
 int Polynomial::findCoefficient(Ionflux::Mapping::MappingValue needle, 
 unsigned int occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::MappingValue currentCoefficient = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -149,22 +149,22 @@ unsigned int occurence) const
 	{
 		currentCoefficient = coefficients[i];
 		if (currentCoefficient == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::MappingValue>& Polynomial::getCoefficients()
 {
-    return coefficients;
+	return coefficients;
 }
 
 void Polynomial::addCoefficient(Ionflux::Mapping::MappingValue addElement)
@@ -175,7 +175,7 @@ void Polynomial::addCoefficient(Ionflux::Mapping::MappingValue addElement)
 void Polynomial::removeCoefficient(Ionflux::Mapping::MappingValue 
 removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::MappingValue currentCoefficient = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -195,29 +195,29 @@ removeElement)
 
 void Polynomial::removeCoefficientIndex(unsigned int removeIndex)
 {
-    if (removeIndex > coefficients.size())
-        return;
-    coefficients.erase(coefficients.begin() + removeIndex);
+	if (removeIndex > coefficients.size())
+		return;
+	coefficients.erase(coefficients.begin() + removeIndex);
 }
 
 void Polynomial::clearCoefficients()
 {
-    coefficients.clear();
+	coefficients.clear();
 }
 
 Ionflux::Mapping::Polynomial& Polynomial::operator=(const 
 Ionflux::Mapping::Polynomial& other)
 {
-    ChainableMapping::operator=(other);
-    coefficients = other.coefficients;
-    return *this;
+	ChainableMapping::operator=(other);
+	coefficients = other.coefficients;
+	return *this;
 }
 
 Ionflux::Mapping::Polynomial* Polynomial::copy() const
 {
-    Polynomial* newPolynomial = create();
-    *newPolynomial = *this;
-    return newPolynomial;
+	Polynomial* newPolynomial = create();
+	*newPolynomial = *this;
+	return newPolynomial;
 }
 
 Ionflux::Mapping::Polynomial* 

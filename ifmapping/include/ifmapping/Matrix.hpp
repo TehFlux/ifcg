@@ -103,8 +103,33 @@ class Matrix
 		 * \param initNumCols Number of columns.
 		 * \param initValues Initial values.
 		 */
-		Matrix(unsigned int initNumRows, unsigned int initNumCols = 0, const 
+		Matrix(unsigned int initNumRows, unsigned int initNumCols, const 
 		Ionflux::ObjectBase::DoubleVector* const initValues = nullptr);
+		
+		/** Constructor.
+		 *
+		 * Construct new Matrix object.
+		 *
+		 * \param initNumRows Number of rows.
+		 * \param initNumCols Number of columns.
+		 * \param initV00 Initial value (0).
+		 * \param initV01 Initial value (1).
+		 * \param initV02 Initial value (2).
+		 * \param initV03 Initial value (3).
+		 * \param initV04 Initial value (4).
+		 * \param initV05 Initial value (5).
+		 * \param initV06 Initial value (6).
+		 * \param initV07 Initial value (7).
+		 * \param initV08 Initial value (8).
+		 * \param initV09 Initial value (9).
+		 * \param initV10 Initial value (10).
+		 * \param initV11 Initial value (11).
+		 */
+		Matrix(unsigned int initNumRows, unsigned int initNumCols, double 
+		initV00, double initV01 = 0., double initV02 = 0., double initV03 = 0., 
+		double initV04 = 0., double initV05 = 0., double initV06 = 0., double 
+		initV07 = 0., double initV08 = 0., double initV09 = 0., double initV10 = 
+		0., double initV11 = 0.);
 		
 		/** Destructor.
 		 *
@@ -244,6 +269,26 @@ class Matrix
 		virtual void setInversePower(double exponent = 2., double falloff = 
 		0.0001);
 		
+		/** Sample matrix columns.
+		 *
+		 * Sample the matrix columns with the specified number of samples.
+		 * 
+		 * The resulting column data is stored in the target matrix, which 
+		 * should have a number of rows equal to the source matrix, and a 
+		 * number of columns equal to the number of samples. If the target 
+		 * matrix is not large enough to hold all of the data, the out of 
+		 * bounds data will not be added to the matrix.
+		 * 
+		 * The optional \c sampleOffset can be used to center the samples 
+		 * within the index range of matrix columns.
+		 *
+		 * \param numSamples Number of samples.
+		 * \param target Target matrix in which to store the samples.
+		 * \param sampleOffset Sample offset.
+		 */
+		virtual void sampleColumns(unsigned int numSamples, 
+		Ionflux::Mapping::Matrix& target, double sampleOffset = 0.5);
+		
 		/** Comparison operator: equality.
 		 *
 		 * Compare equality.
@@ -271,6 +316,24 @@ class Matrix
 		 * \return String representation.
 		 */
 		virtual std::string getString() const;
+		
+		/** Get formatted value string.
+		 *
+		 * Get a formatted value string representation of the matrix.
+		 *
+		 * \param precision Precision.
+		 * \param fieldWidth Field width.
+		 * \param offsetCols Offset (columns).
+		 * \param offsetRows Offset (rows).
+		 * \param maxNumCols Maximum number of columns to be shown.
+		 * \param maxNumRows Maximum number of rows to be shown.
+		 *
+		 * \return String representation.
+		 */
+		virtual std::string getValueStringFormatted(unsigned int precision = 3, 
+		unsigned int fieldWidth = 8, unsigned int offsetCols = 0, unsigned int 
+		offsetRows = 0, unsigned int maxNumCols = 20, unsigned int maxNumRows = 
+		20) const;
 		
 		/** Assignment operator.
 		 *
@@ -325,9 +388,35 @@ class Matrix
 		 * \param parentObject Parent object.
 		 */
 		static Ionflux::Mapping::Matrix* create(unsigned int initNumRows, 
-		unsigned int initNumCols = 0, const Ionflux::ObjectBase::DoubleVector* 
-		const initValues = nullptr, Ionflux::ObjectBase::IFObject* parentObject =
-		0);
+		unsigned int initNumCols, const Ionflux::ObjectBase::DoubleVector* const 
+		initValues = nullptr, Ionflux::ObjectBase::IFObject* parentObject = 0);
+        
+		/** Create instance.
+		 *
+		 * Create a new Matrix object.
+		 *
+		 * \param initNumRows Number of rows.
+		 * \param initNumCols Number of columns.
+		 * \param initV00 Initial value (0).
+		 * \param initV01 Initial value (1).
+		 * \param initV02 Initial value (2).
+		 * \param initV03 Initial value (3).
+		 * \param initV04 Initial value (4).
+		 * \param initV05 Initial value (5).
+		 * \param initV06 Initial value (6).
+		 * \param initV07 Initial value (7).
+		 * \param initV08 Initial value (8).
+		 * \param initV09 Initial value (9).
+		 * \param initV10 Initial value (10).
+		 * \param initV11 Initial value (11).
+		 * \param parentObject Parent object.
+		 */
+		static Ionflux::Mapping::Matrix* create(unsigned int initNumRows, 
+		unsigned int initNumCols, double initV00, double initV01 = 0., double 
+		initV02 = 0., double initV03 = 0., double initV04 = 0., double initV05 = 
+		0., double initV06 = 0., double initV07 = 0., double initV08 = 0., double
+		initV09 = 0., double initV10 = 0., double initV11 = 0., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
 		
 		/** Get allocated size in memory.
 		 *

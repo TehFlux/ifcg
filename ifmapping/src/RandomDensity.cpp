@@ -120,22 +120,22 @@ void RandomDensity::setMaxIters(unsigned int newMaxIters)
 
 unsigned int RandomDensity::getMaxIters() const
 {
-    return maxIters;
+	return maxIters;
 }
 
 Ionflux::Mapping::RandomDensity& RandomDensity::operator=(const 
 Ionflux::Mapping::RandomDensity& other)
 {
-    ChainableMapping::operator=(other);
-    maxIters = other.maxIters;
-    return *this;
+	ChainableMapping::operator=(other);
+	maxIters = other.maxIters;
+	return *this;
 }
 
 Ionflux::Mapping::RandomDensity* RandomDensity::copy() const
 {
-    RandomDensity* newRandomDensity = create();
-    *newRandomDensity = *this;
-    return newRandomDensity;
+	RandomDensity* newRandomDensity = create();
+	*newRandomDensity = *this;
+	return newRandomDensity;
 }
 
 Ionflux::Mapping::RandomDensity* 

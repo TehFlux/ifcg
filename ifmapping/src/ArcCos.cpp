@@ -93,15 +93,15 @@ ArcCos::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::ArcCos& ArcCos::operator=(const Ionflux::Mapping::ArcCos&
 other)
 {
-    ChainableMapping::operator=(other);
-    return *this;
+	ChainableMapping::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::ArcCos* ArcCos::copy() const
 {
-    ArcCos* newArcCos = create();
-    *newArcCos = *this;
-    return newArcCos;
+	ArcCos* newArcCos = create();
+	*newArcCos = *this;
+	return newArcCos;
 }
 
 Ionflux::Mapping::ArcCos* ArcCos::upcast(Ionflux::ObjectBase::IFObject* 

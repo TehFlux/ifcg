@@ -2877,9 +2877,13 @@ class Matrix
         
         Matrix();
 		Matrix(const Ionflux::Mapping::Matrix& other);
-        Matrix(unsigned int initNumRows, unsigned int initNumCols = 0, 
-        const Ionflux::ObjectBase::DoubleVector* const initValues = 
-        nullptr);
+        Matrix(unsigned int initNumRows, unsigned int initNumCols, const 
+        Ionflux::ObjectBase::DoubleVector* const initValues = nullptr);
+        Matrix(unsigned int initNumRows, unsigned int initNumCols, double 
+        initV00, double initV01 = 0., double initV02 = 0., double initV03 =
+        0., double initV04 = 0., double initV05 = 0., double initV06 = 0., 
+        double initV07 = 0., double initV08 = 0., double initV09 = 0., 
+        double initV10 = 0., double initV11 = 0.);
         virtual ~Matrix();
         virtual void init(unsigned int newNumRows = 0, unsigned int 
         newNumCols = 0);
@@ -2901,11 +2905,17 @@ class Matrix
         virtual void setGaussian(double stdDev = 0.);
         virtual void setInversePower(double exponent = 2., double falloff =
         0.0001);
+        virtual void sampleColumns(unsigned int numSamples, 
+        Ionflux::Mapping::Matrix& target, double sampleOffset = 0.5);
         virtual bool operator==(const Ionflux::Mapping::Matrix& other) 
         const;
         virtual bool operator!=(const Ionflux::Mapping::Matrix& other) 
         const;
         virtual std::string getString() const;
+        virtual std::string getValueStringFormatted(unsigned int precision 
+        = 3, unsigned int fieldWidth = 8, unsigned int offsetCols = 0, 
+        unsigned int offsetRows = 0, unsigned int maxNumCols = 20, unsigned
+        int maxNumRows = 20) const;
 		virtual Ionflux::Mapping::Matrix* copy() const;
 		static Ionflux::Mapping::Matrix* upcast(Ionflux::ObjectBase::IFObject* 
 		other);
@@ -2913,9 +2923,14 @@ class Matrix
 		parentObject = 0);
 		virtual unsigned int getMemSize() const;
 		static Ionflux::Mapping::Matrix* create(unsigned int initNumRows, 
-		unsigned int initNumCols = 0, const Ionflux::ObjectBase::DoubleVector* 
-		const initValues = nullptr, Ionflux::ObjectBase::IFObject* parentObject =
-		0);
+		unsigned int initNumCols, const Ionflux::ObjectBase::DoubleVector* const 
+		initValues = nullptr, Ionflux::ObjectBase::IFObject* parentObject = 0);
+		static Ionflux::Mapping::Matrix* create(unsigned int initNumRows, 
+		unsigned int initNumCols, double initV00, double initV01 = 0., double 
+		initV02 = 0., double initV03 = 0., double initV04 = 0., double initV05 = 
+		0., double initV06 = 0., double initV07 = 0., double initV08 = 0., double
+		initV09 = 0., double initV10 = 0., double initV11 = 0., 
+		Ionflux::ObjectBase::IFObject* parentObject = 0);
         virtual unsigned int getNumRows() const;
         virtual unsigned int getNumCols() const;
 };

@@ -265,16 +265,16 @@ Ionflux::Mapping::Point BezierCurve::getP3() const
 Ionflux::Mapping::BezierCurve& BezierCurve::operator=(const 
 Ionflux::Mapping::BezierCurve& other)
 {
-    PointSet::operator=(other);
-    validate();
-    return *this;
+	PointSet::operator=(other);
+	validate();
+	return *this;
 }
 
 Ionflux::Mapping::BezierCurve* BezierCurve::copy() const
 {
-    BezierCurve* newBezierCurve = create();
-    *newBezierCurve = *this;
-    return newBezierCurve;
+	BezierCurve* newBezierCurve = create();
+	*newBezierCurve = *this;
+	return newBezierCurve;
 }
 
 Ionflux::Mapping::BezierCurve* 

@@ -93,15 +93,15 @@ ArcTan::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::ArcTan& ArcTan::operator=(const Ionflux::Mapping::ArcTan&
 other)
 {
-    ChainableMapping::operator=(other);
-    return *this;
+	ChainableMapping::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::ArcTan* ArcTan::copy() const
 {
-    ArcTan* newArcTan = create();
-    *newArcTan = *this;
-    return newArcTan;
+	ArcTan* newArcTan = create();
+	*newArcTan = *this;
+	return newArcTan;
 }
 
 Ionflux::Mapping::ArcTan* ArcTan::upcast(Ionflux::ObjectBase::IFObject* 

@@ -79,24 +79,24 @@ void MappingError::setReason(const std::string& newReason)
 
 std::string MappingError::getReason() const
 {
-    return reason;
+	return reason;
 }
 
 Ionflux::Mapping::MappingError& MappingError::operator=(const 
 Ionflux::Mapping::MappingError& other)
 {
-if (this == &other)
-    return *this;
+	if (this == &other)
+		return *this;
 setReason(other.getReason());
-    return *this;
+	return *this;
 }
 
 Ionflux::Mapping::MappingError* MappingError::copy() const
 {
-    MappingError* newMappingError = 
-        new MappingError();
-    *newMappingError = *this;
-    return newMappingError;
+	MappingError* newMappingError = 
+		new MappingError();
+	*newMappingError = *this;
+	return newMappingError;
 }
 
 }

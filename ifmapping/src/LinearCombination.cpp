@@ -115,13 +115,13 @@ LinearCombination::call(Ionflux::Mapping::MappingValue value) const
 
 unsigned int LinearCombination::getNumPieces() const
 {
-    return pieces.size();
+	return pieces.size();
 }
 
 Ionflux::Mapping::Piece* LinearCombination::getPiece(unsigned int 
 elementIndex) const
 {
-    if (elementIndex < pieces.size())
+	if (elementIndex < pieces.size())
 		return pieces[elementIndex];
 	return 0;
 }
@@ -129,7 +129,7 @@ elementIndex) const
 int LinearCombination::findPiece(Ionflux::Mapping::Piece* needle, unsigned 
 int occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Piece* currentPiece = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -137,22 +137,22 @@ int occurence) const
 	{
 		currentPiece = pieces[i];
 		if (currentPiece == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::Piece*>& LinearCombination::getPieces()
 {
-    return pieces;
+	return pieces;
 }
 
 void LinearCombination::addPiece(Ionflux::Mapping::Piece* addElement)
@@ -163,7 +163,7 @@ void LinearCombination::addPiece(Ionflux::Mapping::Piece* addElement)
 
 void LinearCombination::removePiece(Ionflux::Mapping::Piece* removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Piece* currentPiece = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -185,17 +185,17 @@ void LinearCombination::removePiece(Ionflux::Mapping::Piece* removeElement)
 
 void LinearCombination::removePieceIndex(unsigned int removeIndex)
 {
-    if (removeIndex > pieces.size())
-        return;
+	if (removeIndex > pieces.size())
+		return;
 	Ionflux::Mapping::Piece* e0 = pieces[removeIndex];
-    pieces.erase(pieces.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	pieces.erase(pieces.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void LinearCombination::clearPieces()
 {
-    std::vector<Ionflux::Mapping::Piece*>::iterator i;
+	std::vector<Ionflux::Mapping::Piece*>::iterator i;
 	for (i = pieces.begin(); i != pieces.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -205,26 +205,26 @@ void LinearCombination::clearPieces()
 Ionflux::Mapping::LinearCombination& LinearCombination::operator=(const 
 Ionflux::Mapping::LinearCombination& other)
 {
-    PieceVector v0;
-    for (PieceVector::const_iterator i = other.pieces.begin(); 
-        i != other.pieces.end(); i++)
-    {
-        Piece* p0 = *i;
-        if (p0 != 0)
-            v0.push_back(new Piece(*p0));
-        else
-            v0.push_back(0);
-    }
-    clearPieces();
-    addPieces(v0);
-    return *this;
+	PieceVector v0;
+	for (PieceVector::const_iterator i = other.pieces.begin(); 
+	    i != other.pieces.end(); i++)
+	{
+	    Piece* p0 = *i;
+	    if (p0 != 0)
+	        v0.push_back(new Piece(*p0));
+	    else
+	        v0.push_back(0);
+	}
+	clearPieces();
+	addPieces(v0);
+	return *this;
 }
 
 Ionflux::Mapping::LinearCombination* LinearCombination::copy() const
 {
-    LinearCombination* newLinearCombination = create();
-    *newLinearCombination = *this;
-    return newLinearCombination;
+	LinearCombination* newLinearCombination = create();
+	*newLinearCombination = *this;
+	return newLinearCombination;
 }
 
 Ionflux::Mapping::LinearCombination* 

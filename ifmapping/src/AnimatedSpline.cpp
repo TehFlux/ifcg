@@ -155,13 +155,13 @@ std::string AnimatedSpline::getString() const
 
 unsigned int AnimatedSpline::getNumKeys() const
 {
-    return keys.size();
+	return keys.size();
 }
 
 Ionflux::Mapping::BezierSplineKey* AnimatedSpline::getKey(unsigned int 
 elementIndex) const
 {
-    if (elementIndex < keys.size())
+	if (elementIndex < keys.size())
 		return keys[elementIndex];
 	return 0;
 }
@@ -169,7 +169,7 @@ elementIndex) const
 int AnimatedSpline::findKey(Ionflux::Mapping::BezierSplineKey* needle, 
 unsigned int occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::BezierSplineKey* currentKey = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -177,22 +177,22 @@ unsigned int occurence) const
 	{
 		currentKey = keys[i];
 		if (currentKey == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::BezierSplineKey*>& AnimatedSpline::getKeys()
 {
-    return keys;
+	return keys;
 }
 
 void AnimatedSpline::addKey(Ionflux::Mapping::BezierSplineKey* addElement)
@@ -204,7 +204,7 @@ void AnimatedSpline::addKey(Ionflux::Mapping::BezierSplineKey* addElement)
 void AnimatedSpline::removeKey(Ionflux::Mapping::BezierSplineKey* 
 removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::BezierSplineKey* currentKey = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -226,17 +226,17 @@ removeElement)
 
 void AnimatedSpline::removeKeyIndex(unsigned int removeIndex)
 {
-    if (removeIndex > keys.size())
-        return;
+	if (removeIndex > keys.size())
+		return;
 	Ionflux::Mapping::BezierSplineKey* e0 = keys[removeIndex];
-    keys.erase(keys.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	keys.erase(keys.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void AnimatedSpline::clearKeys()
 {
-    std::vector<Ionflux::Mapping::BezierSplineKey*>::iterator i;
+	std::vector<Ionflux::Mapping::BezierSplineKey*>::iterator i;
 	for (i = keys.begin(); i != keys.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -246,17 +246,17 @@ void AnimatedSpline::clearKeys()
 Ionflux::Mapping::AnimatedSpline& AnimatedSpline::operator=(const 
 Ionflux::Mapping::AnimatedSpline& other)
 {
-if (this == &other)
-    return *this;
-    return *this;
+	if (this == &other)
+		return *this;
+	return *this;
 }
 
 Ionflux::Mapping::AnimatedSpline* AnimatedSpline::copy() const
 {
-    AnimatedSpline* newAnimatedSpline = 
-        new AnimatedSpline();
-    *newAnimatedSpline = *this;
-    return newAnimatedSpline;
+	AnimatedSpline* newAnimatedSpline = 
+		new AnimatedSpline();
+	*newAnimatedSpline = *this;
+	return newAnimatedSpline;
 }
 
 unsigned int AnimatedSpline::getMemSize() const

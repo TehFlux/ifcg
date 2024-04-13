@@ -92,15 +92,15 @@ Cubic::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::Cubic& Cubic::operator=(const Ionflux::Mapping::Cubic& 
 other)
 {
-    Linear::operator=(other);
-    return *this;
+	Linear::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::Cubic* Cubic::copy() const
 {
-    Cubic* newCubic = create();
-    *newCubic = *this;
-    return newCubic;
+	Cubic* newCubic = create();
+	*newCubic = *this;
+	return newCubic;
 }
 
 Ionflux::Mapping::Cubic* Cubic::upcast(Ionflux::ObjectBase::IFObject* 

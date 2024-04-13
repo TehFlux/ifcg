@@ -75,10 +75,10 @@ PointMapping::PointMapping()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-    refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	refData->mmDebug = true;
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -87,17 +87,17 @@ PointMapping::PointMapping(const Ionflux::Mapping::PointMapping& other)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	*this = other;
 }
 
 PointMapping::~PointMapping()
 {
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -213,16 +213,16 @@ value)
 Ionflux::Mapping::PointMapping& PointMapping::operator=(const 
 Ionflux::Mapping::PointMapping& other)
 {
-if (this == &other)
-    return *this;
-    return *this;
+	if (this == &other)
+		return *this;
+	return *this;
 }
 
 Ionflux::Mapping::PointMapping* PointMapping::copy() const
 {
-    PointMapping* newPointMapping = create();
-    *newPointMapping = *this;
-    return newPointMapping;
+	PointMapping* newPointMapping = create();
+	*newPointMapping = *this;
+	return newPointMapping;
 }
 
 Ionflux::Mapping::PointMapping* 

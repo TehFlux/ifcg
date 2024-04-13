@@ -98,13 +98,13 @@ std::string MappingSet::getString() const
 
 unsigned int MappingSet::getNumMappings() const
 {
-    return mappings.size();
+	return mappings.size();
 }
 
 Ionflux::Mapping::Mapping* MappingSet::getMapping(unsigned int 
 elementIndex) const
 {
-    if (elementIndex < mappings.size())
+	if (elementIndex < mappings.size())
 		return mappings[elementIndex];
 	return 0;
 }
@@ -112,7 +112,7 @@ elementIndex) const
 int MappingSet::findMapping(Ionflux::Mapping::Mapping* needle, unsigned int
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Mapping* currentMapping = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -120,22 +120,22 @@ occurence) const
 	{
 		currentMapping = mappings[i];
 		if (currentMapping == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::Mapping*>& MappingSet::getMappings()
 {
-    return mappings;
+	return mappings;
 }
 
 void MappingSet::addMapping(Ionflux::Mapping::Mapping* addElement)
@@ -146,7 +146,7 @@ void MappingSet::addMapping(Ionflux::Mapping::Mapping* addElement)
 
 void MappingSet::removeMapping(Ionflux::Mapping::Mapping* removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Mapping* currentMapping = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -168,17 +168,17 @@ void MappingSet::removeMapping(Ionflux::Mapping::Mapping* removeElement)
 
 void MappingSet::removeMappingIndex(unsigned int removeIndex)
 {
-    if (removeIndex > mappings.size())
-        return;
+	if (removeIndex > mappings.size())
+		return;
 	Ionflux::Mapping::Mapping* e0 = mappings[removeIndex];
-    mappings.erase(mappings.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	mappings.erase(mappings.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void MappingSet::clearMappings()
 {
-    std::vector<Ionflux::Mapping::Mapping*>::iterator i;
+	std::vector<Ionflux::Mapping::Mapping*>::iterator i;
 	for (i = mappings.begin(); i != mappings.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -188,28 +188,28 @@ void MappingSet::clearMappings()
 Ionflux::Mapping::MappingSet& MappingSet::operator=(const 
 Ionflux::Mapping::MappingSet& other)
 {
-    MappingVector v0;
-    for (MappingVector::const_iterator i = other.mappings.begin(); 
-        i != other.mappings.end(); i++)
-    {
-        addLocalRef(*i);
-        v0.push_back(*i);
-    }
-    clearMappings();
-    for (MappingVector::const_iterator i = v0.begin(); 
-        i != v0.end(); i++)
-    {
-        addMapping(*i);
-        removeLocalRef(*i);
-    }
-    return *this;
+	MappingVector v0;
+	for (MappingVector::const_iterator i = other.mappings.begin(); 
+	    i != other.mappings.end(); i++)
+	{
+	    addLocalRef(*i);
+	    v0.push_back(*i);
+	}
+	clearMappings();
+	for (MappingVector::const_iterator i = v0.begin(); 
+	    i != v0.end(); i++)
+	{
+	    addMapping(*i);
+	    removeLocalRef(*i);
+	}
+	return *this;
 }
 
 Ionflux::Mapping::MappingSet* MappingSet::copy() const
 {
-    MappingSet* newMappingSet = create();
-    *newMappingSet = *this;
-    return newMappingSet;
+	MappingSet* newMappingSet = create();
+	*newMappingSet = *this;
+	return newMappingSet;
 }
 
 Ionflux::Mapping::MappingSet* 

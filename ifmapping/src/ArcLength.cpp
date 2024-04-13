@@ -64,10 +64,10 @@ ArcLength::ArcLength()
 {
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
-    refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	refData->mmDebug = true;
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -77,9 +77,9 @@ ArcLength::ArcLength(const Ionflux::Mapping::ArcLength& other)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	*this = other;
 }
 
@@ -94,17 +94,17 @@ relativeError(initRelativeError), maxNumIterations(initMaxNumIterations)
 	// NOTE: The following line is required for run-time type information.
 	theClass = CLASS_INFO;
 	refData->mmDebug = true;
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_CREATE, this));
 	setFunc(initFunc);
 }
 
 ArcLength::~ArcLength()
 {
-    if (refData->mmDebug)
-        handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
-            Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
+	if (refData->mmDebug)
+		handleMMEvent(Ionflux::ObjectBase::IFMMEvent(
+			Ionflux::ObjectBase::IFMMEvent::TYPE_DELETE, this));
 	// TODO: Nothing ATM. ;-)
 }
 
@@ -162,8 +162,8 @@ void ArcLength::setFunc(Ionflux::Mapping::PointMapping* newFunc)
 {
 	if (func == newFunc)
 		return;
-    if (newFunc != 0)
-        addLocalRef(newFunc);
+	if (newFunc != 0)
+		addLocalRef(newFunc);
 	if (func != 0)
 		removeLocalRef(func);
 	func = newFunc;
@@ -171,7 +171,7 @@ void ArcLength::setFunc(Ionflux::Mapping::PointMapping* newFunc)
 
 Ionflux::Mapping::PointMapping* ArcLength::getFunc() const
 {
-    return func;
+	return func;
 }
 
 void ArcLength::setOffset(Ionflux::Mapping::MappingValue newOffset)
@@ -181,7 +181,7 @@ void ArcLength::setOffset(Ionflux::Mapping::MappingValue newOffset)
 
 Ionflux::Mapping::MappingValue ArcLength::getOffset() const
 {
-    return offset;
+	return offset;
 }
 
 void ArcLength::setScale(Ionflux::Mapping::MappingValue newScale)
@@ -191,7 +191,7 @@ void ArcLength::setScale(Ionflux::Mapping::MappingValue newScale)
 
 Ionflux::Mapping::MappingValue ArcLength::getScale() const
 {
-    return scale;
+	return scale;
 }
 
 void ArcLength::setRefParam(Ionflux::Mapping::MappingValue newRefParam)
@@ -201,7 +201,7 @@ void ArcLength::setRefParam(Ionflux::Mapping::MappingValue newRefParam)
 
 Ionflux::Mapping::MappingValue ArcLength::getRefParam() const
 {
-    return refParam;
+	return refParam;
 }
 
 void ArcLength::setRelativeError(Ionflux::Mapping::MappingValue 
@@ -212,7 +212,7 @@ newRelativeError)
 
 Ionflux::Mapping::MappingValue ArcLength::getRelativeError() const
 {
-    return relativeError;
+	return relativeError;
 }
 
 void ArcLength::setMaxNumIterations(unsigned int newMaxNumIterations)
@@ -222,25 +222,25 @@ void ArcLength::setMaxNumIterations(unsigned int newMaxNumIterations)
 
 unsigned int ArcLength::getMaxNumIterations() const
 {
-    return maxNumIterations;
+	return maxNumIterations;
 }
 
 Ionflux::Mapping::ArcLength& ArcLength::operator=(const 
 Ionflux::Mapping::ArcLength& other)
 {
-    if (this == &other)
-        return *this;
-    setFunc(other.func);
-    refParam = other.refParam;
-    relativeError = other.relativeError;
-    return *this;
+	if (this == &other)
+	    return *this;
+	setFunc(other.func);
+	refParam = other.refParam;
+	relativeError = other.relativeError;
+	return *this;
 }
 
 Ionflux::Mapping::ArcLength* ArcLength::copy() const
 {
-    ArcLength* newArcLength = create();
-    *newArcLength = *this;
-    return newArcLength;
+	ArcLength* newArcLength = create();
+	*newArcLength = *this;
+	return newArcLength;
 }
 
 Ionflux::Mapping::ArcLength* 

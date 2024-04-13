@@ -100,12 +100,12 @@ value) const
 
 unsigned int Chain::getNumFuncs() const
 {
-    return funcs.size();
+	return funcs.size();
 }
 
 Ionflux::Mapping::Mapping* Chain::getFunc(unsigned int elementIndex) const
 {
-    if (elementIndex < funcs.size())
+	if (elementIndex < funcs.size())
 		return funcs[elementIndex];
 	return 0;
 }
@@ -113,7 +113,7 @@ Ionflux::Mapping::Mapping* Chain::getFunc(unsigned int elementIndex) const
 int Chain::findFunc(Ionflux::Mapping::Mapping* needle, unsigned int 
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Mapping* currentFunc = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -121,22 +121,22 @@ occurence) const
 	{
 		currentFunc = funcs[i];
 		if (currentFunc == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::Mapping*>& Chain::getFuncs()
 {
-    return funcs;
+	return funcs;
 }
 
 void Chain::addFunc(Ionflux::Mapping::Mapping* addElement)
@@ -147,7 +147,7 @@ void Chain::addFunc(Ionflux::Mapping::Mapping* addElement)
 
 void Chain::removeFunc(Ionflux::Mapping::Mapping* removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Mapping* currentFunc = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -169,17 +169,17 @@ void Chain::removeFunc(Ionflux::Mapping::Mapping* removeElement)
 
 void Chain::removeFuncIndex(unsigned int removeIndex)
 {
-    if (removeIndex > funcs.size())
-        return;
+	if (removeIndex > funcs.size())
+		return;
 	Ionflux::Mapping::Mapping* e0 = funcs[removeIndex];
-    funcs.erase(funcs.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	funcs.erase(funcs.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void Chain::clearFuncs()
 {
-    std::vector<Ionflux::Mapping::Mapping*>::iterator i;
+	std::vector<Ionflux::Mapping::Mapping*>::iterator i;
 	for (i = funcs.begin(); i != funcs.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -189,28 +189,28 @@ void Chain::clearFuncs()
 Ionflux::Mapping::Chain& Chain::operator=(const Ionflux::Mapping::Chain& 
 other)
 {
-    MappingVector v0;
-    for (MappingVector::const_iterator i = other.funcs.begin(); 
-        i != other.funcs.end(); i++)
-    {
-        addLocalRef(*i);
-        v0.push_back(*i);
-    }
-    clearFuncs();
-    for (MappingVector::const_iterator i = v0.begin(); 
-        i != v0.end(); i++)
-    {
-        addFunc(*i);
-        removeLocalRef(*i);
-    }
-    return *this;
+	MappingVector v0;
+	for (MappingVector::const_iterator i = other.funcs.begin(); 
+	    i != other.funcs.end(); i++)
+	{
+	    addLocalRef(*i);
+	    v0.push_back(*i);
+	}
+	clearFuncs();
+	for (MappingVector::const_iterator i = v0.begin(); 
+	    i != v0.end(); i++)
+	{
+	    addFunc(*i);
+	    removeLocalRef(*i);
+	}
+	return *this;
 }
 
 Ionflux::Mapping::Chain* Chain::copy() const
 {
-    Chain* newChain = create();
-    *newChain = *this;
-    return newChain;
+	Chain* newChain = create();
+	*newChain = *this;
+	return newChain;
 }
 
 Ionflux::Mapping::Chain* Chain::upcast(Ionflux::ObjectBase::IFObject* 

@@ -278,7 +278,7 @@ void Point::setX(Ionflux::Mapping::MappingValue newX)
 
 Ionflux::Mapping::MappingValue Point::getX() const
 {
-    return x;
+	return x;
 }
 
 void Point::setY(Ionflux::Mapping::MappingValue newY)
@@ -288,7 +288,7 @@ void Point::setY(Ionflux::Mapping::MappingValue newY)
 
 Ionflux::Mapping::MappingValue Point::getY() const
 {
-    return y;
+	return y;
 }
 
 void Point::setZ(Ionflux::Mapping::MappingValue newZ)
@@ -298,23 +298,23 @@ void Point::setZ(Ionflux::Mapping::MappingValue newZ)
 
 Ionflux::Mapping::MappingValue Point::getZ() const
 {
-    return z;
+	return z;
 }
 
 Ionflux::Mapping::Point& Point::operator=(const Ionflux::Mapping::Point& 
 other)
 {
-    x = other.x;
-    y = other.y;
-    z = other.z;
-    return *this;
+	x = other.x;
+	y = other.y;
+	z = other.z;
+	return *this;
 }
 
 Ionflux::Mapping::Point* Point::copy() const
 {
-    Point* newPoint = create();
-    *newPoint = *this;
-    return newPoint;
+	Point* newPoint = create();
+	*newPoint = *this;
+	return newPoint;
 }
 
 Ionflux::Mapping::Point* Point::upcast(Ionflux::ObjectBase::IFObject* 

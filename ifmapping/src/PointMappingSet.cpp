@@ -99,13 +99,13 @@ std::string PointMappingSet::getString() const
 
 unsigned int PointMappingSet::getNumMappings() const
 {
-    return mappings.size();
+	return mappings.size();
 }
 
 Ionflux::Mapping::PointMapping* PointMappingSet::getMapping(unsigned int 
 elementIndex) const
 {
-    if (elementIndex < mappings.size())
+	if (elementIndex < mappings.size())
 		return mappings[elementIndex];
 	return 0;
 }
@@ -113,7 +113,7 @@ elementIndex) const
 int PointMappingSet::findMapping(Ionflux::Mapping::PointMapping* needle, 
 unsigned int occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::PointMapping* currentMapping = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -121,23 +121,23 @@ unsigned int occurence) const
 	{
 		currentMapping = mappings[i];
 		if (currentMapping == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::PointMapping*>& 
 PointMappingSet::getMappings()
 {
-    return mappings;
+	return mappings;
 }
 
 void PointMappingSet::addMapping(Ionflux::Mapping::PointMapping* 
@@ -150,7 +150,7 @@ addElement)
 void PointMappingSet::removeMapping(Ionflux::Mapping::PointMapping* 
 removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::PointMapping* currentMapping = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -172,17 +172,17 @@ removeElement)
 
 void PointMappingSet::removeMappingIndex(unsigned int removeIndex)
 {
-    if (removeIndex > mappings.size())
-        return;
+	if (removeIndex > mappings.size())
+		return;
 	Ionflux::Mapping::PointMapping* e0 = mappings[removeIndex];
-    mappings.erase(mappings.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	mappings.erase(mappings.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void PointMappingSet::clearMappings()
 {
-    std::vector<Ionflux::Mapping::PointMapping*>::iterator i;
+	std::vector<Ionflux::Mapping::PointMapping*>::iterator i;
 	for (i = mappings.begin(); i != mappings.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -192,28 +192,28 @@ void PointMappingSet::clearMappings()
 Ionflux::Mapping::PointMappingSet& PointMappingSet::operator=(const 
 Ionflux::Mapping::PointMappingSet& other)
 {
-    PointMappingVector v0;
-    for (PointMappingVector::const_iterator i = other.mappings.begin(); 
-        i != other.mappings.end(); i++)
-    {
-        addLocalRef(*i);
-        v0.push_back(*i);
-    }
-    clearMappings();
-    for (PointMappingVector::const_iterator i = v0.begin(); 
-        i != v0.end(); i++)
-    {
-        addMapping(*i);
-        removeLocalRef(*i);
-    }
-    return *this;
+	PointMappingVector v0;
+	for (PointMappingVector::const_iterator i = other.mappings.begin(); 
+	    i != other.mappings.end(); i++)
+	{
+	    addLocalRef(*i);
+	    v0.push_back(*i);
+	}
+	clearMappings();
+	for (PointMappingVector::const_iterator i = v0.begin(); 
+	    i != v0.end(); i++)
+	{
+	    addMapping(*i);
+	    removeLocalRef(*i);
+	}
+	return *this;
 }
 
 Ionflux::Mapping::PointMappingSet* PointMappingSet::copy() const
 {
-    PointMappingSet* newPointMappingSet = create();
-    *newPointMappingSet = *this;
-    return newPointMappingSet;
+	PointMappingSet* newPointMappingSet = create();
+	*newPointMappingSet = *this;
+	return newPointMappingSet;
 }
 
 Ionflux::Mapping::PointMappingSet* 

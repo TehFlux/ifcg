@@ -92,15 +92,15 @@ Sin::callWithParam(Ionflux::Mapping::MappingValue value) const
 
 Ionflux::Mapping::Sin& Sin::operator=(const Ionflux::Mapping::Sin& other)
 {
-    ChainableMapping::operator=(other);
-    return *this;
+	ChainableMapping::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::Sin* Sin::copy() const
 {
-    Sin* newSin = create();
-    *newSin = *this;
-    return newSin;
+	Sin* newSin = create();
+	*newSin = *this;
+	return newSin;
 }
 
 Ionflux::Mapping::Sin* Sin::upcast(Ionflux::ObjectBase::IFObject* other)

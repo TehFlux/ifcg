@@ -195,17 +195,17 @@ Ionflux::Mapping::BrentLinearRootFinder&
 BrentLinearRootFinder::operator=(const 
 Ionflux::Mapping::BrentLinearRootFinder& other)
 {
-if (this == &other)
-    return *this;
-    return *this;
+	if (this == &other)
+		return *this;
+	return *this;
 }
 
 Ionflux::Mapping::BrentLinearRootFinder* BrentLinearRootFinder::copy() 
 const
 {
-    BrentLinearRootFinder* newBrentLinearRootFinder = create();
-    *newBrentLinearRootFinder = *this;
-    return newBrentLinearRootFinder;
+	BrentLinearRootFinder* newBrentLinearRootFinder = create();
+	*newBrentLinearRootFinder = *this;
+	return newBrentLinearRootFinder;
 }
 
 Ionflux::Mapping::BrentLinearRootFinder* 

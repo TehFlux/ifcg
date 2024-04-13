@@ -171,18 +171,18 @@ void Rescale::setFunc(Ionflux::Mapping::Mapping* newFunc)
 
 Ionflux::Mapping::Mapping* Rescale::getFunc() const
 {
-    return func;
+	return func;
 }
 
 unsigned int Rescale::getNumArgs() const
 {
-    return args.size();
+	return args.size();
 }
 
 Ionflux::Mapping::MappingValue Rescale::getArg(unsigned int elementIndex) 
 const
 {
-    if (elementIndex < args.size())
+	if (elementIndex < args.size())
 		return args[elementIndex];
 	return 0;
 }
@@ -190,7 +190,7 @@ const
 int Rescale::findArg(Ionflux::Mapping::MappingValue needle, unsigned int 
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::MappingValue currentArg = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -198,22 +198,22 @@ occurence) const
 	{
 		currentArg = args[i];
 		if (currentArg == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::MappingValue>& Rescale::getArgs()
 {
-    return args;
+	return args;
 }
 
 void Rescale::addArg(Ionflux::Mapping::MappingValue addElement)
@@ -223,7 +223,7 @@ void Rescale::addArg(Ionflux::Mapping::MappingValue addElement)
 
 void Rescale::removeArg(Ionflux::Mapping::MappingValue removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::MappingValue currentArg = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -243,29 +243,29 @@ void Rescale::removeArg(Ionflux::Mapping::MappingValue removeElement)
 
 void Rescale::removeArgIndex(unsigned int removeIndex)
 {
-    if (removeIndex > args.size())
-        return;
-    args.erase(args.begin() + removeIndex);
+	if (removeIndex > args.size())
+		return;
+	args.erase(args.begin() + removeIndex);
 }
 
 void Rescale::clearArgs()
 {
-    args.clear();
+	args.clear();
 }
 
 Ionflux::Mapping::Rescale& Rescale::operator=(const 
 Ionflux::Mapping::Rescale& other)
 {
-    args = other.args;
-    setFunc(other.func);
-    return *this;
+	args = other.args;
+	setFunc(other.func);
+	return *this;
 }
 
 Ionflux::Mapping::Rescale* Rescale::copy() const
 {
-    Rescale* newRescale = create();
-    *newRescale = *this;
-    return newRescale;
+	Rescale* newRescale = create();
+	*newRescale = *this;
+	return newRescale;
 }
 
 Ionflux::Mapping::Rescale* Rescale::create(Ionflux::ObjectBase::IFObject* 

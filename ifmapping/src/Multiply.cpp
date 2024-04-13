@@ -100,13 +100,13 @@ Multiply::call(Ionflux::Mapping::MappingValue value) const
 
 unsigned int Multiply::getNumFuncs() const
 {
-    return funcs.size();
+	return funcs.size();
 }
 
 Ionflux::Mapping::Mapping* Multiply::getFunc(unsigned int elementIndex) 
 const
 {
-    if (elementIndex < funcs.size())
+	if (elementIndex < funcs.size())
 		return funcs[elementIndex];
 	return 0;
 }
@@ -114,7 +114,7 @@ const
 int Multiply::findFunc(Ionflux::Mapping::Mapping* needle, unsigned int 
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Mapping* currentFunc = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -122,22 +122,22 @@ occurence) const
 	{
 		currentFunc = funcs[i];
 		if (currentFunc == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::Mapping*>& Multiply::getFuncs()
 {
-    return funcs;
+	return funcs;
 }
 
 void Multiply::addFunc(Ionflux::Mapping::Mapping* addElement)
@@ -148,7 +148,7 @@ void Multiply::addFunc(Ionflux::Mapping::Mapping* addElement)
 
 void Multiply::removeFunc(Ionflux::Mapping::Mapping* removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::Mapping* currentFunc = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -170,17 +170,17 @@ void Multiply::removeFunc(Ionflux::Mapping::Mapping* removeElement)
 
 void Multiply::removeFuncIndex(unsigned int removeIndex)
 {
-    if (removeIndex > funcs.size())
-        return;
+	if (removeIndex > funcs.size())
+		return;
 	Ionflux::Mapping::Mapping* e0 = funcs[removeIndex];
-    funcs.erase(funcs.begin() + removeIndex);
-    if (e0 != 0)
-        removeLocalRef(e0);
+	funcs.erase(funcs.begin() + removeIndex);
+	if (e0 != 0)
+		removeLocalRef(e0);
 }
 
 void Multiply::clearFuncs()
 {
-    std::vector<Ionflux::Mapping::Mapping*>::iterator i;
+	std::vector<Ionflux::Mapping::Mapping*>::iterator i;
 	for (i = funcs.begin(); i != funcs.end(); i++)
 		if (*i != 0)
 			removeLocalRef(*i);
@@ -190,28 +190,28 @@ void Multiply::clearFuncs()
 Ionflux::Mapping::Multiply& Multiply::operator=(const 
 Ionflux::Mapping::Multiply& other)
 {
-    MappingVector v0;
-    for (MappingVector::const_iterator i = other.funcs.begin(); 
-        i != other.funcs.end(); i++)
-    {
-        addLocalRef(*i);
-        v0.push_back(*i);
-    }
-    clearFuncs();
-    for (MappingVector::const_iterator i = v0.begin(); 
-        i != v0.end(); i++)
-    {
-        addFunc(*i);
-        removeLocalRef(*i);
-    }
-    return *this;
+	MappingVector v0;
+	for (MappingVector::const_iterator i = other.funcs.begin(); 
+	    i != other.funcs.end(); i++)
+	{
+	    addLocalRef(*i);
+	    v0.push_back(*i);
+	}
+	clearFuncs();
+	for (MappingVector::const_iterator i = v0.begin(); 
+	    i != v0.end(); i++)
+	{
+	    addFunc(*i);
+	    removeLocalRef(*i);
+	}
+	return *this;
 }
 
 Ionflux::Mapping::Multiply* Multiply::copy() const
 {
-    Multiply* newMultiply = create();
-    *newMultiply = *this;
-    return newMultiply;
+	Multiply* newMultiply = create();
+	*newMultiply = *this;
+	return newMultiply;
 }
 
 Ionflux::Mapping::Multiply* Multiply::upcast(Ionflux::ObjectBase::IFObject*

@@ -83,6 +83,31 @@ Ionflux::ObjectBase::DoubleVector* const initValues)
 		setValues(*initValues);
 }
 
+Matrix::Matrix(unsigned int initNumRows, unsigned int initNumCols, double 
+initV00, double initV01, double initV02, double initV03, double initV04, 
+double initV05, double initV06, double initV07, double initV08, double 
+initV09, double initV10, double initV11)
+: values(0), numRows(initNumRows), numCols(initNumCols)
+{
+	// NOTE: The following line is required for run-time type information.
+	theClass = CLASS_INFO;
+	init(initNumRows, initNumCols);
+	DoubleVector initValues;
+	initValues.push_back(initV00);
+	initValues.push_back(initV01);
+	initValues.push_back(initV02);
+	initValues.push_back(initV03);
+	initValues.push_back(initV04);
+	initValues.push_back(initV05);
+	initValues.push_back(initV06);
+	initValues.push_back(initV07);
+	initValues.push_back(initV08);
+	initValues.push_back(initV09);
+	initValues.push_back(initV10);
+	initValues.push_back(initV11);
+	setValues(initValues);
+}
+
 Matrix::~Matrix()
 {
 	if (values != 0)
@@ -284,6 +309,39 @@ void Matrix::setInversePower(double exponent, double falloff)
 	normalize();
 }
 
+void Matrix::sampleColumns(unsigned int numSamples, 
+Ionflux::Mapping::Matrix& target, double sampleOffset)
+{
+	if (numSamples == 0)
+		return;
+	double stepSize = 0.;
+	double sampleRange = numCols - 2. * sampleOffset;
+	if (numSamples > 1)
+		stepSize = sampleRange / (numSamples - 1.);
+	else
+		stepSize = sampleRange;
+	unsigned int tNumCols = target.getNumCols();
+	unsigned int tNumRows = target.getNumRows();
+	unsigned int maxColIndex = numCols - 1;
+	unsigned int iMax = std::min(numSamples, tNumCols);
+	unsigned int jMax = std::min(numRows, tNumRows);
+	for (unsigned int i = 0; i < iMax; i++)
+	{
+		unsigned int sampleIndex = std::min(
+			static_cast<unsigned int>(std::floor(stepSize * i + sampleOffset)), 
+	maxColIndex);
+		for (unsigned int j = 0; j < jMax; j++)
+		{
+			/* <---- DEBUG ----- //
+			std::cerr << "[Matrix.sampleColumns] DEBUG: row = " << j << ", col = " 
+	<< sampleIndex 
+				<< std::endl;
+			// <---- DEBUG ----- */
+			target.values[tNumCols * j + i] = values[numCols * j + sampleIndex];
+		}
+	}
+}
+
 bool Matrix::operator==(const Ionflux::Mapping::Matrix& other) const
 {
 	if ((other.numRows != numRows) 
@@ -306,50 +364,79 @@ std::string Matrix::getString() const
 {
 	std::ostringstream state;
 	state << getClassName() << "[";
-	for (unsigned int i = 0; i < numRows; i++)
+	unsigned int iMax = std::min(numRows, 20U);
+	unsigned int jMax = std::min(numCols, 20U);
+	for (unsigned int i = 0; i < iMax; i++)
 	{
 	    if (i > 0)
 	        state << ", ";
 	    state << "[";
-	    for (unsigned int j = 0; j < numCols; j++)
+	    for (unsigned int j = 0; j < jMax; j++)
 	    {
 	        if (j > 0)
 	            state << ", ";
 	        state << values[i * numCols + j];
 	    }
+		if (jMax < numCols)
+			state << ", ...";
 	    state << "]";
 	}
+	if (iMax < numRows)
+		state << ", ...";
 	state << "]";
+	return state.str();
+}
+
+std::string Matrix::getValueStringFormatted(unsigned int precision, 
+unsigned int fieldWidth, unsigned int offsetCols, unsigned int offsetRows, 
+unsigned int maxNumCols, unsigned int maxNumRows) const
+{
+	unsigned int iMax = std::min(numRows, maxNumRows);
+	unsigned int jMax = std::min(numCols, maxNumCols);
+	std::ostringstream state;
+	state << std::fixed << std::setprecision(precision) << std::setfill(' ');
+	for (unsigned int i = offsetRows; i < iMax; i++)
+	{
+		if (i > offsetRows)
+	    	state << "\n";
+	    for (unsigned int j = offsetCols; j < jMax; j++)
+	    {
+			if (j > offsetCols)
+				state << " ";
+	        state << std::right << std::setw(fieldWidth) << values[i * numCols
+	+ j];
+	    }
+	}
 	return state.str();
 }
 
 unsigned int Matrix::getNumRows() const
 {
-    return numRows;
+	return numRows;
 }
 
 unsigned int Matrix::getNumCols() const
 {
-    return numCols;
+	return numCols;
 }
 
 Ionflux::Mapping::Matrix& Matrix::operator=(const Ionflux::Mapping::Matrix&
 other)
 {
-    if (values == other.values)
-    	return *this;
-    allocate(other.numRows, other.numCols);
-    for (unsigned int i = 0; i < numRows; i++)
-    	for (unsigned int j = 0; j < numCols; j++)
-    		values[i * numCols + j] = other.values[i * numCols + j];
-    return *this;
+	if (values == other.values)
+		return *this;
+	allocate(other.numRows, other.numCols);
+	for (unsigned int i = 0; i < numRows; i++)
+		for (unsigned int j = 0; j < numCols; j++)
+			values[i * numCols + j] = other.values[i * numCols + j];
+	return *this;
 }
 
 Ionflux::Mapping::Matrix* Matrix::copy() const
 {
-    Matrix* newMatrix = create();
-    *newMatrix = *this;
-    return newMatrix;
+	Matrix* newMatrix = create();
+	*newMatrix = *this;
+	return newMatrix;
 }
 
 Ionflux::Mapping::Matrix* Matrix::upcast(Ionflux::ObjectBase::IFObject* 
@@ -376,6 +463,24 @@ int initNumCols, const Ionflux::ObjectBase::DoubleVector* const initValues,
 Ionflux::ObjectBase::IFObject* parentObject)
 {
     Matrix* newObject = new Matrix(initNumRows, initNumCols, initValues);
+    if (newObject == 0)
+    {
+        throw MappingError("Could not allocate object.");
+    }
+    if (parentObject != 0)
+        parentObject->addLocalRef(newObject);
+    return newObject;
+}
+
+Ionflux::Mapping::Matrix* Matrix::create(unsigned int initNumRows, unsigned
+int initNumCols, double initV00, double initV01, double initV02, double 
+initV03, double initV04, double initV05, double initV06, double initV07, 
+double initV08, double initV09, double initV10, double initV11, 
+Ionflux::ObjectBase::IFObject* parentObject)
+{
+    Matrix* newObject = new Matrix(initNumRows, initNumCols, initV00, 
+    initV01, initV02, initV03, initV04, initV05, initV06, initV07, initV08,
+    initV09, initV10, initV11);
     if (newObject == 0)
     {
         throw MappingError("Could not allocate object.");

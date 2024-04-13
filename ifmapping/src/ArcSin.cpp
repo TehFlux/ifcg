@@ -93,15 +93,15 @@ ArcSin::callWithParam(Ionflux::Mapping::MappingValue value) const
 Ionflux::Mapping::ArcSin& ArcSin::operator=(const Ionflux::Mapping::ArcSin&
 other)
 {
-    ChainableMapping::operator=(other);
-    return *this;
+	ChainableMapping::operator=(other);
+	return *this;
 }
 
 Ionflux::Mapping::ArcSin* ArcSin::copy() const
 {
-    ArcSin* newArcSin = create();
-    *newArcSin = *this;
-    return newArcSin;
+	ArcSin* newArcSin = create();
+	*newArcSin = *this;
+	return newArcSin;
 }
 
 Ionflux::Mapping::ArcSin* ArcSin::upcast(Ionflux::ObjectBase::IFObject* 

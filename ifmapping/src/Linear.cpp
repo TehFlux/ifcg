@@ -122,7 +122,7 @@ void Linear::setLower(Ionflux::Mapping::MappingValue newLower)
 
 Ionflux::Mapping::MappingValue Linear::getLower() const
 {
-    return lower;
+	return lower;
 }
 
 void Linear::setUpper(Ionflux::Mapping::MappingValue newUpper)
@@ -132,23 +132,23 @@ void Linear::setUpper(Ionflux::Mapping::MappingValue newUpper)
 
 Ionflux::Mapping::MappingValue Linear::getUpper() const
 {
-    return upper;
+	return upper;
 }
 
 Ionflux::Mapping::Linear& Linear::operator=(const Ionflux::Mapping::Linear&
 other)
 {
-    ChainableMapping::operator=(other);
-    lower = other.lower;
-    upper = other.upper;
-    return *this;
+	ChainableMapping::operator=(other);
+	lower = other.lower;
+	upper = other.upper;
+	return *this;
 }
 
 Ionflux::Mapping::Linear* Linear::copy() const
 {
-    Linear* newLinear = create();
-    *newLinear = *this;
-    return newLinear;
+	Linear* newLinear = create();
+	*newLinear = *this;
+	return newLinear;
 }
 
 Ionflux::Mapping::Linear* Linear::upcast(Ionflux::ObjectBase::IFObject* 

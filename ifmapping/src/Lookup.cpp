@@ -143,13 +143,13 @@ Lookup::callWithParam(Ionflux::Mapping::MappingValue value) const
 
 unsigned int Lookup::getNumEntries() const
 {
-    return entries.size();
+	return entries.size();
 }
 
 Ionflux::Mapping::MappingValue Lookup::getEntry(unsigned int elementIndex) 
 const
 {
-    if (elementIndex < entries.size())
+	if (elementIndex < entries.size())
 		return entries[elementIndex];
 	return 0;
 }
@@ -157,7 +157,7 @@ const
 int Lookup::findEntry(Ionflux::Mapping::MappingValue needle, unsigned int 
 occurence) const
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::MappingValue currentEntry = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -165,22 +165,22 @@ occurence) const
 	{
 		currentEntry = entries[i];
 		if (currentEntry == needle)
-        {
-            if (occurence == 1)
-			    found = true;
-            else
-                occurence--;
+		{
+			if (occurence == 1)
+				found = true;
+			else
+				occurence--;
 		} else
 			i++;
 	}
 	if (found)
-        return i;
+		return i;
 	return -1;
 }
 
 std::vector<Ionflux::Mapping::MappingValue>& Lookup::getEntries()
 {
-    return entries;
+	return entries;
 }
 
 void Lookup::addEntry(Ionflux::Mapping::MappingValue addElement)
@@ -190,7 +190,7 @@ void Lookup::addEntry(Ionflux::Mapping::MappingValue addElement)
 
 void Lookup::removeEntry(Ionflux::Mapping::MappingValue removeElement)
 {
-    bool found = false;
+	bool found = false;
 	Ionflux::Mapping::MappingValue currentEntry = 0;
 	unsigned int i = 0;
 	while (!found 
@@ -210,22 +210,22 @@ void Lookup::removeEntry(Ionflux::Mapping::MappingValue removeElement)
 
 void Lookup::removeEntryIndex(unsigned int removeIndex)
 {
-    if (removeIndex > entries.size())
-        return;
-    entries.erase(entries.begin() + removeIndex);
+	if (removeIndex > entries.size())
+		return;
+	entries.erase(entries.begin() + removeIndex);
 }
 
 void Lookup::clearEntries()
 {
-    entries.clear();
+	entries.clear();
 }
 
 void Lookup::setSource(Ionflux::Mapping::Mapping* newSource)
 {
 	if (source == newSource)
 		return;
-    if (newSource != 0)
-        addLocalRef(newSource);
+	if (newSource != 0)
+		addLocalRef(newSource);
 	if (source != 0)
 		removeLocalRef(source);
 	source = newSource;
@@ -233,27 +233,27 @@ void Lookup::setSource(Ionflux::Mapping::Mapping* newSource)
 
 Ionflux::Mapping::Mapping* Lookup::getSource() const
 {
-    return source;
+	return source;
 }
 
 Ionflux::Mapping::Lookup& Lookup::operator=(const Ionflux::Mapping::Lookup&
 other)
 {
-    ChainableMapping::operator=(other);
-    MappingValueVector v0 = other.entries;
-    clearEntries();
-    for (Ionflux::Mapping::MappingValueVector::iterator i =  v0.begin(); 
-        i != v0.end(); i++)
-        addEntry(*i);
-    setSource(other.source);
-    return *this;
+	ChainableMapping::operator=(other);
+	MappingValueVector v0 = other.entries;
+	clearEntries();
+	for (Ionflux::Mapping::MappingValueVector::iterator i =  v0.begin(); 
+	    i != v0.end(); i++)
+	    addEntry(*i);
+	setSource(other.source);
+	return *this;
 }
 
 Ionflux::Mapping::Lookup* Lookup::copy() const
 {
-    Lookup* newLookup = create();
-    *newLookup = *this;
-    return newLookup;
+	Lookup* newLookup = create();
+	*newLookup = *this;
+	return newLookup;
 }
 
 Ionflux::Mapping::Lookup* Lookup::upcast(Ionflux::ObjectBase::IFObject* 
