@@ -612,16 +612,16 @@ blender)
 Ionflux::GeoUtils::Image& Image::operator=(const Ionflux::GeoUtils::Image& 
 other)
 {
-    Ionflux::Altjira::Drawable::operator=(other);
-    Ionflux::GeoUtils::TransformableObject::operator=(other);
+	Ionflux::Altjira::Drawable::operator=(other);
+	Ionflux::GeoUtils::TransformableObject::operator=(other);
 	return *this;
 }
 
 Ionflux::GeoUtils::Image* Image::copy() const
 {
-    Image* newImage = create();
-    *newImage = *this;
-    return newImage;
+	Image* newImage = create();
+	*newImage = *this;
+	return newImage;
 }
 
 Ionflux::GeoUtils::Image* Image::upcast(Ionflux::ObjectBase::IFObject* 

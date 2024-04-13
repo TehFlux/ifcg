@@ -391,8 +391,8 @@ std::string Matrix::getValueStringFormatted(unsigned int precision,
 unsigned int fieldWidth, unsigned int offsetCols, unsigned int offsetRows, 
 unsigned int maxNumCols, unsigned int maxNumRows) const
 {
-	unsigned int iMax = std::min(numRows, maxNumRows);
-	unsigned int jMax = std::min(numCols, maxNumCols);
+	unsigned int iMax = std::min(numRows, offsetRows + maxNumRows);
+	unsigned int jMax = std::min(numCols, offsetCols + maxNumCols);
 	std::ostringstream state;
 	state << std::fixed << std::setprecision(precision) << std::setfill(' ');
 	for (unsigned int i = offsetRows; i < iMax; i++)

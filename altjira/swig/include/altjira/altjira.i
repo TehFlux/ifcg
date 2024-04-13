@@ -884,7 +884,7 @@ class PixelSourceClassInfo
 };
 
 class PixelSource
-: public Ionflux::ObjectBase::IFObject
+: virtual public Ionflux::ObjectBase::IFObject
 {
     public:
         

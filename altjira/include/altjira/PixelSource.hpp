@@ -57,7 +57,7 @@ class PixelSourceClassInfo
  * infinite.
  */
 class PixelSource
-: public Ionflux::ObjectBase::IFObject
+: virtual public Ionflux::ObjectBase::IFObject
 {
 	private:
 		

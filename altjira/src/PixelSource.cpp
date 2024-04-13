@@ -75,9 +75,9 @@ PixelSource::~PixelSource()
 Ionflux::Altjira::PixelSource& PixelSource::operator=(const 
 Ionflux::Altjira::PixelSource& other)
 {
-    if (this == &other)
-        return *this;
-    return *this;
+	if (this == &other)
+		return *this;
+	return *this;
 }
 
 Ionflux::Altjira::PixelSource* 
